@@ -22,25 +22,30 @@
     * Design the APIs that are easily extensible, having support for variations.
 
 * Team Member 5
-    *
+    * Have good design with encapsulation
 
 
 ## Project Genres
 
 * Possible genres
-    * Scrolling Platformer games, Strategy games, Physics-based games, Board games
-* Board games
+  * Scrolling Platformer games, Strategy games, Physics-based games, Board games
+* Chosen genre
+  * Board games
 
 
 ## Project Extensions
 
-* Different types of monopoly?
-
+* Possible extensions
+  * Different types of monopoly
 * Chosen extensions
 
 
 ## Project Effort Emphasis
 
+* Design
+  * Create polymorphism for the variations of the game
+  * Easy to use open for extension core game APIs
+  * Allow applying game variations using configuration file
 
 
 ## Team Name
@@ -53,11 +58,14 @@
 ## Project Roles
 
 * Team Member 1
+  * Model
 
 * Team Member 2
+  * View 
 
 * Team Member 3
-
+  * Controller
 * Team Member 4
-
+  * Model
 * Team Member 5
+  * View 
