@@ -29,7 +29,6 @@
 
 * Possible genres
     * Scrolling Platformer games, Strategy games, Physics-based games, Board games
-
 * Board games
 
 
