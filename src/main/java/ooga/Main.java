@@ -1,21 +1,20 @@
 package ooga;
 
+import ooga.controller.SampleController;
+import ooga.event.GameEvent;
+import ooga.event.GameEventHandler;
+import ooga.view.SampleView;
 
-/**
- * Feel free to completely change this code or delete it entirely. 
- */
 public class Main {
-    /**
-     * A method to test (and a joke :).
-     */
-    public double getVersion () {
-        return 0.001;
-    }
-
     /**
      * Start of the program.
      */
     public static void main (String[] args) {
-        System.out.println("Hello world");
+        GameEventHandler gameEventHandler = new GameEventHandler();
+        SampleController sampleController = new SampleController(gameEventHandler);
+        gameEventHandler.addEventListener(sampleController);
+        SampleView sampleView = new SampleView(gameEventHandler);
+        gameEventHandler.addEventListener(sampleView);
+        sampleView.start();
     }
 }
