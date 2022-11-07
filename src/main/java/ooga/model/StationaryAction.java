@@ -1,6 +1,6 @@
 package ooga.model;
 
-public enum StaticAction {
+public enum StationaryAction {
   //rolling dice
   ROLL,
   //Bid in auction round might be implemented in a different way
@@ -9,4 +9,7 @@ public enum StaticAction {
   BUY,
 
   //Add when needed
+
+
+
 }

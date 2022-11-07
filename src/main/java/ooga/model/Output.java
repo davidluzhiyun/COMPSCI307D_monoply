@@ -7,6 +7,6 @@ import java.util.Collection;
  */
 public interface Output{
   DiceResult getDiceResult();
-  Collection<StaticAction> getStaticActions();
+  Collection<StationaryAction> getStaticActions();
 
 }
