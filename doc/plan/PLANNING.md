@@ -50,8 +50,6 @@
 
 ## Team Name
 
-* Liver failure, Ragtag
-
 * Ragtag
 
 
