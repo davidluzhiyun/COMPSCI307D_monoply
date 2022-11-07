@@ -1,6 +1,6 @@
 #### Implementation Plan
 
-In order to manage and priortize the project, we will make sure to allocate the necessary time
+In order to manage and prioritize the project, we will make sure to allocate the necessary time
 available each week in order to meet our project progress goals. 
 
 ## Rough Timeline
@@ -15,5 +15,5 @@ available each week in order to meet our project progress goals.
 
 ## API responsibility + related Use Cases
 * Model APIs: David Lu, Luyao Wang
-* View APIs: Hosung Kim, Leile Nelson
+* View APIs: Hosung Kim, Leila Nelson
 * Controller APIs: Elaine Guo
