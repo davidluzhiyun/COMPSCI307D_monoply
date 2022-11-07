@@ -2,7 +2,15 @@ package model;
 
 import com.google.gson.Gson;
 
-public interface Properties {
+import java.util.Collection;
+
+public interface Property {
+
+  int getPropertyId();
+  int getOwnerId();
+  int getPurchasePrice();
+  int getMortgagePrice();
+  String getPropertyName();
   /**
    * Sample return value for street
    * {
