@@ -1,6 +1,6 @@
 package view;
 
-public interface View {
+public interface GameView {
 
   /**
    * Displays to the current player the property they have landed on, the rent owed, and to
@@ -31,5 +31,10 @@ public interface View {
    * Produces some sort of visualization of dice being rolled -- or just show the number that
    * they rolled. Call movePlayer() within BoardView to update player location on board.
    */
-  public void rollTheDice();
+  public void rollDice();
+
+  /**
+   * Make a new instance of PlayerInfo class and display it
+   */
+  public void displayPlayerInfo();
 }

@@ -22,4 +22,11 @@ public interface BoardView {
    */
   public void buildHouse();
 
+  /**
+   * Through some sort of color change or addition of an icon, can indicate that a property has been
+   * bought by another player.
+   */
+  public void indicateOwnedProperty();
+
+
 }
