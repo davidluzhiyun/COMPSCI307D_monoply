@@ -1,5 +1,7 @@
 package model;
 
+import model.place.property.Property;
+
 import java.util.Collection;
 
 public interface Player {
