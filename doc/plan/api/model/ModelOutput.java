@@ -4,18 +4,24 @@ public interface Model<T> {
   T getCommandArgs();
 
   /**
-   * All information about dice. If a double is rolled, one more result will be provided.
-   * For example, [(3, 3)], [(2, 2), (3, 2)], [(2, 2), (3, 3), (4, 3)], or [(2, 2), (3, 3), (4, 4)] (go jail)
+   * Publish the current state of the dice
    */
-  void rollDice();
+  void publishDice();
+
+
+  /**
+   * Publish the id of the next player
+   */
+  void currentPlayer();
 
   /**
    * Information about all players, wrapped in command.
    */
-  void playersData();
+    void playersData();
 
   /**
    * Information about the board, used to initialize the view.
+   * Kept here in case view need to query corresponding information
    */
   void boardData();
 
@@ -49,5 +55,5 @@ public interface Model<T> {
    * }
    * }
    */
-  void gridData();
+  void boardUpdateData();
 }
