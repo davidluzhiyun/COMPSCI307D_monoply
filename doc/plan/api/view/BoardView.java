@@ -12,8 +12,8 @@ public interface BoardView {
   public void setUpBoard();
 
   /**
-   * Moves a player to a designated spot on the board. (Should probably also display the result
-   * of their dice roll/how far they are being moved).
+   * Moves a player to a designated spot on the board. (Should probably also display the result of
+   * their dice roll/how far they are being moved).
    */
   public void movePlayer();
 
@@ -27,6 +27,12 @@ public interface BoardView {
    * bought by another player.
    */
   public void indicateOwnedProperty();
+
+  /**
+   * Remove a player's game piece from the board, change the board so that all of the properties
+   * they own are now shown to be available
+   */
+  public void removePlayer();
 
 
 }
