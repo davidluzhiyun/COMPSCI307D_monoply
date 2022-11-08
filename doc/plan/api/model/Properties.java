@@ -31,4 +31,5 @@ public interface Properties {
    * @return
    */
   Gson getInformation();
+
 }
