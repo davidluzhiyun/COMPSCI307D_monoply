@@ -1,5 +1,8 @@
 package model.place;
 
+import model.Player;
+import java.util.Collection;
+
 /**
  * The Place interface is shared feature of all the places in monopoly
  */
@@ -9,9 +12,5 @@ public interface Place {
    * @return the id of the place
    */
   int getPlaceId();
-  /**
-   * Get the player(s) the place.
-   * @return the id of players on the place
-   */
-  int getPlayersId();
+  Collection<Player> getPlayers();
 }

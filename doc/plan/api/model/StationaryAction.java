@@ -3,7 +3,7 @@ package model;
 /**
  * Actions on the action menu
  */
-public enum PlaceAction {
+public enum StationaryAction {
   //Examples
   ROLL_DICE,
   BUY_PROPERTY,

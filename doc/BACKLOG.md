@@ -4,7 +4,12 @@
 
 # Model
 
-*
+* The user rolls the dice.
+  1. The view publishes the event to roll dice.
+  2. The model receives that event and begin to generate 2 random integer from 1 to 6.
+  3. The model moves the current player by the sum of two dices, publish the result of this move and update view.
+  4. The user make choices and publish the result.
+  5. (If any) a double is rolled, repeat the process.
 
 # View
 
