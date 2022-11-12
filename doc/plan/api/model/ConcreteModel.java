@@ -1,6 +1,12 @@
-package model.place;
+package model;
 
-public class Model implements model.Model {
+import model.Player;
+import model.place.Place;
+import model.place.property.Property;
+
+import java.util.List;
+
+public class ConcreteModel implements model.Model {
   @Override
   public Object getCommandArgs() {
     return null;
@@ -8,7 +14,16 @@ public class Model implements model.Model {
 
   @Override
   public void publishDice() {
+    Player currentPlayer = null;
+    Place place = null;
+    currentPlayer.move(place);
+    List<StationaryAction> list;
+  }
 
+  public void buyProperty() {
+    Player currentPlayer = null;
+    Property place = null;
+    currentPlayer.purchase(place);
   }
 
   @Override

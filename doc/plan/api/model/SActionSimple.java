@@ -1,2 +1,5 @@
-package model;public class SActionSimple {
+package model;
+
+public class SActionSimple extends SAction {
+
 }

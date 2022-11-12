@@ -17,7 +17,7 @@ public interface Model<T> {
   /**
    * Information about all players, wrapped in command.
    */
-    void playersData();
+  void playersData();
 
   /**
    * Information about the board, used to initialize the view.

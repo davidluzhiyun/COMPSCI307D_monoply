@@ -13,4 +13,5 @@ public interface Place {
    */
   int getPlaceId();
   Collection<Player> getPlayers();
+  double getMoney();
 }
