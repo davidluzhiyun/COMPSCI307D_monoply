@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import ooga.Main;
 import ooga.Reflection;
 import ooga.view.button.CustomizedButton;
-import ooga.view.button.FileUploadButton;
 
 public class StartView extends View {
 
@@ -31,6 +30,7 @@ public class StartView extends View {
   private final String defaultLanguage;
   private Group myRoot;
   private final Stage myStage;
+  private File myConfigFile;
 
   public StartView(Stage stage) {
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SCREEN);
@@ -78,7 +78,7 @@ public class StartView extends View {
   }
 
   /**
-   * Obviously this will be changed later.
+   * NOTE:
    */
   public void fileHandler() {
     FileChooser fileChooser = new FileChooser();
@@ -86,11 +86,16 @@ public class StartView extends View {
     fileChooser.getExtensionFilters()
         .setAll(new FileChooser.ExtensionFilter(JSON_FILE_EXTENSION,
             DATA_FILE_JSON_EXTENSION));
-    File file = fileChooser.showOpenDialog(myStage);
-    System.out.println(file);
+    myConfigFile = fileChooser.showOpenDialog(myStage);
   }
 
+  /**
+   * Should throw an error if users click on it without first uploading a file (or selecting a
+   * language) Should act as an event that signals controller to parse the file, start up the main
+   * game screen.
+   */
   public void startButtonHandler() {
-    System.out.println("This should be changed to start the actual game screen!");
+    System.out.println(myConfigFile);
   }
+  public File getMyConfigFile() {return myConfigFile;}
 }
