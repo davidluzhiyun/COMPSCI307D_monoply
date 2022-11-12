@@ -10,11 +10,10 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class Reflection {
 
-  public Object makeObject(String className, Class[] constructorClasses, Object[] parameters) {
-    Class<?> clazz = null;
+  public Object makeObject(String className, Class<?>[] constructorClasses, Object[] parameters) {
     Object o = null;
     try {
-      clazz = Class.forName(className);
+      Class<?> clazz = Class.forName(className);
       o = clazz.getDeclaredConstructor(constructorClasses)
           .newInstance(parameters);
     } catch (NoSuchMethodException | IllegalAccessException | InstantiationException |

@@ -4,8 +4,10 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ooga.Main;
@@ -20,7 +22,7 @@ public class StartView extends View {
   public static final String DEFAULT_LANGUAGE_KEY = "DefaultLanguage";
   public static final String WIDTH_KEY = "Width";
   public static final String HEIGHT_KEY = "Height";
-  public static final String START_BUTTONS_KEY = "StartButtons";
+  public static final String START_OBJECTS_KEY = "StartObjects";
   public static final String SPACE_REGEX = " ";
   public static final String STRING_FORMATTER = "%s%s";
   public static final String METHOD = "Method";
@@ -31,26 +33,29 @@ public class StartView extends View {
   private Group myRoot;
   private final Stage myStage;
   private File myConfigFile;
+  private VBox layout;
 
   public StartView(Stage stage) {
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SCREEN);
     defaultLanguage = myScreenResources.getString(DEFAULT_LANGUAGE_KEY);
-    myRoot = new Group(makeButtons());
+    layout = new VBox();
+    makeInteractiveObjects();
+    myRoot = new Group(layout);
     int width = Integer.parseInt(myScreenResources.getString(WIDTH_KEY));
     int height = Integer.parseInt(myScreenResources.getString(HEIGHT_KEY));
     myScene = new Scene(myRoot, width, height);
     this.myStage = stage;
     myStage.setScene(myScene);
     myStage.show();
+    centerHorizontally(layout, width);
+    centerVertically(layout, height);
   }
 
-  private HBox makeButtons() {
-    String[] buttonNames = myScreenResources.getString(START_BUTTONS_KEY).split(SPACE_REGEX);
-    HBox buttons = new HBox();
-    for (String button : buttonNames) {
-      buttons.getChildren().add((CustomizedButton) makeInteractiveObject(button));
+  private void makeInteractiveObjects() {
+    String[] names = myScreenResources.getString(START_OBJECTS_KEY).split(SPACE_REGEX);
+    for (String name : names) {
+      layout.getChildren().add((Node) makeInteractiveObject(name));
     }
-    return buttons;
   }
 
   /**
@@ -77,9 +82,6 @@ public class StartView extends View {
     return myButton;
   }
 
-  /**
-   * NOTE:
-   */
   public void fileHandler() {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setInitialDirectory(new File(DATA_FILE_FOLDER));
@@ -87,6 +89,10 @@ public class StartView extends View {
         .setAll(new FileChooser.ExtensionFilter(JSON_FILE_EXTENSION,
             DATA_FILE_JSON_EXTENSION));
     myConfigFile = fileChooser.showOpenDialog(myStage);
+  }
+
+  public void hi() {
+    System.out.println("hello world");
   }
 
   /**
