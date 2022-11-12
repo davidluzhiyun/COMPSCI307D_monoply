@@ -6,17 +6,27 @@ import java.util.ResourceBundle;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ooga.Main;
 import ooga.view.button.FileUploadButton;
 
 public class StartView extends View{
 
-  private Scene myScene;
+  private final Scene myScene;
+  private final ResourceBundle myScreenResources;
+  public static final String SCREEN = "Screen";
+  public static final String DEFAULT_LANGUAGE_KEY = "DefaultLanguage";
+  public static final String WIDTH_KEY = "Width";
+  public static final String HEIGHT_KEY = "Height";
+
   private Group myRoot;
 
   public StartView(Stage stage) {
-    FileUploadButton fileButton = new FileUploadButton("English");
+    myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SCREEN);
+    FileUploadButton fileButton = new FileUploadButton(myScreenResources.getString(DEFAULT_LANGUAGE_KEY));
     myRoot = new Group(fileButton);
-    myScene = new Scene(myRoot, 600, 600);
+    int width = Integer.parseInt(myScreenResources.getString(WIDTH_KEY));
+    int height = Integer.parseInt(myScreenResources.getString(HEIGHT_KEY));
+    myScene = new Scene(myRoot, width, height);
     stage.setScene(myScene);
     stage.show();
   }
