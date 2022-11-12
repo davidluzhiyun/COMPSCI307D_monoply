@@ -1,6 +1,5 @@
 package ooga.view;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 import javafx.scene.Group;
@@ -19,8 +18,11 @@ public class StartView extends View {
   public static final String DEFAULT_LANGUAGE_KEY = "DefaultLanguage";
   public static final String WIDTH_KEY = "Width";
   public static final String HEIGHT_KEY = "Height";
-
-  private String defaultLanguage;
+  public static final String START_BUTTONS_KEY = "StartButtons";
+  public static final String SPACE_REGEX = " ";
+  public static final String STRING_FORMATTER = "%s%s";
+  public static final String METHOD = "Method";
+  private final String defaultLanguage;
   private Group myRoot;
 
   public StartView(Stage stage) {
@@ -36,15 +38,14 @@ public class StartView extends View {
   }
 
   private void makeButtons() {
-    FileUploadButton fileButton = new FileUploadButton(defaultLanguage);
-    String[] buttonNames = myScreenResources.getString("StartButtons").split(" ");
+    String[] buttonNames = myScreenResources.getString(START_BUTTONS_KEY).split(SPACE_REGEX);
     for (String button : buttonNames) {
       myRoot.getChildren().add((CustomizedButton) makeInteractiveObject(button));
     }
   }
 
   /**
-   * hehe I also kind of referenced my cellsociety code (which I also wrote, don't worry!!) for this
+   * I also kind of referenced my cellsociety code (which I also wrote, don't worry!!) for this
    *
    * @param name: name of the class you would like to create
    * @return
@@ -57,7 +58,7 @@ public class StartView extends View {
     InteractiveObject myButton = (InteractiveObject) reflection.makeObject(className,
         new Class[]{String.class},
         new Object[]{defaultLanguage});
-    String method = buttonResources.getString(String.format("%s%s", name, "Method"));
+    String method = buttonResources.getString(String.format(STRING_FORMATTER, name, METHOD));
     try {
       Method m = StartView.class.getDeclaredMethod(method);
       myButton.setAction(m, this);
@@ -68,7 +69,7 @@ public class StartView extends View {
   }
 
   /**
-   * Obviously this will be changed, but for now
+   * Obviously this will be changed later.
    */
   public void fileHandler() {
     System.out.println("is reflection working!?");

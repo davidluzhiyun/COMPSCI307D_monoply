@@ -3,8 +3,6 @@ package ooga.view.button;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import ooga.Main;
 import ooga.view.InteractiveObject;
@@ -19,16 +17,16 @@ public class CustomizedButton extends Button implements InteractiveObject {
     labelButton(labelKey);
   }
 
-  private void labelButton(String key) {this.setText(myResources.getString(key));}
+  private void labelButton(String key) {
+    this.setText(myResources.getString(key));
+  }
 
   @Override
   public void setAction(Method method, View view) {
     this.setOnAction(e -> {
       try {
         method.invoke(view);
-      } catch (IllegalAccessException ex) {
-        throw new RuntimeException(ex);
-      } catch (InvocationTargetException ex) {
+      } catch (IllegalAccessException | InvocationTargetException ex) {
         throw new RuntimeException(ex);
       }
     });
