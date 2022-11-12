@@ -1,12 +1,46 @@
-#### Backlog
-
 ## Use Cases:
 
-# Model
+### Model
 
-*
+* The player rolls the dice.
+    1. The view publishes the event to roll dice.
+    2. The model receives that event and begin to generate 2 random integer from 1 to 6.
+    3. The model moves the current player by the sum of two dices, publish the result of this move and update view.
+    4. The player make choices and publish the result.
+    5. (If any) a double is rolled, repeat the process.
 
-# View
+* The player trades property with other player.
+    1. The player selects a player to trade with and properties to trade.
+    2. The other player that player in this turn chooses can decide accept, reject or counter propose a new trade.
+    3. If trade is successfully, the model recalculates the assets of the two players and view update these data.
+    4. If trade is not successfully, nothing happens.
+
+* The player lands on a Chance or Communist Chest.
+    1. The model draws a Chance or Communist Chest card randomly.
+    2. The model publish the details of that card to view and updates the view.
+    3. The model updates the player according to that card.
+    4. The model updates view.
+
+* Auction
+    1. Players take bid in turns and can choose whether to take bid.
+    2. If no one takes bid for 3 seconds, then the property is sold.
+
+* The player is not able to pay tax or rent (simple version).
+    1. The player lands on Tax or some other players' house and should pay fees.
+    2. The player is not able to pay the fees even after mortgaged all his properties.
+    3. The player went bankrupt and all his properties become empty.
+
+* The player is not able to pay rent (fast version).
+    1. The player lands on Tax or some other players' house and should pay fees.
+    2. The player is not able to pay the fees even after mortgaged all his properties.
+    3. The player went bankrupt and all his properties and money become the possessions of the other player who makes the bankrupt player lose.
+
+* The player is not able to pay rent (slow version).
+    1. The player lands on Tax or some other players' house and should pay fees.
+    2. The player is not able to pay the fees even after mortgaged all his properties.
+    3. The player went bankrupt and all his properties and money will be auctioned by the bank.
+
+###View
 
 1. Situation: User wants to start a new game.
     * StartView is presented to the user.
@@ -63,11 +97,11 @@
 
 5. Situation: One user finishes their turn and it is now the next player's turn.
 
-   * Switch to now display the current player's information instead.
-   * Announce which player's turn it is
-   * Show a player dice to roll, give them a button to click to roll.
-   * Player must "roll"
-       * this signals to controller, view must "wait"
+    * Switch to now display the current player's information instead.
+    * Announce which player's turn it is
+    * Show a player dice to roll, give them a button to click to roll.
+    * Player must "roll"
+        * this signals to controller, view must "wait"
 
 6. Situation: User has rolled the dice.
     * View should now tell the user the number they rolled (information that is received from the
@@ -76,7 +110,7 @@
     * IF the user passes GO because of this, their net worth must be updated.
     * the user should be presented with actions they can take based on which cell they land on.
 
-# Controller
+### Controller
 
 * Initialize the model with the correct game configurations are the start of the game
 * Interact with an event handler to appropriately handle events

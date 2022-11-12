@@ -1,4 +1,4 @@
-package model.place.uncertaintyPpace;
+package model.place.uncertaintyPlace;
 
 import model.place.Place;
 
