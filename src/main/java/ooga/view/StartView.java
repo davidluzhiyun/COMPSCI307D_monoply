@@ -73,4 +73,8 @@ public class StartView extends View {
   public void fileHandler() {
     System.out.println("is reflection working!?");
   }
+
+  public void startButtonHandler() {
+    System.out.println("This should be changed to start the actual game screen!");
+  }
 }
