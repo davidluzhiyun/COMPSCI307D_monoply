@@ -28,13 +28,13 @@ public class GameEventHandler {
     publish(new GameEvent(t));
   }
 
-  public GameEvent makeGameEventwithCommand(String eventType, Command command) {
+  public static GameEvent makeGameEventwithCommand(String eventType, Command command) {
     GameEventType t = getGameEventTypefromString(eventType);
     GameEventCommand cmd = new GameEventCommand(t, command);
     return new GameEvent(t, cmd);
   }
 
-  public GameEventType getGameEventTypefromString(String s) {
+  public static GameEventType getGameEventTypefromString(String s) {
     return GameEventType.valueOf(s);
   }
 }
