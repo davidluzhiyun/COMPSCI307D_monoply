@@ -12,12 +12,13 @@ public class Main extends Application {
 
   public static final String DEFAULT_RESOURCE_PACKAGE = "properties.";
   public static final String DEFAULT_LANGUAGE_PACKAGE = DEFAULT_RESOURCE_PACKAGE + "language.";
+  public static final String ID_PROPERTIES = Main.DEFAULT_RESOURCE_PACKAGE + "ID";
 
 
   /**
    * We can definitely change this later!
-   * @param primaryStage the primary stage for this application, onto which
-   * the application scene can be set.
+   *
+   * @param primaryStage the primary stage for this application.
    * @throws Exception
    */
   @Override
