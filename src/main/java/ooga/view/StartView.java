@@ -4,8 +4,10 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ooga.Main;
@@ -31,24 +33,28 @@ public class StartView extends View {
   private Group myRoot;
   private final Stage myStage;
   private File myConfigFile;
+  private VBox layout;
 
   public StartView(Stage stage) {
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SCREEN);
     defaultLanguage = myScreenResources.getString(DEFAULT_LANGUAGE_KEY);
-    myRoot = new Group(makeButtons());
+    layout = new VBox(makeButtons());
+    myRoot = new Group(layout);
     int width = Integer.parseInt(myScreenResources.getString(WIDTH_KEY));
     int height = Integer.parseInt(myScreenResources.getString(HEIGHT_KEY));
     myScene = new Scene(myRoot, width, height);
     this.myStage = stage;
     myStage.setScene(myScene);
     myStage.show();
+    centerHorizontally(layout, width);
+    centerVertically(layout, height);
   }
 
   private HBox makeButtons() {
     String[] buttonNames = myScreenResources.getString(START_BUTTONS_KEY).split(SPACE_REGEX);
     HBox buttons = new HBox();
     for (String button : buttonNames) {
-      buttons.getChildren().add((CustomizedButton) makeInteractiveObject(button));
+      buttons.getChildren().add((Node) makeInteractiveObject(button));
     }
     return buttons;
   }
@@ -77,9 +83,6 @@ public class StartView extends View {
     return myButton;
   }
 
-  /**
-   * NOTE:
-   */
   public void fileHandler() {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setInitialDirectory(new File(DATA_FILE_FOLDER));
