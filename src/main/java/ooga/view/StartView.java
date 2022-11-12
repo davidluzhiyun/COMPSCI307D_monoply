@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import ooga.Main;
 import ooga.Reflection;
@@ -28,8 +29,7 @@ public class StartView extends View {
   public StartView(Stage stage) {
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SCREEN);
     defaultLanguage = myScreenResources.getString(DEFAULT_LANGUAGE_KEY);
-    myRoot = new Group();
-    makeButtons();
+    myRoot = new Group(makeButtons());
     int width = Integer.parseInt(myScreenResources.getString(WIDTH_KEY));
     int height = Integer.parseInt(myScreenResources.getString(HEIGHT_KEY));
     myScene = new Scene(myRoot, width, height);
@@ -37,11 +37,13 @@ public class StartView extends View {
     stage.show();
   }
 
-  private void makeButtons() {
+  private HBox makeButtons() {
     String[] buttonNames = myScreenResources.getString(START_BUTTONS_KEY).split(SPACE_REGEX);
+    HBox buttons = new HBox();
     for (String button : buttonNames) {
-      myRoot.getChildren().add((CustomizedButton) makeInteractiveObject(button));
+      buttons.getChildren().add((CustomizedButton) makeInteractiveObject(button));
     }
+    return buttons;
   }
 
   /**
