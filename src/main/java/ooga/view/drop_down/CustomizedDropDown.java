@@ -11,7 +11,7 @@ import ooga.view.InteractiveObject;
 import ooga.view.View;
 
 public abstract class CustomizedDropDown extends VBox implements InteractiveObject {
-  private ChoiceBox<String> choiceBox;
+  protected ChoiceBox<String> choiceBox;
   private final ResourceBundle myResources;
 
   public CustomizedDropDown (String labelKey, String language)  {

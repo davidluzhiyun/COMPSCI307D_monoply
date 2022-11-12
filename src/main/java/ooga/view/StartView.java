@@ -22,7 +22,7 @@ public class StartView extends View {
   public static final String DEFAULT_LANGUAGE_KEY = "DefaultLanguage";
   public static final String WIDTH_KEY = "Width";
   public static final String HEIGHT_KEY = "Height";
-  public static final String START_BUTTONS_KEY = "StartButtons";
+  public static final String START_OBJECTS_KEY = "StartObjects";
   public static final String SPACE_REGEX = " ";
   public static final String STRING_FORMATTER = "%s%s";
   public static final String METHOD = "Method";
@@ -38,7 +38,8 @@ public class StartView extends View {
   public StartView(Stage stage) {
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SCREEN);
     defaultLanguage = myScreenResources.getString(DEFAULT_LANGUAGE_KEY);
-    layout = new VBox(makeButtons());
+    layout = new VBox();
+    makeInteractiveObjects();
     myRoot = new Group(layout);
     int width = Integer.parseInt(myScreenResources.getString(WIDTH_KEY));
     int height = Integer.parseInt(myScreenResources.getString(HEIGHT_KEY));
@@ -50,13 +51,11 @@ public class StartView extends View {
     centerVertically(layout, height);
   }
 
-  private HBox makeButtons() {
-    String[] buttonNames = myScreenResources.getString(START_BUTTONS_KEY).split(SPACE_REGEX);
-    HBox buttons = new HBox();
-    for (String button : buttonNames) {
-      buttons.getChildren().add((Node) makeInteractiveObject(button));
+  private void makeInteractiveObjects() {
+    String[] names = myScreenResources.getString(START_OBJECTS_KEY).split(SPACE_REGEX);
+    for (String name : names) {
+      layout.getChildren().add((Node) makeInteractiveObject(name));
     }
-    return buttons;
   }
 
   /**
@@ -90,6 +89,10 @@ public class StartView extends View {
         .setAll(new FileChooser.ExtensionFilter(JSON_FILE_EXTENSION,
             DATA_FILE_JSON_EXTENSION));
     myConfigFile = fileChooser.showOpenDialog(myStage);
+  }
+
+  public void hi() {
+    System.out.println("hello world");
   }
 
   /**
