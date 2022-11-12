@@ -1,9 +1,11 @@
 package model;
 
-
 import model.place.Place;
 
-public interface Board {
+/**
+ * Board data for view to update
+ */
+public interface ViewBoard {
   /**
    * Get the size of the board.
    * @return size of the board
@@ -13,5 +15,5 @@ public interface Board {
    * Get the place at an index.
    * @return the place at an index
    */
-  Place getPlaceAt();
+  ViewPlace getPlaceAt();
 }
