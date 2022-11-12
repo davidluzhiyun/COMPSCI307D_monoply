@@ -10,7 +10,9 @@ import ooga.view.StartView;
 
 public class Main extends Application {
 
-  public static final String DEFAULT_RESOURCE_PACKAGE = "ooga/properties.";
+  public static final String DEFAULT_RESOURCE_PACKAGE = "properties.";
+  public static final String DEFAULT_LANGUAGE_PACKAGE = DEFAULT_RESOURCE_PACKAGE + "language.";
+
 
 
   /**
