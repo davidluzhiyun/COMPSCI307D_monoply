@@ -10,6 +10,7 @@ import ooga.view.View;
 public class LanguageDropDown extends CustomizedDropDown{
 
   public static final String LANGUAGE_MENU_KEY = "LanguageDropDown";
+  public static final String LANGUAGES_KEY = "AvailableLanguages";
   private final ResourceBundle myLanguageResources;
 
   public LanguageDropDown(String language) {
@@ -22,7 +23,7 @@ public class LanguageDropDown extends CustomizedDropDown{
 
   @Override
   public void createChoices() {
-    String[] availableLanguages = myLanguageResources.getString("AvailableLanguages").split(StartView.SPACE_REGEX);
+    String[] availableLanguages = myLanguageResources.getString(LANGUAGES_KEY).split(StartView.COMMA_REGEX);
     choiceBox = new ChoiceBox<>(FXCollections.observableArrayList(availableLanguages));
     this.getChildren().add(choiceBox);
   }

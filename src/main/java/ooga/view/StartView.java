@@ -24,6 +24,7 @@ public class StartView extends View {
   public static final String HEIGHT_KEY = "Height";
   public static final String START_OBJECTS_KEY = "StartObjects";
   public static final String SPACE_REGEX = " ";
+  public static final String COMMA_REGEX = ", ";
   public static final String STRING_FORMATTER = "%s%s";
   public static final String METHOD = "Method";
   public static final String JSON_FILE_EXTENSION = "JSON Files";
