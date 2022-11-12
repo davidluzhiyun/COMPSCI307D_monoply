@@ -1,10 +1,12 @@
 package ooga.view;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ooga.Main;
 import ooga.Reflection;
@@ -23,8 +25,12 @@ public class StartView extends View {
   public static final String SPACE_REGEX = " ";
   public static final String STRING_FORMATTER = "%s%s";
   public static final String METHOD = "Method";
+  public static final String JSON_FILE_EXTENSION = "JSON Files";
+  public static final String DATA_FILE_JSON_EXTENSION = "*.json";
+  public static final String DATA_FILE_FOLDER = System.getProperty("user.dir") + "/data";
   private final String defaultLanguage;
   private Group myRoot;
+  private final Stage myStage;
 
   public StartView(Stage stage) {
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SCREEN);
@@ -33,8 +39,9 @@ public class StartView extends View {
     int width = Integer.parseInt(myScreenResources.getString(WIDTH_KEY));
     int height = Integer.parseInt(myScreenResources.getString(HEIGHT_KEY));
     myScene = new Scene(myRoot, width, height);
-    stage.setScene(myScene);
-    stage.show();
+    this.myStage = stage;
+    myStage.setScene(myScene);
+    myStage.show();
   }
 
   private HBox makeButtons() {
@@ -74,7 +81,13 @@ public class StartView extends View {
    * Obviously this will be changed later.
    */
   public void fileHandler() {
-    System.out.println("is reflection working!?");
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setInitialDirectory(new File(DATA_FILE_FOLDER));
+    fileChooser.getExtensionFilters()
+        .setAll(new FileChooser.ExtensionFilter(JSON_FILE_EXTENSION,
+            DATA_FILE_JSON_EXTENSION));
+    File file = fileChooser.showOpenDialog(myStage);
+    System.out.println(file);
   }
 
   public void startButtonHandler() {
