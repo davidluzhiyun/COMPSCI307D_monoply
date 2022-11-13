@@ -1,17 +1,17 @@
 package ooga.model;
 
-import ooga.model.place.Place;
 import ooga.model.place.property.Property;
 
 import java.util.Collection;
 
+/**
+ * Player interface for view classes. Jail not implemented
+ */
 public interface ViewPlayer {
   int getPlayId();
-  int getCurrentSpace();
+  int getCurrentSpaceId();
   Boolean isInJail();
   int remainingJailTurns();
   Collection<Property> getProperties();
-  int getTotalMoney();
-  void move(Place place);
-  void purchase(Property place);
+  double getTotalMoney();
 }

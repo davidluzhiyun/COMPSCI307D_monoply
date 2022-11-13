@@ -4,44 +4,54 @@ package ooga.model;
 import ooga.model.place.Place;
 import ooga.model.place.property.Property;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
-public class ConcretePlayer implements ViewPlayer {
+public class ConcretePlayer implements Player, ViewPlayer {
   private double money;
-  private Collection<Property> properties;
+  private int playerId;
+  private int placeId;
+  private boolean isInJail = false;
+  private int remainingJailTurns;
+  private final Collection<Property> properties;
+  public ConcretePlayer(int playerId) {
+    this.playerId = playerId;
+    properties = new ArrayList<>();
+  }
   @Override
   public int getPlayId() {
-    return 0;
+    return playerId;
   }
 
   @Override
-  public int getCurrentSpace() {
-    return 0;
+  public int getCurrentSpaceId() {
+    return placeId;
   }
 
   @Override
   public Boolean isInJail() {
-    return null;
+    return isInJail;
   }
 
   @Override
   public int remainingJailTurns() {
-    return 0;
+    return remainingJailTurns;
   }
 
   @Override
   public Collection<Property> getProperties() {
-    return null;
+    return properties;
   }
 
   @Override
-  public int getTotalMoney() {
-    return 0;
+  public double getTotalMoney() {
+    return money;
   }
 
   @Override
   public void move(Place place) {
     //Auto part
+    placeId = place.getPlaceId();
     money += place.getMoney();
   }
 

@@ -5,13 +5,16 @@ import ooga.model.place.property.Property;
 
 import java.util.Collection;
 
+/**
+ * Player interface for model classes. Jail not implemented
+ */
 public interface Player {
   int getPlayId();
-  int getCurrentSpace();
+  int getCurrentSpaceId();
   Boolean isInJail();
   int remainingJailTurns();
   Collection<Property> getProperties();
-  int getTotalMoney();
+  double getTotalMoney();
   void move(Place place);
   void purchase(Property place);
 }
