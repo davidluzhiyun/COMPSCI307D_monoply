@@ -1,6 +1,7 @@
 package ooga;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * @author Leila
@@ -21,5 +22,15 @@ public class Reflection {
       throw new RuntimeException(e);
     }
     return o;
+  }
+
+  public Method makeMethod(String methodName, Class<?> clazz, Class<?>[] constructorClasses) {
+    Method m = null;
+    try {
+      m = clazz.getDeclaredMethod(methodName, constructorClasses);
+    } catch (NoSuchMethodException e) {
+      throw new RuntimeException(e);
+    }
+    return m;
   }
 }
