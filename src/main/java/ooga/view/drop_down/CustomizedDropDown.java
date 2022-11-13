@@ -11,15 +11,16 @@ import ooga.view.InteractiveObject;
 import ooga.view.View;
 
 public abstract class CustomizedDropDown extends VBox implements InteractiveObject {
+
   protected ChoiceBox<String> choiceBox;
   private final ResourceBundle myResources;
 
-  public CustomizedDropDown (String labelKey, String language)  {
+  public CustomizedDropDown(String labelKey, String language) {
     myResources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + language);
     this.getChildren().add(labelDropDown(labelKey));
   }
 
-  private Label labelDropDown (String key) {
+  private Label labelDropDown(String key) {
     return new Label(myResources.getString(key));
   }
 
@@ -35,5 +36,12 @@ public abstract class CustomizedDropDown extends VBox implements InteractiveObje
             throw new RuntimeException(e);
           }
         });
+  }
+
+  /**
+   * Added just for testing reasons.
+   */
+  public ChoiceBox<String> getChoiceBox() {
+    return choiceBox;
   }
 }
