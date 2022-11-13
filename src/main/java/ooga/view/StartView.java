@@ -29,6 +29,7 @@ public class StartView extends View {
   public static final String METHOD = "Method";
   public static final String JSON_FILE_EXTENSION = "JSON Files";
   public static final String DATA_FILE_JSON_EXTENSION = "*.json";
+  public static final String DROP_DOWN = "DropDown";
   public static final String DATA_FILE_FOLDER = System.getProperty("user.dir") + "/data";
   private final String defaultLanguage;
   private Group myRoot;
@@ -74,11 +75,10 @@ public class StartView extends View {
         new Class[]{String.class},
         new Object[]{defaultLanguage});
     String method = buttonResources.getString(String.format(STRING_FORMATTER, name, METHOD));
-    try {
-      Method m = StartView.class.getDeclaredMethod(method);
-      myButton.setAction(m, this);
-    } catch (NoSuchMethodException e) {
-      throw new RuntimeException(e);
+    if (name.contains(DROP_DOWN)) {
+      myButton.setAction(reflection.makeMethod(method, StartView.class, new Class[]{Number.class}), this);
+    } else {
+      myButton.setAction(reflection.makeMethod(method, StartView.class, null), this);
     }
     return myButton;
   }
@@ -92,8 +92,9 @@ public class StartView extends View {
     myConfigFile = fileChooser.showOpenDialog(myStage);
   }
 
-  public void hi() {
-    System.out.println("hello world");
+  public void changeLanguage(Number newValue) {
+    ResourceBundle choiceResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + "ChoiceBox");
+    System.out.println(newValue);
   }
 
   /**

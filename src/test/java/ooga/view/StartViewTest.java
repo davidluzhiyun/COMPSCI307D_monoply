@@ -23,11 +23,13 @@ class StartViewTest extends DukeApplicationTest {
 
   /**
    * NOTE: DURING THE PAUSE, YOU MUST SELECT A FILE -- otherwise the test will fail
+   * Verify that the printed file path matches your selection.
    */
   @Test
   void testFileUploadBasic() {
     clickOn(myFileButton);
     sleep(3000);
+    System.out.println(myStart.getMyConfigFile());
     assertNotNull(myStart.getMyConfigFile());
   }
 }

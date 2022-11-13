@@ -30,7 +30,7 @@ public abstract class CustomizedDropDown extends VBox implements InteractiveObje
     choiceBox.getSelectionModel().selectedIndexProperty().addListener(
         (observable, oldValue, newValue) -> {
           try {
-            method.invoke(view);
+            method.invoke(view, newValue);
           } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
           }
