@@ -11,7 +11,7 @@ public abstract class View {
   public static final String BUTTON_PROPERTIES = Main.DEFAULT_RESOURCE_PACKAGE + "Button";
   public static final String CHOICE_BOX_PROPERTIES = Main.DEFAULT_RESOURCE_PACKAGE + "ChoiceBox";
 
-  public abstract InteractiveObject makeInteractiveObject(String name);
+  public abstract InteractiveObject makeInteractiveObject(String name, String language);
 
   public void styleScene(Scene scene, String file) {
     scene.getStylesheets()
