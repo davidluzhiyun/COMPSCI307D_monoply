@@ -6,35 +6,39 @@ public class ConcretePlayerTurn implements PlayerTurn {
   private int currentPlayerTurnsUsed = 0;
   private final int playerCount;
 
-  public ConcretePlayerTurn(int playerCount, int startingPlayerId) {
-    currentPlayerId = startingPlayerId;
+  public ConcretePlayerTurn(int playerCount) {
+    currentPlayerId = 0;
     currentPlayerTurnsLeft = 1;
     this.playerCount = playerCount;
   }
 
-  @Override
-  public int getCurrentPlayerTurnId() {
-    return 0;
-  }
-
-  public void decrementTurn() {
+  public int roll() {
+    int r1 = (int) ((Math.random() * 6) + 1);
+    int r2 = (int) ((Math.random() * 6) + 1);
     currentPlayerTurnsLeft--;
     currentPlayerTurnsUsed++;
+    if (r1 == r2)
+      currentPlayerTurnsLeft++;
+    if (currentPlayerTurnsUsed == 3)
+      return -1;
+    System.out.printf("%d %d%n", r1,r2);
+    return r1 + r2;
   }
 
-  public void addTurn() {
-    currentPlayerTurnsLeft++;
+  @Override
+  public int getCurrentPlayerTurnId() {
+    return currentPlayerId;
+  }
+
+  public int getCurrentPlayerTurnsLeft() {
+    return currentPlayerTurnsLeft;
   }
 
   @Override
   public void nextTurn() {
-    if (currentPlayerTurnsLeft == 0) {
-      if (currentPlayerId < playerCount)
-        currentPlayerId++;
-      else
-        currentPlayerId = 0;
-    }
+    if (currentPlayerId < playerCount)
+      currentPlayerId++;
     else
-      decrementTurn();
+      currentPlayerId = 0;
   }
 }

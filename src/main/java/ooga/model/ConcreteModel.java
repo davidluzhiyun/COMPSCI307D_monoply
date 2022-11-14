@@ -12,17 +12,18 @@ import ooga.model.place.property.Property;
 import ooga.view.SampleViewData;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ConcreteModel implements Model, GameEventListener {
-  private Dice dice;
+  private ConcretePlayerTurn turn;
   private List<Player> players;
   private int currentPlayerId;
   private List<Place> places;
   private GameEventHandler gameEventHandler;
 
   public ConcreteModel(GameEventHandler gameEventHandler) {
-    dice = new ConcreteDice();
+    turn = new ConcretePlayerTurn(4);
     places = new ArrayList<>();
     players = new ArrayList<>();
     this.gameEventHandler = gameEventHandler;
@@ -35,15 +36,23 @@ public class ConcreteModel implements Model, GameEventListener {
 
   @Override
   public void publishDice() {
-    Player currentPlayer = players.get(currentPlayerId);
-    Place newPlace = places.get(currentPlayer.getCurrentSpaceId() + dice.roll());
-    //TODO: loop the list if index out bound
+    Player currentPlayer = players.get(turn.getCurrentPlayerTurnId());
+    int placesToGo = turn.roll();
+    Place newPlace;
+    if (placesToGo == -1)
+      newPlace = null;
+    newPlace = places.get(currentPlayer.getCurrentSpaceId() + placesToGo);
     currentPlayer.move(newPlace);
-    List<StationaryAction> list;//TODO
+    Collection<StationaryAction> stationaryActions = newPlace.getStationaryActions();
+
     SampleViewData d = null;//TODO
     Command cmd = new SampleCommand(d);
     GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_DICE_ROLLED", cmd);
     gameEventHandler.publish(event);
+  }
+
+  public void endTurn() {
+    turn.nextTurn();
   }
 
   public void buyProperty(Property property) {

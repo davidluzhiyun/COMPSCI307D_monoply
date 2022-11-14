@@ -1,8 +1,10 @@
 package ooga.model.place;
 
+import ooga.model.StationaryAction;
 import ooga.model.ViewPlayer;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * The Place interface is shared feature of all the places in monopoly
@@ -15,4 +17,5 @@ public interface Place {
   int getPlaceId();
   Collection<ViewPlayer> getPlayers();
   double getMoney();
+  List<StationaryAction> getStationaryActions();
 }
