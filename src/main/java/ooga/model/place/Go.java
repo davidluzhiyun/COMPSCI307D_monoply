@@ -9,7 +9,6 @@ public class Go extends ConcretePlace{
 
   public Go() {
     super(0);
-    setStationaryActions(List.of(StationaryAction.ROLL_DICE));
   }
 
   @Override

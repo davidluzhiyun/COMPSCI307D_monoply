@@ -12,5 +12,6 @@
     400,
     550
   ],
-  "houseCost": 100
+  "houseCost": 100,
+  "colorId": 0
 }

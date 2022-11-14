@@ -9,7 +9,7 @@ import java.util.Collection;
  */
 public interface ViewPlayer {
   int getPlayId();
-  int getCurrentSpaceId();
+  int getCurrentPlaceId();
   Boolean isInJail();
   int remainingJailTurns();
   Collection<Property> getProperties();

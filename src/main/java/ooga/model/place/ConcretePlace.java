@@ -6,6 +6,7 @@ import ooga.model.Player;
 import ooga.model.StationaryAction;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -21,20 +22,21 @@ public abstract class ConcretePlace implements Place {
 
   public ConcretePlace(int id) {
     placeId = id;
+    players = new ArrayList<>();
+    stationaryActions = new ArrayList<>();
     Gson gson = new Gson();
     Reader reader = null;
-    System.out.println(DEFAULT_RESOURCE_FOLDER + id + ".json");
     try {
       File file = new File("." + "/src/main/resources" + DEFAULT_RESOURCE_FOLDER + id + ".json");
       reader = new FileReader(file);
       TypeToken<Map<String, ?>> mapType = new TypeToken<>() {
       };
       config = gson.fromJson(reader, mapType);
-      for (Map.Entry<String, ?> entry : config.entrySet()) {
-        System.out.println(entry.getKey() + "=" + entry.getValue());
-        // close reader
-        reader.close();
-      }
+//      for (Map.Entry<String, ?> entry : config.entrySet()) {
+//        System.out.println(entry.getKey() + "=" + entry.getValue());
+//        // close reader
+//        reader.close();
+//      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -62,12 +64,12 @@ public abstract class ConcretePlace implements Place {
 
   @Override
   public List<StationaryAction> getStationaryActions(Player player) {
+    if (player.hasNextTurn())
+      stationaryActions.add(StationaryAction.ROLL_DICE);
     return stationaryActions;
   }
 
-  public void setStationaryActions(List<StationaryAction> stationaryActions) {
-    this.stationaryActions = stationaryActions;
+  public void addStationaryAction(StationaryAction stationaryAction) {
+    this.stationaryActions.add(stationaryAction);
   }
-
-  ;
 }

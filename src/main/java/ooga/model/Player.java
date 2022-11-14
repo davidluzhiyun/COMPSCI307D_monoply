@@ -10,11 +10,17 @@ import java.util.Collection;
  */
 public interface Player {
   int getPlayId();
-  int getCurrentSpaceId();
+  int getCurrentPlaceId();
   Boolean isInJail();
   int remainingJailTurns();
   Collection<Property> getProperties();
   double getTotalMoney();
   void move(Place place);
   void purchase(Property place);
+  void decrementOneTurnLeft();
+  void addOneTurnLeft();
+  void addOneTurnUsed();
+  boolean hasNextTurn();
+  boolean goJail();
+  void newTurn();
 }

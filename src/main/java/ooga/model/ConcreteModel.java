@@ -23,28 +23,16 @@ public class ConcreteModel implements Model, GameEventListener {
   private GameEventHandler gameEventHandler;
 
   public ConcreteModel(GameEventHandler gameEventHandler) {
-    turn = new ConcretePlayerTurn(4);
     places = new ArrayList<>();
     players = new ArrayList<>();
+    turn = new ConcretePlayerTurn(players, places);
     this.gameEventHandler = gameEventHandler;
-  }
-
-  @Override
-  public Object getCommandArgs() {
-    return null;
   }
 
   @Override
   public void publishDice() {
     Player currentPlayer = players.get(turn.getCurrentPlayerTurnId());
-    int placesToGo = turn.roll();
-    Place newPlace;
-    if (placesToGo == -1)
-      newPlace = null;
-    newPlace = places.get(currentPlayer.getCurrentSpaceId() + placesToGo);
-    currentPlayer.move(newPlace);
-    Collection<StationaryAction> stationaryActions = newPlace.getStationaryActions(currentPlayer);
-
+    turn.roll();
     SampleViewData d = null;//TODO
     Command cmd = new SampleCommand(d);
     GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_DICE_ROLLED", cmd);
