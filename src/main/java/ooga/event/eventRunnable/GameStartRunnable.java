@@ -1,19 +1,48 @@
 package ooga.event.eventRunnable;
 
+import com.google.gson.Gson;
+import ooga.controller.ParsedProperty;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
+import ooga.event.command.GameStartCommand;
 
+import java.io.*;
+
+/**
+ * GameStartRunnable: class that runs the logic needed when controller listens for
+ * the game start event from the view. Parses the config file in order to pass to the
+ * model.
+ */
 public class GameStartRunnable implements EventGenerator {
-    private Command command;
+
+    private File file;
+
+    private ParsedProperty[] parsedJson;
 
     public GameStartRunnable(Command arguments) {
-        this.command = arguments;
+        this.file = (File) arguments.getCommandArgs();
     }
 
     @Override
     public GameEvent processEvent() {
-        return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name(), command);
+        parseJSON();
+        GameStartCommand gameStart = new GameStartCommand(parsedJson);
+        return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name(), gameStart);
+    }
+
+    private void parseJSON() {
+
+        try (Reader reader = new FileReader(file)) {
+            // Convert JSON File to Java Object
+            parsedJson = new Gson().fromJson(reader, ParsedProperty[].class);
+        } catch (FileNotFoundException e) {
+            System.out.println("Config file not found1");
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            System.out.println("IOException thrown1");
+            throw new RuntimeException(e);
+        }
     }
 }

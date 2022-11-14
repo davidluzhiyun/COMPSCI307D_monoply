@@ -7,7 +7,9 @@ import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
 
-public class EventTest extends TestCase {
+import java.io.File;
+
+public class GameStartEventTest extends TestCase {
     private GameEventHandler gameEventHandler;
 
     private Controller controller;
@@ -24,21 +26,22 @@ public class EventTest extends TestCase {
     public void testGameStart() {
         listener = new MockListener(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name());
         gameEventHandler.addEventListener(listener);
-        GameEvent gameStart = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_CONTROLLER_GAME_START.name(), new TestCommand(307));
+        GameEvent gameStart = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_CONTROLLER_GAME_START.name(), new TestCommand(new File("doc/plan/data/TestInitialBoard.json")));
         gameEventHandler.publish(gameStart);
         System.out.println("GameStart event published!");
     }
 
     public class TestCommand implements Command{
-        private final int d;
 
-        public TestCommand(int d){
-            this.d = d;
+        private final File file;
+
+        public TestCommand(File config){
+            this.file = config;
         }
 
         @Override
         public Object getCommandArgs() {
-            return d;
+            return this.file;
         }
     }
 
@@ -53,7 +56,11 @@ public class EventTest extends TestCase {
             if (event.getGameEventType().equals(eventToTest)) {
                 System.out.println("Got game event:");
                 System.out.println(event.getGameEventType());
-                System.out.println(event.getGameEventCommand().getCommand());
+                ParsedProperty[] properties = (ParsedProperty[]) event.getGameEventCommand().getCommand().getCommandArgs();
+                for (ParsedProperty property : properties) {
+                    System.out.println(property.id());
+                    System.out.println(property.type());
+                }
             }
         }
     }
