@@ -8,7 +8,7 @@ import java.util.Collection;
 /**
  * Player interface for model classes. Jail not implemented
  */
-public interface Player {
+public interface Player extends SuperPlayer {
   int getPlayId();
   int getCurrentPlaceId();
   Boolean isInJail();

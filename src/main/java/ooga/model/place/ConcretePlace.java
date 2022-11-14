@@ -2,8 +2,7 @@ package ooga.model.place;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import ooga.model.Player;
-import ooga.model.StationaryAction;
+import ooga.model.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,10 +10,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ConcretePlace implements Place {
+public abstract class ConcretePlace implements Place, ViewPlace {
   private final int placeId;
-  private List<Player> players;
+  private List<ConcretePlayer> players;
   private List<StationaryAction> stationaryActions;
+  private List<PlaceAction> placeActions;
   public static final String DEFAULT_RESOURCE_PACKAGE = ConcretePlace.class.getPackageName() + ".";
   public static final String DEFAULT_RESOURCE_FOLDER =
     "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
@@ -53,7 +53,12 @@ public abstract class ConcretePlace implements Place {
   }
 
   @Override
-  public Collection<Player> getPlayers() {
+  public Collection<? extends ViewPlayer> getViewPlayers() {
+    return players;
+  }
+
+  @Override
+  public Collection<? extends Player> getPlayers() {
     return players;
   }
 
@@ -63,13 +68,20 @@ public abstract class ConcretePlace implements Place {
   }
 
   @Override
-  public List<StationaryAction> getStationaryActions(Player player) {
-    if (player.hasNextTurn())
-      stationaryActions.add(StationaryAction.ROLL_DICE);
+  public List<StationaryAction> getStationaryActions() {
     return stationaryActions;
+  }
+
+  @Override
+  public List<PlaceAction> getPlaceAction(Player player) {
+    return placeActions;
   }
 
   public void addStationaryAction(StationaryAction stationaryAction) {
     this.stationaryActions.add(stationaryAction);
+  }
+
+  public void addPlaceAction(PlaceAction placeAction) {
+    this.placeActions.add(placeAction);
   }
 }

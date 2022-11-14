@@ -3,9 +3,7 @@ package ooga.model.colorSet;
 import java.util.Collection;
 import java.util.List;
 
-import ooga.model.Player;
-import ooga.model.StationaryAction;
-import ooga.model.ViewPlayer;
+import ooga.model.*;
 import ooga.model.place.Place;
 
 class DummyPlace implements Place {
@@ -20,7 +18,7 @@ class DummyPlace implements Place {
   }
 
   @Override
-  public Collection<Player> getPlayers() {
+  public Collection<? extends Player> getPlayers() {
     return null;
   }
 
@@ -30,7 +28,12 @@ class DummyPlace implements Place {
   }
 
   @Override
-  public List<StationaryAction> getStationaryActions(Player player) {
+  public List<StationaryAction> getStationaryActions() {
+    return null;
+  }
+
+  @Override
+  public List<PlaceAction> getPlaceAction(Player player) {
     return null;
   }
 }
