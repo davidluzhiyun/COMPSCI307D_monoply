@@ -8,8 +8,11 @@ import ooga.event.eventRunnable.EventGenerator;
 import ooga.event.eventRunnable.EventSelector;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public class Controller implements GameEventListener {
+
+    private final String pattern = ".+CONTROLLER\\w+";
 
     private GameEventHandler gameEventHandler;
 
@@ -25,9 +28,12 @@ public class Controller implements GameEventListener {
 
     @Override
     public void onGameEvent(GameEvent event) {
-        EventGenerator eventGenerator = getEventRunnable(event.getGameEventType(), event.getGameEventCommand().getCommand());
-        GameEvent toPublish = eventGenerator.processEvent();
-        this.gameEventHandler.publish(toPublish);
+        boolean isControllerEvent = Pattern.matches(pattern, event.getGameEventType());
+        if (isControllerEvent) {
+            EventGenerator eventGenerator = getEventRunnable(event.getGameEventType(), event.getGameEventCommand().getCommand());
+            GameEvent toPublish = eventGenerator.processEvent();
+            this.gameEventHandler.publish(toPublish);
+        }
     }
 
     private EventGenerator getEventRunnable(String eventName, Command command) {

@@ -22,8 +22,8 @@ public class EventSelector {
     }
 
     private Function<Command, ? extends EventGenerator> findEventType(String eventName) {
-        for (GameEventType name : GameEventType.values()) {
-            if (name.equals(eventName)) {
+        for (GameEventType type : GameEventType.values()) {
+            if (type.name().equals(eventName)) {
                 if (eventTypeMap.get(eventName) != null) {
                     return eventTypeMap.get(eventName);
                 } else {
