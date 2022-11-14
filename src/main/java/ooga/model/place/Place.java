@@ -1,5 +1,6 @@
 package ooga.model.place;
 
+import ooga.model.Player;
 import ooga.model.StationaryAction;
 import ooga.model.ViewPlayer;
 
@@ -15,7 +16,7 @@ public interface Place {
    * @return the id of the place
    */
   int getPlaceId();
-  Collection<ViewPlayer> getPlayers();
+  Collection<Player> getPlayers();
   double getMoney();
-  List<StationaryAction> getStationaryActions();
+  List<StationaryAction> getStationaryActions(Player player);
 }

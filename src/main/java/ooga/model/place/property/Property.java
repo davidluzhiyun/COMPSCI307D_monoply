@@ -13,9 +13,10 @@ public interface Property extends Place {
   int getOwnerId();
   /**
    * Get the price to purchase the property.
+   *
    * @return the price to purchase the property
    */
-  int getPurchasePrice();
+  double getPurchasePrice();
   /**
    * Get the mopey earned by mortgaging the property.
    * @return mopey earned by mortgaging the property

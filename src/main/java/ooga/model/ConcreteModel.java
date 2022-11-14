@@ -43,7 +43,7 @@ public class ConcreteModel implements Model, GameEventListener {
       newPlace = null;
     newPlace = places.get(currentPlayer.getCurrentSpaceId() + placesToGo);
     currentPlayer.move(newPlace);
-    Collection<StationaryAction> stationaryActions = newPlace.getStationaryActions();
+    Collection<StationaryAction> stationaryActions = newPlace.getStationaryActions(currentPlayer);
 
     SampleViewData d = null;//TODO
     Command cmd = new SampleCommand(d);

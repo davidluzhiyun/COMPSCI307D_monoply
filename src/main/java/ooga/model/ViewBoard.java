@@ -1,8 +1,10 @@
 package ooga.model;
 
 
+import java.util.Iterator;
+
 /**
- * Board data for view to update
+ * Board data for view to initialize the board
  */
 public interface ViewBoard {
   /**
@@ -15,4 +17,5 @@ public interface ViewBoard {
    * @return the place at an index
    */
   ViewPlace getPlaceAt();
+  Iterator<ViewPlace> iterator();
 }
