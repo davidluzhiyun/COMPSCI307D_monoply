@@ -10,7 +10,7 @@ import java.util.List;
 public class StationaryActionManager {
   public List<StationaryAction> getStationaryAction(Place place, Player player) {
     List<StationaryAction> stationaryActionList = new ArrayList<>();
-    if (player.hasNextTurn())
+    if (player.hasNextDice())
       stationaryActionList.add(StationaryAction.ROLL_DICE);
     else
       stationaryActionList.add(StationaryAction.END_TURN);

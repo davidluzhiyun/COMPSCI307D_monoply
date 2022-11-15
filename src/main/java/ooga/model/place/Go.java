@@ -11,6 +11,7 @@ public class Go extends ConcretePlace{
 
   public Go() {
     super(0);
+    addStationaryAction(StationaryAction.ROLL_DICE);
   }
 
   @Override

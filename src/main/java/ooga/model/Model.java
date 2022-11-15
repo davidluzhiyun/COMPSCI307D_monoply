@@ -9,7 +9,6 @@ public interface Model<T> {
    */
   void publishDice();
 
-
   /**
    * Publish the id of the next player
    */

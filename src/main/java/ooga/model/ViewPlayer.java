@@ -8,7 +8,7 @@ import java.util.Collection;
  * Player interface for view classes. Jail not implemented
  */
 public interface ViewPlayer extends SuperPlayer {
-  int getPlayId();
+  int getPlayerId();
   int getCurrentPlaceId();
   Boolean isInJail();
   int remainingJailTurns();

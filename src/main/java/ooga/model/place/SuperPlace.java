@@ -1,2 +1,4 @@
-package ooga.model.place;public interface SuperPlace {
+package ooga.model.place;
+
+public interface SuperPlace {
 }
