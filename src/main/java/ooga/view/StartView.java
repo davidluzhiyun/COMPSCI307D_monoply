@@ -37,6 +37,7 @@ public class StartView extends View {
   public static final String DATA_FILE_JSON_EXTENSION = "*.json";
   public static final String DROP_DOWN = "DropDown";
   public static final String DATA_FILE_FOLDER = System.getProperty("user.dir") + "/data";
+  public static final String LAYOUT_ID = "MainVBox";
   private Group myRoot;
   private final Stage myStage;
   private File myConfigFile;
@@ -66,7 +67,7 @@ public class StartView extends View {
   private void setUpLayout() {
     styleScene(myScene, myStyle);
     layout = new VBox();
-    layout.setId("MainVBox");
+    layout.setId(LAYOUT_ID);
     myRoot.getChildren().add(layout);
     makeInteractiveObjects();
     myStage.setScene(myScene);
