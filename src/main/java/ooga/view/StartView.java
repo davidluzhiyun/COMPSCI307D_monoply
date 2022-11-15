@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import ooga.Main;
 import ooga.Reflection;
 import ooga.view.button.CustomizedButton;
+import ooga.view.pop_ups.RentPopUp;
 
 public class StartView extends View {
 
