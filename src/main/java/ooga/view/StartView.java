@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import ooga.Main;
 import ooga.Reflection;
 import ooga.view.button.CustomizedButton;
+import ooga.view.pop_ups.NoFileErrorPopUp;
 import ooga.view.pop_ups.RentPopUp;
 
 public class StartView extends View {
@@ -130,7 +131,13 @@ public class StartView extends View {
    * game screen.
    */
   public void startButtonHandler() {
-    System.out.println(myConfigFile);
+    if (myConfigFile == null) {
+      NoFileErrorPopUp error = new NoFileErrorPopUp();
+      error.showMessage(myLanguage);
+    } else {
+      // should actually start the game
+      System.out.println(myConfigFile);
+    }
   }
 
   public File getMyConfigFile() {
