@@ -6,7 +6,7 @@ import ooga.Main;
 
 public abstract class View {
 
-  public static final String DEFAULT_STYLE_PACKAGE = "ooga/style.";
+  public static final String DEFAULT_STYLE_PACKAGE = "style.";
   public static final String STYLESHEETS = "/" + DEFAULT_STYLE_PACKAGE.replace(".", "/");
   public static final String BUTTON_PROPERTIES = Main.DEFAULT_RESOURCE_PACKAGE + "Button";
   public static final String CHOICE_BOX_PROPERTIES = Main.DEFAULT_RESOURCE_PACKAGE + "DropDown";
@@ -14,8 +14,9 @@ public abstract class View {
   public abstract InteractiveObject makeInteractiveObject(String name);
 
   public void styleScene(Scene scene, String file) {
+    String fileName = String.format("%s.css", file);
     scene.getStylesheets()
-        .add(View.class.getResource(STYLESHEETS + file).toExternalForm());
+        .add(View.class.getResource(STYLESHEETS + fileName).toExternalForm());
 //    myStage.setScene(scene);
   }
 

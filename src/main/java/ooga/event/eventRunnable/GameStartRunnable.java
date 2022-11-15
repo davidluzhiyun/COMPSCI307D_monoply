@@ -1,6 +1,7 @@
 package ooga.event.eventRunnable;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import javafx.util.Pair;
 import ooga.controller.ParsedProperty;
 import ooga.event.GameEvent;
@@ -10,6 +11,7 @@ import ooga.event.command.Command;
 import ooga.event.command.GameStartCommand;
 
 import java.io.*;
+import java.util.Hashtable;
 import java.util.Map;
 
 /**
@@ -21,7 +23,7 @@ public class GameStartRunnable implements EventGenerator {
 
     private File file;
 
-    private Map<String, Pair<String, ?>> parsedJson;
+    private Map<String, LinkedTreeMap> parsedJson;
 
     /**
      * Represents the logic/functions that need to occur when Controller receives game start from view

@@ -7,5 +7,5 @@ public interface Utility extends Property{
    * @return  rent of the utility
    */
   @Override
-  int getRent();
+  double getMoney();
 }

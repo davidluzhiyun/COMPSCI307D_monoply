@@ -26,7 +26,7 @@ public interface Property extends Place {
    * Get the rent paid to owner when pass by the property.
    * @return rent paid to owner
    */
-  int getRent();
+  double getMoney();
 
   /**
    * Get if the property is mortgaged.

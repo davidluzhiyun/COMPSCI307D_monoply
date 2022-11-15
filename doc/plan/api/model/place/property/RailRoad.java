@@ -6,5 +6,5 @@ public interface RailRoad extends Property{
    * @return  rent of the railroad
    */
   @Override
-  int getRent();
+  double getMoney();
 }

@@ -21,5 +21,5 @@ public interface Street extends Property{
    * @return  rent of the street
    */
   @Override
-  int getRent();
+  double getMoney();
 }
