@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ooga.Main;
@@ -18,10 +19,9 @@ import ooga.view.pop_ups.RentPopUp;
 
 public class StartView extends View {
 
-  private final Scene myScene;
-  private final ResourceBundle myScreenResources;
   public static final String SCREEN = "Screen";
   public static final String DEFAULT_LANGUAGE_KEY = "DefaultLanguage";
+  public static final String DEFAULT_STYLE_KEY = "DefaultStyle";
   public static final String WIDTH_KEY = "Width";
   public static final String HEIGHT_KEY = "Height";
   public static final String START_OBJECTS_KEY = "StartObjects";
@@ -30,11 +30,13 @@ public class StartView extends View {
   public static final String STRING_FORMATTER = "%s%s";
   public static final String STRING_INT_FORMATTER = "%s%d";
   public static final String LANGUAGE = "Language";
+  public static final String STYLE = "Style";
   public static final String METHOD = "Method";
   public static final String JSON_FILE_EXTENSION = "JSON Files";
   public static final String DATA_FILE_JSON_EXTENSION = "*.json";
   public static final String DROP_DOWN = "DropDown";
   public static final String DATA_FILE_FOLDER = System.getProperty("user.dir") + "/data";
+  public static final String LAYOUT_ID = "MainVBox";
   private Group myRoot;
   private final Stage myStage;
   private File myConfigFile;
@@ -42,14 +44,19 @@ public class StartView extends View {
   private final int width;
   private final int height;
   private String myLanguage;
+  private String myStyle;
+  private Scene myScene;
+  private final ResourceBundle myScreenResources;
+
 
   public StartView(Stage stage) {
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SCREEN);
     myLanguage = myScreenResources.getString(DEFAULT_LANGUAGE_KEY);
-    myRoot = new Group();
+    myStyle = myScreenResources.getString(DEFAULT_STYLE_KEY);
+//    myRoot = new Group();
     width = Integer.parseInt(myScreenResources.getString(WIDTH_KEY));
     height = Integer.parseInt(myScreenResources.getString(HEIGHT_KEY));
-    myScene = new Scene(myRoot, width, height);
+//    myScene = new Scene(myRoot, width, height);
     this.myStage = stage;
     setUpLayout();
   }
@@ -60,9 +67,15 @@ public class StartView extends View {
   }
 
   private void setUpLayout() {
+    Rectangle background = new Rectangle(width, height);
+    background.setId("Background");
+    myRoot = new Group();
     layout = new VBox();
-    myRoot.getChildren().add(layout);
+    layout.setId(LAYOUT_ID);
+    myRoot.getChildren().addAll(background, layout);
     makeInteractiveObjects();
+    myScene = new Scene(myRoot, width, height);
+    styleScene(myScene, myStyle);
     myStage.setScene(myScene);
     myStage.show();
     placeItems();
@@ -119,6 +132,16 @@ public class StartView extends View {
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + DROP_DOWN);
     myLanguage = choiceResources.getString(String.format(STRING_INT_FORMATTER, LANGUAGE, newValue));
+    myRoot.getChildren().remove(layout);
+    myStage.close();
+    setUpLayout();
+    placeItems();
+  }
+
+  public void changeStyle(Number newValue) {
+    ResourceBundle choiceResources = ResourceBundle.getBundle(
+        Main.DEFAULT_RESOURCE_PACKAGE + DROP_DOWN);
+    myStyle = choiceResources.getString(String.format(STRING_INT_FORMATTER, STYLE, newValue));
     myRoot.getChildren().remove(layout);
     myStage.close();
     setUpLayout();

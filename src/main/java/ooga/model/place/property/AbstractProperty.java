@@ -40,10 +40,10 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
     return name;
   }
 
-  @Override
-  public int getOwnerId() {
-    return owner.getPlayerId();
-  }
+//  @Override
+//  public int getOwnerId() {
+//    return owner.getPlayerId();
+//  }
 
   @Override
   public double getPurchasePrice() {

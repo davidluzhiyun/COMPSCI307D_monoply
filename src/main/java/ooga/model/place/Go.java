@@ -10,7 +10,7 @@ public class Go extends AbstractPlace {
 
   public Go() {
     super(0);
-    addStationaryAction(StationaryAction.ROLL_DICE);
+//    addStationaryAction(StationaryAction.ROLL_DICE);
   }
 
   @Override
