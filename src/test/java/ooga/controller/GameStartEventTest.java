@@ -1,13 +1,17 @@
 package ooga.controller;
 
+import com.google.gson.internal.LinkedTreeMap;
 import junit.framework.TestCase;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
+import javafx.util.Pair;
 
 import java.io.File;
+import java.util.Hashtable;
+import java.util.Map;
 
 public class GameStartEventTest extends TestCase {
     private GameEventHandler gameEventHandler;
@@ -15,12 +19,16 @@ public class GameStartEventTest extends TestCase {
     private Controller controller;
 
     private MockListener listener;
+
+    private final double expectedIds[] = {0.0, 121.0, 123.0, 125.0};
+
+    private final String[] expectedTypes = {"go", "street", "street", "street"};
     @Override
     public void setUp(){
         // set up here
-            gameEventHandler = new GameEventHandler();
-            controller = new Controller(gameEventHandler);
-            gameEventHandler.addEventListener(controller);
+        gameEventHandler = new GameEventHandler();
+        controller = new Controller(gameEventHandler);
+        gameEventHandler.addEventListener(controller);
     }
 
     public void testGameStart() {
@@ -57,17 +65,22 @@ public class GameStartEventTest extends TestCase {
                 System.out.println("Got game event:");
                 System.out.println(event.getGameEventType());
                 assertEquals("CONTROLLER_TO_MODEL_GAME_START", event.getGameEventType());
-                ParsedProperty[] properties = (ParsedProperty[]) event.getGameEventCommand().getCommand().getCommandArgs();
-                for (ParsedProperty property : properties) {
-                    System.out.println(property.id());
-                    System.out.println(property.type());
+                Map<String, LinkedTreeMap> map = (Map<String, LinkedTreeMap>) event.getGameEventCommand().getCommand().getCommandArgs();
+                int i = 0;
+                for (String key: map.keySet()) {
+                    System.out.println(key);
+                    assertEquals(Integer.toString(i), key);
+                    for (Object hashk: map.get(key).keySet()) {
+                        if (hashk.equals("id")) {
+                            assertEquals(expectedIds[i], map.get(key).get(hashk));
+                        } else {
+                            assertEquals(expectedTypes[i], map.get(key).get(hashk));
+                        }
+                        System.out.println(hashk);
+                        System.out.println(map.get(key).get(hashk));
+                    }
+                    i++;
                 }
-                assertEquals(0, properties[0].id());
-                assertEquals("go", properties[0].type());
-                assertEquals(121, properties[1].id());
-                assertEquals("street", properties[1].type());
-                assertEquals(123, properties[2].id());
-                assertEquals("street", properties[2].type());
             }
         }
     }

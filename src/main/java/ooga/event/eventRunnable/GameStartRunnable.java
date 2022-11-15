@@ -1,6 +1,8 @@
 package ooga.event.eventRunnable;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
+import javafx.util.Pair;
 import ooga.controller.ParsedProperty;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
@@ -9,6 +11,8 @@ import ooga.event.command.Command;
 import ooga.event.command.GameStartCommand;
 
 import java.io.*;
+import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * GameStartRunnable: class that runs the logic needed when controller listens for
@@ -19,7 +23,7 @@ public class GameStartRunnable implements EventGenerator {
 
     private File file;
 
-    private ParsedProperty[] parsedJson;
+    private Map<String, LinkedTreeMap> parsedJson;
 
     public GameStartRunnable(Command arguments) {
         this.file = (File) arguments.getCommandArgs();
@@ -36,7 +40,7 @@ public class GameStartRunnable implements EventGenerator {
 
         try (Reader reader = new FileReader(file)) {
             // Convert JSON File to Java Object
-            parsedJson = new Gson().fromJson(reader, ParsedProperty[].class);
+            parsedJson = new Gson().fromJson(reader, Map.class);
         } catch (FileNotFoundException e) {
             System.out.println("Config file not found1");
             throw new RuntimeException(e);
