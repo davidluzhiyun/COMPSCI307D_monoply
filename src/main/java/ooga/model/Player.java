@@ -8,13 +8,7 @@ import java.util.Collection;
 /**
  * Player interface for model classes. Jail not implemented
  */
-public interface Player extends SuperPlayer {
-  int getPlayId();
-  int getCurrentPlaceId();
-  Boolean isInJail();
-  int remainingJailTurns();
-  Collection<Property> getProperties();
-  double getTotalMoney();
+public interface Player extends ViewPlayer {
   void move(Place place);
   void purchase(Property place);
   void decrementOneTurnLeft();
