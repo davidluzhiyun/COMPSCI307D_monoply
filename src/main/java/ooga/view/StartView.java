@@ -22,6 +22,7 @@ public class StartView extends View {
   private final ResourceBundle myScreenResources;
   public static final String SCREEN = "Screen";
   public static final String DEFAULT_LANGUAGE_KEY = "DefaultLanguage";
+  public static final String DEFAULT_STYLE_KEY = "DefaultStyle";
   public static final String WIDTH_KEY = "Width";
   public static final String HEIGHT_KEY = "Height";
   public static final String START_OBJECTS_KEY = "StartObjects";
@@ -30,6 +31,7 @@ public class StartView extends View {
   public static final String STRING_FORMATTER = "%s%s";
   public static final String STRING_INT_FORMATTER = "%s%d";
   public static final String LANGUAGE = "Language";
+  public static final String STYLE = "Style";
   public static final String METHOD = "Method";
   public static final String JSON_FILE_EXTENSION = "JSON Files";
   public static final String DATA_FILE_JSON_EXTENSION = "*.json";
@@ -42,10 +44,12 @@ public class StartView extends View {
   private final int width;
   private final int height;
   private String myLanguage;
+  private String myStyle;
 
   public StartView(Stage stage) {
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SCREEN);
     myLanguage = myScreenResources.getString(DEFAULT_LANGUAGE_KEY);
+    myStyle = myScreenResources.getString(DEFAULT_STYLE_KEY);
     myRoot = new Group();
     width = Integer.parseInt(myScreenResources.getString(WIDTH_KEY));
     height = Integer.parseInt(myScreenResources.getString(HEIGHT_KEY));
@@ -60,6 +64,7 @@ public class StartView extends View {
   }
 
   private void setUpLayout() {
+    styleScene(myScene, myStyle);
     layout = new VBox();
     myRoot.getChildren().add(layout);
     makeInteractiveObjects();
@@ -119,6 +124,16 @@ public class StartView extends View {
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + DROP_DOWN);
     myLanguage = choiceResources.getString(String.format(STRING_INT_FORMATTER, LANGUAGE, newValue));
+    myRoot.getChildren().remove(layout);
+    myStage.close();
+    setUpLayout();
+    placeItems();
+  }
+
+  public void changeStyle(Number newValue) {
+    ResourceBundle choiceResources = ResourceBundle.getBundle(
+        Main.DEFAULT_RESOURCE_PACKAGE + DROP_DOWN);
+    myStyle = choiceResources.getString(String.format(STRING_INT_FORMATTER, STYLE, newValue));
     myRoot.getChildren().remove(layout);
     myStage.close();
     setUpLayout();
