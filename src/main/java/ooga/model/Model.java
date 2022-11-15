@@ -26,7 +26,7 @@ public interface Model<T> {
    */
   void boardData();
 
-  void stationaryAction();
+  void stationaryActions();
   void boardUpdateData();
 
   /**
