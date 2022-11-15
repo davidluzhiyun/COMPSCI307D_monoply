@@ -23,6 +23,10 @@ public class GameStartRunnable implements EventGenerator {
 
     private Map<String, Pair<String, ?>> parsedJson;
 
+    /**
+     * Represents the logic/functions that need to occur when Controller receives game start from view
+     * @param arguments; should be the input config file
+     */
     public GameStartRunnable(Command arguments) {
         this.file = (File) arguments.getCommandArgs();
     }
