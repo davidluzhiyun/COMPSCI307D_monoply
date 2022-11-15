@@ -1,4 +1,4 @@
-package model.place.property;
+package ooga.model.place.property;
 
 public interface RailRoad extends Property{
   /**

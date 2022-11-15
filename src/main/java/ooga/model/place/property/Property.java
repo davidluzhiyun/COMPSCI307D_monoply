@@ -1,6 +1,9 @@
-package model.place.property;
+package ooga.model.place.property;
 
-import model.place.Place;
+import ooga.model.Player;
+import ooga.model.place.Place;
+
+import java.util.List;
 
 /**
  * This interface is a shared interface of properties, including railroad, street, and utility.
@@ -13,14 +16,10 @@ public interface Property extends Place {
   int getOwnerId();
   /**
    * Get the price to purchase the property.
+   *
    * @return the price to purchase the property
    */
-  int getPurchasePrice();
-  /**
-   * Get the mopey earned by mortgaging the property.
-   * @return mopey earned by mortgaging the property
-   */
-  int getMortgagePrice();
+  double getPurchasePrice();
 
   /**
    * Get the rent paid to owner when pass by the property.
@@ -43,4 +42,13 @@ public interface Property extends Place {
    * @return description of the property
    */
   String getDescription();
+
+  String getName();
+  /**
+   * Get the mopey earned by mortgaging the property.
+   * @return mopey earned by mortgaging the property
+   */
+  double getMortgagePrice();
+  void purchaseBy(Player player);
+  List<Double> getRentWithProperties();
 }

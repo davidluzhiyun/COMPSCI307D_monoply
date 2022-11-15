@@ -1,4 +1,4 @@
-package model;
+package ooga.model;
 
 /**
  * Actions on the action menu
@@ -8,5 +8,6 @@ public enum StationaryAction {
   ROLL_DICE,
   BUY_PROPERTY,
   DRAW_CARD,
-  AUCTION
+  AUCTION,
+  END_TURN
 }
