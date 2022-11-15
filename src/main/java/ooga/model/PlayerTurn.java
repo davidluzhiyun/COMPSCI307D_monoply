@@ -13,9 +13,4 @@ public interface PlayerTurn {
    */
   void nextTurn();
 
-  /**
-   * Get the stationary actions that the current player can choose from.
-   * @return
-   */
-  List<StationaryAction> getStationaryActions();
 }

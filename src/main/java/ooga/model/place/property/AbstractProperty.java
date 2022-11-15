@@ -3,12 +3,18 @@ package ooga.model.place.property;
 import ooga.model.PlaceAction;
 import ooga.model.Player;
 import ooga.model.StationaryAction;
-import ooga.model.place.ConcretePlace;
+import ooga.model.place.AbstractPlace;
 
 import java.util.Collection;
 import java.util.List;
 
-public abstract class ConcreteProperty extends ConcretePlace implements Property {
+/**
+ * @author David Lu refactoring and integration
+ * @author Luyao Wang original
+ * The concretion of the property interface
+ * ABC of concrete properties like streets
+ */
+public abstract class AbstractProperty extends AbstractPlace implements Property {
   private final String name;
   private final double purchasePrice;
   private final double mortgagePrice;
@@ -17,7 +23,7 @@ public abstract class ConcreteProperty extends ConcretePlace implements Property
   private final List<Double> rentWithHouses;
   private Player owner;
   
-  public ConcreteProperty(int id) {
+  public AbstractProperty(int id) {
     super(id);
     name = (String) getConfig().get("name");
     purchasePrice = (double) getConfig().get("purchasePrice");
@@ -83,12 +89,29 @@ public abstract class ConcreteProperty extends ConcretePlace implements Property
   }
 
   @Override
-  public int getHousesNum() {
+  public int getHousesBuilt() {
     return 0;
   }
 
   @Override
-  public Collection<PlaceAction> getPlaceActions() {
+  public Collection<PlaceAction> getPlaceActions(Player player) {
+    // null for now
     return null;
+  }
+
+  /**
+   * @author David Lu added this method to override parent by adding new condition.
+   * The property need to be unimproved to be purchased
+   * @param player the current player
+   * @return see the place interface
+   */
+  @Override
+  public Collection<StationaryAction> getStationaryActions(Player player){
+    if (owner != null){
+      return null;
+    }
+    else {
+      return super.getStationaryActions(player);
+    }
   }
 }

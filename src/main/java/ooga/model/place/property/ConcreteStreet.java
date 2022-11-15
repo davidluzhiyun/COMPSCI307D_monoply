@@ -1,6 +1,6 @@
 package ooga.model.place.property;
 
-public class ConcreteStreet extends ConcreteProperty implements Street {
+public class ConcreteStreet extends AbstractProperty implements Street {
   private final double colorId;
   private final double housePrice;
   private int housesBuilt = 0;

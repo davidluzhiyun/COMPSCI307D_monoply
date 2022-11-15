@@ -1,7 +1,6 @@
 package ooga.model;
 
 import ooga.model.place.Place;
-import ooga.model.place.property.StationaryActionManager;
 
 import java.awt.*;
 import java.util.List;
@@ -12,10 +11,9 @@ public class ConcretePlayerTurn implements PlayerTurn {
   private final List<? extends Player> players;
   private final List<? extends Place> places;
   private Dice dice;
-  private StationaryActionManager stationaryActionManager;
+
 
   public ConcretePlayerTurn(List<? extends Player> players, List<? extends Place> places) {
-    this.stationaryActionManager = new StationaryActionManager();
     this.players = players;
     this.places = places;
     currentPlayer = players.get(0);
@@ -55,11 +53,6 @@ public class ConcretePlayerTurn implements PlayerTurn {
     currentPlayer.move(currentPlace);
   }
 
-  @Override
-  public List<StationaryAction> getStationaryActions() {
-    List<StationaryAction> stationaryActions = stationaryActionManager.getStationaryAction(currentPlace, currentPlayer);
-    return stationaryActions;
-  }
 
   @Override
   public int getCurrentPlayerTurnId() {

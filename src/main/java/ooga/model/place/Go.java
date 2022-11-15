@@ -2,12 +2,11 @@ package ooga.model.place;
 
 
 import ooga.model.PlaceAction;
-import ooga.model.StationaryAction;
 
 import java.util.Collection;
-import java.util.List;
+import ooga.model.Player;
 
-public class Go extends ConcretePlace{
+public class Go extends AbstractPlace {
 
   public Go() {
     super(0);
@@ -20,12 +19,7 @@ public class Go extends ConcretePlace{
   }
 
   @Override
-  public int getHousesNum() {
-    return 0;
-  }
-
-  @Override
-  public Collection<PlaceAction> getPlaceActions() {
+  public Collection<PlaceAction> getPlaceActions(Player player) {
     return null;
   }
 }

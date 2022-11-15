@@ -28,12 +28,13 @@ class DummyPlace implements Place {
   }
 
   @Override
-  public List<StationaryAction> getStationaryActions() {
+  public Collection<StationaryAction> getStationaryActions(Player player) {
     return null;
   }
 
+
   @Override
-  public List<PlaceAction> getPlaceAction(Player player) {
+  public List<PlaceAction> getPlaceActions(Player player) {
     return null;
   }
 }

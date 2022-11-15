@@ -7,20 +7,18 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.SampleCommand;
-import ooga.model.place.ConcretePlace;
-import ooga.model.place.Place;
+import ooga.model.place.AbstractPlace;
 import ooga.model.place.property.Property;
 import ooga.view.SampleViewData;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class ConcreteModel implements Model, GameEventListener {
   private ConcretePlayerTurn turn;
   private List<ConcretePlayer> players;
   private int currentPlayerId;
-  private List<ConcretePlace> places;
+  private List<AbstractPlace> places;
   private GameEventHandler gameEventHandler;
 
   public ConcreteModel(GameEventHandler gameEventHandler) {
@@ -34,7 +32,6 @@ public class ConcreteModel implements Model, GameEventListener {
   public void publishDice() {
     Player currentPlayer = players.get(turn.getCurrentPlayerTurnId());
     turn.roll();
-    List<StationaryAction> stationaryActions = turn.getStationaryActions();
     SampleViewData d = null;//TODO
     Command cmd = new SampleCommand(d);
     GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_DICE_ROLLED", cmd);
@@ -52,7 +49,7 @@ public class ConcreteModel implements Model, GameEventListener {
   }
 
   @Override
-  public void currentPlayer() {
+  public void publishCurrentPlayer() {
 
   }
 
