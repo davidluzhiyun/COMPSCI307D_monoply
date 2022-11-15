@@ -6,8 +6,10 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
+import javafx.util.Pair;
 
 import java.io.File;
+import java.util.Map;
 
 public class GameStartEventTest extends TestCase {
     private GameEventHandler gameEventHandler;
@@ -18,15 +20,15 @@ public class GameStartEventTest extends TestCase {
     @Override
     public void setUp(){
         // set up here
-            gameEventHandler = new GameEventHandler();
-            controller = new Controller(gameEventHandler);
-            gameEventHandler.addEventListener(controller);
+        gameEventHandler = new GameEventHandler();
+        controller = new Controller(gameEventHandler);
+        gameEventHandler.addEventListener(controller);
     }
 
     public void testGameStart() {
         listener = new MockListener(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name());
         gameEventHandler.addEventListener(listener);
-        GameEvent gameStart = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_CONTROLLER_GAME_START.name(), new TestCommand(new File("doc/plan/data/TestInitialBoard.json")));
+        GameEvent gameStart = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_CONTROLLER_GAME_START.name(), new TestCommand(new File("doc/plan/data/InitialBoard.json")));
         gameEventHandler.publish(gameStart);
         System.out.println("GameStart event published!");
     }
@@ -56,10 +58,10 @@ public class GameStartEventTest extends TestCase {
             if (event.getGameEventType().equals(eventToTest)) {
                 System.out.println("Got game event:");
                 System.out.println(event.getGameEventType());
-                ParsedProperty[] properties = (ParsedProperty[]) event.getGameEventCommand().getCommand().getCommandArgs();
-                for (ParsedProperty property : properties) {
-                    System.out.println(property.id());
-                    System.out.println(property.type());
+                Map<String, Pair<String, ?>> map = (Map<String, Pair<String, ?>>) event.getGameEventCommand().getCommand().getCommandArgs();
+                for (String key: map.keySet()) {
+                    System.out.println(key);
+                    System.out.println(map.get(key));
                 }
             }
         }

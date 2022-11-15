@@ -1,14 +1,15 @@
 package ooga.event.command;
 
+import javafx.util.Pair;
 import ooga.controller.ParsedProperty;
 
-import java.util.ArrayList;
+import java.util.Map;
 
 public class GameStartCommand implements Command{
 
-    private ParsedProperty[] parsedConfig;
+    private Map<String, Pair<String, ?>> parsedConfig;
 
-    public GameStartCommand(ParsedProperty[] parsedJson){
+    public GameStartCommand(Map parsedJson){
         parsedConfig = parsedJson;
     };
 
