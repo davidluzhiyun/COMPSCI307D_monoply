@@ -7,10 +7,8 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
-import javafx.util.Pair;
 
 import java.io.File;
-import java.util.Hashtable;
 import java.util.Map;
 
 public class GameStartEventTest extends TestCase {
@@ -64,7 +62,7 @@ public class GameStartEventTest extends TestCase {
             if (event.getGameEventType().equals(eventToTest)) {
                 System.out.println("Got game event:");
                 System.out.println(event.getGameEventType());
-                assertEquals("CONTROLLER_TO_MODEL_GAME_START", event.getGameEventType());
+                assertEquals(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name(), event.getGameEventType());
                 Map<String, LinkedTreeMap> map = (Map<String, LinkedTreeMap>) event.getGameEventCommand().getCommand().getCommandArgs();
                 int i = 0;
                 for (String key: map.keySet()) {

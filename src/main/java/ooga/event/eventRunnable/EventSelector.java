@@ -14,6 +14,7 @@ public class EventSelector {
 
     public EventSelector() {
         eventTypeMap.putIfAbsent(GameEventType.VIEW_TO_CONTROLLER_GAME_START.name(), GameStartRunnable::new);
+        eventTypeMap.putIfAbsent(GameEventType.VIEW_TO_CONTROLLER_ROLL_DICE.name(), RollDiceToModelRunnable::new);
     }
 
     public EventGenerator selectEventRunnable(String eventName, Command command) {
@@ -22,14 +23,10 @@ public class EventSelector {
     }
 
     private Function<Command, ? extends EventGenerator> findEventType(String eventName) {
-        for (GameEventType type : GameEventType.values()) {
-            if (type.name().equals(eventName)) {
-                if (eventTypeMap.get(eventName) != null) {
-                    return eventTypeMap.get(eventName);
-                } else {
-                    System.out.println("Event Type not found");
-                }
-            }
+        if (eventTypeMap.get(eventName) != null) {
+            return eventTypeMap.get(eventName);
+        } else {
+            System.out.println("Event Type not found");
         }
         return null;
     }

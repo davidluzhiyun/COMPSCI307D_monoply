@@ -2,8 +2,6 @@ package ooga.event.eventRunnable;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
-import javafx.util.Pair;
-import ooga.controller.ParsedProperty;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventType;
@@ -11,7 +9,6 @@ import ooga.event.command.Command;
 import ooga.event.command.GameStartCommand;
 
 import java.io.*;
-import java.util.Hashtable;
 import java.util.Map;
 
 /**
