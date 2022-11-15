@@ -2,12 +2,14 @@ package ooga.model;
 
 ;
 
+import java.util.Collection;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.SampleCommand;
 import ooga.model.place.AbstractPlace;
+import ooga.model.place.Place;
 import ooga.model.place.property.Property;
 import ooga.view.SampleViewData;
 
@@ -16,9 +18,8 @@ import java.util.List;
 
 public class ConcreteModel implements Model, GameEventListener {
   private ConcretePlayerTurn turn;
-  private List<ConcretePlayer> players;
-  private int currentPlayerId;
-  private List<AbstractPlace> places;
+  private List<Player> players;
+  private List<Place> places;
   private GameEventHandler gameEventHandler;
 
   public ConcreteModel(GameEventHandler gameEventHandler) {
@@ -44,33 +45,48 @@ public class ConcreteModel implements Model, GameEventListener {
   }
 
   public void buyProperty(Property property) {
-    Player currentPlayer = players.get(currentPlayerId);
+    Player currentPlayer = getCurrentPlayer();
     currentPlayer.purchase(property);
   }
 
+
   @Override
   public void publishCurrentPlayer() {
+    Player currentPlayer = getCurrentPlayer();
+    //TODO: publish this data
+  }
 
+  /**
+   * Helper method to get the current player
+   */
+  private Player getCurrentPlayer(){
+    return players.get(turn.getCurrentPlayerTurnId());
   }
 
   @Override
   public void playersData() {
-
+    Collection<ViewPlayer> playersData = new ArrayList<>(players);
+    //TODO: publish this data
   }
 
   @Override
   public void boardData() {
-
+    List<Place> boardData = new ArrayList<>(places);
+    //TODO: publish this data? I (David Lu) don't really know what this one should be
   }
 
   @Override
-  public void stationaryAction() {
-
+  public void stationaryActions() {
+    Player currentPlayer = getCurrentPlayer();
+    Place currentPlace = places.get(currentPlayer.getCurrentPlaceId());
+    Collection<StationaryAction> stationaryActions = currentPlace.getStationaryActions(currentPlayer);
+    //TODO: publish this data (stationaryActions)
   }
 
   @Override
   public void boardUpdateData() {
-
+    ViewBoard boardData = new ViewBoardBuilder(new ArrayList<Place>(places), getCurrentPlayer());
+    //TODO: publish this data
   }
 
   @Override

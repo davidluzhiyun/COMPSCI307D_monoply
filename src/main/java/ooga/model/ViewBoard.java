@@ -6,7 +6,7 @@ import java.util.Iterator;
 /**
  * Board data for view to initialize the board
  */
-public interface ViewBoard {
+public interface ViewBoard extends Iterable<ViewPlace>{
   /**
    * Get the size of the board.
    * @return size of the board
@@ -16,6 +16,11 @@ public interface ViewBoard {
    * Get the place at an index.
    * @return the place at an index
    */
-  ViewPlace getPlaceAt();
+  ViewPlace getPlaceAt(int i);
+
+  /**
+   * iterable version of the ViewBoard
+   * @return iterable version of the ViewBoard
+   */
   Iterator<ViewPlace> iterator();
 }
