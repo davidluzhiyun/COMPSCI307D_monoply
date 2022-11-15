@@ -11,11 +11,7 @@ public interface Street extends Property{
    * @return price it takes to build a house
    */
   int getHousePrice();
-  /**
-   * Get the number of houses built on the street.
-   * @return number of houses built
-   */
-  int getHousesBuilt();
+
   /**
    * Get rent of the street. The rent of street increases as the owner builds more houses (hotel).
    * @return  rent of the street

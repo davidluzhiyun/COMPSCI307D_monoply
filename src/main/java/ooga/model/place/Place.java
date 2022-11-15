@@ -3,7 +3,6 @@ package ooga.model.place;
 import ooga.model.*;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * The Place interface is shared feature of all the places in monopoly
@@ -28,5 +27,10 @@ public interface Place extends SuperPlace {
    * @param player
    * @return a collection of stationary actions for the current player at the place
    */
-  Collection<PlaceAction> getPlaceAction(Player player);
+  Collection<PlaceAction> getPlaceActions(Player player);
+  /**
+   * Get the number of houses built on the street.
+   * @return number of houses built, default to zero for building ViewPlace
+   */
+  int getHousesBuilt();
 }

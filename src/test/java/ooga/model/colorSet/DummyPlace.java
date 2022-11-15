@@ -34,7 +34,7 @@ class DummyPlace implements Place {
 
 
   @Override
-  public List<PlaceAction> getPlaceAction(Player player) {
+  public List<PlaceAction> getPlaceActions(Player player) {
     return null;
   }
 }

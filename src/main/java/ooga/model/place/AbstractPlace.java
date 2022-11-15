@@ -72,13 +72,21 @@ public abstract class AbstractPlace implements Place{
     return 0;
   }
 
+  /**
+   * Rewritten by
+   * @author David Lu
+   * @param player the current player
+   * @return
+   */
   @Override
   public Collection<StationaryAction> getStationaryActions(Player player) {
-    return inherentStationaryActions;
+    Collection<StationaryAction> actions = getCommonTurnBasedStationaryAction(player);
+    actions.addAll(inherentStationaryActions);
+    return actions;
   }
 
   @Override
-  public Collection<PlaceAction> getPlaceAction(Player player) {
+  public Collection<PlaceAction> getPlaceActions(Player player) {
     return inherentPlaceActions;
   }
 
@@ -100,11 +108,15 @@ public abstract class AbstractPlace implements Place{
       stationaryActionList.add(StationaryAction.ROLL_DICE);
     else
       stationaryActionList.add(StationaryAction.END_TURN);
-    stationaryActionList.addAll(inherentStationaryActions);
     return stationaryActionList;
   }
 
   public void addPlaceAction(PlaceAction placeAction) {
     this.inherentPlaceActions.add(placeAction);
+  }
+
+  @Override
+  public int getHousesBuilt(){
+    return 0;
   }
 }

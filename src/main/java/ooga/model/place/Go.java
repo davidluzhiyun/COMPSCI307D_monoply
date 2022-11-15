@@ -4,6 +4,7 @@ package ooga.model.place;
 import ooga.model.PlaceAction;
 
 import java.util.Collection;
+import ooga.model.Player;
 
 public class Go extends AbstractPlace {
 
@@ -17,12 +18,7 @@ public class Go extends AbstractPlace {
   }
 
   @Override
-  public int getHousesNum() {
-    return 0;
-  }
-
-  @Override
-  public Collection<PlaceAction> getPlaceActions() {
+  public Collection<PlaceAction> getPlaceActions(Player player) {
     return null;
   }
 }
