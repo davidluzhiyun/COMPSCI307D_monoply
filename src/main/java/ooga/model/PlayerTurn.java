@@ -9,5 +9,5 @@ public interface PlayerTurn {
   void roll();
   int getCurrentPlayerTurnId();
   void nextTurn();
-  List<StationaryAction> getStationaryActions();
+
 }

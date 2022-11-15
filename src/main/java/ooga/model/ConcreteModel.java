@@ -32,7 +32,6 @@ public class ConcreteModel implements Model, GameEventListener {
   public void publishDice() {
     Player currentPlayer = players.get(turn.getCurrentPlayerTurnId());
     turn.roll();
-    List<StationaryAction> stationaryActions = turn.getStationaryActions();
     SampleViewData d = null;//TODO
     Command cmd = new SampleCommand(d);
     GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_DICE_ROLLED", cmd);

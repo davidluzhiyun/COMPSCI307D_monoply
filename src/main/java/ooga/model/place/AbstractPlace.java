@@ -73,7 +73,7 @@ public abstract class AbstractPlace implements Place{
   }
 
   @Override
-  public Collection<StationaryAction> getStationaryActions() {
+  public Collection<StationaryAction> getStationaryActions(Player player) {
     return inherentStationaryActions;
   }
 
@@ -87,13 +87,14 @@ public abstract class AbstractPlace implements Place{
   }
 
   /**
+   * Helper method for getting turn related stationary actions
    * @author David Lu
-   * Modified based on code from defunct class StationaryAction from
+   * Modified based on code from defunct class StationaryActionManager from
    * @author Luyao Wang
    * @param player current player playing
    * @return A collection of stationary actions
    */
-  protected Collection<StationaryAction> getStationaryAction(Player player) {
+  protected Collection<StationaryAction> getCommonTurnBasedStationaryAction(Player player) {
     List<StationaryAction> stationaryActionList = new ArrayList<>();
     if (player.hasNextTurn())
       stationaryActionList.add(StationaryAction.ROLL_DICE);

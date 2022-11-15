@@ -18,15 +18,15 @@ public interface Place extends SuperPlace {
   double getMoney();
 
   /**
-   * A method to get all the stationary actions the place can have.
-   * @param player
-   * @return
+   * A method to get a collection of stationary actions for the current player
+   * @param player the current player
+   * @return a collection of stationary actions for the current player
    */
-  Collection<StationaryAction> getStationaryActions();
+  Collection<StationaryAction> getStationaryActions(Player player);
   /**
-   * A method to get the place actions the player can choose from.
+   * A method to get a collection of stationary actions for the current player
    * @param player
-   * @return
+   * @return a collection of stationary actions for the current player at the place
    */
   Collection<PlaceAction> getPlaceAction(Player player);
 }
