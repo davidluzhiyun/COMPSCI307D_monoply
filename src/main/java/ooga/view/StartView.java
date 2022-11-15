@@ -66,6 +66,7 @@ public class StartView extends View {
   private void setUpLayout() {
     styleScene(myScene, myStyle);
     layout = new VBox();
+    layout.setId("MainVBox");
     myRoot.getChildren().add(layout);
     makeInteractiveObjects();
     myStage.setScene(myScene);

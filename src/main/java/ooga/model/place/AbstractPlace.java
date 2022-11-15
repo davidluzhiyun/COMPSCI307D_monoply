@@ -104,10 +104,10 @@ public abstract class AbstractPlace implements Place{
    */
   protected Collection<StationaryAction> getCommonTurnBasedStationaryAction(Player player) {
     List<StationaryAction> stationaryActionList = new ArrayList<>();
-    if (player.hasNextTurn())
-      stationaryActionList.add(StationaryAction.ROLL_DICE);
-    else
-      stationaryActionList.add(StationaryAction.END_TURN);
+//    if (player.hasNextTurn())
+//      stationaryActionList.add(StationaryAction.ROLL_DICE);
+//    else
+//      stationaryActionList.add(StationaryAction.END_TURN);
     return stationaryActionList;
   }
 

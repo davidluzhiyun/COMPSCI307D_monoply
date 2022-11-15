@@ -21,7 +21,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
     currentPlace = this.places.get(currentPlayer.getCurrentPlaceId());
     dice = new ConcreteDice();
   }
-
+//
   @Override
   public void roll() {
     Point point = dice.roll();
@@ -32,38 +32,39 @@ public class ConcretePlayerTurn implements PlayerTurn {
       currentPlayer.addOneDiceRoll();
 //    if (currentPlayer.goJail())
 //      currentPlayer.move(jail);
-    //TODO: roll triple doubles and go jail
-    go(r1 + r2);
+//    //TODO: roll triple doubles and go jail
+//    go(r1 + r2);
   }
-
-  /**
-   * Step can be negative, in the case of "go to jail do not pass GO" in chance.
-   *
-   * @param step
-   */
-  private void go(int step) {
-    if (currentPlayer.getCurrentPlaceId() + step < places.size())
-      currentPlace = places.get(currentPlayer.getCurrentPlaceId() + step);
-    else {
-      currentPlace = places.get(currentPlayer.getCurrentPlaceId() + step - places.size());
-      if (currentPlayer.getCurrentPlaceId() + step - places.size() > 0)
-        //the player goes past GO and still gets money
-        currentPlayer.earnMoney(places.get(0).getMoney());
-    }
-    currentPlayer.move(currentPlace);
-  }
-
-
+//
+//  /**
+//   * Step can be negative, in the case of "go to jail do not pass GO" in chance.
+//   *
+//   * @param step
+//   */
+//  private void go(int step) {
+//    if (currentPlayer.getCurrentPlaceId() + step < places.size())
+//      currentPlace = places.get(currentPlayer.getCurrentPlaceId() + step);
+//    else {
+//      currentPlace = places.get(currentPlayer.getCurrentPlaceId() + step - places.size());
+//      if (currentPlayer.getCurrentPlaceId() + step - places.size() > 0)
+//        //the player goes past GO and still gets money
+//        currentPlayer.earnMoney(places.get(0).getMoney());
+//    }
+//    currentPlayer.move(currentPlace);
+//  }
+//
+//
   @Override
   public int getCurrentPlayerTurnId() {
-    return currentPlayer.getPlayerId();
+//    return currentPlayer.getPlayerId();
+    return 0;
   }
-
+//
   @Override
   public void nextTurn() {
-    int currentPlayerId = currentPlayer.getPlayerId();
-    if (currentPlayerId < players.size()) currentPlayer = players.get(currentPlayerId + 1);
-    else currentPlayer = players.get(0);
-    currentPlayer.newTurn();
+//    int currentPlayerId = currentPlayer.getPlayerId();
+//    if (currentPlayerId < players.size()) currentPlayer = players.get(currentPlayerId + 1);
+//    else currentPlayer = players.get(0);
+//    currentPlayer.newTurn();
   }
 }

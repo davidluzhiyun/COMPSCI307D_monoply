@@ -1,0 +1,32 @@
+.root {
+  -fx-font-family: "Times New Roman";
+  -fx-font-size: 16pt;
+  -fx-text-alignment: center;
+}
+
+#StartButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+}
+
+#MainVBox {
+  -fx-alignment: center;
+}
+
+#StyleChoice {
+  -fx-padding: 20;
+  -fx-border-color: black;
+  -fx-alignment: center;
+  -fx-background-color: rgb(64,25,255);
+}
+
+#LanguageChoice {
+  -fx-alignment: center;
+  -fx-padding: 20;
+  -fx-border-color: white;
+}
+
+#LanguageChoiceBox {
+  -fx-padding: 20;
+}
+

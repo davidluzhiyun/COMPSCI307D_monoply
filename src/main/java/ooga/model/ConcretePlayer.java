@@ -21,10 +21,10 @@ public class ConcretePlayer implements Player, ViewPlayer {
     this.playerId = playerId;
     properties = new ArrayList<>();
   }
-  @Override
-  public int getPlayerId() {
-    return playerId;
-  }
+//  @Override
+//  public int getPlayerId() {
+//    return playerId;
+//  }
 
   public void newTurn() {
     dicesLeft = 1;
@@ -53,6 +53,11 @@ public class ConcretePlayer implements Player, ViewPlayer {
 
   public boolean goJail() {
     return isInJail;
+  }
+
+  @Override
+  public int getPlayId() {
+    return 0;
   }
 
   @Override
