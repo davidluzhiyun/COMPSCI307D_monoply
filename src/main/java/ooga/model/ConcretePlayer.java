@@ -56,7 +56,7 @@ public class ConcretePlayer implements Player, ViewPlayer {
   }
 
   @Override
-  public int getPlayId() {
+  public int getPlayerId() {
     return 0;
   }
 
