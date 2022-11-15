@@ -6,7 +6,9 @@ import ooga.model.place.property.Property;
 import java.util.Collection;
 
 /**
+ * @author Luyao Wang
  * Player interface for model classes. Jail not implemented
+ * @author David Lu decided to extend from ViewPlayer
  */
 public interface Player extends ViewPlayer {
   void move(Place place);

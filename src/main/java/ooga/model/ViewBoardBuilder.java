@@ -14,25 +14,35 @@ import ooga.model.place.Place;
  */
 
 public class ViewBoardBuilder implements ViewBoard{
-  List<ViewBoard> viewBoardList = new ArrayList<>();
+  private List<ViewPlace> viewBoardList;
 
-  public ViewBoardBuilder(List<AbstractPlace> places) {
-    ViewPlace view = places.get(1);
+  //Using iterable instead of wrapper because it is already immutable
+  public ViewBoardBuilder(Iterable<Place> places, Player player) throws IllegalStateException{
+    try {
+      viewBoardList = new ArrayList<>();
+      for (Place place: places) {
+        viewBoardList.add(new ViewPlaceBuilder(place,player));
+      }
+    }
+    catch (NullPointerException e){
+      //TODO: refactor message to property files
+      throw new IllegalStateException("ViewBoardBuilder need non null inputs",e);
+    }
   }
 
   @Override
   public int getSize() {
-    return 0;
+    return viewBoardList.size();
   }
 
   @Override
-  public ViewPlace getPlaceAt() {
-    return null;
+  public ViewPlace getPlaceAt(int i) {
+    return viewBoardList.get(i);
   }
 
   @Override
   public Iterator<ViewPlace> iterator() {
-    return null;
+    return viewBoardList.listIterator();
   }
 
   /**
@@ -40,28 +50,26 @@ public class ViewBoardBuilder implements ViewBoard{
    * Builds a ViewPlace from a Place, a player and a PlayerTurn
    */
   private static class ViewPlaceBuilder implements ViewPlace {
-    private Place place;
-    private PlayerTurn turn;
-    private Player player;
-    public ViewPlaceBuilder(Place place,PlayerTurn turn,Player player){
+    private final Place place;
+    private final Player player;
+    public ViewPlaceBuilder(Place place,Player player){
       this.place = place;
-      this.turn = turn;
       this.player = player;
     }
 
     @Override
     public Collection<? extends ViewPlayer> getViewPlayers() {
-
+      return place.getPlayers();
     }
 
     @Override
     public int getHousesNum() {
-      return 0;
+      return place.getHousesBuilt();
     }
 
     @Override
     public Collection<PlaceAction> getPlaceActions() {
-      return null;
+      return place.getPlaceActions(player);
     }
   }
 }
