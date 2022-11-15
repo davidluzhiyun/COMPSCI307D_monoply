@@ -56,11 +56,18 @@ public class GameStartEventTest extends TestCase {
             if (event.getGameEventType().equals(eventToTest)) {
                 System.out.println("Got game event:");
                 System.out.println(event.getGameEventType());
+                assertEquals("CONTROLLER_TO_MODEL_GAME_START", event.getGameEventType());
                 ParsedProperty[] properties = (ParsedProperty[]) event.getGameEventCommand().getCommand().getCommandArgs();
                 for (ParsedProperty property : properties) {
                     System.out.println(property.id());
                     System.out.println(property.type());
                 }
+                assertEquals(0, properties[0].id());
+                assertEquals("go", properties[0].type());
+                assertEquals(121, properties[1].id());
+                assertEquals("street", properties[1].type());
+                assertEquals(123, properties[2].id());
+                assertEquals("street", properties[2].type());
             }
         }
     }
