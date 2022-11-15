@@ -15,15 +15,9 @@ class ConcretePlayerTurnTest {
   @BeforeAll
   static void setUpTest() {
     List<Place> places = List.of(new ConcreteStreet(121), new ConcreteStreet(121), new ConcreteStreet(121), new ConcreteStreet(121), new ConcreteStreet(121), new ConcreteStreet(121), new ConcreteStreet(121), new ConcreteStreet(121));
-    turn = new ConcretePlayerTurn(List.of(new ConcretePlayer(0), new ConcretePlayer(1), new ConcretePlayer(2), new ConcretePlayer(3)), places);
+    List<Player> players = List.of(new ConcretePlayer(0), new ConcretePlayer(1), new ConcretePlayer(2), new ConcretePlayer(3));
+    turn = new ConcretePlayerTurn(players, places);
   }
-
-//  @Test
-//  void roll() {
-//    for (int i = 0; i < 100; i++) {
-//      assertTrue(turn.rollDice() <= 12 && turn.rollDice() >= 2);
-//    }
-//  }
 
   @Test
   void testMultipleTurnsOnePlayer() {

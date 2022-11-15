@@ -12,8 +12,8 @@ public class ConcretePlayer implements Player, ViewPlayer {
   private int playerId;
   private int currentPlaceId;
   private boolean isInJail = false;
-  private int turnsLeft;
-  private int turnsUsed;
+  private int dicesLeft;
+  private int dicesTotal;
   private int remainingJailTurns;
   private final Collection<Property> properties;
   public ConcretePlayer(int playerId) {
@@ -22,32 +22,37 @@ public class ConcretePlayer implements Player, ViewPlayer {
     properties = new ArrayList<>();
   }
   @Override
-  public int getPlayId() {
+  public int getPlayerId() {
     return playerId;
   }
 
   public void newTurn() {
-    turnsLeft = 1;
-    turnsUsed = 0;
+    dicesLeft = 1;
+    dicesTotal = 1;
+    //TODO: when in jail
   }
 
-  public void decrementOneTurnLeft() {
-    turnsLeft--;
-  }
-  public void addOneTurnLeft() {
-    turnsLeft++;
+  @Override
+  public void earnMoney(double money) {
+    this.money += money;
   }
 
-  public void addOneTurnUsed() {
-    turnsUsed++;
+  public void decrementOneDiceLeft() {
+    dicesLeft--;
+  }
+  public void addOneDiceRoll() {
+    dicesLeft++;
+    dicesTotal++;
+    if (dicesTotal == 4)
+      isInJail = true;
   }
 
-  public boolean hasNextTurn() {
-    return turnsLeft > 0;
+  public boolean hasNextDice() {
+    return dicesLeft > 0;
   }
 
   public boolean goJail() {
-    return turnsUsed == 3;
+    return isInJail;
   }
 
   @Override

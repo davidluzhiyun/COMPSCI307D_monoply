@@ -39,6 +39,7 @@ public class ConcreteModel implements Model, GameEventListener {
     gameEventHandler.publish(event);
   }
 
+  @Override
   public void endTurn() {
     turn.nextTurn();
   }
