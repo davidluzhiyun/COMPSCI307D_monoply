@@ -13,7 +13,7 @@ public interface Model<T> {
   /**
    * Publish the id of the next player
    */
-  void currentPlayer();
+  void publishCurrentPlayer();
 
   /**
    * Information about all players, wrapped in command.

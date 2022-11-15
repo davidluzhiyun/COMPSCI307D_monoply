@@ -3,12 +3,12 @@ package ooga.model.place.property;
 import ooga.model.PlaceAction;
 import ooga.model.Player;
 import ooga.model.StationaryAction;
-import ooga.model.place.ConcretePlace;
+import ooga.model.place.AbstractPlace;
 
 import java.util.Collection;
 import java.util.List;
 
-public abstract class ConcreteProperty extends ConcretePlace implements Property {
+public abstract class ConcreteProperty extends AbstractPlace implements Property {
   private final String name;
   private final double purchasePrice;
   private final double mortgagePrice;

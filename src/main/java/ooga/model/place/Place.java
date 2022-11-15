@@ -22,11 +22,11 @@ public interface Place extends SuperPlace {
    * @param player
    * @return
    */
-  List<StationaryAction> getStationaryActions();
+  Collection<StationaryAction> getStationaryActions();
   /**
    * A method to get the place actions the player can choose from.
    * @param player
    * @return
    */
-  List<PlaceAction> getPlaceAction(Player player);
+  Collection<PlaceAction> getPlaceAction(Player player);
 }

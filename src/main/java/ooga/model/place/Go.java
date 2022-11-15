@@ -2,12 +2,10 @@ package ooga.model.place;
 
 
 import ooga.model.PlaceAction;
-import ooga.model.StationaryAction;
 
 import java.util.Collection;
-import java.util.List;
 
-public class Go extends ConcretePlace{
+public class Go extends AbstractPlace {
 
   public Go() {
     super(0);

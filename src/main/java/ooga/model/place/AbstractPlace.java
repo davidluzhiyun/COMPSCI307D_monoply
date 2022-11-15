@@ -10,20 +10,25 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ConcretePlace implements Place, ViewPlace {
+/**
+ * abstract class representing generic place
+ * @author david_luzhiyun Modified the class and design
+ * @author Luyao Wang original class
+ */
+public abstract class AbstractPlace implements Place{
   private final int placeId;
-  private List<ConcretePlayer> players;
-  private List<StationaryAction> stationaryActions;
-  private List<PlaceAction> placeActions;
-  public static final String DEFAULT_RESOURCE_PACKAGE = ConcretePlace.class.getPackageName() + ".";
+  private Collection<ConcretePlayer> players;
+  private Collection<StationaryAction> inherentStationaryActions;
+  private Collection<PlaceAction> inherentPlaceActions;
+  public static final String DEFAULT_RESOURCE_PACKAGE = AbstractPlace.class.getPackageName() + ".";
   public static final String DEFAULT_RESOURCE_FOLDER =
     "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
   private Map<String, ?> config;
 
-  public ConcretePlace(int id) {
+  public AbstractPlace(int id) {
     placeId = id;
     players = new ArrayList<>();
-    stationaryActions = new ArrayList<>();
+    inherentStationaryActions = new ArrayList<>();
     Gson gson = new Gson();
     Reader reader = null;
     try {
@@ -52,7 +57,7 @@ public abstract class ConcretePlace implements Place, ViewPlace {
     return placeId;
   }
 
-  @Override
+
   public Collection<? extends ViewPlayer> getViewPlayers() {
     return players;
   }
@@ -68,20 +73,37 @@ public abstract class ConcretePlace implements Place, ViewPlace {
   }
 
   @Override
-  public List<StationaryAction> getStationaryActions() {
-    return stationaryActions;
+  public Collection<StationaryAction> getStationaryActions() {
+    return inherentStationaryActions;
   }
 
   @Override
-  public List<PlaceAction> getPlaceAction(Player player) {
-    return placeActions;
+  public Collection<PlaceAction> getPlaceAction(Player player) {
+    return inherentPlaceActions;
   }
 
   public void addStationaryAction(StationaryAction stationaryAction) {
-    this.stationaryActions.add(stationaryAction);
+    this.inherentStationaryActions.add(stationaryAction);
+  }
+
+  /**
+   * @author David Lu
+   * Modified based on code from defunct class StationaryAction from
+   * @author Luyao Wang
+   * @param player current player playing
+   * @return A collection of stationary actions
+   */
+  protected Collection<StationaryAction> getStationaryAction(Player player) {
+    List<StationaryAction> stationaryActionList = new ArrayList<>();
+    if (player.hasNextTurn())
+      stationaryActionList.add(StationaryAction.ROLL_DICE);
+    else
+      stationaryActionList.add(StationaryAction.END_TURN);
+    stationaryActionList.addAll(inherentStationaryActions);
+    return stationaryActionList;
   }
 
   public void addPlaceAction(PlaceAction placeAction) {
-    this.placeActions.add(placeAction);
+    this.inherentPlaceActions.add(placeAction);
   }
 }

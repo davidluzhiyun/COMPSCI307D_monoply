@@ -1,7 +1,6 @@
 package ooga.model;
 
-import ooga.model.place.ConcretePlace;
-import ooga.model.place.Place;
+import ooga.model.place.AbstractPlace;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,7 +9,7 @@ import java.util.List;
 public class ConcreteViewBoard implements ViewBoard{
   List<ViewBoard> viewBoardList = new ArrayList<>();
 
-  public ConcreteViewBoard(List<ConcretePlace> places) {
+  public ConcreteViewBoard(List<AbstractPlace> places) {
     ViewPlace view = places.get(1);
   }
 
