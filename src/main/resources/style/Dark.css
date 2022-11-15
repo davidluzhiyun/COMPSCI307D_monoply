@@ -1,17 +1,29 @@
 .root {
   -fx-font-family: AppleGothic;
-  -fx-font-size: 15pt;
+  -fx-font-size: 14pt;
   -fx-text-alignment: center;
+  -fx-text-fill: white;
+}
+
+#Background {
+  -fx-fill:
+      linear-gradient(rgb(0,43,128), rgb(77,0,153));
 }
 
 #StartButton {
   -fx-padding: 10;
   -fx-text-alignment: center;
+  -fx-border-color: white;
+  -fx-text-fill: white;
+  -fx-background-color: rgba(0,77,51, 0.2);
 }
 
 #FileUploadButton {
   -fx-padding: 10;
   -fx-text-alignment: center;
+  -fx-border-color: white;
+  -fx-text-fill: white;
+  -fx-background-color: rgba(0,77,51, 0.2);
 }
 
 #MainVBox {
@@ -20,18 +32,30 @@
 
 #StyleChoice {
   -fx-padding: 20;
-  -fx-border-color: black;
+  -fx-border-color: white;
   -fx-alignment: center;
-  -fx-background-color: rgb(64,25,255);
+  -fx-text-fill: white;
+  -fx-background-color: rgba(0,77,51, 0.2);
+
 }
 
 #LanguageChoice {
   -fx-alignment: center;
   -fx-padding: 20;
   -fx-border-color: white;
+  -fx-text-fill: white;
+  -fx-background-color: rgba(0,77,51, 0.2);
 }
 
 #LanguageChoiceBox {
-  -fx-padding: 20;
+  -fx-padding: 10;
+  -fx-background-color: rgba(255,255,255, 0.2);
+  -fx-text-fill: white;
 }
+#StyleChoiceBox {
+  -fx-padding: 10;
+  -fx-background-color: rgba(255,255,255, 0.2);
+  -fx-text-fill: white;
+}
+
 
