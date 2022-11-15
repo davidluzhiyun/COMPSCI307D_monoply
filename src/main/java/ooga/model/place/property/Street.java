@@ -22,4 +22,5 @@ public interface Street extends Property{
    */
   @Override
   double getMoney();
+  void addOneHouse();
 }

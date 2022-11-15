@@ -1,6 +1,9 @@
 package ooga.model.colorSet;
 
+import ooga.model.Player;
 import ooga.model.place.property.Street;
+
+import java.util.List;
 
 public class DummyStreet extends DummyPlace implements Street {
   private int color;
@@ -25,6 +28,11 @@ public class DummyStreet extends DummyPlace implements Street {
   }
 
   @Override
+  public void addOneHouse() {
+
+  }
+
+  @Override
   public int getOwnerId() {
     return 0;
   }
@@ -35,8 +43,13 @@ public class DummyStreet extends DummyPlace implements Street {
   }
 
   @Override
-  public int getMortgagePrice() {
+  public double getMortgagePrice() {
     return 0;
+  }
+
+  @Override
+  public void purchaseBy(Player player) {
+
   }
 
   @Override
@@ -51,6 +64,16 @@ public class DummyStreet extends DummyPlace implements Street {
 
   @Override
   public String getDescription() {
+    return null;
+  }
+
+  @Override
+  public String getName() {
+    return null;
+  }
+
+  @Override
+  public List<Double> getRentWithProperties() {
     return null;
   }
 }

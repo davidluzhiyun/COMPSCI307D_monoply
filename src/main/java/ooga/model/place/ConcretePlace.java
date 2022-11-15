@@ -2,18 +2,19 @@ package ooga.model.place;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import ooga.model.Player;
-import ooga.model.StationaryAction;
+import ooga.model.*;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ConcretePlace implements Place {
+public abstract class ConcretePlace implements Place, ViewPlace {
   private final int placeId;
-  private List<Player> players;
+  private List<ConcretePlayer> players;
   private List<StationaryAction> stationaryActions;
+  private List<PlaceAction> placeActions;
   public static final String DEFAULT_RESOURCE_PACKAGE = ConcretePlace.class.getPackageName() + ".";
   public static final String DEFAULT_RESOURCE_FOLDER =
     "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
@@ -21,20 +22,21 @@ public abstract class ConcretePlace implements Place {
 
   public ConcretePlace(int id) {
     placeId = id;
+    players = new ArrayList<>();
+    stationaryActions = new ArrayList<>();
     Gson gson = new Gson();
     Reader reader = null;
-    System.out.println(DEFAULT_RESOURCE_FOLDER + id + ".json");
     try {
       File file = new File("." + "/src/main/resources" + DEFAULT_RESOURCE_FOLDER + id + ".json");
       reader = new FileReader(file);
       TypeToken<Map<String, ?>> mapType = new TypeToken<>() {
       };
       config = gson.fromJson(reader, mapType);
-      for (Map.Entry<String, ?> entry : config.entrySet()) {
-        System.out.println(entry.getKey() + "=" + entry.getValue());
-        // close reader
-        reader.close();
-      }
+//      for (Map.Entry<String, ?> entry : config.entrySet()) {
+//        System.out.println(entry.getKey() + "=" + entry.getValue());
+//        // close reader
+//        reader.close();
+//      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -51,7 +53,12 @@ public abstract class ConcretePlace implements Place {
   }
 
   @Override
-  public Collection<Player> getPlayers() {
+  public Collection<? extends ViewPlayer> getViewPlayers() {
+    return players;
+  }
+
+  @Override
+  public Collection<? extends Player> getPlayers() {
     return players;
   }
 
@@ -61,13 +68,20 @@ public abstract class ConcretePlace implements Place {
   }
 
   @Override
-  public List<StationaryAction> getStationaryActions(Player player) {
+  public List<StationaryAction> getStationaryActions() {
     return stationaryActions;
   }
 
-  public void setStationaryActions(List<StationaryAction> stationaryActions) {
-    this.stationaryActions = stationaryActions;
+  @Override
+  public List<PlaceAction> getPlaceAction(Player player) {
+    return placeActions;
   }
 
-  ;
+  public void addStationaryAction(StationaryAction stationaryAction) {
+    this.stationaryActions.add(stationaryAction);
+  }
+
+  public void addPlaceAction(PlaceAction placeAction) {
+    this.placeActions.add(placeAction);
+  }
 }

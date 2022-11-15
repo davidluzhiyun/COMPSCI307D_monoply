@@ -3,6 +3,8 @@ package ooga.model.place.property;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ConcreteStreetTest {
@@ -18,8 +20,14 @@ class ConcreteStreetTest {
   }
 
   @Test
-  void getHousePrice() {
-    System.out.println(street.getPurchasePrice());
+  void testHousePrice() {
+    assertEquals(100, street.getPurchasePrice());
+  }
+
+  @Test
+  void testRentPrices() {
+    List<Double> expected = List.of(30.0, 90.0, 270.0, 400.0, 550.0);
+    assertEquals(expected, street.getRentWithProperties());
   }
 
   @Test
