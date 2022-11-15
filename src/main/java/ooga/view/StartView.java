@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ooga.Main;
@@ -18,8 +19,6 @@ import ooga.view.pop_ups.RentPopUp;
 
 public class StartView extends View {
 
-  private final Scene myScene;
-  private final ResourceBundle myScreenResources;
   public static final String SCREEN = "Screen";
   public static final String DEFAULT_LANGUAGE_KEY = "DefaultLanguage";
   public static final String DEFAULT_STYLE_KEY = "DefaultStyle";
@@ -46,15 +45,18 @@ public class StartView extends View {
   private final int height;
   private String myLanguage;
   private String myStyle;
+  private Scene myScene;
+  private final ResourceBundle myScreenResources;
+
 
   public StartView(Stage stage) {
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SCREEN);
     myLanguage = myScreenResources.getString(DEFAULT_LANGUAGE_KEY);
     myStyle = myScreenResources.getString(DEFAULT_STYLE_KEY);
-    myRoot = new Group();
+//    myRoot = new Group();
     width = Integer.parseInt(myScreenResources.getString(WIDTH_KEY));
     height = Integer.parseInt(myScreenResources.getString(HEIGHT_KEY));
-    myScene = new Scene(myRoot, width, height);
+//    myScene = new Scene(myRoot, width, height);
     this.myStage = stage;
     setUpLayout();
   }
@@ -65,11 +67,15 @@ public class StartView extends View {
   }
 
   private void setUpLayout() {
-    styleScene(myScene, myStyle);
+    Rectangle background = new Rectangle(width, height);
+    background.setId("Background");
+    myRoot = new Group();
     layout = new VBox();
     layout.setId(LAYOUT_ID);
-    myRoot.getChildren().add(layout);
+    myRoot.getChildren().addAll(background, layout);
     makeInteractiveObjects();
+    myScene = new Scene(myRoot, width, height);
+    styleScene(myScene, myStyle);
     myStage.setScene(myScene);
     myStage.show();
     placeItems();

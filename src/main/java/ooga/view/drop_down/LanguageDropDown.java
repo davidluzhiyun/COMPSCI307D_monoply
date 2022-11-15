@@ -18,15 +18,17 @@ public class LanguageDropDown extends CustomizedDropDown {
 
   public static final String LANGUAGE_MENU_KEY = "LanguageDropDown";
   public static final String LANGUAGES_KEY = "AvailableLanguages";
-  public static final String LANGUAGE_CHOICE_BOX_KEY = "StyleDropDownBox";
+  public static final String LANGUAGE_CHOICE_BOX_KEY = "LanguageDropDownBox";
   public static final String FLAG = "Flag";
   private final ResourceBundle myLanguageResources;
   private final ResourceBundle id;
+  private String myLanguage;
 
   public LanguageDropDown(String language) {
     super(LANGUAGE_MENU_KEY, language);
     id = ResourceBundle.getBundle(Main.ID_PROPERTIES);
     myLanguageResources = ResourceBundle.getBundle(View.CHOICE_BOX_PROPERTIES);
+    this.myLanguage = myLanguageResources.getString(language);
     String image = myLanguageResources.getString(language + FLAG);
     this.setId(id.getString(LANGUAGE_MENU_KEY));
     createChoices();
@@ -38,6 +40,7 @@ public class LanguageDropDown extends CustomizedDropDown {
     String[] availableLanguages = myLanguageResources.getString(LANGUAGES_KEY)
         .split(StartView.COMMA_REGEX);
     choiceBox = new ChoiceBox<>(FXCollections.observableArrayList(availableLanguages));
+    choiceBox.setValue(myLanguage);
     choiceBox.setId(id.getString(LANGUAGE_CHOICE_BOX_KEY));
     this.getChildren().add(choiceBox);
   }
@@ -47,7 +50,7 @@ public class LanguageDropDown extends CustomizedDropDown {
    * https://edencoding.com/scene-background/#:~:text=The%20simplest%20way%20to%20set%20the%20JavaFX%20Scene,background%2C%20which%20can%20accept%20multiple%20images%20and%20fills.
    */
   private void addImageBackground(String imageUrl) {
-    choiceBox.setBackground(new Background(
+    this.setBackground(new Background(
         new BackgroundImage(
             new Image(imageUrl),
             BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,

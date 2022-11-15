@@ -4,9 +4,23 @@
   -fx-text-alignment: center;
 }
 
+#Background {
+  -fx-fill:
+      linear-gradient(rgb(213,204,255), cornflowerblue);
+}
+
 #StartButton {
   -fx-padding: 10;
   -fx-text-alignment: center;
+  -fx-border-color: white;
+  -fx-background-color: rgba(238,204,255, 0.2);
+}
+
+#FileUploadButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: white;
+  -fx-background-color: rgba(238,204,255, 0.2);
 }
 
 #MainVBox {
@@ -15,9 +29,8 @@
 
 #StyleChoice {
   -fx-padding: 20;
-  -fx-border-color: black;
+  -fx-border-color: white;
   -fx-alignment: center;
-  -fx-background-color: rgb(64,25,255);
 }
 
 #LanguageChoice {
@@ -27,6 +40,12 @@
 }
 
 #LanguageChoiceBox {
-  -fx-padding: 20;
+  -fx-padding: 10;
+  -fx-background-color: rgba(255,255,255, 0.2);
 }
+#StyleChoiceBox {
+  -fx-padding: 10;
+  -fx-background-color: rgba(255,255,255, 0.2);
+}
+
 
