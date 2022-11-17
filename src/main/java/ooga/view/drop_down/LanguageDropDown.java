@@ -14,6 +14,10 @@ import ooga.Main;
 import ooga.view.StartView;
 import ooga.view.View;
 
+/**
+ * Creates a CustomizedDropDown with the language options available to user. Currently, the method
+ * for this drop down is set in a property file.
+ */
 public class LanguageDropDown extends CustomizedDropDown {
 
   public static final String LANGUAGE_MENU_KEY = "LanguageDropDown";
@@ -35,6 +39,9 @@ public class LanguageDropDown extends CustomizedDropDown {
     addImageBackground(image);
   }
 
+  /**
+   * Populates the ChoiceBox with the languages available (which are listed in a property file).
+   */
   @Override
   public void createChoices() {
     String[] availableLanguages = myLanguageResources.getString(LANGUAGES_KEY)
@@ -46,7 +53,7 @@ public class LanguageDropDown extends CustomizedDropDown {
   }
 
   /**
-   * Reference:
+   * This is just for fun to add a flag image for the currently selected language. Reference:
    * https://edencoding.com/scene-background/#:~:text=The%20simplest%20way%20to%20set%20the%20JavaFX%20Scene,background%2C%20which%20can%20accept%20multiple%20images%20and%20fills.
    */
   private void addImageBackground(String imageUrl) {

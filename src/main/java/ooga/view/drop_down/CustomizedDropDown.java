@@ -4,13 +4,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import ooga.Main;
 import ooga.view.InteractiveObject;
 import ooga.view.View;
 
+/**
+ * Creates a labeled drop-down menu with customized options and label. Also contains method to set a
+ * specific Method whenever a user selects an option in the ChoiceBox. Extends VBox (purely for
+ * stylistic reasons, to nicely position the text label above the ChoiceBox) and also implements
+ * InteractiveObject interface to set action.
+ */
 public abstract class CustomizedDropDown extends VBox implements InteractiveObject {
 
   protected ChoiceBox<String> choiceBox;
