@@ -1,22 +1,22 @@
 package ooga.view;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ooga.Main;
 import ooga.Reflection;
-import ooga.view.button.CustomizedButton;
 import ooga.view.pop_ups.NoFileErrorPopUp;
-import ooga.view.pop_ups.RentPopUp;
 
+/**
+ * @author Leila. Responsible for the creation of the start screen, where users can select a
+ * language, style, and upload a config file.
+ */
 public class StartView extends View {
 
   public static final String SCREEN = "Screen";
@@ -37,6 +37,7 @@ public class StartView extends View {
   public static final String DROP_DOWN = "DropDown";
   public static final String DATA_FILE_FOLDER = System.getProperty("user.dir") + "/data";
   public static final String LAYOUT_ID = "MainVBox";
+  public static final String BACKGROUND = "Background";
   private Group myRoot;
   private final Stage myStage;
   private File myConfigFile;
@@ -53,10 +54,8 @@ public class StartView extends View {
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SCREEN);
     myLanguage = myScreenResources.getString(DEFAULT_LANGUAGE_KEY);
     myStyle = myScreenResources.getString(DEFAULT_STYLE_KEY);
-//    myRoot = new Group();
     width = Integer.parseInt(myScreenResources.getString(WIDTH_KEY));
     height = Integer.parseInt(myScreenResources.getString(HEIGHT_KEY));
-//    myScene = new Scene(myRoot, width, height);
     this.myStage = stage;
     setUpLayout();
   }
@@ -68,7 +67,7 @@ public class StartView extends View {
 
   private void setUpLayout() {
     Rectangle background = new Rectangle(width, height);
-    background.setId("Background");
+    background.setId(BACKGROUND);
     myRoot = new Group();
     layout = new VBox();
     layout.setId(LAYOUT_ID);
@@ -113,6 +112,12 @@ public class StartView extends View {
     return myButton;
   }
 
+  /**
+   * Set in property files to be the handler method when a suer clicks on a FileUploadButton. Starts
+   * up a FileChooser dialog to let the user select a file from their computer & restricts them to
+   * choosing only JSON files (since that is our designated file format for config files). Saves
+   * this file to instance variable myConfigFile.
+   */
   public void fileHandler() {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setInitialDirectory(new File(DATA_FILE_FOLDER));
@@ -138,6 +143,12 @@ public class StartView extends View {
     placeItems();
   }
 
+  /**
+   * Set within property files to be called whenever a user selects something within the style
+   * choice box. Changes the CSS stylesheet by resetting the stage.
+   *
+   * @param newValue: index of the choice selected within the choice box; used to determine which
+   */
   public void changeStyle(Number newValue) {
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + DROP_DOWN);
@@ -149,9 +160,9 @@ public class StartView extends View {
   }
 
   /**
-   * Should throw an error if users click on it without first uploading a file (or selecting a
-   * language) Should act as an event that signals controller to parse the file, start up the main
-   * game screen.
+   * Throws an error if users click on it without first uploading a file (or selecting a language)
+   * Should act as an event that signals controller to parse the file, start up the main game
+   * screen.
    */
   public void startButtonHandler() {
     if (myConfigFile == null) {
@@ -163,6 +174,11 @@ public class StartView extends View {
     }
   }
 
+  /**
+   * Used for testing purposes only...
+   *
+   * @return File configFile that the user has uploaded
+   */
   public File getMyConfigFile() {
     return myConfigFile;
   }
