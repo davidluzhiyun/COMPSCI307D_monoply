@@ -35,8 +35,6 @@
   -fx-border-color: white;
   -fx-alignment: center;
   -fx-text-fill: white;
-  -fx-background-color: rgba(0,77,51, 0.2);
-
 }
 
 #LanguageChoice {
@@ -59,4 +57,18 @@
 
 #DropDownText {
   -fx-text-fill: white;
+}
+
+#GameButtons {
+  -fx-background-color: rgba(0,0,0, 0.9);
+  -fx-border-color: white;
+  -fx-padding: 10;
+}
+
+#SaveButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: white;
+  -fx-text-fill: white;
+  -fx-background-color: rgba(0,77,51, 0.2);
 }

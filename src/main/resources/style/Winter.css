@@ -54,3 +54,16 @@
 #DropDownText {
   -fx-text-fill: rgb(77,0,13);
 }
+
+#GameButtons {
+  -fx-background-color: rgba(102,179,255, 0.9);
+  -fx-border-color: rgb(77,0,13);
+  -fx-padding: 10;
+}
+
+#SaveButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: rgb(25,77,0);
+  -fx-background-color: rgba(25,77,0, 0.2);
+}
