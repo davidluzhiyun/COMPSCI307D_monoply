@@ -50,3 +50,7 @@
   -fx-padding: 10;
   -fx-background-color: rgba(25,77,0, 0.2);
 }
+
+#DropDownText {
+  -fx-text-fill: rgb(77,0,13);
+}

@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import ooga.Main;
@@ -26,8 +27,10 @@ public abstract class CustomizedDropDown extends VBox implements InteractiveObje
     this.getChildren().add(labelDropDown(labelKey));
   }
 
-  private Text labelDropDown(String key) {
-    return new Text(myResources.getString(key));
+  private Label labelDropDown(String key) {
+    Label text = new Label(myResources.getString(key));
+    text.setId("DropDownText");
+    return text;
   }
 
   public abstract void createChoices();
