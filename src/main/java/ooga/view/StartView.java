@@ -177,6 +177,7 @@ public class StartView extends View {
       Command cmd = new GameStartViewCommand(myConfigFile);
       GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_GAME_START", cmd);
       gameEventHandler.publish(event);
+      GameView game = new GameView(gameEventHandler, myStyle, myLanguage);
     }
   }
 
