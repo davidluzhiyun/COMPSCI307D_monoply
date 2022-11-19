@@ -35,6 +35,10 @@ public class GameView extends View implements GameEventListener {
     this.gameEventHandler = gameEventHandler;
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + StartView.SCREEN);
     myLanguageResources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + myLanguage);
+    setUpScene();
+  }
+
+  private void setUpScene() {
     int width = Integer.parseInt(myScreenResources.getString(GAME_WIDTH_KEY));
     int height = Integer.parseInt(myScreenResources.getString(GAME_HEIGHT_KEY));
     Rectangle background = new Rectangle(width, height);
@@ -82,7 +86,11 @@ public class GameView extends View implements GameEventListener {
   }
 
   public void changeStyle(Number newValue) {
-
+    ResourceBundle choiceResources = ResourceBundle.getBundle(
+        Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
+    myStyle = choiceResources.getString(String.format(StartView.STRING_INT_FORMATTER, StartView.STYLE, newValue));
+    myStage.close();
+    setUpScene();
   }
 
   /**
