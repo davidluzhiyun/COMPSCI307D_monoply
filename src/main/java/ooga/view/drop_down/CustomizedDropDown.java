@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import ooga.Main;
 import ooga.view.InteractiveObject;
 import ooga.view.View;
@@ -21,6 +20,7 @@ public abstract class CustomizedDropDown extends VBox implements InteractiveObje
 
   protected ChoiceBox<String> choiceBox;
   private final ResourceBundle myResources;
+  public static final String DROP_DOWN_TEXT_ID = "DropDownText";
 
   public CustomizedDropDown(String labelKey, String language) {
     myResources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + language);
@@ -29,7 +29,7 @@ public abstract class CustomizedDropDown extends VBox implements InteractiveObje
 
   private Label labelDropDown(String key) {
     Label text = new Label(myResources.getString(key));
-    text.setId("DropDownText");
+    text.setId(DROP_DOWN_TEXT_ID);
     return text;
   }
 
