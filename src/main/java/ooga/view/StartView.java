@@ -62,7 +62,7 @@ public class StartView extends View {
     width = Integer.parseInt(myScreenResources.getString(WIDTH_KEY));
     height = Integer.parseInt(myScreenResources.getString(HEIGHT_KEY));
     this.myStage = stage;
-    setUpLayout();
+    setUpScene();
   }
 
   private void placeItems() {
@@ -70,7 +70,7 @@ public class StartView extends View {
     centerVertically(layout, height);
   }
 
-  private void setUpLayout() {
+  private void setUpScene() {
     Rectangle background = new Rectangle(width, height);
     background.setId(BACKGROUND);
     myRoot = new Group();
@@ -144,7 +144,7 @@ public class StartView extends View {
     myLanguage = choiceResources.getString(String.format(STRING_INT_FORMATTER, LANGUAGE, newValue));
     myRoot.getChildren().remove(layout);
     myStage.close();
-    setUpLayout();
+    setUpScene();
     placeItems();
   }
 
@@ -154,13 +154,14 @@ public class StartView extends View {
    *
    * @param newValue: index of the choice selected within the choice box; used to determine which
    */
+  @Override
   public void changeStyle(Number newValue) {
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + DROP_DOWN);
     myStyle = choiceResources.getString(String.format(STRING_INT_FORMATTER, STYLE, newValue));
     myRoot.getChildren().remove(layout);
     myStage.close();
-    setUpLayout();
+    setUpScene();
     placeItems();
   }
 

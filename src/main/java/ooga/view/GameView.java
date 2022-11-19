@@ -85,6 +85,7 @@ public class GameView extends View implements GameEventListener {
 
   }
 
+  @Override
   public void changeStyle(Number newValue) {
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
