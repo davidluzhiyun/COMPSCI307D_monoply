@@ -65,7 +65,8 @@ public class GameView extends View implements GameEventListener {
     InteractiveObject object = (InteractiveObject) reflection.makeObject(className,
         new Class[]{String.class},
         new Object[]{myLanguage});
-    String method = resources.getString(String.format(StartView.STRING_FORMATTER, name, StartView.METHOD));
+    String method = resources.getString(
+        String.format(StartView.STRING_FORMATTER, name, StartView.METHOD));
     if (name.contains(StartView.DROP_DOWN)) {
       object.setAction(reflection.makeMethod(method, GameView.class, new Class[]{Number.class}),
           this);
@@ -85,8 +86,8 @@ public class GameView extends View implements GameEventListener {
   }
 
   /**
-   * Set in property files to be the handler method when someone clicks the "Save game" button.
-   * This should be implemented as one of our project extensions.
+   * Set in property files to be the handler method when someone clicks the "Save game" button. This
+   * should be implemented as one of our project extensions.
    */
   public void saveGame() {
     System.out.println("nothing to see here... yet");
