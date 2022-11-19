@@ -3,6 +3,8 @@ package ooga.model.place;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import ooga.model.*;
+import ooga.model.exception.CannotBuildHouseException;
+import ooga.model.exception.NoColorAttributeException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,17 +14,18 @@ import java.util.Map;
 
 /**
  * abstract class representing generic place
+ *
  * @author david_luzhiyun Modified the class and design
  * @author Luyao Wang original class
  */
-public abstract class AbstractPlace implements Place{
+public abstract class AbstractPlace implements Place {
   private final int placeId;
   private Collection<ConcretePlayer> players;
   private Collection<StationaryAction> inherentStationaryActions;
   private Collection<PlaceAction> inherentPlaceActions;
   public static final String DEFAULT_RESOURCE_PACKAGE = AbstractPlace.class.getPackageName() + ".";
   public static final String DEFAULT_RESOURCE_FOLDER =
-    "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
+          "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
   private Map<String, ?> config;
 
   public AbstractPlace(int id) {
@@ -74,9 +77,10 @@ public abstract class AbstractPlace implements Place{
 
   /**
    * Rewritten by
-   * @author David Lu
+   *
    * @param player the current player
    * @return
+   * @author David Lu
    */
   @Override
   public Collection<StationaryAction> getStationaryActions(Player player) {
@@ -90,33 +94,39 @@ public abstract class AbstractPlace implements Place{
     return inherentPlaceActions;
   }
 
+  @Override
+  public int getHouseCount() throws CannotBuildHouseException {
+    throw new CannotBuildHouseException();
+  }
+
+  @Override
+  public int getColorSetId() throws NoColorAttributeException {
+    throw new NoColorAttributeException();
+  }
+
   public void addStationaryAction(StationaryAction stationaryAction) {
     this.inherentStationaryActions.add(stationaryAction);
   }
 
   /**
    * Helper method for getting turn related stationary actions
+   *
+   * @param player current player playing
+   * @return A collection of stationary actions
    * @author David Lu
    * Modified based on code from defunct class StationaryActionManager from
    * @author Luyao Wang
-   * @param player current player playing
-   * @return A collection of stationary actions
    */
   protected Collection<StationaryAction> getCommonTurnBasedStationaryAction(Player player) {
     List<StationaryAction> stationaryActionList = new ArrayList<>();
-//    if (player.hasNextTurn())
-//      stationaryActionList.add(StationaryAction.ROLL_DICE);
-//    else
-//      stationaryActionList.add(StationaryAction.END_TURN);
+    if (player.hasNextDice())
+      stationaryActionList.add(StationaryAction.ROLL_DICE);
+    else
+      stationaryActionList.add(StationaryAction.END_TURN);
     return stationaryActionList;
   }
 
   public void addPlaceAction(PlaceAction placeAction) {
     this.inherentPlaceActions.add(placeAction);
-  }
-
-  @Override
-  public int getHousesBuilt(){
-    return 0;
   }
 }
