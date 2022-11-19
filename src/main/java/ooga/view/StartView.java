@@ -11,6 +11,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ooga.Main;
 import ooga.Reflection;
+import ooga.event.GameEvent;
+import ooga.event.GameEventHandler;
+import ooga.event.command.Command;
+import ooga.event.command.GameStartViewCommand;
 import ooga.view.pop_ups.NoFileErrorPopUp;
 
 /**
@@ -48,16 +52,17 @@ public class StartView extends View {
   private String myStyle;
   private Scene myScene;
   private final ResourceBundle myScreenResources;
+  private GameEventHandler gameEventHandler;
 
-
-  public StartView(Stage stage) {
+  public StartView(Stage stage, GameEventHandler gameEventHandler) {
+    this.gameEventHandler = gameEventHandler;
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SCREEN);
     myLanguage = myScreenResources.getString(DEFAULT_LANGUAGE_KEY);
     myStyle = myScreenResources.getString(DEFAULT_STYLE_KEY);
     width = Integer.parseInt(myScreenResources.getString(WIDTH_KEY));
     height = Integer.parseInt(myScreenResources.getString(HEIGHT_KEY));
     this.myStage = stage;
-    setUpLayout();
+    setUpScene();
   }
 
   private void placeItems() {
@@ -65,7 +70,7 @@ public class StartView extends View {
     centerVertically(layout, height);
   }
 
-  private void setUpLayout() {
+  private void setUpScene() {
     Rectangle background = new Rectangle(width, height);
     background.setId(BACKGROUND);
     myRoot = new Group();
@@ -139,7 +144,7 @@ public class StartView extends View {
     myLanguage = choiceResources.getString(String.format(STRING_INT_FORMATTER, LANGUAGE, newValue));
     myRoot.getChildren().remove(layout);
     myStage.close();
-    setUpLayout();
+    setUpScene();
     placeItems();
   }
 
@@ -149,13 +154,14 @@ public class StartView extends View {
    *
    * @param newValue: index of the choice selected within the choice box; used to determine which
    */
+  @Override
   public void changeStyle(Number newValue) {
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + DROP_DOWN);
     myStyle = choiceResources.getString(String.format(STRING_INT_FORMATTER, STYLE, newValue));
     myRoot.getChildren().remove(layout);
     myStage.close();
-    setUpLayout();
+    setUpScene();
     placeItems();
   }
 
@@ -169,8 +175,10 @@ public class StartView extends View {
       NoFileErrorPopUp error = new NoFileErrorPopUp();
       error.showMessage(myLanguage);
     } else {
-      // should actually start the game
-      System.out.println(myConfigFile);
+      Command cmd = new GameStartViewCommand(myConfigFile);
+      GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_GAME_START", cmd);
+      gameEventHandler.publish(event);
+      GameView game = new GameView(gameEventHandler, myStyle, myLanguage);
     }
   }
 

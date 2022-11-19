@@ -12,6 +12,7 @@ public abstract class View {
   public static final String CHOICE_BOX_PROPERTIES = Main.DEFAULT_RESOURCE_PACKAGE + "DropDown";
 
   public abstract InteractiveObject makeInteractiveObject(String name);
+  public abstract void changeStyle(Number newValue);
 
   public void styleScene(Scene scene, String file) {
     String fileName = String.format("%s.css", file);

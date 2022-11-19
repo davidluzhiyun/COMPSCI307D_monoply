@@ -1,0 +1,69 @@
+.root * {
+  -fx-font-family: "Times New Roman";
+  -fx-font-size: 16pt;
+  -fx-text-alignment: center;
+  -fx-background-color:
+      repeating-image-pattern("https://orig00.deviantart.net/5f81/f/2014/349/5/b/transparent_snow_gif_by_zhdara-d89z7ri.png")
+}
+
+#Background {
+  -fx-fill:
+      linear-gradient(rgb(204,247,255), rgb(102,179,255));
+}
+
+#StartButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: rgb(25,77,0);
+  -fx-background-color: rgba(25,77,0, 0.2);
+}
+
+#FileUploadButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: rgb(25,77,0);
+  -fx-background-color: rgba(25,77,0, 0.2);
+}
+
+#MainVBox {
+  -fx-alignment: center;
+  -fx-padding: 300;
+}
+
+#StyleChoice {
+  -fx-padding: 20;
+  -fx-border-color: rgb(77,0,13);
+  -fx-alignment: center;
+}
+
+#LanguageChoice {
+  -fx-alignment: center;
+  -fx-padding: 20;
+  -fx-border-color: rgb(77,0,13);
+}
+
+#LanguageChoiceBox {
+  -fx-padding: 10;
+  -fx-background-color: rgba(25,77,0, 0.2);
+}
+#StyleChoiceBox {
+  -fx-padding: 10;
+  -fx-background-color: rgba(25,77,0, 0.2);
+}
+
+#DropDownText {
+  -fx-text-fill: rgb(77,0,13);
+}
+
+#GameButtons {
+  -fx-background-color: rgba(102,179,255, 0.9);
+  -fx-border-color: rgb(77,0,13);
+  -fx-padding: 10;
+}
+
+#SaveButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: rgb(25,77,0);
+  -fx-background-color: rgba(25,77,0, 0.2);
+}
