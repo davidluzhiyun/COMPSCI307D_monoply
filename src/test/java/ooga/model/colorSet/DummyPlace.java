@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 
 import ooga.model.*;
+import ooga.model.exception.CannotBuildHouseException;
+import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.Place;
 
 class DummyPlace implements Place {
@@ -36,5 +38,15 @@ class DummyPlace implements Place {
   @Override
   public List<PlaceAction> getPlaceActions(Player player) {
     return null;
+  }
+
+  @Override
+  public int getHouseCount() throws CannotBuildHouseException {
+    return 0;
+  }
+
+  @Override
+  public int getColorSetId() throws NoColorAttributeException {
+    return 0;
   }
 }

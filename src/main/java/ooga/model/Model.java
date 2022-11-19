@@ -26,11 +26,15 @@ public interface Model<T> {
   void boardData();
 
   void stationaryActions();
+
   void boardUpdateData();
 
   /**
    * Corresponds to end turn button in frontend. Current player ends turn, and it becomes next player's turn.
    */
   void endTurn();
+
   void buyProperty(Property property);
+
+  void publishGameData();
 }

@@ -1,5 +1,6 @@
-package ooga.model;
+package ooga.model.components;
 
+import ooga.model.Player;
 import ooga.model.place.Place;
 
 import java.awt.*;
@@ -65,5 +66,10 @@ public class ConcretePlayerTurn implements PlayerTurn {
     if (currentPlayerId < players.size()) currentPlayer = players.get(currentPlayerId + 1);
     else currentPlayer = players.get(0);
     currentPlayer.newTurn();
+  }
+
+  @Override
+  public Place getCurrentPlace() {
+    return currentPlace;
   }
 }

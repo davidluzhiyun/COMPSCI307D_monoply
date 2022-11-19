@@ -46,6 +46,11 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
 //  }
 
   @Override
+  public int getOwnerId() {
+    return 0;
+  }
+
+  @Override
   public double getPurchasePrice() {
     return purchasePrice;
   }
@@ -86,11 +91,6 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
 
   protected double getRentWithColorSet() {
     return rentWithColorSet;
-  }
-
-  @Override
-  public int getHousesBuilt() {
-    return 0;
   }
 
   @Override
