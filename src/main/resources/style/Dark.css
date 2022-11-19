@@ -7,7 +7,7 @@
 
 #Background {
   -fx-fill:
-      linear-gradient(rgb(0,43,128), rgb(77,0,153));
+      linear-gradient(rgb(77,0,153), rgb(0,43,128));
 }
 
 #StartButton {
@@ -44,7 +44,6 @@
   -fx-padding: 20;
   -fx-border-color: white;
   -fx-text-fill: white;
-  -fx-background-color: rgba(0,77,51, 0.2);
 }
 
 #LanguageChoiceBox {
