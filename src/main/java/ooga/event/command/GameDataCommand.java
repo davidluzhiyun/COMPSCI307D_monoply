@@ -1,12 +1,12 @@
 package ooga.event.command;
 
 
-import ooga.model.GameData;
+import ooga.model.ModelOutput;
 
 public class GameDataCommand implements Command {
-  private GameData gameData;
+  private ModelOutput gameData;
 
-  public GameDataCommand(GameData data) {
+  public GameDataCommand(ModelOutput data) {
     gameData = data;
   }
 

@@ -52,7 +52,7 @@ public class ConcreteModel implements Model, GameEventListener {
 
   @Override
   public void publishGameData() {
-    GameData gameData = null;
+    ModelOutput gameData = null;
     Command cmd = new GameDataCommand(gameData);
     GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_GAME_DATA", cmd);
     gameEventHandler.publish(event);
