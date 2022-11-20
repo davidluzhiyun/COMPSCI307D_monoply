@@ -2,6 +2,9 @@ package ooga.model;
 
 import java.util.Collection;
 
+import ooga.controller.InitBoardRecord;
+import ooga.controller.ParsedProperty;
+import ooga.controller.PlayerRecord;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
@@ -10,6 +13,7 @@ import ooga.event.command.GameDataCommand;
 import ooga.event.command.SampleCommand;
 import ooga.model.components.ConcretePlayerTurn;
 import ooga.model.place.Place;
+import ooga.model.place.property.ConcreteStreet;
 import ooga.model.place.property.Property;
 import ooga.view.SampleViewData;
 
@@ -24,9 +28,6 @@ public class ConcreteModel implements Model, GameEventListener {
   private GameEventHandler gameEventHandler;
 
   public ConcreteModel(GameEventHandler gameEventHandler) {
-    places = new ArrayList<>();
-    players = new ArrayList<>();
-    turn = new ConcretePlayerTurn(players, places);
     this.gameEventHandler = gameEventHandler;
   }
 
@@ -98,8 +99,18 @@ public class ConcreteModel implements Model, GameEventListener {
     //TODO: publish this data
   }
 
-  private void initializeGame() {
-
+  private void initializeGame(InitBoardRecord record) {
+    List<ParsedProperty> parsedProperties = record.places();
+    Collection<PlayerRecord> playerRecords = record.players();
+    places = new ArrayList<>();
+    for (ParsedProperty parsedProperty : parsedProperties) {
+      places.add(new ConcreteStreet(parsedProperty.id()));
+      //TODO: use reflection
+    }
+    players = new ArrayList<>();
+    for (int i = 0; i < playerRecords.size(); i++)
+      players.add(new ConcretePlayer(i));
+    turn = new ConcretePlayerTurn(players, places);
   }
 
   @Override
@@ -107,8 +118,7 @@ public class ConcreteModel implements Model, GameEventListener {
     switch (event.getGameEventType()) {
       case "CONTROLLER_TO_MODEL_GAME_START" -> {
         Command cmd = event.getGameEventCommand().getCommand();
-        Map map = (Map) cmd.getCommandArgs();
-        initializeGame();
+        initializeGame((InitBoardRecord) cmd.getCommandArgs());
       }
       case "CONTROLLER_TO_MODEL_ROLL_DICE" -> {
         Command cmd = event.getGameEventCommand().getCommand();
