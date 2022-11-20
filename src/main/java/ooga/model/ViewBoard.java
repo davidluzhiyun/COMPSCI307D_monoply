@@ -6,6 +6,7 @@ import java.util.Iterator;
 /**
  * Board data for view to initialize the board
  */
+@Deprecated
 public interface ViewBoard extends Iterable<ViewPlace>{
   /**
    * Get the size of the board.

@@ -7,6 +7,7 @@ import java.util.Collection;
 /**
  * Player interface for view classes. Jail not implemented
  */
+@Deprecated
 public interface ViewPlayer {
   int getPlayerId();
   int getCurrentPlaceId();

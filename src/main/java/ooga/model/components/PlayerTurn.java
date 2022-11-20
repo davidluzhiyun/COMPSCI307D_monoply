@@ -1,6 +1,7 @@
-package ooga.model;
+package ooga.model.components;
 
-import java.util.List;
+import ooga.model.place.Place;
+
 
 public interface PlayerTurn {
   /**
@@ -12,5 +13,6 @@ public interface PlayerTurn {
    * Current player ends turn and switch next player's turn.
    */
   void nextTurn();
+  Place getCurrentPlace();
 
 }

@@ -13,23 +13,8 @@ public class DummyStreet extends DummyPlace implements Street {
   }
 
   @Override
-  public int getColorId() {
-    return color;
-  }
-
-  @Override
   public int getHousePrice() {
     return 0;
-  }
-
-  @Override
-  public int getHousesBuilt() {
-    return 0;
-  }
-
-  @Override
-  public int getColor() {
-    return color;
   }
 
   @Override
@@ -80,5 +65,10 @@ public class DummyStreet extends DummyPlace implements Street {
   @Override
   public List<Double> getRentWithProperties() {
     return null;
+  }
+
+  @Override
+  public int getHouseCount() {
+    return 0;
   }
 }

@@ -8,6 +8,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import ooga.Main;
+import ooga.event.GameEventHandler;
 import ooga.view.button.FileUploadButton;
 import ooga.view.button.StartButton;
 import ooga.view.drop_down.LanguageDropDown;
@@ -25,7 +26,7 @@ class StartViewTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) throws Exception {
-    myStart = new StartView(stage);
+    myStart = new StartView(stage, new GameEventHandler());
     myStartButton = lookup("#StartButton").query();
     myFileButton = lookup("#FileUploadButton").query();
     myLanguageDropDown = lookup("#LanguageChoice").query();

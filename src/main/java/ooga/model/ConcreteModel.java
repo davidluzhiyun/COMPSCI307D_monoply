@@ -1,20 +1,21 @@
 package ooga.model;
 
-;
-
 import java.util.Collection;
+
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.command.Command;
+import ooga.event.command.GameDataCommand;
 import ooga.event.command.SampleCommand;
-import ooga.model.place.AbstractPlace;
+import ooga.model.components.ConcretePlayerTurn;
 import ooga.model.place.Place;
 import ooga.model.place.property.Property;
 import ooga.view.SampleViewData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ConcreteModel implements Model, GameEventListener {
   private ConcretePlayerTurn turn;
@@ -49,6 +50,14 @@ public class ConcreteModel implements Model, GameEventListener {
     currentPlayer.purchase(property);
   }
 
+  @Override
+  public void publishGameData() {
+    ModelOutput gameData = null;
+    Command cmd = new GameDataCommand(gameData);
+    GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_GAME_DATA", cmd);
+    gameEventHandler.publish(event);
+  }
+
 
   @Override
   public void publishCurrentPlayer() {
@@ -59,7 +68,7 @@ public class ConcreteModel implements Model, GameEventListener {
   /**
    * Helper method to get the current player
    */
-  private Player getCurrentPlayer(){
+  private Player getCurrentPlayer() {
     return players.get(turn.getCurrentPlayerTurnId());
   }
 
@@ -89,13 +98,27 @@ public class ConcreteModel implements Model, GameEventListener {
     //TODO: publish this data
   }
 
+  private void initializeGame() {
+
+  }
+
   @Override
   public void onGameEvent(GameEvent event) {
     switch (event.getGameEventType()) {
-      case "CONTROLLER_TO_MODEL_ROLL_DICE":
+      case "CONTROLLER_TO_MODEL_GAME_START" -> {
         Command cmd = event.getGameEventCommand().getCommand();
-        publishDice();
-        break;
+        Map map = (Map) cmd.getCommandArgs();
+        initializeGame();
+      }
+      case "CONTROLLER_TO_MODEL_ROLL_DICE" -> {
+        Command cmd = event.getGameEventCommand().getCommand();
+        publishGameData();
+      }
+      case "CONTROLLER_TO_MODEL_PURCHASE_PROPERTY" -> {
+        Command cmd = event.getGameEventCommand().getCommand();
+        buyProperty((Property) places.get((int) cmd.getCommandArgs()));
+        publishGameData();
+      }
     }
   }
 }

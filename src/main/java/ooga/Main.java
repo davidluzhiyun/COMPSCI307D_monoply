@@ -23,7 +23,8 @@ public class Main extends Application {
    */
   @Override
   public void start(Stage primaryStage) throws Exception {
-    StartView start = new StartView(primaryStage);
+    GameEventHandler gameEventHandler = new GameEventHandler();
+    StartView start = new StartView(primaryStage, gameEventHandler);
   }
 
   /**

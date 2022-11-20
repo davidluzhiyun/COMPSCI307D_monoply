@@ -16,6 +16,7 @@ public class ConcretePlayer implements Player, ViewPlayer {
   private int dicesTotal;
   private int remainingJailTurns;
   private final Collection<Property> properties;
+
   public ConcretePlayer(int playerId) {
     this.currentPlaceId = 0;
     this.playerId = playerId;
@@ -40,6 +41,7 @@ public class ConcretePlayer implements Player, ViewPlayer {
   public void decrementOneDiceLeft() {
     dicesLeft--;
   }
+
   public void addOneDiceRoll() {
     dicesLeft++;
     dicesTotal++;

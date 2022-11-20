@@ -4,15 +4,14 @@ import java.util.Collection;
 import java.util.List;
 
 import ooga.model.*;
+import ooga.model.exception.CannotBuildHouseException;
+import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.Place;
 
-public class DummyPlace implements Place {
+class DummyPlace implements Place {
   private int id;
-
-  private int color;
-  public DummyPlace(int id, int color){
+  DummyPlace(int id){
     this.id = id;
-    this.color = color;
   }
 
   @Override
@@ -42,17 +41,12 @@ public class DummyPlace implements Place {
   }
 
   @Override
-  public int getHousesBuilt() {
+  public int getHouseCount() throws CannotBuildHouseException {
     return 0;
   }
 
   @Override
-  public String getType() {
-    return "dummy";
-  }
-
-  @Override
-  public int getColor() {
+  public int getColorSetId() throws NoColorAttributeException {
     return 0;
   }
 }
