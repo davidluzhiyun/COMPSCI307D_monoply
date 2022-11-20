@@ -46,7 +46,7 @@ public class BoardSetUpTest extends TestCase {
     public void testBoardSetUp() {
         listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_BOARD_SET_UP.name());
         gameEventHandler.addEventListener(listener);
-        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_BOARD_SET_UP.name(), new TestCommand(new Model() {
+        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_GAME_DATA.name(), new TestCommand(new Model() {
             @Override
             public void publishDice() {
 
