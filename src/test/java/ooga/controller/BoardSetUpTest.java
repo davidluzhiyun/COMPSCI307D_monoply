@@ -1,12 +1,10 @@
 package ooga.controller;
 
-import com.google.gson.internal.LinkedTreeMap;
 import junit.framework.TestCase;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
-import ooga.event.command.BoardSetUpCommand;
 import ooga.event.command.Command;
 import ooga.model.ConcretePlayer;
 import ooga.model.Model;
@@ -15,10 +13,8 @@ import ooga.model.colorSet.DummyPlace;
 import ooga.model.place.Place;
 import ooga.model.place.property.Property;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class BoardSetUpTest extends TestCase {
     private GameEventHandler gameEventHandler;
@@ -50,7 +46,7 @@ public class BoardSetUpTest extends TestCase {
     public void testBoardSetUp() {
         listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_BOARD_SET_UP.name());
         gameEventHandler.addEventListener(listener);
-        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_BOARD_SET_UP.name(), new TestCommand(new Model() {
+        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_GAME_DATA.name(), new TestCommand(new Model() {
             @Override
             public void publishDice() {
 
