@@ -1,5 +1,5 @@
 package ooga.controller;
 
-public record ParsedProperty(int id, String type) {
+public record ParsedProperty(int id, String type, int color) {
 
 }
