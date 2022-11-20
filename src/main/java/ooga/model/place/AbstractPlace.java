@@ -22,6 +22,7 @@ public abstract class AbstractPlace implements Place {
   private final int placeId;
   private Collection<ConcretePlayer> players;
   private Collection<StationaryAction> inherentStationaryActions;
+  private Collection<StationaryAction> stationaryActions;
   private Collection<PlaceAction> inherentPlaceActions;
   public static final String DEFAULT_RESOURCE_PACKAGE = AbstractPlace.class.getPackageName() + ".";
   public static final String DEFAULT_RESOURCE_FOLDER =
@@ -32,6 +33,7 @@ public abstract class AbstractPlace implements Place {
     placeId = id;
     players = new ArrayList<>();
     inherentStationaryActions = new ArrayList<>();
+    stationaryActions = new ArrayList<>();
     Gson gson = new Gson();
     Reader reader = null;
     try {
@@ -84,9 +86,12 @@ public abstract class AbstractPlace implements Place {
    */
   @Override
   public Collection<StationaryAction> getStationaryActions(Player player) {
-    Collection<StationaryAction> actions = getCommonTurnBasedStationaryAction(player);
-    actions.addAll(inherentStationaryActions);
-    return actions;
+    return stationaryActions;
+  }
+
+  public void updateStationaryActions(Player player) {
+    stationaryActions = getCommonTurnBasedStationaryAction(player);
+    stationaryActions.addAll(inherentStationaryActions);
   }
 
   @Override
