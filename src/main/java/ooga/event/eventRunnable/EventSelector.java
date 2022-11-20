@@ -5,7 +5,6 @@ import ooga.event.command.Command;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class EventSelector {
@@ -13,8 +12,9 @@ public class EventSelector {
     private final Map<String, Function<Command, ? extends EventGenerator>> eventTypeMap = new HashMap<>();
 
     public EventSelector() {
-        eventTypeMap.putIfAbsent(GameEventType.VIEW_TO_CONTROLLER_GAME_START.name(), GameStartRunnable::new);
-        eventTypeMap.putIfAbsent(GameEventType.VIEW_TO_CONTROLLER_ROLL_DICE.name(), RollDiceToModelRunnable::new);
+        eventTypeMap.put(GameEventType.VIEW_TO_CONTROLLER_GAME_START.name(), GameStartRunnable::new);
+        eventTypeMap.put(GameEventType.VIEW_TO_CONTROLLER_ROLL_DICE.name(), RollDiceToModelRunnable::new);
+        eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_BOARD_SET_UP.name(), BoardSetUpRunnable::new);
     }
 
     public EventGenerator selectEventRunnable(String eventName, Command command) {
