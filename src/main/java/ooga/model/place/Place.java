@@ -33,4 +33,12 @@ public interface Place extends SuperPlace {
    * @return number of houses built, default to zero for building ViewPlace
    */
   int getHousesBuilt();
+
+  /**
+   * Get the type of the property.
+   * @return the property type
+   */
+  String getType();
+
+  int getColor();
 }

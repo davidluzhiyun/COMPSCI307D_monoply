@@ -6,10 +6,13 @@ import java.util.List;
 import ooga.model.*;
 import ooga.model.place.Place;
 
-class DummyPlace implements Place {
+public class DummyPlace implements Place {
   private int id;
-  DummyPlace(int id){
+
+  private int color;
+  public DummyPlace(int id, int color){
     this.id = id;
+    this.color = color;
   }
 
   @Override
@@ -36,5 +39,20 @@ class DummyPlace implements Place {
   @Override
   public List<PlaceAction> getPlaceActions(Player player) {
     return null;
+  }
+
+  @Override
+  public int getHousesBuilt() {
+    return 0;
+  }
+
+  @Override
+  public String getType() {
+    return "dummy";
+  }
+
+  @Override
+  public int getColor() {
+    return 0;
   }
 }

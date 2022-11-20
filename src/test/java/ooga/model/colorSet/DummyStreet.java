@@ -28,6 +28,11 @@ public class DummyStreet extends DummyPlace implements Street {
   }
 
   @Override
+  public int getColor() {
+    return color;
+  }
+
+  @Override
   public void addOneHouse() {
 
   }
