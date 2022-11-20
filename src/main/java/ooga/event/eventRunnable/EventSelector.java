@@ -14,7 +14,7 @@ public class EventSelector {
     public EventSelector() {
         eventTypeMap.put(GameEventType.VIEW_TO_CONTROLLER_GAME_START.name(), GameStartRunnable::new);
         eventTypeMap.put(GameEventType.VIEW_TO_CONTROLLER_ROLL_DICE.name(), RollDiceToModelRunnable::new);
-        eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_GAME_DATA.name(), BoardSetUpRunnable::new);
+        eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_BOARD_SET_UP.name(), BoardSetUpRunnable::new);
     }
 
     public EventGenerator selectEventRunnable(String eventName, Command command) {
