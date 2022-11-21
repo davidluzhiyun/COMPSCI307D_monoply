@@ -38,6 +38,8 @@ public class ConcreteModel implements GameEventListener, ModelOutput {
     return modelResources;
   }
 
+  // Please change name to roll dice.
+  // This updates the turn
   public void publishDice() {
     Player currentPlayer = players.get(turn.getCurrentPlayerTurnId());
     turn.roll();
@@ -57,7 +59,7 @@ public class ConcreteModel implements GameEventListener, ModelOutput {
   }
 
   public void publishGameData() {
-    ModelOutput gameData = null;
+    ModelOutput gameData = this;
     Command cmd = new GameDataCommand(gameData);
     GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_GAME_DATA", cmd);
     gameEventHandler.publish(event);
