@@ -12,6 +12,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
   private final List<? extends Player> players;
   private final List<? extends Place> places;
   private Dice dice;
+  private Point diceNum;
 
 
   public ConcretePlayerTurn(List<? extends Player> players, List<? extends Place> places) {
@@ -29,6 +30,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
     int r1 = point.x;
     int r2 = point.y;
     currentPlayer.decrementOneDiceLeft();
+    diceNum = point;
     if (r1 == r2)
       currentPlayer.addOneDiceRoll();
 //    if (currentPlayer.goJail())
@@ -71,5 +73,13 @@ public class ConcretePlayerTurn implements PlayerTurn {
   @Override
   public Place getCurrentPlace() {
     return currentPlace;
+  }
+
+  @Override
+  public Point getDiceNum() {
+    if (diceNum == null){
+      diceNum = dice.roll();
+    }
+    return new Point(diceNum);
   }
 }
