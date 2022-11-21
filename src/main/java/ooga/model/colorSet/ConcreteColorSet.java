@@ -69,6 +69,4 @@ public class ConcreteColorSet implements ImmutableColorSet{
     }
     return colorIds;
   }
-
 }
->>>>>>> master
