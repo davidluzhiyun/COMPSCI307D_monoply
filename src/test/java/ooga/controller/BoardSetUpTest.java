@@ -1,24 +1,20 @@
 package ooga.controller;
 
-import com.google.gson.internal.LinkedTreeMap;
 import junit.framework.TestCase;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
-import ooga.event.command.BoardSetUpCommand;
 import ooga.event.command.Command;
-import ooga.model.ConcretePlayer;
-import ooga.model.Model;
-import ooga.model.Player;
+import ooga.model.*;
 import ooga.model.colorSet.DummyPlace;
+import ooga.model.colorSet.DummyStreet;
 import ooga.model.place.Place;
-import ooga.model.place.property.Property;
 
-import java.io.File;
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public class BoardSetUpTest extends TestCase {
     private GameEventHandler gameEventHandler;
@@ -27,11 +23,13 @@ public class BoardSetUpTest extends TestCase {
 
     private MockListener listener;
 
-    private ArrayList<Place> places = new ArrayList<>();
+    List<ViewPlayer> players = new ArrayList<>();
 
-    private ArrayList<Player> players = new ArrayList<>();
+    List<Place> places = new ArrayList<>();
 
-    private List<List> setUpLists = new ArrayList<>();
+    Collection<StationaryAction> actions = new ArrayList<>();
+
+
 
     @Override
     public void setUp(){
@@ -39,56 +37,40 @@ public class BoardSetUpTest extends TestCase {
         gameEventHandler = new GameEventHandler();
         controller = new Controller(gameEventHandler);
         gameEventHandler.addEventListener(controller);
-        places.add(new DummyPlace(0, 1));
-        places.add(new DummyPlace(1, 2));
         players.add(new ConcretePlayer(0));
         players.add(new ConcretePlayer(1));
-        setUpLists.add(places);
-        setUpLists.add(players);
+        places.add(new DummyPlace(0));
+        places.add(new DummyPlace(1));
+        actions.add(StationaryAction.ROLL_DICE);
     }
 
     public void testBoardSetUp() {
         listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_BOARD_SET_UP.name());
         gameEventHandler.addEventListener(listener);
-        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_BOARD_SET_UP.name(), new TestCommand(new Model() {
+        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_BOARD_SET_UP.name(), new TestCommand(new ModelOutput() {
             @Override
-            public void publishDice() {
-
+            public Point getDiceNum() {
+                return null;
             }
 
             @Override
-            public void publishCurrentPlayer() {
-
+            public int getCurrentPlayer() {
+                return 0;
             }
 
             @Override
-            public void playersData() {
-
+            public List<ViewPlayer> getPlayers() {
+                return players;
             }
 
             @Override
-            public void boardData() {
-
+            public List<Place> getBoard() {
+                return places;
             }
 
             @Override
-            public void stationaryActions() {
-
-            }
-
-            @Override
-            public void boardUpdateData() {
-
-            }
-
-            @Override
-            public void endTurn() {
-
-            }
-
-            @Override
-            public void buyProperty(Property property) {
-
+            public Collection<StationaryAction> getStationaryAction() {
+                return actions;
             }
         }));
         gameEventHandler.publish(boardSetUp);
@@ -97,9 +79,9 @@ public class BoardSetUpTest extends TestCase {
 
     public class TestCommand implements Command{
 
-        private final Model boardSetUp;
+        private final ModelOutput boardSetUp;
 
-        public TestCommand(Model setUp){
+        public TestCommand(ModelOutput setUp){
             this.boardSetUp = setUp;
         }
 
@@ -122,7 +104,10 @@ public class BoardSetUpTest extends TestCase {
                 System.out.println(event.getGameEventType());
                 assertEquals(GameEventType.CONTROLLER_TO_VIEW_BOARD_SET_UP.name(), event.getGameEventType());
                 InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
-                // TODO: check correct information gotten here
+                assertEquals(0, command.currentPlayerId());
+                assertEquals(actions, command.stationaryActions());
+                assertEquals(players, command.players());
+                assertEquals(places, command.places());
             }
         }
     }
