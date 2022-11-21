@@ -22,6 +22,7 @@ public class GameView extends View implements GameEventListener {
   private Scene myScene;
   private String myStyle;
   private String myLanguage;
+  private DiceRollPopUp myDicePopUp;
   private final ResourceBundle myScreenResources;
   public static final String GAME_WIDTH_KEY = "GameWidth";
   public static final String GAME_HEIGHT_KEY = "GameHeight";
@@ -99,10 +100,26 @@ public class GameView extends View implements GameEventListener {
   /**
    * Set in property files to be the handler method when someone clicks the "Save game" button. This
    * should be implemented as one of our project extensions.
+   * TODO: change this to actually implement the savegame feature. currently this is just showing
+   * the pop ups.
    */
   public void saveGame() {
-    DiceRollPopUp pop = new DiceRollPopUp(1);
+    RentPopUp pop = new RentPopUp();
     pop.showMessage(myLanguage);
-    System.out.println("nothing to see here... yet");
+    startPlayerTurn();
+  }
+
+  private void startPlayerTurn() {
+    myDicePopUp = new DiceRollPopUp(1);
+    myDicePopUp.showMessage(myLanguage);
+    myDicePopUp.makeButtonActive(this);
+  }
+
+  /**
+   * TODO: use this to send event to controller. also make sure the result of the dice roll is then displayed.
+   */
+  public void rollDice() {
+    myDicePopUp.close();
+    System.out.println("does this work... please dear god");
   }
 }
