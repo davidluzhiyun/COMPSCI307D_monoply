@@ -42,11 +42,6 @@ public abstract class AbstractPlace implements Place {
       TypeToken<Map<String, ?>> mapType = new TypeToken<>() {
       };
       config = gson.fromJson(reader, mapType);
-//      for (Map.Entry<String, ?> entry : config.entrySet()) {
-//        System.out.println(entry.getKey() + "=" + entry.getValue());
-//        // close reader
-//        reader.close();
-//      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

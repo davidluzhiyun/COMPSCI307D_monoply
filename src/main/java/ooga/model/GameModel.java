@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+import com.google.gson.internal.LinkedTreeMap;
 import ooga.controller.InitBoardRecord;
 import ooga.controller.ParsedProperty;
 import ooga.controller.PlayerRecord;
@@ -99,22 +100,18 @@ public class GameModel implements GameEventListener {
 
   /**
    * For test purpose
-   *
-   * @param record
    */
-  protected void initializeGame(InitBoardRecord record) {
-    List<ParsedProperty> parsedProperties = record.places();
-    Collection<PlayerRecord> playerRecords = record.players();
+  protected void initializeGame(Map<String, LinkedTreeMap> map) {
     places = new ArrayList<>();
-    for (ParsedProperty parsedProperty : parsedProperties) {
-
-      places.add(createPlace(parsedProperty.type(), parsedProperty.id()));
-      //TODO: use reflection
+    int j = 1;
+    while (map.containsKey(String.valueOf(j))) {
+      places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (int) (double) map.get(String.valueOf(j)).get("id")));
+      j++;
     }
     players = new ArrayList<>();
-    for (int i = 0; i < playerRecords.size(); i++)
+    for (int i = 0; i < (int) (double) map.get("meta").get("players"); i++)
       players.add(new ConcretePlayer(i));
-    turn = new ConcretePlayerTurn(players, places);
+//    turn = new ConcretePlayerTurn(players, places);
   }
 
   /**
@@ -163,7 +160,7 @@ public class GameModel implements GameEventListener {
     switch (event.getGameEventType()) {
       case "CONTROLLER_TO_MODEL_GAME_START" -> {
         Command cmd = event.getGameEventCommand().getCommand();
-        initializeGame((InitBoardRecord) cmd.getCommandArgs());
+        initializeGame((Map) cmd.getCommandArgs());
         publishGameData();
       }
       case "CONTROLLER_TO_MODEL_ROLL_DICE" -> {
