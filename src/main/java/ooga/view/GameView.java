@@ -12,6 +12,8 @@ import ooga.Reflection;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
+import ooga.view.pop_ups.DiceRollPopUp;
+import ooga.view.pop_ups.RentPopUp;
 
 public class GameView extends View implements GameEventListener {
 
@@ -99,6 +101,8 @@ public class GameView extends View implements GameEventListener {
    * should be implemented as one of our project extensions.
    */
   public void saveGame() {
+    DiceRollPopUp pop = new DiceRollPopUp(1);
+    pop.showMessage(myLanguage);
     System.out.println("nothing to see here... yet");
   }
 }

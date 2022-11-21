@@ -1,8 +1,6 @@
 package ooga.view.pop_ups;
 
-import java.util.ResourceBundle;
+public interface PopUp {
 
-public abstract class PopUp {
-
-  public abstract void showMessage(String language);
+  public void showMessage(String language);
 }
