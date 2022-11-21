@@ -1,0 +1,17 @@
+{
+  "id": 125,
+  "name": "Campus Drive",
+  "purchasePrice": 100,
+  "mortgagePrice": 50,
+  "rent": 6,
+  "rentWithColorSet": 12,
+  "rentWithHouses": [
+    30,
+    90,
+    270,
+    400,
+    550
+  ],
+  "houseCost": 100,
+  "colorId": 0
+}

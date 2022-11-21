@@ -6,14 +6,14 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
-import ooga.model.ConcretePlayer;
-import ooga.model.Model;
-import ooga.model.Player;
+import ooga.model.*;
 import ooga.model.colorSet.DummyPlace;
 import ooga.model.place.Place;
 import ooga.model.place.property.Property;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class BoardSetUpTest extends TestCase {
@@ -46,50 +46,30 @@ public class BoardSetUpTest extends TestCase {
     public void testBoardSetUp() {
         listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_BOARD_SET_UP.name());
         gameEventHandler.addEventListener(listener);
-        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_GAME_DATA.name(), new TestCommand(new Model() {
+        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_GAME_DATA.name(), new TestCommand(new ModelOutput() {
             @Override
-            public void publishDice() {
-
+            public Point getDiceNum() {
+                return null;
             }
 
             @Override
-            public void publishCurrentPlayer() {
-
+            public int getCurrentPlayer() {
+                return 0;
             }
 
             @Override
-            public void playersData() {
-
+            public List<ViewPlayer> getPlayers() {
+                return null;
             }
 
             @Override
-            public void boardData() {
-
+            public List<Place> getBoard() {
+                return null;
             }
 
             @Override
-            public void stationaryActions() {
-
-            }
-
-            @Override
-            public void boardUpdateData() {
-
-            }
-
-            @Override
-            public void endTurn() {
-
-            }
-
-            @Override
-            public void buyProperty(Property property) {
-
-            }
-
-            @Override
-            public void publishGameData() {
-
+            public Collection<StationaryAction> getStationaryAction() {
+                return null;
             }
         }));
         gameEventHandler.publish(boardSetUp);
@@ -98,9 +78,9 @@ public class BoardSetUpTest extends TestCase {
 
     public class TestCommand implements Command{
 
-        private final Model boardSetUp;
+        private final ModelOutput boardSetUp;
 
-        public TestCommand(Model setUp){
+        public TestCommand(ModelOutput setUp){
             this.boardSetUp = setUp;
         }
 

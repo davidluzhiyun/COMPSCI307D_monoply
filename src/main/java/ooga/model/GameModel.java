@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+import com.google.gson.internal.LinkedTreeMap;
 import ooga.controller.InitBoardRecord;
 import ooga.controller.ParsedProperty;
 import ooga.controller.PlayerRecord;
@@ -14,15 +15,13 @@ import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
 import ooga.event.command.SampleCommand;
 import ooga.model.components.ConcretePlayerTurn;
-import ooga.model.place.AbstractPlace;
 import ooga.model.place.Place;
-import ooga.model.place.property.ConcreteStreet;
 import ooga.model.place.property.Property;
 import ooga.view.SampleViewData;
 
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
 
-public class ConcreteModel implements GameEventListener {
+public class GameModel implements GameEventListener {
   private ConcretePlayerTurn turn;
   private List<Player> players;
   private List<Place> places;
@@ -30,7 +29,7 @@ public class ConcreteModel implements GameEventListener {
   public static final String DEFAULT_RESOURCE_PACKAGE = "properties.";
   private ResourceBundle modelResources;
 
-  public ConcreteModel(GameEventHandler gameEventHandler) {
+  public GameModel(GameEventHandler gameEventHandler) {
     this.gameEventHandler = gameEventHandler;
     modelResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Model");
   }
@@ -101,25 +100,23 @@ public class ConcreteModel implements GameEventListener {
 
   /**
    * For test purpose
-   * @param record
    */
-  protected void initializeGame(InitBoardRecord record) {
-    List<ParsedProperty> parsedProperties = record.places();
-    Collection<PlayerRecord> playerRecords = record.players();
+  protected void initializeGame(Map<String, LinkedTreeMap> map) {
     places = new ArrayList<>();
-    for (ParsedProperty parsedProperty : parsedProperties) {
-
-      places.add(createPlace(parsedProperty.type(), parsedProperty.id()));
-      //TODO: use reflection
+    int j = 1;
+    while (map.containsKey(String.valueOf(j))) {
+      places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (int) (double) map.get(String.valueOf(j)).get("id")));
+      j++;
     }
     players = new ArrayList<>();
-    for (int i = 0; i < playerRecords.size(); i++)
+    for (int i = 0; i < (int) (double) map.get("meta").get("players"); i++)
       players.add(new ConcretePlayer(i));
-    turn = new ConcretePlayerTurn(players, places);
+//    turn = new ConcretePlayerTurn(players, places);
   }
 
   /**
    * For test purposes
+   *
    * @param type
    */
   protected Place createPlace(String type, int id) {
@@ -139,13 +136,32 @@ public class ConcreteModel implements GameEventListener {
     return newPlace;
   }
 
+  /**
+   * For test purpose.
+   *
+   * @return
+   */
+  protected List<Player> getPlayers() {
+    return players;
+  }
+
+  /**
+   * For test purpose.
+   *
+   * @return
+   */
+  protected List<Place> getPlaces() {
+    return places;
+  }
+
 
   @Override
   public void onGameEvent(GameEvent event) {
     switch (event.getGameEventType()) {
       case "CONTROLLER_TO_MODEL_GAME_START" -> {
         Command cmd = event.getGameEventCommand().getCommand();
-        initializeGame((InitBoardRecord) cmd.getCommandArgs());
+        initializeGame((Map) cmd.getCommandArgs());
+        publishGameData();
       }
       case "CONTROLLER_TO_MODEL_ROLL_DICE" -> {
         Command cmd = event.getGameEventCommand().getCommand();
@@ -154,6 +170,11 @@ public class ConcreteModel implements GameEventListener {
       case "CONTROLLER_TO_MODEL_PURCHASE_PROPERTY" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         buyProperty((Property) places.get((int) cmd.getCommandArgs()));
+        publishGameData();
+      }
+      case "CONTROLLER_TO_MODEL_END_TURN" -> {
+        Command cmd = event.getGameEventCommand().getCommand();
+        endTurn();
         publishGameData();
       }
     }
