@@ -35,8 +35,8 @@ public class BoardSetUpTest extends TestCase {
         gameEventHandler = new GameEventHandler();
         controller = new Controller(gameEventHandler);
         gameEventHandler.addEventListener(controller);
-        places.add(new DummyPlace(0, 1));
-        places.add(new DummyPlace(1, 2));
+        places.add(new DummyPlace(0));
+        places.add(new DummyPlace(1));
         players.add(new ConcretePlayer(0));
         players.add(new ConcretePlayer(1));
         setUpLists.add(places);
@@ -84,6 +84,11 @@ public class BoardSetUpTest extends TestCase {
 
             @Override
             public void buyProperty(Property property) {
+
+            }
+
+            @Override
+            public void publishGameData() {
 
             }
         }));

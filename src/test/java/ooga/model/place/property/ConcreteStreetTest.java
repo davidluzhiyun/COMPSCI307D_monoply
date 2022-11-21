@@ -16,8 +16,8 @@ class ConcreteStreetTest {
   }
 
   @Test
-  void getColorId() {
-    assertEquals(0, street.getColorId());
+  void testColorId() {
+    assertEquals(0, street.getColorSetId());
   }
 
   @Test
