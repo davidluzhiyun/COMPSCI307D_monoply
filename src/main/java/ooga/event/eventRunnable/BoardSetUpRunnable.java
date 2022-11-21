@@ -7,7 +7,6 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventType;
 import ooga.event.command.BoardSetUpCommand;
 import ooga.event.command.Command;
-import ooga.model.Model;
 import ooga.model.ModelOutput;
 import ooga.model.place.Place;
 

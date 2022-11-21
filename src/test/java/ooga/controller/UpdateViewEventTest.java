@@ -6,9 +6,11 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
-import ooga.model.*;
+import ooga.model.ConcretePlayer;
+import ooga.model.ModelOutput;
+import ooga.model.StationaryAction;
+import ooga.model.ViewPlayer;
 import ooga.model.colorSet.DummyPlace;
-import ooga.model.colorSet.DummyStreet;
 import ooga.model.place.Place;
 
 import java.awt.*;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class BoardSetUpTest extends TestCase {
+public class UpdateViewEventTest extends TestCase {
 
     private GameEventHandler gameEventHandler;
 
@@ -30,9 +32,7 @@ public class BoardSetUpTest extends TestCase {
 
     Collection<StationaryAction> actions = new ArrayList<>();
 
-    List<ParsedProperty> parsedProperties = new ArrayList<>();
-
-
+    Point diceRoll = new Point(3,2);
 
     @Override
     public void setUp(){
@@ -45,17 +45,15 @@ public class BoardSetUpTest extends TestCase {
         places.add(new DummyPlace(0));
         places.add(new DummyPlace(1));
         actions.add(StationaryAction.ROLL_DICE);
-        parsedProperties.add(new ParsedProperty(null, 0)); // TODO: add type here
-        parsedProperties.add(new ParsedProperty(null, 0));
     }
 
     public void testBoardSetUp() {
-        listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_BOARD_SET_UP.name());
+        listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_UPDATE_DATA.name());
         gameEventHandler.addEventListener(listener);
-        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_BOARD_SET_UP.name(), new TestCommand(new ModelOutput() {
+        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {
             @Override
             public Point getDiceNum() {
-                return null;
+                return diceRoll;
             }
 
             @Override
@@ -82,17 +80,17 @@ public class BoardSetUpTest extends TestCase {
         System.out.println("BoardSetUp event published!");
     }
 
-    public class TestCommand implements Command{
+    public class TestCommand implements Command {
 
-        private final ModelOutput boardSetUp;
+        private final ModelOutput boardInfo;
 
         public TestCommand(ModelOutput setUp){
-            this.boardSetUp = setUp;
+            this.boardInfo = setUp;
         }
 
         @Override
         public Object getCommandArgs() {
-            return this.boardSetUp;
+            return this.boardInfo;
         }
     }
 
@@ -107,14 +105,14 @@ public class BoardSetUpTest extends TestCase {
             if (event.getGameEventType().equals(eventToTest)) {
                 System.out.println("Got game event:");
                 System.out.println(event.getGameEventType());
-                assertEquals(GameEventType.CONTROLLER_TO_VIEW_BOARD_SET_UP.name(), event.getGameEventType());
-                InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+                assertEquals(GameEventType.CONTROLLER_TO_VIEW_UPDATE_DATA.name(), event.getGameEventType());
+                UpdateViewRecord command = (UpdateViewRecord) event.getGameEventCommand().getCommand().getCommandArgs();
                 assertEquals(0, command.currentPlayerId());
                 assertEquals(actions, command.stationaryActions());
                 assertEquals(players, command.players());
-                assertEquals(parsedProperties, command.places());
+                assertEquals(places, command.places());
+                assertEquals(diceRoll, command.dice());
             }
         }
     }
 }
-
