@@ -14,15 +14,13 @@ import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
 import ooga.event.command.SampleCommand;
 import ooga.model.components.ConcretePlayerTurn;
-import ooga.model.place.AbstractPlace;
 import ooga.model.place.Place;
-import ooga.model.place.property.ConcreteStreet;
 import ooga.model.place.property.Property;
 import ooga.view.SampleViewData;
 
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
 
-public class ConcreteModel implements GameEventListener {
+public class GameModel implements GameEventListener {
   private ConcretePlayerTurn turn;
   private List<Player> players;
   private List<Place> places;
@@ -30,7 +28,7 @@ public class ConcreteModel implements GameEventListener {
   public static final String DEFAULT_RESOURCE_PACKAGE = "properties.";
   private ResourceBundle modelResources;
 
-  public ConcreteModel(GameEventHandler gameEventHandler) {
+  public GameModel(GameEventHandler gameEventHandler) {
     this.gameEventHandler = gameEventHandler;
     modelResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Model");
   }
@@ -101,6 +99,7 @@ public class ConcreteModel implements GameEventListener {
 
   /**
    * For test purpose
+   *
    * @param record
    */
   protected void initializeGame(InitBoardRecord record) {
@@ -120,6 +119,7 @@ public class ConcreteModel implements GameEventListener {
 
   /**
    * For test purposes
+   *
    * @param type
    */
   protected Place createPlace(String type, int id) {
@@ -139,6 +139,24 @@ public class ConcreteModel implements GameEventListener {
     return newPlace;
   }
 
+  /**
+   * For test purpose.
+   *
+   * @return
+   */
+  protected List<Player> getPlayers() {
+    return players;
+  }
+
+  /**
+   * For test purpose.
+   *
+   * @return
+   */
+  protected List<Place> getPlaces() {
+    return places;
+  }
+
 
   @Override
   public void onGameEvent(GameEvent event) {
@@ -146,6 +164,7 @@ public class ConcreteModel implements GameEventListener {
       case "CONTROLLER_TO_MODEL_GAME_START" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         initializeGame((InitBoardRecord) cmd.getCommandArgs());
+        publishGameData();
       }
       case "CONTROLLER_TO_MODEL_ROLL_DICE" -> {
         Command cmd = event.getGameEventCommand().getCommand();
@@ -154,6 +173,11 @@ public class ConcreteModel implements GameEventListener {
       case "CONTROLLER_TO_MODEL_PURCHASE_PROPERTY" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         buyProperty((Property) places.get((int) cmd.getCommandArgs()));
+        publishGameData();
+      }
+      case "CONTROLLER_TO_MODEL_END_TURN" -> {
+        Command cmd = event.getGameEventCommand().getCommand();
+        endTurn();
         publishGameData();
       }
     }
