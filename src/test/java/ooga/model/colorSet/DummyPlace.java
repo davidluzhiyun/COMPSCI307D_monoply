@@ -8,9 +8,9 @@ import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.Place;
 
-class DummyPlace implements Place {
+public class DummyPlace implements Place {
   private int id;
-  DummyPlace(int id){
+  public DummyPlace(int id){
     this.id = id;
   }
 

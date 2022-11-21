@@ -1,5 +1,7 @@
 package ooga.model.place.property;
 
+import ooga.model.exception.CannotBuildHouseException;
+
 public class ConcreteStreet extends AbstractProperty implements Street {
   private final int colorId;
   private final double housePrice;
@@ -7,7 +9,7 @@ public class ConcreteStreet extends AbstractProperty implements Street {
 
   public ConcreteStreet(int id) {
     super(id);
-    colorId = (int) getConfig().get("colorId");
+    colorId = (int) (double) getConfig().get("colorId");;
     housePrice = (double) getConfig().get("houseCost");
   }
 
@@ -29,5 +31,14 @@ public class ConcreteStreet extends AbstractProperty implements Street {
   @Override
   public int getColorSetId() {
     return colorId;
+  }
+
+  @Override
+  public int getHouseCount() {
+    return housesBuilt;
+  }
+
+  public void print() {
+    System.out.println(11111);
   }
 }
