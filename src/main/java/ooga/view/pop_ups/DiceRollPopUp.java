@@ -1,14 +1,7 @@
 package ooga.view.pop_ups;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.util.ResourceBundle;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -24,12 +17,16 @@ import ooga.view.button.DiceRollButton;
 /**
  * This pop up is a little different because it requires action to be taken. May want to consider
  * having two abstract classes for pop-ups: information pop up and action pop up.
+ * TODO: LOTS OF REFACTORING
  */
 public class DiceRollPopUp implements PopUp {
   private int currentPlayer;
   private final Stage myStage;
   private String myLanguage;
   private DiceRollButton button;
+  public static final String DICE_IMAGE = "dice.png";
+  public static final String PLAYER_TEXT_KEY = "PlayerText";
+  public static final String ROLL_DICE_TEXT_KEY = "RollDice";
 
   public DiceRollPopUp(int player) {
     this.currentPlayer = player;
@@ -40,8 +37,8 @@ public class DiceRollPopUp implements PopUp {
   public void showMessage(String language) {
     this.myLanguage = language;
     ResourceBundle resources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + language);
-    Text playerText = new Text(String.format(resources.getString("PlayerText"), currentPlayer));
-    Text rollText = new Text(resources.getString("RollDice"));
+    Text playerText = new Text(String.format(resources.getString(PLAYER_TEXT_KEY), currentPlayer));
+    Text rollText = new Text(resources.getString(ROLL_DICE_TEXT_KEY));
     ImageView diceImage = createDiceImage();
     createRollButton();
     VBox root = new VBox(playerText, rollText, diceImage, button);
@@ -50,7 +47,7 @@ public class DiceRollPopUp implements PopUp {
     myStage.show();
   }
   private ImageView createDiceImage() {
-    Image image = new Image("dice.png");
+    Image image = new Image(DICE_IMAGE);
     ImageView diceImage = new ImageView(image);
     diceImage.setPreserveRatio(true);
     diceImage.setFitWidth(200);
@@ -66,7 +63,7 @@ public class DiceRollPopUp implements PopUp {
     ResourceBundle resources = ResourceBundle.getBundle(View.BUTTON_PROPERTIES);
     Reflection reflection = new Reflection();
     String method = resources.getString(
-        String.format(StartView.STRING_FORMATTER, "DiceRollButton", StartView.METHOD));
+        String.format(StartView.STRING_FORMATTER, DiceRollButton.DICE_ROLL_KEY, StartView.METHOD));
     button.setAction(reflection.makeMethod(method, GameView.class, null), view);
 
   }

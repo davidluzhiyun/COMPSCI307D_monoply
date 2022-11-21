@@ -5,7 +5,7 @@ import ooga.Main;
 
 public class DiceRollButton extends CustomizedButton {
 
-  public static final String DICE_ROLL_KEY = "RollDiceButton";
+  public static final String DICE_ROLL_KEY = "DiceRollButton";
 
   public DiceRollButton(String language) {
     super(DICE_ROLL_KEY, language);
