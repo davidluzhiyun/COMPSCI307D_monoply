@@ -12,6 +12,9 @@ import ooga.Reflection;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
+import ooga.event.command.Command;
+import ooga.event.command.GameStartViewCommand;
+import ooga.event.command.RollDiceCommand;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.RentPopUp;
 
@@ -120,6 +123,9 @@ public class GameView extends View implements GameEventListener {
    */
   public void rollDice() {
     myDicePopUp.close();
+    Command cmd = new RollDiceCommand();
+    GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE", cmd);
+    gameEventHandler.publish(event);
     System.out.println("does this work... please dear god");
   }
 }
