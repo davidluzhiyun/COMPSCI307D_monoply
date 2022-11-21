@@ -1,5 +1,9 @@
 package ooga.event.command;
 
+/**
+ * This is created by GameView when it wants to tell the controller that the user wants to roll the
+ * dice.
+ */
 public class RollDiceCommand implements Command {
 
   /**
