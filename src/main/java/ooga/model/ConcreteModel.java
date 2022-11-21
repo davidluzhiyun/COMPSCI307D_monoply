@@ -1,6 +1,8 @@
 package ooga.model;
 
-import java.util.Collection;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 import ooga.controller.InitBoardRecord;
 import ooga.controller.ParsedProperty;
@@ -12,26 +14,31 @@ import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
 import ooga.event.command.SampleCommand;
 import ooga.model.components.ConcretePlayerTurn;
+import ooga.model.place.AbstractPlace;
 import ooga.model.place.Place;
 import ooga.model.place.property.ConcreteStreet;
 import ooga.model.place.property.Property;
 import ooga.view.SampleViewData;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
 
-public class ConcreteModel implements Model, GameEventListener {
+public class ConcreteModel implements GameEventListener {
   private ConcretePlayerTurn turn;
   private List<Player> players;
   private List<Place> places;
   private GameEventHandler gameEventHandler;
+  public static final String DEFAULT_RESOURCE_PACKAGE = "properties.";
+  private ResourceBundle modelResources;
 
   public ConcreteModel(GameEventHandler gameEventHandler) {
     this.gameEventHandler = gameEventHandler;
+    modelResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Model");
   }
 
-  @Override
+  protected ResourceBundle getResources() {
+    return modelResources;
+  }
+
   public void publishDice() {
     Player currentPlayer = players.get(turn.getCurrentPlayerTurnId());
     turn.roll();
@@ -41,7 +48,6 @@ public class ConcreteModel implements Model, GameEventListener {
     gameEventHandler.publish(event);
   }
 
-  @Override
   public void endTurn() {
     turn.nextTurn();
   }
@@ -51,7 +57,6 @@ public class ConcreteModel implements Model, GameEventListener {
     currentPlayer.purchase(property);
   }
 
-  @Override
   public void publishGameData() {
     ModelOutput gameData = null;
     Command cmd = new GameDataCommand(gameData);
@@ -60,7 +65,6 @@ public class ConcreteModel implements Model, GameEventListener {
   }
 
 
-  @Override
   public void publishCurrentPlayer() {
     Player currentPlayer = getCurrentPlayer();
     //TODO: publish this data
@@ -73,19 +77,16 @@ public class ConcreteModel implements Model, GameEventListener {
     return players.get(turn.getCurrentPlayerTurnId());
   }
 
-  @Override
   public void playersData() {
     Collection<ViewPlayer> playersData = new ArrayList<>(players);
     //TODO: publish this data
   }
 
-  @Override
   public void boardData() {
     List<Place> boardData = new ArrayList<>(places);
     //TODO: publish this data? I (David Lu) don't really know what this one should be
   }
 
-  @Override
   public void stationaryActions() {
     Player currentPlayer = getCurrentPlayer();
     Place currentPlace = places.get(currentPlayer.getCurrentPlaceId());
@@ -93,18 +94,22 @@ public class ConcreteModel implements Model, GameEventListener {
     //TODO: publish this data (stationaryActions)
   }
 
-  @Override
   public void boardUpdateData() {
     ViewBoard boardData = new ViewBoardBuilder(new ArrayList<Place>(places), getCurrentPlayer());
     //TODO: publish this data
   }
 
-  private void initializeGame(InitBoardRecord record) {
+  /**
+   * For test purpose
+   * @param record
+   */
+  protected void initializeGame(InitBoardRecord record) {
     List<ParsedProperty> parsedProperties = record.places();
     Collection<PlayerRecord> playerRecords = record.players();
     places = new ArrayList<>();
     for (ParsedProperty parsedProperty : parsedProperties) {
-      places.add(new ConcreteStreet(parsedProperty.id()));
+
+      places.add(createPlace(parsedProperty.type(), parsedProperty.id()));
       //TODO: use reflection
     }
     players = new ArrayList<>();
@@ -112,6 +117,28 @@ public class ConcreteModel implements Model, GameEventListener {
       players.add(new ConcretePlayer(i));
     turn = new ConcretePlayerTurn(players, places);
   }
+
+  /**
+   * For test purposes
+   * @param type
+   */
+  protected Place createPlace(String type, int id) {
+    Place newPlace;
+    Class<?> placeClass;
+    try {
+      placeClass = Class.forName(PLACE_PACKAGE_NAME + modelResources.getString(type));
+    } catch (ClassNotFoundException e) {
+      throw new IllegalStateException("classNotFound", e);
+    }
+    Constructor<?>[] makeNewPlace = placeClass.getConstructors();
+    try {
+      newPlace = (Place) makeNewPlace[0].newInstance(id);
+    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+      throw new RuntimeException(e);
+    }
+    return newPlace;
+  }
+
 
   @Override
   public void onGameEvent(GameEvent event) {

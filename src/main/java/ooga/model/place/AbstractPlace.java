@@ -24,9 +24,9 @@ public abstract class AbstractPlace implements Place {
   private Collection<StationaryAction> inherentStationaryActions;
   private Collection<StationaryAction> stationaryActions;
   private Collection<PlaceAction> inherentPlaceActions;
-  public static final String DEFAULT_RESOURCE_PACKAGE = AbstractPlace.class.getPackageName() + ".";
+  public static final String PLACE_PACKAGE_NAME = AbstractPlace.class.getPackageName() + ".";
   public static final String DEFAULT_RESOURCE_FOLDER =
-          "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
+          "/" + PLACE_PACKAGE_NAME.replace(".", "/");
   private Map<String, ?> config;
 
   public AbstractPlace(int id) {
