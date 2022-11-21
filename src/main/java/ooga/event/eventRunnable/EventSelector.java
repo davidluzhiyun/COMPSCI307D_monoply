@@ -2,6 +2,7 @@ package ooga.event.eventRunnable;
 
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
+import ooga.event.command.GetPlaceActionsToViewCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class EventSelector {
         eventTypeMap.put(GameEventType.VIEW_TO_CONTROLLER_ROLL_DICE.name(), RollDiceToModelRunnable::new);
         eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_BOARD_SET_UP.name(), BoardSetUpRunnable::new);
         eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), UpdateViewRunnable::new);
+        eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_GET_PLACE_ACTIONS.name(), GetPlaceActionsRunnableToView::new);
     }
 
     public EventGenerator selectEventRunnable(String eventName, Command command) {
