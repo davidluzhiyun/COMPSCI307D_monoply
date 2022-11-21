@@ -12,6 +12,11 @@ import ooga.Reflection;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
+import ooga.event.command.Command;
+import ooga.event.command.GameStartViewCommand;
+import ooga.event.command.RollDiceCommand;
+import ooga.view.pop_ups.DiceRollPopUp;
+import ooga.view.pop_ups.RentPopUp;
 
 public class GameView extends View implements GameEventListener {
 
@@ -20,6 +25,7 @@ public class GameView extends View implements GameEventListener {
   private Scene myScene;
   private String myStyle;
   private String myLanguage;
+  private DiceRollPopUp myDicePopUp;
   private final ResourceBundle myScreenResources;
   public static final String GAME_WIDTH_KEY = "GameWidth";
   public static final String GAME_HEIGHT_KEY = "GameHeight";
@@ -97,8 +103,29 @@ public class GameView extends View implements GameEventListener {
   /**
    * Set in property files to be the handler method when someone clicks the "Save game" button. This
    * should be implemented as one of our project extensions.
+   * TODO: change this to actually implement the savegame feature. currently this is just showing
+   * the pop ups.
    */
   public void saveGame() {
-    System.out.println("nothing to see here... yet");
+    RentPopUp pop = new RentPopUp();
+    pop.showMessage(myLanguage);
+    startPlayerTurn();
+  }
+
+  private void startPlayerTurn() {
+    myDicePopUp = new DiceRollPopUp(1);
+    myDicePopUp.showMessage(myLanguage);
+    myDicePopUp.makeButtonActive(this);
+  }
+
+  /**
+   * TODO: use this to send event to controller. also make sure the result of the dice roll is then displayed.
+   */
+  public void rollDice() {
+    myDicePopUp.close();
+    Command cmd = new RollDiceCommand();
+    GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE", cmd);
+    gameEventHandler.publish(event);
+    System.out.println("does this work... please dear god");
   }
 }
