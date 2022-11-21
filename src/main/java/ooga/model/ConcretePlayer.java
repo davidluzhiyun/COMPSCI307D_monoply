@@ -19,6 +19,7 @@ public class ConcretePlayer implements Player, ViewPlayer {
 
   public ConcretePlayer(int playerId) {
     this.currentPlaceId = 0;
+    this.money = 0;
     this.playerId = playerId;
     properties = new ArrayList<>();
   }
@@ -35,7 +36,7 @@ public class ConcretePlayer implements Player, ViewPlayer {
 
   @Override
   public void earnMoney(double money) {
-    this.money += money;
+    this. money += money;
   }
 
   public void decrementOneDiceLeft() {
