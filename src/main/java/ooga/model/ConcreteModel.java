@@ -14,9 +14,7 @@ import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
 import ooga.event.command.SampleCommand;
 import ooga.model.components.ConcretePlayerTurn;
-import ooga.model.place.AbstractPlace;
 import ooga.model.place.Place;
-import ooga.model.place.property.ConcreteStreet;
 import ooga.model.place.property.Property;
 import ooga.view.SampleViewData;
 
@@ -78,7 +76,7 @@ public class ConcreteModel implements GameEventListener {
   }
 
   public void playersData() {
-    Collection<ViewPlayer> playersData = new ArrayList<>(players);
+    Collection<ControllerPlayer> playersData = new ArrayList<>(players);
     //TODO: publish this data
   }
 

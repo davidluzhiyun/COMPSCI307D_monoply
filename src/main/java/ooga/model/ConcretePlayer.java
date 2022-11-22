@@ -7,7 +7,7 @@ import ooga.model.place.property.Property;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ConcretePlayer implements Player, ViewPlayer {
+public class ConcretePlayer implements Player, ControllerPlayer {
   private double money;
   private int playerId;
   private int currentPlaceId;

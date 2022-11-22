@@ -23,9 +23,8 @@ public interface ModelOutput {
 
   /**
    * Information about all players, in a List, change to collection if order no longer needed
-   * Change view player to controller player if that is a thing
    */
-  List<ViewPlayer> getPlayers();
+  List<ControllerPlayer> getPlayers();
 
   /**
    * Information about the board, used for both initialization and update now
