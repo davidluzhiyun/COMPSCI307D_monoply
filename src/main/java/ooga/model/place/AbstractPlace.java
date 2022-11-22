@@ -87,7 +87,7 @@ public abstract class AbstractPlace implements Place {
     return stationaryActions;
   }
 
-  public void updateStationaryActions(Player player) {
+  private void updateStationaryActions(Player player) {
     stationaryActions = getCommonTurnBasedStationaryAction(player);
     stationaryActions.addAll(inherentStationaryActions);
   }

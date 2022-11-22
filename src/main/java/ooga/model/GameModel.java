@@ -63,7 +63,11 @@ public class GameModel implements GameEventListener, ModelOutput {
   }
 
   public void publishGameData() {
-    ModelOutput gameData = null;
+    Player currentPlayer = getCurrentPlayerHelper();
+    for (Place place :places){
+      place.updatePlaceActions(currentPlayer);
+    }
+    ModelOutput gameData = this;
     Command cmd = new GameDataCommand(gameData);
     GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_GAME_DATA", cmd);
     gameEventHandler.publish(event);
@@ -76,12 +80,6 @@ public class GameModel implements GameEventListener, ModelOutput {
    */
   private Player getCurrentPlayerHelper() {
     return players.get(turn.getCurrentPlayerTurnId());
-  }
-
-
-  public void boardData() {
-    List<Place> boardData = new ArrayList<>(places);
-    //TODO: publish this data? I (David Lu) don't really know what this one should be
   }
 
 
@@ -144,7 +142,8 @@ public class GameModel implements GameEventListener, ModelOutput {
 
   @Override
   public List<ControllerPlace> getBoard() {
-    return null;
+    List<ControllerPlace> board = new ArrayList<>(places);
+    return board;
   }
 
   @Override
