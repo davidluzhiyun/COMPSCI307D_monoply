@@ -40,10 +40,6 @@ class GameModelTest {
 
   @Test
   void testInitializeGame() {
-//    List<ParsedProperty> parsedPropertyList = List.of(new ParsedProperty(121, "Street", 1), new ParsedProperty(121, "Street", 1));
-//    Collection<PlayerRecord> players = List.of(new PlayerRecord(0, 0, false, 0, new ArrayList<>(), 1500), new PlayerRecord(0, 0, false, 0, new ArrayList<>(), 1500));
-//    InitBoardRecord initBoardRecord = new InitBoardRecord(parsedPropertyList, new ArrayList<>(), players, 0);
-//    model.initializeGame(initBoardRecord);
 
     Gson gson = new Gson();
     Reader reader = null;
@@ -57,12 +53,9 @@ class GameModelTest {
       throw new RuntimeException(e);
     }
 
-    System.out.println(config);
-
     model.initializeGame((Map<String, LinkedTreeMap>) config);
 
     assertEquals(4, model.getPlayers().size());
-
     assertEquals(121, model.getPlaces().get(0).getPlaceId());
   }
 }
