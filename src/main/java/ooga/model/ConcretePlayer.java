@@ -23,10 +23,6 @@ public class ConcretePlayer implements Player, ViewPlayer {
     this.playerId = playerId;
     properties = new ArrayList<>();
   }
-//  @Override
-//  public int getPlayerId() {
-//    return playerId;
-//  }
 
   public void newTurn() {
     dicesLeft = 1;

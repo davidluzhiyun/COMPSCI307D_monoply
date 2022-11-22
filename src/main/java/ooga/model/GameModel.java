@@ -2,12 +2,13 @@ package ooga.model;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 import com.google.gson.internal.LinkedTreeMap;
-import ooga.controller.InitBoardRecord;
-import ooga.controller.ParsedProperty;
-import ooga.controller.PlayerRecord;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
@@ -18,6 +19,8 @@ import ooga.model.components.ConcretePlayerTurn;
 import ooga.model.place.Place;
 import ooga.model.place.property.Property;
 import ooga.view.SampleViewData;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
 
@@ -28,6 +31,7 @@ public class GameModel implements GameEventListener {
   private GameEventHandler gameEventHandler;
   public static final String DEFAULT_RESOURCE_PACKAGE = "properties.";
   private ResourceBundle modelResources;
+  private static final Logger LOG = LogManager.getLogger(GameModel.class);
 
   public GameModel(GameEventHandler gameEventHandler) {
     this.gameEventHandler = gameEventHandler;
@@ -125,12 +129,14 @@ public class GameModel implements GameEventListener {
     try {
       placeClass = Class.forName(PLACE_PACKAGE_NAME + modelResources.getString(type));
     } catch (ClassNotFoundException e) {
+      LOG.warn(e);
       throw new IllegalStateException("classNotFound", e);
     }
     Constructor<?>[] makeNewPlace = placeClass.getConstructors();
     try {
       newPlace = (Place) makeNewPlace[0].newInstance(id);
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+      LOG.warn(e);
       throw new RuntimeException(e);
     }
     return newPlace;

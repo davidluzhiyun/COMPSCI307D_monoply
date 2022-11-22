@@ -1,5 +1,6 @@
 {
   "id": 9,
+  "type": "Utility",
   "name": "Fire Plant",
   "purchasePrice": 150,
   "mortgagePrice": 75,

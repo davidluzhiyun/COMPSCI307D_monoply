@@ -1,5 +1,6 @@
 {
   "id": 125,
+  "type": "Street",
   "name": "Campus Drive",
   "purchasePrice": 100,
   "mortgagePrice": 50,
