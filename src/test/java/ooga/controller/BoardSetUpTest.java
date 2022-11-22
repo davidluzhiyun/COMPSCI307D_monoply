@@ -8,6 +8,7 @@ import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.model.*;
 import ooga.model.colorSet.DummyPlace;
+import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
 import ooga.model.place.property.Property;
 
@@ -58,12 +59,12 @@ public class BoardSetUpTest extends TestCase {
             }
 
             @Override
-            public List<ViewPlayer> getPlayers() {
+            public List<ControllerPlayer> getPlayers() {
                 return null;
             }
 
             @Override
-            public List<Place> getBoard() {
+            public List<ControllerPlace> getBoard() {
                 return null;
             }
 

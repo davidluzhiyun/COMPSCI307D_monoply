@@ -1,5 +1,6 @@
 package ooga.model.components;
 
+import java.awt.Point;
 import ooga.model.place.Place;
 
 
@@ -14,5 +15,6 @@ public interface PlayerTurn {
    */
   void nextTurn();
   Place getCurrentPlace();
+  Point getDiceNum();
 
 }
