@@ -60,7 +60,7 @@ public class ViewBoardBuilder implements ViewBoard{
     }
 
     @Override
-    public Collection<? extends ViewPlayer> getViewPlayers() {
+    public Collection<? extends ControllerPlayer> getViewPlayers() {
       return place.getPlayers();
     }
 
@@ -77,7 +77,7 @@ public class ViewBoardBuilder implements ViewBoard{
 
     @Override
     public Collection<PlaceAction> getPlaceActions() {
-      return place.getPlaceActions(player);
+      return place.updatePlaceActions(player);
     }
   }
 }

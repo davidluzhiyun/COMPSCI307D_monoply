@@ -41,8 +41,10 @@ public interface Place {
    * @param player
    * @return a collection of stationary actions for the current player at the place
    */
-  Collection<PlaceAction> getPlaceActions(Player player);
+  Collection<PlaceAction> updatePlaceActions(Player player);
 
+
+  Collection<PlaceAction> getPlaceActions();
   int getHouseCount() throws CannotBuildHouseException;
   int getColorSetId() throws NoColorAttributeException;
 }

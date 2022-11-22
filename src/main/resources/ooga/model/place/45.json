@@ -1,5 +1,6 @@
 {
   "id": 45,
+  "type": "Railroad",
   "name": "North Railroad",
   "purchasePrice": 200,
   "mortgagePrice": 100,

@@ -1,3 +1,4 @@
+
 package ooga.model.colorSet;
 
 
@@ -68,5 +69,4 @@ public class ConcreteColorSet implements ImmutableColorSet{
     }
     return colorIds;
   }
-
 }

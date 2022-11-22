@@ -24,6 +24,8 @@ public abstract class AbstractPlace implements Place {
   private Collection<StationaryAction> inherentStationaryActions;
   private Collection<StationaryAction> stationaryActions;
   private Collection<PlaceAction> inherentPlaceActions;
+
+  private Collection<PlaceAction> updatedPlaceActions;
   public static final String PLACE_PACKAGE_NAME = AbstractPlace.class.getPackageName() + ".";
   public static final String DEFAULT_RESOURCE_FOLDER =
           "/" + PLACE_PACKAGE_NAME.replace(".", "/");
@@ -42,11 +44,6 @@ public abstract class AbstractPlace implements Place {
       TypeToken<Map<String, ?>> mapType = new TypeToken<>() {
       };
       config = gson.fromJson(reader, mapType);
-//      for (Map.Entry<String, ?> entry : config.entrySet()) {
-//        System.out.println(entry.getKey() + "=" + entry.getValue());
-//        // close reader
-//        reader.close();
-//      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -63,7 +60,7 @@ public abstract class AbstractPlace implements Place {
   }
 
 
-  public Collection<? extends ViewPlayer> getViewPlayers() {
+  public Collection<? extends ControllerPlayer> getViewPlayers() {
     return players;
   }
 
@@ -95,8 +92,13 @@ public abstract class AbstractPlace implements Place {
   }
 
   @Override
-  public Collection<PlaceAction> getPlaceActions(Player player) {
-    return inherentPlaceActions;
+  public void updatePlaceActions(Player player) {
+    updatedPlaceActions = new ArrayList<>(inherentPlaceActions);
+  }
+
+  @Override
+  public Collection<PlaceAction> getPlaceActions(){
+    return updatedPlaceActions;
   }
 
   @Override

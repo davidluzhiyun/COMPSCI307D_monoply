@@ -33,7 +33,6 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
     rentWithHouses = (List<Double>) getConfig().get("rentWithHouses");
     addStationaryAction(StationaryAction.BUY_PROPERTY);
     addStationaryAction(StationaryAction.AUCTION);
-    System.out.println(PLACE_PACKAGE_NAME);
   }
 
   @Override
@@ -95,7 +94,7 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   }
 
   @Override
-  public Collection<PlaceAction> getPlaceActions(Player player) {
+  public Collection<PlaceAction> updatePlaceActions(Player player) {
     // null for now
     return null;
   }

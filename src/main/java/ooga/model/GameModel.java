@@ -1,13 +1,14 @@
 package ooga.model;
 
-import java.awt.Point;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 
-import ooga.controller.InitBoardRecord;
-import ooga.controller.ParsedProperty;
-import ooga.controller.PlayerRecord;
+import com.google.gson.internal.LinkedTreeMap;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
@@ -18,18 +19,21 @@ import ooga.model.components.ConcretePlayerTurn;
 import ooga.model.place.Place;
 import ooga.model.place.property.Property;
 import ooga.view.SampleViewData;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
 
-public class ConcreteModel implements GameEventListener, ModelOutput {
+public class GameModel implements GameEventListener {
   private ConcretePlayerTurn turn;
   private List<Player> players;
   private List<Place> places;
   private GameEventHandler gameEventHandler;
   public static final String DEFAULT_RESOURCE_PACKAGE = "properties.";
   private ResourceBundle modelResources;
+  private static final Logger LOG = LogManager.getLogger(GameModel.class);
 
-  public ConcreteModel(GameEventHandler gameEventHandler) {
+  public GameModel(GameEventHandler gameEventHandler) {
     this.gameEventHandler = gameEventHandler;
     modelResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Model");
   }
@@ -38,8 +42,6 @@ public class ConcreteModel implements GameEventListener, ModelOutput {
     return modelResources;
   }
 
-  // Please change name to roll dice.
-  // This updates the turn
   public void publishDice() {
     Player currentPlayer = players.get(turn.getCurrentPlayerTurnId());
     turn.roll();
@@ -54,59 +56,71 @@ public class ConcreteModel implements GameEventListener, ModelOutput {
   }
 
   public void buyProperty(Property property) {
-    Player currentPlayer = getCurrentPlayerHelper();
+    Player currentPlayer = getCurrentPlayer();
     currentPlayer.purchase(property);
   }
 
   public void publishGameData() {
-    ModelOutput gameData = this;
+    ModelOutput gameData = null;
     Command cmd = new GameDataCommand(gameData);
     GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_GAME_DATA", cmd);
     gameEventHandler.publish(event);
   }
 
 
+  public void publishCurrentPlayer() {
+    Player currentPlayer = getCurrentPlayer();
+    //TODO: publish this data
+  }
+
   /**
    * Helper method to get the current player
    */
-  private Player getCurrentPlayerHelper() {
+  private Player getCurrentPlayer() {
     return players.get(turn.getCurrentPlayerTurnId());
   }
 
-
+  public void playersData() {
+    Collection<ControllerPlayer> playersData = new ArrayList<>(players);
+    //TODO: publish this data
+  }
 
   public void boardData() {
     List<Place> boardData = new ArrayList<>(places);
     //TODO: publish this data? I (David Lu) don't really know what this one should be
   }
 
+  public void stationaryActions() {
+    Player currentPlayer = getCurrentPlayer();
+    Place currentPlace = places.get(currentPlayer.getCurrentPlaceId());
+    Collection<StationaryAction> stationaryActions = currentPlace.getStationaryActions(currentPlayer);
+    //TODO: publish this data (stationaryActions)
+  }
 
   public void boardUpdateData() {
-    ViewBoard boardData = new ViewBoardBuilder(new ArrayList<Place>(places), getCurrentPlayerHelper());
+    ViewBoard boardData = new ViewBoardBuilder(new ArrayList<Place>(places), getCurrentPlayer());
     //TODO: publish this data
   }
 
   /**
    * For test purpose
-   * @param record
    */
-  protected void initializeGame(InitBoardRecord record) {
-    List<ParsedProperty> parsedProperties = record.places();
-    Collection<PlayerRecord> playerRecords = record.players();
+  protected void initializeGame(Map<String, LinkedTreeMap> map) {
     places = new ArrayList<>();
-    for (ParsedProperty parsedProperty : parsedProperties) {
-
-      places.add(createPlace(parsedProperty.type(), parsedProperty.id()));
-      //TODO: use reflection
+    int j = 1;
+    while (map.containsKey(String.valueOf(j))) {
+      places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (int) (double) map.get(String.valueOf(j)).get("id")));
+      j++;
     }
     players = new ArrayList<>();
-    for (int i = 0; i < playerRecords.size(); i++)
+    for (int i = 0; i < (int) (double) map.get("meta").get("players"); i++)
       players.add(new ConcretePlayer(i));
-    turn = new ConcretePlayerTurn(players, places);
+//    turn = new ConcretePlayerTurn(players, places);
   }
 
   /**
    * For test purposes
+   *
    * @param type
    */
   protected Place createPlace(String type, int id) {
@@ -115,55 +129,45 @@ public class ConcreteModel implements GameEventListener, ModelOutput {
     try {
       placeClass = Class.forName(PLACE_PACKAGE_NAME + modelResources.getString(type));
     } catch (ClassNotFoundException e) {
+      LOG.warn(e);
       throw new IllegalStateException("classNotFound", e);
     }
     Constructor<?>[] makeNewPlace = placeClass.getConstructors();
     try {
       newPlace = (Place) makeNewPlace[0].newInstance(id);
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+      LOG.warn(e);
       throw new RuntimeException(e);
     }
     return newPlace;
   }
 
-  // beginning of ModelOutput methods
-
-  @Override
-  public Point getDiceNum() {
-    return turn.getDiceNum();
+  /**
+   * For test purpose.
+   *
+   * @return
+   */
+  protected List<Player> getPlayers() {
+    return players;
   }
 
-  @Override
-  public int getCurrentPlayer() {
-    return turn.getCurrentPlayerTurnId();
+  /**
+   * For test purpose.
+   *
+   * @return
+   */
+  protected List<Place> getPlaces() {
+    return places;
   }
 
-  @Override
-  public List<ViewPlayer> getPlayers() {
-    List<ViewPlayer> playersData = new ArrayList<>(players);
-    return playersData;
-  }
 
-  @Override
-  public List<Place> getBoard() {
-    return null;
-  }
-
-  @Override
-  public Collection<StationaryAction> getStationaryAction() {
-    Player currentPlayer = getCurrentPlayerHelper();
-    Place currentPlace = places.get(currentPlayer.getCurrentPlaceId());
-    Collection<StationaryAction> stationaryActions = currentPlace.getStationaryActions(currentPlayer);
-    return stationaryActions;
-  }
-
-  //end of ModelOutput methods
   @Override
   public void onGameEvent(GameEvent event) {
     switch (event.getGameEventType()) {
       case "CONTROLLER_TO_MODEL_GAME_START" -> {
         Command cmd = event.getGameEventCommand().getCommand();
-        initializeGame((InitBoardRecord) cmd.getCommandArgs());
+        initializeGame((Map) cmd.getCommandArgs());
+        publishGameData();
       }
       case "CONTROLLER_TO_MODEL_ROLL_DICE" -> {
         Command cmd = event.getGameEventCommand().getCommand();
@@ -172,6 +176,11 @@ public class ConcreteModel implements GameEventListener, ModelOutput {
       case "CONTROLLER_TO_MODEL_PURCHASE_PROPERTY" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         buyProperty((Property) places.get((int) cmd.getCommandArgs()));
+        publishGameData();
+      }
+      case "CONTROLLER_TO_MODEL_END_TURN" -> {
+        Command cmd = event.getGameEventCommand().getCommand();
+        endTurn();
         publishGameData();
       }
     }

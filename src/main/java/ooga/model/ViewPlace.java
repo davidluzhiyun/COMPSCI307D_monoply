@@ -7,7 +7,7 @@ import java.util.Collection;
  */
 @Deprecated
 public interface ViewPlace{
-  Collection<? extends ViewPlayer> getViewPlayers();
+  Collection<? extends ControllerPlayer> getViewPlayers();
   int getHousesNum();
   Collection<PlaceAction> getPlaceActions();
 }
