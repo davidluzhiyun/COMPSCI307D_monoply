@@ -14,6 +14,10 @@ public class Main extends Application {
   public static final String DEFAULT_LANGUAGE_PACKAGE = DEFAULT_RESOURCE_PACKAGE + "language.";
   public static final String ID_PROPERTIES = Main.DEFAULT_RESOURCE_PACKAGE + "ID";
 
+  public static final String DEFAULT_RESOURCE_FOLDER =
+      "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
+
+
 
   /**
    * We can definitely change this later!

@@ -19,13 +19,10 @@ public class ConcretePlayer implements Player, ControllerPlayer {
 
   public ConcretePlayer(int playerId) {
     this.currentPlaceId = 0;
+    this.money = 0;
     this.playerId = playerId;
     properties = new ArrayList<>();
   }
-//  @Override
-//  public int getPlayerId() {
-//    return playerId;
-//  }
 
   public void newTurn() {
     dicesLeft = 1;
@@ -35,7 +32,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
 
   @Override
   public void earnMoney(double money) {
-    this.money += money;
+    this. money += money;
   }
 
   public void decrementOneDiceLeft() {
