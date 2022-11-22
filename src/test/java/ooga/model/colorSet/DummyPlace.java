@@ -1,7 +1,6 @@
 package ooga.model.colorSet;
 
 import java.util.Collection;
-import java.util.List;
 
 import ooga.model.*;
 import ooga.model.exception.CannotBuildHouseException;
@@ -20,7 +19,7 @@ public class DummyPlace implements Place {
   }
 
   @Override
-  public Collection<? extends Player> getPlayers() {
+  public Collection<ControllerPlayer> getPlayers() {
     return null;
   }
 
@@ -36,7 +35,12 @@ public class DummyPlace implements Place {
 
 
   @Override
-  public List<PlaceAction> updatePlaceActions(Player player) {
+  public void updatePlaceActions(Player player) {
+    return;
+  }
+
+  @Override
+  public Collection<PlaceAction> getPlaceActions() {
     return null;
   }
 

@@ -19,7 +19,7 @@ public class Go extends AbstractPlace {
   }
 
   @Override
-  public Collection<PlaceAction> updatePlaceActions(Player player) {
-    return null;
+  public void updatePlaceActions(Player player) {
+    return;
   }
 }

@@ -65,8 +65,8 @@ public abstract class AbstractPlace implements Place {
   }
 
   @Override
-  public Collection<? extends Player> getPlayers() {
-    return players;
+  public Collection<ControllerPlayer> getPlayers() {
+    return new ArrayList<>(players);
   }
 
   @Override
@@ -83,6 +83,7 @@ public abstract class AbstractPlace implements Place {
    */
   @Override
   public Collection<StationaryAction> getStationaryActions(Player player) {
+    updateStationaryActions(player);
     return stationaryActions;
   }
 

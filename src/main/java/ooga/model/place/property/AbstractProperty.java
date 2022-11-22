@@ -94,9 +94,9 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   }
 
   @Override
-  public Collection<PlaceAction> updatePlaceActions(Player player) {
-    // null for now
-    return null;
+  public void updatePlaceActions(Player player) {
+    //Nothing for now
+    return;
   }
 
   /**
