@@ -43,7 +43,7 @@ public class GameModel implements GameEventListener, ModelOutput {
   protected ResourceBundle getResources() {
     return modelResources;
   }
-
+/*
   public void rollDice() {
     Player currentPlayer = players.get(turn.getCurrentPlayerTurnId());
     turn.roll();
@@ -52,17 +52,20 @@ public class GameModel implements GameEventListener, ModelOutput {
     GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_DICE_ROLLED", cmd);
     gameEventHandler.publish(event);
   }
-
-  public void endTurn() {
+*/
+  public void rollDice() {
+    turn.roll();
+  }
+  private void endTurn() {
     turn.nextTurn();
   }
 
-  public void buyProperty(Property property) {
+  private void buyProperty(Property property) {
     Player currentPlayer = getCurrentPlayerHelper();
     currentPlayer.purchase(property);
   }
 
-  public void publishGameData() {
+  private void publishGameData() {
     Player currentPlayer = getCurrentPlayerHelper();
     for (Place place :places){
       place.updatePlaceActions(currentPlayer);
@@ -166,6 +169,7 @@ public class GameModel implements GameEventListener, ModelOutput {
       }
       case "CONTROLLER_TO_MODEL_ROLL_DICE" -> {
         Command cmd = event.getGameEventCommand().getCommand();
+        rollDice();
         publishGameData();
       }
       case "CONTROLLER_TO_MODEL_PURCHASE_PROPERTY" -> {
