@@ -24,6 +24,8 @@ public abstract class AbstractPlace implements Place {
   private Collection<StationaryAction> inherentStationaryActions;
   private Collection<StationaryAction> stationaryActions;
   private Collection<PlaceAction> inherentPlaceActions;
+
+  private Collection<PlaceAction> updatedPlaceActions;
   public static final String PLACE_PACKAGE_NAME = AbstractPlace.class.getPackageName() + ".";
   public static final String DEFAULT_RESOURCE_FOLDER =
           "/" + PLACE_PACKAGE_NAME.replace(".", "/");
@@ -58,13 +60,13 @@ public abstract class AbstractPlace implements Place {
   }
 
 
-  public Collection<? extends ViewPlayer> getViewPlayers() {
+  public Collection<? extends ControllerPlayer> getViewPlayers() {
     return players;
   }
 
   @Override
-  public Collection<? extends Player> getPlayers() {
-    return players;
+  public Collection<ControllerPlayer> getPlayers() {
+    return new ArrayList<>(players);
   }
 
   @Override
@@ -81,17 +83,23 @@ public abstract class AbstractPlace implements Place {
    */
   @Override
   public Collection<StationaryAction> getStationaryActions(Player player) {
+    updateStationaryActions(player);
     return stationaryActions;
   }
 
-  public void updateStationaryActions(Player player) {
+  private void updateStationaryActions(Player player) {
     stationaryActions = getCommonTurnBasedStationaryAction(player);
     stationaryActions.addAll(inherentStationaryActions);
   }
 
   @Override
-  public Collection<PlaceAction> getPlaceActions(Player player) {
-    return inherentPlaceActions;
+  public void updatePlaceActions(Player player) {
+    updatedPlaceActions = new ArrayList<>(inherentPlaceActions);
+  }
+
+  @Override
+  public Collection<PlaceAction> getPlaceActions(){
+    return updatedPlaceActions;
   }
 
   @Override

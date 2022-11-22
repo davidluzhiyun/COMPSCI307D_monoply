@@ -3,6 +3,7 @@ package ooga.model;
 import java.awt.Point;
 import java.util.Collection;
 import java.util.List;
+import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
 
 /**
@@ -23,15 +24,14 @@ public interface ModelOutput {
 
   /**
    * Information about all players, in a List, change to collection if order no longer needed
-   * Change view player to controller player if that is a thing
    */
-  List<ViewPlayer> getPlayers();
+  List<ControllerPlayer> getPlayers();
 
   /**
    * Information about the board, used for both initialization and update now
    * (Place action is inside)
    */
-  List<Place> getBoard();
+  List<ControllerPlace> getBoard();
 
   /**
    * Get a list of StationaryActions that can be taken by the current player

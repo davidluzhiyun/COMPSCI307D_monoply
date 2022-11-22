@@ -56,6 +56,6 @@ class GameModelTest {
     model.initializeGame((Map<String, LinkedTreeMap>) config);
 
     assertEquals(4, model.getPlayers().size());
-    assertEquals(121, model.getPlaces().get(0).getPlaceId());
+    assertEquals(121, model.getBoard().get(0).getPlaceId());
   }
 }
