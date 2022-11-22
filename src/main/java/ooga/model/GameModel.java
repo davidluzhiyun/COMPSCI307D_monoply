@@ -1,5 +1,6 @@
 package ooga.model;
 
+import java.awt.Point;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
 import ooga.event.command.SampleCommand;
 import ooga.model.components.ConcretePlayerTurn;
+import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
 import ooga.model.place.property.Property;
 import ooga.view.SampleViewData;
@@ -24,7 +26,7 @@ import org.apache.logging.log4j.Logger;
 
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
 
-public class GameModel implements GameEventListener {
+public class GameModel implements GameEventListener, ModelOutput {
   private ConcretePlayerTurn turn;
   private List<Player> players;
   private List<Place> places;
@@ -42,7 +44,7 @@ public class GameModel implements GameEventListener {
     return modelResources;
   }
 
-  public void publishDice() {
+  public void rollDice() {
     Player currentPlayer = players.get(turn.getCurrentPlayerTurnId());
     turn.roll();
     SampleViewData d = null;//TODO
@@ -56,7 +58,7 @@ public class GameModel implements GameEventListener {
   }
 
   public void buyProperty(Property property) {
-    Player currentPlayer = getCurrentPlayer();
+    Player currentPlayer = getCurrentPlayerHelper();
     currentPlayer.purchase(property);
   }
 
@@ -68,39 +70,20 @@ public class GameModel implements GameEventListener {
   }
 
 
-  public void publishCurrentPlayer() {
-    Player currentPlayer = getCurrentPlayer();
-    //TODO: publish this data
-  }
 
   /**
    * Helper method to get the current player
    */
-  private Player getCurrentPlayer() {
+  private Player getCurrentPlayerHelper() {
     return players.get(turn.getCurrentPlayerTurnId());
   }
 
-  public void playersData() {
-    Collection<ControllerPlayer> playersData = new ArrayList<>(players);
-    //TODO: publish this data
-  }
 
   public void boardData() {
     List<Place> boardData = new ArrayList<>(places);
     //TODO: publish this data? I (David Lu) don't really know what this one should be
   }
 
-  public void stationaryActions() {
-    Player currentPlayer = getCurrentPlayer();
-    Place currentPlace = places.get(currentPlayer.getCurrentPlaceId());
-    Collection<StationaryAction> stationaryActions = currentPlace.getStationaryActions(currentPlayer);
-    //TODO: publish this data (stationaryActions)
-  }
-
-  public void boardUpdateData() {
-    ViewBoard boardData = new ViewBoardBuilder(new ArrayList<Place>(places), getCurrentPlayer());
-    //TODO: publish this data
-  }
 
   /**
    * For test purpose
@@ -141,25 +124,38 @@ public class GameModel implements GameEventListener {
     }
     return newPlace;
   }
+  // beginning of ModelOutput methods
 
-  /**
-   * For test purpose.
-   *
-   * @return
-   */
-  protected List<Player> getPlayers() {
-    return players;
+  @Override
+  public Point getDiceNum() {
+    return turn.getDiceNum();
   }
 
-  /**
-   * For test purpose.
-   *
-   * @return
-   */
-  protected List<Place> getPlaces() {
-    return places;
+  @Override
+  public int getCurrentPlayer() {
+    return turn.getCurrentPlayerTurnId();
   }
 
+  @Override
+  public List<ControllerPlayer> getPlayers() {
+    List<ControllerPlayer> playersData = new ArrayList<>(players);
+    return playersData;
+  }
+
+  @Override
+  public List<ControllerPlace> getBoard() {
+    return null;
+  }
+
+  @Override
+  public Collection<StationaryAction> getStationaryAction() {
+    Player currentPlayer = getCurrentPlayerHelper();
+    Place currentPlace = places.get(currentPlayer.getCurrentPlaceId());
+    Collection<StationaryAction> stationaryActions = currentPlace.getStationaryActions(currentPlayer);
+    return stationaryActions;
+  }
+
+  //end of ModelOutput methods
 
   @Override
   public void onGameEvent(GameEvent event) {
