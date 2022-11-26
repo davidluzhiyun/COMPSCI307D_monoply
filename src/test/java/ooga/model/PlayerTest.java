@@ -4,6 +4,7 @@ import ooga.model.place.Place;
 import ooga.model.place.property.ConcreteStreet;
 import ooga.model.place.property.Property;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -11,10 +12,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
-  static ConcretePlayer player;
+  ConcretePlayer player;
 
-  @BeforeAll
-  static void setUpTest() {
+  @BeforeEach
+  void setUpTest() {
     player = new ConcretePlayer(0);
   }
 
@@ -24,17 +25,17 @@ class PlayerTest {
   }
 
   @Test
+  void getTotalMoney() {
+    player.earnMoney(200);
+    assertEquals(200, player.getTotalMoney());
+  }
+
+  @Test
   void getProperties() {
     Property place = new ConcreteStreet(121);
     player.purchase(place);
     List<Place> places = List.of(place);
     assertEquals(places, player.getProperties());
-  }
-
-  @Test
-  void getTotalMoney() {
-    player.earnMoney(200);
-    assertEquals(200, player.getTotalMoney());
   }
 
   @Test

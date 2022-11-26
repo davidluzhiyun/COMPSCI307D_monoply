@@ -6,12 +6,19 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ooga.Main;
 import ooga.Reflection;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
+import ooga.event.command.Command;
+import ooga.event.command.DiceResultCommand;
+import ooga.event.command.RollDiceCommand;
+import ooga.view.pop_ups.DiceRollPopUp;
+import ooga.view.pop_ups.RentPopUp;
+import ooga.view.pop_ups.RollResultPopUp;
 
 public class GameView extends View implements GameEventListener {
 
@@ -20,6 +27,7 @@ public class GameView extends View implements GameEventListener {
   private Scene myScene;
   private String myStyle;
   private String myLanguage;
+  private DiceRollPopUp myDicePopUp;
   private final ResourceBundle myScreenResources;
   public static final String GAME_WIDTH_KEY = "GameWidth";
   public static final String GAME_HEIGHT_KEY = "GameHeight";
@@ -80,10 +88,6 @@ public class GameView extends View implements GameEventListener {
     return object;
   }
 
-  @Override
-  public void onGameEvent(GameEvent event) {
-
-  }
 
   @Override
   public void changeStyle(Number newValue) {
@@ -97,8 +101,51 @@ public class GameView extends View implements GameEventListener {
   /**
    * Set in property files to be the handler method when someone clicks the "Save game" button. This
    * should be implemented as one of our project extensions.
+   * TODO: change this to actually implement the savegame feature. currently this is just showing
+   * the pop ups.
    */
   public void saveGame() {
-    System.out.println("nothing to see here... yet");
+    RentPopUp pop = new RentPopUp();
+    pop.showMessage(myLanguage);
+    startPlayerTurn();
+  }
+
+  /**
+   * Will later need to take in current player (int) parameter -- or use instance variable
+   */
+  private void startPlayerTurn() {
+    myDicePopUp = new DiceRollPopUp(1);
+    myDicePopUp.showMessage(myLanguage);
+    myDicePopUp.makeButtonActive(this);
+  }
+
+  /**
+   * Set in property files to be called when the user clicks "Roll" within the RollDicePopUp
+   */
+  public void rollDice() {
+    Command cmd = new RollDiceCommand();
+    GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE", cmd);
+    gameEventHandler.publish(event);
+  }
+
+  /**
+   * TODO: change this to actually get the dice result from the controller and show it. also change
+   * how it is displayed. maybe this could be another type of pop-up?
+   */
+  private void showDiceResult(int roll) {
+    myDicePopUp.close();
+    RollResultPopUp pop = new RollResultPopUp(roll);
+    pop.showMessage(myLanguage);
+  }
+
+  @Override
+  public void onGameEvent(GameEvent event) {
+    switch (event.getGameEventType()) {
+      case "CONTROLLER_TO_VIEW_PLAYER_START" -> startPlayerTurn();
+      case "CONTROLLER_TO_VIEW_ROLL_DICE" -> {
+        Command cmd = event.getGameEventCommand().getCommand();
+        showDiceResult((int) cmd.getCommandArgs());
+      }
+    }
   }
 }

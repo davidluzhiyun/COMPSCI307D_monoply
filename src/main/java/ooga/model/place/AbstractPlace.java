@@ -22,16 +22,20 @@ public abstract class AbstractPlace implements Place {
   private final int placeId;
   private Collection<ConcretePlayer> players;
   private Collection<StationaryAction> inherentStationaryActions;
+  private Collection<StationaryAction> stationaryActions;
   private Collection<PlaceAction> inherentPlaceActions;
-  public static final String DEFAULT_RESOURCE_PACKAGE = AbstractPlace.class.getPackageName() + ".";
+
+  private Collection<PlaceAction> updatedPlaceActions;
+  public static final String PLACE_PACKAGE_NAME = AbstractPlace.class.getPackageName() + ".";
   public static final String DEFAULT_RESOURCE_FOLDER =
-          "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
+          "/" + PLACE_PACKAGE_NAME.replace(".", "/");
   private Map<String, ?> config;
 
   public AbstractPlace(int id) {
     placeId = id;
     players = new ArrayList<>();
     inherentStationaryActions = new ArrayList<>();
+    stationaryActions = new ArrayList<>();
     Gson gson = new Gson();
     Reader reader = null;
     try {
@@ -40,11 +44,6 @@ public abstract class AbstractPlace implements Place {
       TypeToken<Map<String, ?>> mapType = new TypeToken<>() {
       };
       config = gson.fromJson(reader, mapType);
-//      for (Map.Entry<String, ?> entry : config.entrySet()) {
-//        System.out.println(entry.getKey() + "=" + entry.getValue());
-//        // close reader
-//        reader.close();
-//      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -61,13 +60,13 @@ public abstract class AbstractPlace implements Place {
   }
 
 
-  public Collection<? extends ViewPlayer> getViewPlayers() {
+  public Collection<? extends ControllerPlayer> getViewPlayers() {
     return players;
   }
 
   @Override
-  public Collection<? extends Player> getPlayers() {
-    return players;
+  public Collection<ControllerPlayer> getPlayers() {
+    return new ArrayList<>(players);
   }
 
   @Override
@@ -84,14 +83,23 @@ public abstract class AbstractPlace implements Place {
    */
   @Override
   public Collection<StationaryAction> getStationaryActions(Player player) {
-    Collection<StationaryAction> actions = getCommonTurnBasedStationaryAction(player);
-    actions.addAll(inherentStationaryActions);
-    return actions;
+    updateStationaryActions(player);
+    return stationaryActions;
+  }
+
+  private void updateStationaryActions(Player player) {
+    stationaryActions = getCommonTurnBasedStationaryAction(player);
+    stationaryActions.addAll(inherentStationaryActions);
   }
 
   @Override
-  public Collection<PlaceAction> getPlaceActions(Player player) {
-    return inherentPlaceActions;
+  public void updatePlaceActions(Player player) {
+    updatedPlaceActions = new ArrayList<>(inherentPlaceActions);
+  }
+
+  @Override
+  public Collection<PlaceAction> getPlaceActions(){
+    return updatedPlaceActions;
   }
 
   @Override
