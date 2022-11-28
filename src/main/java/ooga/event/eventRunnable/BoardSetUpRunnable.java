@@ -36,7 +36,7 @@ public class BoardSetUpRunnable implements EventGenerator{
 
     private String jsonExtension = ".json";
 
-    private String typeRegex = " .+\"type\": \"(\\w+)\".?";
+    private String typeRegex = ".+\"type\": \"(\\w+)\".?";
 
     /**@param arguments; should be a model interface from the model**/
     public BoardSetUpRunnable(Command arguments) {
@@ -74,13 +74,8 @@ public class BoardSetUpRunnable implements EventGenerator{
                     return type;
                 }
             }
-            //printFile(file);
-        } catch (URISyntaxException e) {
-            System.out.println("Unable to get file");
-        } catch (FileNotFoundException e) {
-            System.out.println("Unable to get file");
-        } catch (IOException e) {
-            System.out.println("Unable to read file");
+        } catch (URISyntaxException | IOException e) {
+            System.out.println("Unable to get file"); //TODO: maybe make errors a popup?
         }
         return null;
     }
