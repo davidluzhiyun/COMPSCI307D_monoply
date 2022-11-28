@@ -8,7 +8,8 @@ import ooga.event.command.GetPlaceActionsToViewCommand;
 import ooga.model.ModelOutput;
 import ooga.model.PlaceAction;
 import ooga.model.Player;
-import ooga.model.ViewPlayer;
+import ooga.model.ControllerPlayer;
+import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
 
 import java.util.Collections;
@@ -19,30 +20,17 @@ import java.util.List;
  */
 public class GetPlaceActionsRunnableToView implements EventGenerator{
 
-    private ModelOutput boardInfo;
+    private ControllerPlace currentPlace;
 
     /**@param arguments; should be a model interface from the model**/
     public GetPlaceActionsRunnableToView(Command arguments) {
-        this.boardInfo = (ModelOutput) arguments.getCommandArgs();
+        this.currentPlace = (ControllerPlace) arguments.getCommandArgs();
     }
     @Override
     public GameEvent processEvent() {
-        List<PlaceAction> placeActions = getPlaceActions();
+        List<PlaceAction> placeActions = (List<PlaceAction>) this.currentPlace.getPlaceActions();
         Collections.sort(placeActions);
         GetPlaceActionsToViewCommand commandToView = new GetPlaceActionsToViewCommand(placeActions);
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_GET_PLACE_ACTIONS.name(), commandToView);
-    }
-
-    private List<PlaceAction> getPlaceActions() {
-        for (ViewPlayer player : this.boardInfo.getPlayers()) {
-            if (player.getPlayerId() == this.boardInfo.getCurrentPlayer()) {
-                for (Place place : this.boardInfo.getBoard()) {
-                    if (place.getPlaceId() == player.getCurrentPlaceId()) {
-                        return (List<PlaceAction>) place.getPlaceActions((Player) player); // TODO: fix this cast
-                    }
-                }
-            }
-        }
-        return null;
     }
 }

@@ -9,6 +9,7 @@ import ooga.event.command.Command;
 import ooga.model.*;
 import ooga.model.colorSet.DummyPlace;
 import ooga.model.colorSet.DummyStreet;
+import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
 
 import java.awt.*;
@@ -24,9 +25,9 @@ public class BoardSetUpTest extends TestCase {
 
     private MockListener listener;
 
-    List<ViewPlayer> players = new ArrayList<>();
+    List<ControllerPlayer> players = new ArrayList<>();
 
-    List<Place> places = new ArrayList<>();
+    List<ControllerPlace> places = new ArrayList<>();
 
     Collection<StationaryAction> actions = new ArrayList<>();
 
@@ -43,10 +44,10 @@ public class BoardSetUpTest extends TestCase {
         players.add(new ConcretePlayer(0));
         players.add(new ConcretePlayer(1));
         places.add(new DummyPlace(0));
-        places.add(new DummyPlace(1));
+        places.add(new DummyPlace(121));
         actions.add(StationaryAction.ROLL_DICE);
-        parsedProperties.add(new ParsedProperty(null, 0)); // TODO: add type here
-        parsedProperties.add(new ParsedProperty(null, 0));
+        parsedProperties.add(new ParsedProperty("Go", 0));
+        parsedProperties.add(new ParsedProperty("Street", 0));
     }
 
     public void testBoardSetUp() {
@@ -64,12 +65,12 @@ public class BoardSetUpTest extends TestCase {
             }
 
             @Override
-            public List<ViewPlayer> getPlayers() {
+            public List<ControllerPlayer> getPlayers() {
                 return players;
             }
 
             @Override
-            public List<Place> getBoard() {
+            public List<ControllerPlace> getBoard() {
                 return places;
             }
 

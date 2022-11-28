@@ -9,8 +9,9 @@ import ooga.event.command.Command;
 import ooga.model.ConcretePlayer;
 import ooga.model.ModelOutput;
 import ooga.model.StationaryAction;
-import ooga.model.ViewPlayer;
+import ooga.model.ControllerPlayer;
 import ooga.model.colorSet.DummyPlace;
+import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
 
 import java.awt.*;
@@ -26,9 +27,9 @@ public class UpdateViewEventTest extends TestCase {
 
     private MockListener listener;
 
-    List<ViewPlayer> players = new ArrayList<>();
+    List<ControllerPlayer> players = new ArrayList<>();
 
-    List<Place> places = new ArrayList<>();
+    List<ControllerPlace> places = new ArrayList<>();
 
     Collection<StationaryAction> actions = new ArrayList<>();
 
@@ -62,12 +63,12 @@ public class UpdateViewEventTest extends TestCase {
             }
 
             @Override
-            public List<ViewPlayer> getPlayers() {
+            public List<ControllerPlayer> getPlayers() {
                 return players;
             }
 
             @Override
-            public List<Place> getBoard() {
+            public List<ControllerPlace> getBoard() {
                 return places;
             }
 
