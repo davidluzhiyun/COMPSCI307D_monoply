@@ -31,6 +31,7 @@ public class GameView extends View implements GameEventListener {
   public static final String GAME_HEIGHT_KEY = "GameHeight";
   public static final String GAME_OBJECTS_KEY = "GameObjects";
   public static final String GAME_BUTTONS_ID = "GameButtons";
+  public static final String GAME_PIECE = "GamePiece";
   private BorderPane myBorderPane;
   private final ResourceBundle myLanguageResources;
 
@@ -135,6 +136,18 @@ public class GameView extends View implements GameEventListener {
     myDicePopUp.close();
     RollResultPopUp pop = new RollResultPopUp(roll);
     pop.showMessage(myLanguage);
+  }
+
+  /**
+   * Set to respond to selections within GamePieceDropDown
+   * @param newVal
+   */
+  public void makeGamePiece(Number newVal) {
+    ResourceBundle choiceResources = ResourceBundle.getBundle(
+        Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
+    String gamePiece = choiceResources.getString(String.format(StartView.STRING_INT_FORMATTER, GAME_PIECE, newVal));
+
+    System.out.println(gamePiece);
   }
 
   @Override
