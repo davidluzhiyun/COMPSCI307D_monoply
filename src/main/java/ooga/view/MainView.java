@@ -1,5 +1,7 @@
 package ooga.view;
 
+import static ooga.event.GameEventType.VIEW_LAUNCH_GAME_SCREEN;
+
 import javafx.stage.Stage;
 import ooga.event.GameEventHandler;
 import ooga.view.scene.SceneManager;
@@ -15,6 +17,6 @@ public class MainView {
   }
 
   public void start() {
-
+    myGameEventHandler.publish(VIEW_LAUNCH_GAME_SCREEN);
   }
 }
