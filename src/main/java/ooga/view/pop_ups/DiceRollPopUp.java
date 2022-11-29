@@ -27,10 +27,20 @@ public class DiceRollPopUp extends ActionPopUp {
   public static final String DICE_IMAGE = "dice.png";
   public static final String PLAYER_TEXT_KEY = "PlayerText";
   public static final String ROLL_DICE_TEXT_KEY = "RollDice";
+  public static final String START_TURN = "StartTurn";
+  public static final String DICE_WIDTH = "DiceWidth";
+  public static final String WIDTH = "Width";
+  public static final String HEIGHT = "Height";
+  private final ResourceBundle popUpResources;
+  private int myWidth;
+  private int myHeight;
 
   public DiceRollPopUp(int player) {
     this.currentPlayer = player;
     this.myStage = new Stage();
+    popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
+    this.myHeight = Integer.parseInt(popUpResources.getString(HEIGHT));
+    this.myWidth = Integer.parseInt(popUpResources.getString(WIDTH));
   }
 
   /**
@@ -42,11 +52,9 @@ public class DiceRollPopUp extends ActionPopUp {
     ResourceBundle resources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + language);
     Text playerText = new Text(String.format(resources.getString(PLAYER_TEXT_KEY), currentPlayer));
     Text rollText = new Text(resources.getString(ROLL_DICE_TEXT_KEY));
-    ImageView diceImage = createDiceImage();
-    createRollButton();
-    VBox root = new VBox(playerText, rollText, diceImage, button);
-    Scene scene = new Scene(root, 300, 200);
-    myStage.setTitle("START TURN");
+    VBox root = new VBox(playerText, rollText, createDiceImage(), createRollButton());
+    Scene scene = new Scene(root, myWidth, myHeight);
+    myStage.setTitle(resources.getString(START_TURN));
     myStage.setScene(scene);
     myStage.show();
   }
@@ -54,7 +62,8 @@ public class DiceRollPopUp extends ActionPopUp {
     Image image = new Image(DICE_IMAGE);
     ImageView diceImage = new ImageView(image);
     diceImage.setPreserveRatio(true);
-    diceImage.setFitWidth(200);
+    int diceWidth = Integer.parseInt(popUpResources.getString(DICE_WIDTH));
+    diceImage.setFitWidth(diceWidth);
     return diceImage;
   }
 

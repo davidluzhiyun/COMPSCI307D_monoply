@@ -10,6 +10,7 @@ public abstract class View {
   public static final String STYLESHEETS = "/" + DEFAULT_STYLE_PACKAGE.replace(".", "/");
   public static final String BUTTON_PROPERTIES = Main.DEFAULT_RESOURCE_PACKAGE + "Button";
   public static final String CHOICE_BOX_PROPERTIES = Main.DEFAULT_RESOURCE_PACKAGE + "DropDown";
+  public static final String POP_UP_PROPERTIES = Main.DEFAULT_RESOURCE_PACKAGE + "PopUp";
 
   public abstract InteractiveObject makeInteractiveObject(String name);
   public abstract void changeStyle(Number newValue);
