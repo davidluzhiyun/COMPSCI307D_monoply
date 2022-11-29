@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ooga.Main;
 import ooga.Reflection;
@@ -14,7 +13,6 @@ import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.command.Command;
-import ooga.event.command.DiceResultCommand;
 import ooga.event.command.RollDiceCommand;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.RentPopUp;
@@ -22,8 +20,8 @@ import ooga.view.pop_ups.RollResultPopUp;
 
 public class GameView extends View implements GameEventListener {
 
-  private GameEventHandler gameEventHandler;
-  private Stage myStage;
+  private final GameEventHandler gameEventHandler;
+  private final Stage myStage;
   private Scene myScene;
   private String myStyle;
   private String myLanguage;
@@ -126,11 +124,12 @@ public class GameView extends View implements GameEventListener {
     Command cmd = new RollDiceCommand();
     GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE", cmd);
     gameEventHandler.publish(event);
+    // TODO: delete this. this is just temporary for demo
+//    showDiceResult(7);
   }
 
   /**
-   * TODO: change this to actually get the dice result from the controller and show it. also change
-   * how it is displayed. maybe this could be another type of pop-up?
+   * TODO: change this to actually get the dice result from the controller and show it.
    */
   private void showDiceResult(int roll) {
     myDicePopUp.close();

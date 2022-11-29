@@ -5,7 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import ooga.Main;
 
-public class RentPopUp implements PopUp {
+public class RentPopUp extends InformationPopUp {
   public static final String RENT_MESSAGE_TITLE = "RentPopUpTitle";
   public static final String RENT_MESSAGE_HEADER = "RentPopUpHeader";
   public static final String RENT_MESSAGE = "RentPopUp";

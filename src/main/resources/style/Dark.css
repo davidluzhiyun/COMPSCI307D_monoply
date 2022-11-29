@@ -4,7 +4,10 @@
   -fx-text-alignment: center;
   -fx-text-fill: white;
 }
+#dicerollpop {
+  -fx-alignment: center;
 
+}
 #Background {
   -fx-fill:
       linear-gradient(rgb(77,0,153), rgb(0,43,128));
