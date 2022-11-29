@@ -92,7 +92,8 @@ public class GameView extends View implements GameEventListener {
   public void changeStyle(Number newValue) {
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
-    myStyle = choiceResources.getString(String.format(StartView.STRING_INT_FORMATTER, StartView.STYLE, newValue));
+    myStyle = choiceResources.getString(
+        String.format(StartView.STRING_INT_FORMATTER, StartView.STYLE, newValue));
     myStage.close();
     setUpScene();
   }
@@ -123,10 +124,9 @@ public class GameView extends View implements GameEventListener {
    */
   public void rollDice() {
     Command cmd = new RollDiceCommand();
-    GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE", cmd);
+    GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE",
+        cmd);
     gameEventHandler.publish(event);
-    // TODO: delete this. this is just temporary for demo
-//    showDiceResult(7);
   }
 
   /**
@@ -139,14 +139,16 @@ public class GameView extends View implements GameEventListener {
   }
 
   /**
-   * Set to respond to selections within GamePieceDropDown
+   * Set to respond to selections within GamePieceDropDown.
+   * TODO: figure out how we are representing game pieces and also when we are letting users select their game pieces.
+   * Currently this just prints out the user's selection -- will do something with this later.
    * @param newVal
    */
   public void makeGamePiece(Number newVal) {
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
-    String gamePiece = choiceResources.getString(String.format(StartView.STRING_INT_FORMATTER, GAME_PIECE, newVal));
-
+    String gamePiece = choiceResources.getString(
+        String.format(StartView.STRING_INT_FORMATTER, GAME_PIECE, newVal));
     System.out.println(gamePiece);
   }
 

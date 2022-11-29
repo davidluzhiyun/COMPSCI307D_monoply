@@ -16,19 +16,20 @@ public class GamePieceDropDown extends CustomizedDropDown {
   public static final String GAME_PIECE_KEY = "GamePieceDropDown";
   public static final String AVAILABLE_PIECES_KEY = "AvailablePieces";
   public static final String GAME_PIECE_BOX_KEY = "GamePieceDropDownBox";
-  private final ResourceBundle myLanguageResources;
   private final ResourceBundle id;
   private final ResourceBundle myResources;
 
   public GamePieceDropDown(String language) {
     super(GAME_PIECE_KEY, language);
     myResources = ResourceBundle.getBundle(View.CHOICE_BOX_PROPERTIES);
-    myLanguageResources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + language);
     id = ResourceBundle.getBundle(Main.ID_PROPERTIES);
     this.setId(id.getString(GAME_PIECE_KEY));
     createChoices();
   }
 
+  /**
+   * Generates a ChoiceBox populated with options from property files.
+   */
   @Override
   public void createChoices() {
     String[] availablePieces = myResources.getString(AVAILABLE_PIECES_KEY)
