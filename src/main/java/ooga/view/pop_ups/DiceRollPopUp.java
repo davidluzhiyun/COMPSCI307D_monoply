@@ -19,7 +19,7 @@ import ooga.view.button.DiceRollButton;
  * having two abstract classes for pop-ups: information pop up and action pop up.
  * TODO: LOTS OF REFACTORING
  */
-public class DiceRollPopUp implements PopUp {
+public class DiceRollPopUp extends ActionPopUp {
   private int currentPlayer;
   private final Stage myStage;
   private String myLanguage;
@@ -33,6 +33,9 @@ public class DiceRollPopUp implements PopUp {
     this.myStage = new Stage();
   }
 
+  /**
+   * @param language
+   */
   @Override
   public void showMessage(String language) {
     this.myLanguage = language;
@@ -43,6 +46,7 @@ public class DiceRollPopUp implements PopUp {
     createRollButton();
     VBox root = new VBox(playerText, rollText, diceImage, button);
     Scene scene = new Scene(root, 300, 200);
+    myStage.setTitle("START TURN");
     myStage.setScene(scene);
     myStage.show();
   }
@@ -65,10 +69,10 @@ public class DiceRollPopUp implements PopUp {
     String method = resources.getString(
         String.format(StartView.STRING_FORMATTER, DiceRollButton.DICE_ROLL_KEY, StartView.METHOD));
     button.setAction(reflection.makeMethod(method, GameView.class, null), view);
-
   }
 
   public void close() {
     myStage.close();
   }
+
 }

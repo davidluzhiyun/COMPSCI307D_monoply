@@ -16,13 +16,13 @@ public class StyleDropDown extends CustomizedDropDown {
   public static final String STYLE_MENU_KEY = "StyleDropDown";
   public static final String STYLES_KEY = "AvailableStyles";
   public static final String STYLE_CHOICE_BOX_KEY = "StyleDropDownBox";
-  private final ResourceBundle myLanguageResources;
+  private final ResourceBundle myResources;
   private final ResourceBundle id;
 
   public StyleDropDown(String language) {
     super(STYLE_MENU_KEY, language);
     id = ResourceBundle.getBundle(Main.ID_PROPERTIES);
-    myLanguageResources = ResourceBundle.getBundle(View.CHOICE_BOX_PROPERTIES);
+    myResources = ResourceBundle.getBundle(View.CHOICE_BOX_PROPERTIES);
     this.setId(id.getString(STYLE_MENU_KEY));
     createChoices();
   }
@@ -32,7 +32,7 @@ public class StyleDropDown extends CustomizedDropDown {
    */
   @Override
   public void createChoices() {
-    String[] availableStyles = myLanguageResources.getString(STYLES_KEY)
+    String[] availableStyles = myResources.getString(STYLES_KEY)
         .split(StartView.COMMA_REGEX);
     choiceBox = new ChoiceBox<>(FXCollections.observableArrayList(availableStyles));
     choiceBox.setId(id.getString(STYLE_CHOICE_BOX_KEY));
