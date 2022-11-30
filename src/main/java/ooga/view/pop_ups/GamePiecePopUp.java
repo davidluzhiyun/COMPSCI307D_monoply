@@ -13,15 +13,18 @@ import ooga.view.GameView;
 import ooga.view.InteractiveObject;
 import ooga.view.StartView;
 import ooga.view.View;
+import ooga.view.button.CustomizedButton;
+import ooga.view.button.SelectButton;
 import ooga.view.drop_down.CustomizedDropDown;
 import ooga.view.drop_down.GamePieceDropDown;
 
 /**
  * A pop-up that displays the current player and gives them the option to select their game piece.
- * Should show the image/preview of what their game piece will look like whenever they change
- * within the drop-down menu. Give them a "confirm" button
+ * Should show the image/preview of what their game piece will look like whenever they change within
+ * the drop-down menu. Give them a "confirm" button
  */
 public class GamePiecePopUp extends ActionPopUp {
+
   private int currentPlayer;
   private final Stage myStage;
   private String myLanguage;
@@ -30,6 +33,7 @@ public class GamePiecePopUp extends ActionPopUp {
   private String myStyle;
   private VBox root;
   private ImageView icon;
+  private String imageURL;
   public static final String PREVIEW_TEXT_KEY = "GamePiecePreviewText";
   public static final String ICON_HEIGHT_KEY = "IconHeight";
 
@@ -39,6 +43,7 @@ public class GamePiecePopUp extends ActionPopUp {
     this.myStage = new Stage();
     this.popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
     this.myStyle = style;
+    this.icon = new ImageView();
   }
 
   @Override
@@ -51,9 +56,11 @@ public class GamePiecePopUp extends ActionPopUp {
 
   @Override
   public void createScene() {
-    Text playerText = new Text(String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
+    Text playerText = new Text(
+        String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
     Text previewText = new Text(myResources.getString(PREVIEW_TEXT_KEY));
-    root = new VBox(playerText, (CustomizedDropDown) makeInteractiveObject(GamePieceDropDown.GAME_PIECE_KEY), previewText);
+    root = new VBox(playerText,
+        (CustomizedDropDown) makeInteractiveObject(GamePieceDropDown.GAME_PIECE_KEY), previewText);
     int height = Integer.parseInt(popUpResources.getString(HEIGHT));
     int width = Integer.parseInt(popUpResources.getString(WIDTH));
     Scene scene = new Scene(root, width, height);
@@ -78,7 +85,8 @@ public class GamePiecePopUp extends ActionPopUp {
     String method = resources.getString(
         String.format(StartView.STRING_FORMATTER, name, StartView.METHOD));
     if (name.contains(StartView.DROP_DOWN)) {
-      object.setAction(reflection.makeMethod(method, GamePiecePopUp.class, new Class[]{Number.class}),
+      object.setAction(
+          reflection.makeMethod(method, GamePiecePopUp.class, new Class[]{Number.class}),
           this);
     } else {
       object.setAction(reflection.makeMethod(method, GamePiecePopUp.class, null), this);
@@ -87,18 +95,25 @@ public class GamePiecePopUp extends ActionPopUp {
   }
 
   /**
-   * Set within property files to handle changes to GamePieceDropDown
+   * Set within property files to handle changes to GamePieceDropDown by removing the current
+   * visible icon and creating a new one
    */
   public void previewPiece(Number newValue) {
     root.getChildren().remove(icon);
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
-    String gamePiece = choiceResources.getString(
+    imageURL = choiceResources.getString(
         String.format(StartView.STRING_INT_FORMATTER, GameView.GAME_PIECE, newValue));
-    Image image = new Image(gamePiece);
+    Image image = new Image(imageURL);
     icon = new ImageView(image);
     icon.setPreserveRatio(true);
     icon.setFitHeight(Integer.parseInt(popUpResources.getString(ICON_HEIGHT_KEY)));
-    root.getChildren().add(icon);
+    root.getChildren().addAll(icon, (CustomizedButton) makeInteractiveObject(
+        SelectButton.SELECT_BUTTON_KEY));
+  }
+
+  public void saveChanges() {
+    System.out.println(imageURL);
+    this.close();
   }
 }
