@@ -15,6 +15,7 @@ import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.RollDiceCommand;
 import ooga.view.pop_ups.DiceRollPopUp;
+import ooga.view.pop_ups.GamePiecePopUp;
 import ooga.view.pop_ups.RentPopUp;
 import ooga.view.pop_ups.RollResultPopUp;
 
@@ -62,33 +63,12 @@ public class GameView extends View implements GameEventListener {
     HBox box = new HBox();
     String[] names = myScreenResources.getString(GAME_OBJECTS_KEY).split(StartView.SPACE_REGEX);
     for (String name : names) {
-      box.getChildren().add((Node) makeInteractiveObject(name));
+      box.getChildren().add((Node) makeInteractiveObject(name, myLanguage, this));
     }
     box.setId(GAME_BUTTONS_ID);
     return box;
   }
 
-  @Override
-  public InteractiveObject makeInteractiveObject(String name) {
-    Reflection reflection = new Reflection();
-    ResourceBundle resources = ResourceBundle.getBundle(View.BUTTON_PROPERTIES);
-    String className = resources.getString(name);
-    InteractiveObject object = (InteractiveObject) reflection.makeObject(className,
-        new Class[]{String.class},
-        new Object[]{myLanguage});
-    String method = resources.getString(
-        String.format(StartView.STRING_FORMATTER, name, StartView.METHOD));
-    if (name.contains(StartView.DROP_DOWN)) {
-      object.setAction(reflection.makeMethod(method, GameView.class, new Class[]{Number.class}),
-          this);
-    } else {
-      object.setAction(reflection.makeMethod(method, GameView.class, null), this);
-    }
-    return object;
-  }
-
-
-  @Override
   public void changeStyle(Number newValue) {
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
@@ -101,20 +81,16 @@ public class GameView extends View implements GameEventListener {
   /**
    * Set in property files to be the handler method when someone clicks the "Save game" button. This
    * should be implemented as one of our project extensions.
-   * TODO: change this to actually implement the savegame feature. currently this is just showing
-   * the pop ups.
+   * TODO: change this to actually implement the savegame feature.
    */
   public void saveGame() {
-    RentPopUp pop = new RentPopUp();
-    pop.showMessage(myLanguage);
-    startPlayerTurn();
   }
 
   /**
    * Will later need to take in current player (int) parameter -- or use instance variable
    */
   private void startPlayerTurn() {
-    myDicePopUp = new DiceRollPopUp(1);
+    myDicePopUp = new DiceRollPopUp(1, myStyle, myLanguage);
     myDicePopUp.showMessage(myLanguage);
     myDicePopUp.makeButtonActive(this);
   }
@@ -136,20 +112,6 @@ public class GameView extends View implements GameEventListener {
     myDicePopUp.close();
     RollResultPopUp pop = new RollResultPopUp(roll);
     pop.showMessage(myLanguage);
-  }
-
-  /**
-   * Set to respond to selections within GamePieceDropDown.
-   * TODO: figure out how we are representing game pieces and also when we are letting users select their game pieces.
-   * Currently this just prints out the user's selection -- will do something with this later.
-   * @param newVal
-   */
-  public void makeGamePiece(Number newVal) {
-    ResourceBundle choiceResources = ResourceBundle.getBundle(
-        Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
-    String gamePiece = choiceResources.getString(
-        String.format(StartView.STRING_INT_FORMATTER, GAME_PIECE, newVal));
-    System.out.println(gamePiece);
   }
 
   @Override

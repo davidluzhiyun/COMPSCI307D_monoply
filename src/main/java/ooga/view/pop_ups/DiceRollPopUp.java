@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import ooga.Main;
 import ooga.Reflection;
 import ooga.view.GameView;
+import ooga.view.InteractiveObject;
 import ooga.view.StartView;
 import ooga.view.View;
 import ooga.view.button.DiceRollButton;
@@ -20,41 +21,59 @@ import ooga.view.button.DiceRollButton;
  * TODO: LOTS OF REFACTORING
  */
 public class DiceRollPopUp extends ActionPopUp {
+
   private int currentPlayer;
   private final Stage myStage;
   private String myLanguage;
   private DiceRollButton button;
   public static final String DICE_IMAGE = "dice.png";
-  public static final String PLAYER_TEXT_KEY = "PlayerText";
   public static final String ROLL_DICE_TEXT_KEY = "RollDice";
+  public static final String START_TURN = "StartTurn";
+  public static final String DICE_WIDTH = "DiceWidth";
+  private final ResourceBundle popUpResources;
+  private ResourceBundle myResources;
+  private int myWidth;
+  private int myHeight;
+  private String myStyle;
 
-  public DiceRollPopUp(int player) {
+  public DiceRollPopUp(int player, String style, String language) {
+    super(language);
     this.currentPlayer = player;
     this.myStage = new Stage();
+    popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
+    this.myHeight = Integer.parseInt(popUpResources.getString(HEIGHT));
+    this.myWidth = Integer.parseInt(popUpResources.getString(WIDTH));
+    this.myStyle = style;
   }
 
-  /**
-   * @param language
-   */
   @Override
   public void showMessage(String language) {
     this.myLanguage = language;
-    ResourceBundle resources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + language);
-    Text playerText = new Text(String.format(resources.getString(PLAYER_TEXT_KEY), currentPlayer));
-    Text rollText = new Text(resources.getString(ROLL_DICE_TEXT_KEY));
-    ImageView diceImage = createDiceImage();
-    createRollButton();
-    VBox root = new VBox(playerText, rollText, diceImage, button);
-    Scene scene = new Scene(root, 300, 200);
-    myStage.setTitle("START TURN");
-    myStage.setScene(scene);
+    this.myResources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + language);
+    createScene();
     myStage.show();
   }
+
+  @Override
+  public void createScene() {
+    Text playerText = new Text(
+        String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
+    Text rollText = new Text(myResources.getString(ROLL_DICE_TEXT_KEY));
+    VBox root = new VBox(playerText, rollText, createDiceImage(), createRollButton());
+    root.setId("DiceRollPopUp");
+    Scene scene = new Scene(root, myWidth, myHeight);
+    myStage.setTitle(myResources.getString(START_TURN));
+    myStage.setScene(scene);
+    popUpStyle(scene, myStyle);
+
+  }
+
   private ImageView createDiceImage() {
     Image image = new Image(DICE_IMAGE);
     ImageView diceImage = new ImageView(image);
     diceImage.setPreserveRatio(true);
-    diceImage.setFitWidth(200);
+    int diceWidth = Integer.parseInt(popUpResources.getString(DICE_WIDTH));
+    diceImage.setFitWidth(diceWidth);
     return diceImage;
   }
 
@@ -71,6 +90,7 @@ public class DiceRollPopUp extends ActionPopUp {
     button.setAction(reflection.makeMethod(method, GameView.class, null), view);
   }
 
+  @Override
   public void close() {
     myStage.close();
   }
