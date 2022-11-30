@@ -15,6 +15,7 @@ import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.RollDiceCommand;
 import ooga.view.pop_ups.DiceRollPopUp;
+import ooga.view.pop_ups.GamePiecePopUp;
 import ooga.view.pop_ups.RentPopUp;
 import ooga.view.pop_ups.RollResultPopUp;
 
@@ -105,6 +106,8 @@ public class GameView extends View implements GameEventListener {
    * the pop ups.
    */
   public void saveGame() {
+    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle);
+    popUp.showMessage(myLanguage);
     RentPopUp pop = new RentPopUp();
     pop.showMessage(myLanguage);
     startPlayerTurn();
@@ -114,7 +117,7 @@ public class GameView extends View implements GameEventListener {
    * Will later need to take in current player (int) parameter -- or use instance variable
    */
   private void startPlayerTurn() {
-    myDicePopUp = new DiceRollPopUp(1);
+    myDicePopUp = new DiceRollPopUp(1, myStyle);
     myDicePopUp.showMessage(myLanguage);
     myDicePopUp.makeButtonActive(this);
   }
