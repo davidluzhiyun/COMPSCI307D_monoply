@@ -47,14 +47,6 @@ public class GamePiecePopUp extends ActionPopUp {
   }
 
   @Override
-  public void showMessage(String language) {
-    myLanguage = language;
-    myResources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + language);
-    createScene();
-    myStage.show();
-  }
-
-  @Override
   public void createScene() {
     Text playerText = new Text(
         String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
@@ -67,10 +59,46 @@ public class GamePiecePopUp extends ActionPopUp {
     myStage.setScene(scene);
     popUpStyle(scene, myStyle);
   }
+  @Override
+  public void showMessage(String language) {
+    myLanguage = language;
+    myResources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + language);
+    createScene();
+    myStage.show();
+  }
 
   @Override
   public void close() {
     myStage.close();
+  }
+
+
+  /**
+   * Set within property files to handle changes to GamePieceDropDown by removing the current
+   * visible icon and creating a new one
+   */
+  public void previewPiece(Number newValue) {
+    root.getChildren().remove(icon);
+    ResourceBundle choiceResources = ResourceBundle.getBundle(
+        Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
+    imageURL = choiceResources.getString(
+        String.format(StartView.STRING_INT_FORMATTER, GameView.GAME_PIECE, newValue));
+    Image image = new Image(imageURL);
+    icon = new ImageView(image);
+    icon.setPreserveRatio(true);
+    icon.setFitHeight(Integer.parseInt(popUpResources.getString(ICON_HEIGHT_KEY)));
+    root.getChildren().addAll(icon, (CustomizedButton) makeInteractiveObject(
+        SelectButton.SELECT_BUTTON_KEY));
+  }
+
+  /**
+   * Currently set within property file as the method for when the SelectButton is clicked.
+   * TODO: actually use this information to generate a new game piece for the player.
+   * (Perhaps we can have a map of player to player image
+   */
+  public void saveChanges() {
+    System.out.println(imageURL);
+    this.close();
   }
 
   // TODO: refactor so that this code is not more or less repeated across so many classes
@@ -94,26 +122,4 @@ public class GamePiecePopUp extends ActionPopUp {
     return object;
   }
 
-  /**
-   * Set within property files to handle changes to GamePieceDropDown by removing the current
-   * visible icon and creating a new one
-   */
-  public void previewPiece(Number newValue) {
-    root.getChildren().remove(icon);
-    ResourceBundle choiceResources = ResourceBundle.getBundle(
-        Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
-    imageURL = choiceResources.getString(
-        String.format(StartView.STRING_INT_FORMATTER, GameView.GAME_PIECE, newValue));
-    Image image = new Image(imageURL);
-    icon = new ImageView(image);
-    icon.setPreserveRatio(true);
-    icon.setFitHeight(Integer.parseInt(popUpResources.getString(ICON_HEIGHT_KEY)));
-    root.getChildren().addAll(icon, (CustomizedButton) makeInteractiveObject(
-        SelectButton.SELECT_BUTTON_KEY));
-  }
-
-  public void saveChanges() {
-    System.out.println(imageURL);
-    this.close();
-  }
 }
