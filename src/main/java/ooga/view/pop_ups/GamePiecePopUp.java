@@ -1,7 +1,6 @@
 package ooga.view.pop_ups;
 
 import java.util.ResourceBundle;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,7 +28,10 @@ public class GamePiecePopUp extends ActionPopUp {
   private ResourceBundle myResources;
   private final ResourceBundle popUpResources;
   private String myStyle;
-  private Group root;
+  private VBox root;
+  private ImageView icon;
+  public static final String PREVIEW_TEXT_KEY = "GamePiecePreviewText";
+  public static final String ICON_HEIGHT_KEY = "IconHeight";
 
   public GamePiecePopUp(int player, String style, String language) {
     super(language);
@@ -50,8 +52,8 @@ public class GamePiecePopUp extends ActionPopUp {
   @Override
   public void createScene() {
     Text playerText = new Text(String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
-    Text previewText = new Text(myResources.getString("GamePiecePreviewText"));
-    this.root = new Group(playerText, (CustomizedDropDown) makeInteractiveObject("GamePieceDropDown"), previewText);
+    Text previewText = new Text(myResources.getString(PREVIEW_TEXT_KEY));
+    root = new VBox(playerText, (CustomizedDropDown) makeInteractiveObject(GamePieceDropDown.GAME_PIECE_KEY), previewText);
     int height = Integer.parseInt(popUpResources.getString(HEIGHT));
     int width = Integer.parseInt(popUpResources.getString(WIDTH));
     Scene scene = new Scene(root, width, height);
@@ -59,20 +61,44 @@ public class GamePiecePopUp extends ActionPopUp {
     popUpStyle(scene, myStyle);
   }
 
-
-  private ImageView makeIconPreview() {
-//    Image image = new Image(DICE_IMAGE);
-//    ImageView diceImage = new ImageView(image);
-//    diceImage.setPreserveRatio(true);
-//    int diceWidth = Integer.parseInt(popUpResources.getString(DICE_WIDTH));
-//    diceImage.setFitWidth(diceWidth);
-    ImageView icon = new ImageView();
-    return icon;
-  }
   @Override
   public void close() {
     myStage.close();
   }
 
-  // TODO: fix up repetition in this code across other View classes
+  // TODO: refactor so that this code is not more or less repeated across so many classes
+  @Override
+  public InteractiveObject makeInteractiveObject(String name) {
+    Reflection reflection = new Reflection();
+    ResourceBundle resources = ResourceBundle.getBundle(View.BUTTON_PROPERTIES);
+    String className = resources.getString(name);
+    InteractiveObject object = (InteractiveObject) reflection.makeObject(className,
+        new Class[]{String.class},
+        new Object[]{myLanguage});
+    String method = resources.getString(
+        String.format(StartView.STRING_FORMATTER, name, StartView.METHOD));
+    if (name.contains(StartView.DROP_DOWN)) {
+      object.setAction(reflection.makeMethod(method, GamePiecePopUp.class, new Class[]{Number.class}),
+          this);
+    } else {
+      object.setAction(reflection.makeMethod(method, GamePiecePopUp.class, null), this);
+    }
+    return object;
+  }
+
+  /**
+   * Set within property files to handle changes to GamePieceDropDown
+   */
+  public void previewPiece(Number newValue) {
+    root.getChildren().remove(icon);
+    ResourceBundle choiceResources = ResourceBundle.getBundle(
+        Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
+    String gamePiece = choiceResources.getString(
+        String.format(StartView.STRING_INT_FORMATTER, GameView.GAME_PIECE, newValue));
+    Image image = new Image(gamePiece);
+    icon = new ImageView(image);
+    icon.setPreserveRatio(true);
+    icon.setFitHeight(Integer.parseInt(popUpResources.getString(ICON_HEIGHT_KEY)));
+    root.getChildren().add(icon);
+  }
 }
