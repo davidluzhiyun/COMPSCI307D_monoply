@@ -34,6 +34,7 @@ public class GamePiecePopUp extends ActionPopUp {
   private VBox root;
   private ImageView icon;
   private String imageURL;
+  private CustomizedButton selectButton;
   public static final String PREVIEW_TEXT_KEY = "GamePiecePreviewText";
   public static final String ICON_HEIGHT_KEY = "IconHeight";
 
@@ -56,6 +57,7 @@ public class GamePiecePopUp extends ActionPopUp {
     root.setId("GamePiecePopUp");
     int height = Integer.parseInt(popUpResources.getString(HEIGHT));
     int width = Integer.parseInt(popUpResources.getString(WIDTH));
+    selectButton = (CustomizedButton) makeInteractiveObject(SelectButton.SELECT_BUTTON_KEY);
     Scene scene = new Scene(root, width, height);
     myStage.setScene(scene);
     popUpStyle(scene, myStyle);
@@ -79,7 +81,7 @@ public class GamePiecePopUp extends ActionPopUp {
    * visible icon and creating a new one
    */
   public void previewPiece(Number newValue) {
-    root.getChildren().remove(icon);
+    root.getChildren().removeAll(icon, selectButton);
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
     imageURL = choiceResources.getString(
@@ -88,8 +90,8 @@ public class GamePiecePopUp extends ActionPopUp {
     icon = new ImageView(image);
     icon.setPreserveRatio(true);
     icon.setFitHeight(Integer.parseInt(popUpResources.getString(ICON_HEIGHT_KEY)));
-    root.getChildren().addAll(icon, (CustomizedButton) makeInteractiveObject(
-        SelectButton.SELECT_BUTTON_KEY));
+    selectButton = (CustomizedButton) makeInteractiveObject(SelectButton.SELECT_BUTTON_KEY);
+    root.getChildren().addAll(icon, selectButton);
   }
 
   /**
