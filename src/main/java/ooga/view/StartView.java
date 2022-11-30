@@ -154,7 +154,6 @@ public class StartView extends View {
    *
    * @param newValue: index of the choice selected within the choice box; used to determine which
    */
-  @Override
   public void changeStyle(Number newValue) {
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + DROP_DOWN);

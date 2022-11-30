@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import ooga.Main;
 import ooga.Reflection;
 import ooga.view.GameView;
+import ooga.view.InteractiveObject;
 import ooga.view.StartView;
 import ooga.view.View;
 import ooga.view.button.DiceRollButton;
@@ -34,7 +35,8 @@ public class DiceRollPopUp extends ActionPopUp {
   private int myHeight;
   private String myStyle;
 
-  public DiceRollPopUp(int player, String style) {
+  public DiceRollPopUp(int player, String style, String language) {
+    super(language);
     this.currentPlayer = player;
     this.myStage = new Stage();
     popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
@@ -89,4 +91,8 @@ public class DiceRollPopUp extends ActionPopUp {
     myStage.close();
   }
 
+  @Override
+  public InteractiveObject makeInteractiveObject(String name) {
+    return null;
+  }
 }

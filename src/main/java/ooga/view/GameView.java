@@ -89,7 +89,6 @@ public class GameView extends View implements GameEventListener {
   }
 
 
-  @Override
   public void changeStyle(Number newValue) {
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
@@ -106,7 +105,7 @@ public class GameView extends View implements GameEventListener {
    * the pop ups.
    */
   public void saveGame() {
-    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle);
+    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myLanguage);
     popUp.showMessage(myLanguage);
     RentPopUp pop = new RentPopUp();
     pop.showMessage(myLanguage);
@@ -117,7 +116,7 @@ public class GameView extends View implements GameEventListener {
    * Will later need to take in current player (int) parameter -- or use instance variable
    */
   private void startPlayerTurn() {
-    myDicePopUp = new DiceRollPopUp(1, myStyle);
+    myDicePopUp = new DiceRollPopUp(1, myStyle, myLanguage);
     myDicePopUp.showMessage(myLanguage);
     myDicePopUp.makeButtonActive(this);
   }
@@ -145,15 +144,15 @@ public class GameView extends View implements GameEventListener {
    * Set to respond to selections within GamePieceDropDown.
    * TODO: figure out how we are representing game pieces and also when we are letting users select their game pieces.
    * Currently this just prints out the user's selection -- will do something with this later.
-   * @param newVal
+//   * @param newVal
    */
-  public void makeGamePiece(Number newVal) {
-    ResourceBundle choiceResources = ResourceBundle.getBundle(
-        Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
-    String gamePiece = choiceResources.getString(
-        String.format(StartView.STRING_INT_FORMATTER, GAME_PIECE, newVal));
-    System.out.println(gamePiece);
-  }
+//  public void makeGamePiece(Number newVal) {
+//    ResourceBundle choiceResources = ResourceBundle.getBundle(
+//        Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
+//    String gamePiece = choiceResources.getString(
+//        String.format(StartView.STRING_INT_FORMATTER, GAME_PIECE, newVal));
+//    System.out.println(gamePiece);
+//  }
 
   @Override
   public void onGameEvent(GameEvent event) {

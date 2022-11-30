@@ -1,6 +1,7 @@
 package ooga.view.pop_ups;
 
 import java.util.ResourceBundle;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -8,7 +9,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ooga.Main;
+import ooga.Reflection;
+import ooga.view.GameView;
+import ooga.view.InteractiveObject;
+import ooga.view.StartView;
 import ooga.view.View;
+import ooga.view.drop_down.CustomizedDropDown;
 import ooga.view.drop_down.GamePieceDropDown;
 
 /**
@@ -23,8 +29,10 @@ public class GamePiecePopUp extends ActionPopUp {
   private ResourceBundle myResources;
   private final ResourceBundle popUpResources;
   private String myStyle;
+  private Group root;
 
-  public GamePiecePopUp(int player, String style) {
+  public GamePiecePopUp(int player, String style, String language) {
+    super(language);
     this.currentPlayer = player;
     this.myStage = new Stage();
     this.popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
@@ -42,8 +50,8 @@ public class GamePiecePopUp extends ActionPopUp {
   @Override
   public void createScene() {
     Text playerText = new Text(String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
-    GamePieceDropDown dropDown = new GamePieceDropDown(myLanguage);
-    VBox root = new VBox(playerText, dropDown, makeIconPreview());
+    Text previewText = new Text(myResources.getString("GamePiecePreviewText"));
+    this.root = new Group(playerText, (CustomizedDropDown) makeInteractiveObject("GamePieceDropDown"), previewText);
     int height = Integer.parseInt(popUpResources.getString(HEIGHT));
     int width = Integer.parseInt(popUpResources.getString(WIDTH));
     Scene scene = new Scene(root, width, height);
@@ -51,19 +59,20 @@ public class GamePiecePopUp extends ActionPopUp {
     popUpStyle(scene, myStyle);
   }
 
-  private VBox makeIconPreview() {
+
+  private ImageView makeIconPreview() {
 //    Image image = new Image(DICE_IMAGE);
 //    ImageView diceImage = new ImageView(image);
 //    diceImage.setPreserveRatio(true);
 //    int diceWidth = Integer.parseInt(popUpResources.getString(DICE_WIDTH));
 //    diceImage.setFitWidth(diceWidth);
-    Text previewText = new Text(myResources.getString("GamePiecePreviewText"));
     ImageView icon = new ImageView();
-    return new VBox(icon);
+    return icon;
   }
   @Override
   public void close() {
     myStage.close();
   }
 
+  // TODO: fix up repetition in this code across other View classes
 }

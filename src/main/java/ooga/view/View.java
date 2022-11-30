@@ -13,7 +13,6 @@ public abstract class View {
   public static final String POP_UP_PROPERTIES = Main.DEFAULT_RESOURCE_PACKAGE + "PopUp";
 
   public abstract InteractiveObject makeInteractiveObject(String name);
-  public abstract void changeStyle(Number newValue);
 
   public void styleScene(Scene scene, String file) {
     String fileName = String.format("%s.css", file);
