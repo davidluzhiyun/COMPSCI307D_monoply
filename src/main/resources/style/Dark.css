@@ -4,10 +4,16 @@
   -fx-text-alignment: center;
   -fx-text-fill: white;
 }
-#dicerollpop {
+#GamePiecePopUp {
   -fx-alignment: center;
-
+  -fx-base: black;
 }
+
+#DiceRollPopUp {
+  -fx-alignment: center;
+  -fx-base: black;
+}
+
 #Background {
   -fx-fill:
       linear-gradient(rgb(77,0,153), rgb(0,43,128));
@@ -47,6 +53,13 @@
   -fx-text-fill: white;
 }
 
+#GamePieceChoice {
+  -fx-alignment: center;
+  -fx-padding: 20;
+  -fx-border-color: white;
+  -fx-text-fill: white;
+}
+
 #LanguageChoiceBox {
   -fx-padding: 10;
   -fx-background-color: rgba(255,255,255, 0.2);
@@ -58,6 +71,11 @@
   -fx-text-fill: white;
 }
 
+#GamePieceChoiceBox {
+  -fx-padding: 10;
+  -fx-background-color: rgba(255,255,255, 0.2);
+  -fx-text-fill: white;
+}
 #DropDownText {
   -fx-text-fill: white;
 }

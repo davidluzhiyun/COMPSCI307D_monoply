@@ -58,6 +58,7 @@ public class DiceRollPopUp extends ActionPopUp {
     Text playerText = new Text(String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
     Text rollText = new Text(myResources.getString(ROLL_DICE_TEXT_KEY));
     VBox root = new VBox(playerText, rollText, createDiceImage(), createRollButton());
+    root.setId("DiceRollPopUp");
     Scene scene = new Scene(root, myWidth, myHeight);
     myStage.setTitle(myResources.getString(START_TURN));
     myStage.setScene(scene);

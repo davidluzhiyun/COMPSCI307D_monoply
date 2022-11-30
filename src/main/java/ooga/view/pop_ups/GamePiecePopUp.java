@@ -53,6 +53,7 @@ public class GamePiecePopUp extends ActionPopUp {
     Text previewText = new Text(myResources.getString(PREVIEW_TEXT_KEY));
     root = new VBox(playerText,
         (CustomizedDropDown) makeInteractiveObject(GamePieceDropDown.GAME_PIECE_KEY), previewText);
+    root.setId("GamePiecePopUp");
     int height = Integer.parseInt(popUpResources.getString(HEIGHT));
     int width = Integer.parseInt(popUpResources.getString(WIDTH));
     Scene scene = new Scene(root, width, height);

@@ -16,6 +16,17 @@
   -fx-background-color: rgba(238,204,255, 0.2);
 }
 
+#GamePiecePopUp {
+  -fx-alignment: center;
+  -fx-base: cornflowerblue;
+}
+
+#DiceRollPopUp {
+  -fx-alignment: center;
+  -fx-base: cornflowerblue;
+}
+
+
 #FileUploadButton {
   -fx-padding: 10;
   -fx-text-alignment: center;
@@ -39,11 +50,22 @@
   -fx-border-color: white;
 }
 
+#GamePieceChoice {
+  -fx-alignment: center;
+  -fx-padding: 20;
+  -fx-border-color: white;
+}
+
 #LanguageChoiceBox {
   -fx-padding: 10;
   -fx-background-color: rgba(255,255,255, 0.2);
 }
 #StyleChoiceBox {
+  -fx-padding: 10;
+  -fx-background-color: rgba(255,255,255, 0.2);
+}
+
+#GamePieceChoiceBox {
   -fx-padding: 10;
   -fx-background-color: rgba(255,255,255, 0.2);
 }
