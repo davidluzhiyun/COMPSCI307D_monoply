@@ -13,16 +13,18 @@ import ooga.view.StartView;
 import ooga.view.View;
 
 public abstract class ActionPopUp extends View implements PopUp {
+
   public static final String PLAYER_TEXT_KEY = "PlayerText";
   public static final String WIDTH = "Width";
   public static final String HEIGHT = "Height";
   private String myLanguage;
   private ImageView icon;
 
-  public ActionPopUp (String language) {
+  public ActionPopUp(String language) {
     this.myLanguage = language;
     icon = new ImageView();
   }
+
   public void popUpStyle(Scene scene, String file) {
     String fileName = String.format("%s.css", file);
     scene.getStylesheets()

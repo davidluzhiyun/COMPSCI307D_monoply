@@ -53,15 +53,18 @@ public class GamePiecePopUp extends ActionPopUp {
         String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
     Text previewText = new Text(myResources.getString(PREVIEW_TEXT_KEY));
     root = new VBox(playerText,
-        (CustomizedDropDown) makeInteractiveObject(GamePieceDropDown.GAME_PIECE_KEY), previewText);
+        (CustomizedDropDown) makeInteractiveObject(GamePieceDropDown.GAME_PIECE_KEY, myLanguage,
+            this), previewText);
     root.setId("GamePiecePopUp");
     int height = Integer.parseInt(popUpResources.getString(HEIGHT));
     int width = Integer.parseInt(popUpResources.getString(WIDTH));
-    selectButton = (CustomizedButton) makeInteractiveObject(SelectButton.SELECT_BUTTON_KEY);
+    selectButton = (CustomizedButton) makeInteractiveObject(SelectButton.SELECT_BUTTON_KEY,
+        myLanguage, this);
     Scene scene = new Scene(root, width, height);
     myStage.setScene(scene);
     popUpStyle(scene, myStyle);
   }
+
   @Override
   public void showMessage(String language) {
     myLanguage = language;
@@ -90,7 +93,8 @@ public class GamePiecePopUp extends ActionPopUp {
     icon = new ImageView(image);
     icon.setPreserveRatio(true);
     icon.setFitHeight(Integer.parseInt(popUpResources.getString(ICON_HEIGHT_KEY)));
-    selectButton = (CustomizedButton) makeInteractiveObject(SelectButton.SELECT_BUTTON_KEY);
+    selectButton = (CustomizedButton) makeInteractiveObject(SelectButton.SELECT_BUTTON_KEY,
+        myLanguage, this);
     root.getChildren().addAll(icon, selectButton);
   }
 
@@ -103,26 +107,4 @@ public class GamePiecePopUp extends ActionPopUp {
     System.out.println(imageURL);
     this.close();
   }
-
-  // TODO: refactor so that this code is not more or less repeated across so many classes
-  @Override
-  public InteractiveObject makeInteractiveObject(String name) {
-    Reflection reflection = new Reflection();
-    ResourceBundle resources = ResourceBundle.getBundle(View.BUTTON_PROPERTIES);
-    String className = resources.getString(name);
-    InteractiveObject object = (InteractiveObject) reflection.makeObject(className,
-        new Class[]{String.class},
-        new Object[]{myLanguage});
-    String method = resources.getString(
-        String.format(StartView.STRING_FORMATTER, name, StartView.METHOD));
-    if (name.contains(StartView.DROP_DOWN)) {
-      object.setAction(
-          reflection.makeMethod(method, GamePiecePopUp.class, new Class[]{Number.class}),
-          this);
-    } else {
-      object.setAction(reflection.makeMethod(method, GamePiecePopUp.class, null), this);
-    }
-    return object;
-  }
-
 }

@@ -21,6 +21,7 @@ import ooga.view.button.DiceRollButton;
  * TODO: LOTS OF REFACTORING
  */
 public class DiceRollPopUp extends ActionPopUp {
+
   private int currentPlayer;
   private final Stage myStage;
   private String myLanguage;
@@ -55,7 +56,8 @@ public class DiceRollPopUp extends ActionPopUp {
 
   @Override
   public void createScene() {
-    Text playerText = new Text(String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
+    Text playerText = new Text(
+        String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
     Text rollText = new Text(myResources.getString(ROLL_DICE_TEXT_KEY));
     VBox root = new VBox(playerText, rollText, createDiceImage(), createRollButton());
     root.setId("DiceRollPopUp");
@@ -65,6 +67,7 @@ public class DiceRollPopUp extends ActionPopUp {
     popUpStyle(scene, myStyle);
 
   }
+
   private ImageView createDiceImage() {
     Image image = new Image(DICE_IMAGE);
     ImageView diceImage = new ImageView(image);
@@ -92,8 +95,4 @@ public class DiceRollPopUp extends ActionPopUp {
     myStage.close();
   }
 
-  @Override
-  public InteractiveObject makeInteractiveObject(String name) {
-    return null;
-  }
 }

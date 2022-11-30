@@ -88,7 +88,7 @@ public class StartView extends View {
   private void makeInteractiveObjects() {
     String[] names = myScreenResources.getString(START_OBJECTS_KEY).split(SPACE_REGEX);
     for (String name : names) {
-      layout.getChildren().add((Node) makeInteractiveObject(name));
+      layout.getChildren().add((Node) makeInteractiveObject(name, myLanguage, this));
     }
   }
 
@@ -99,23 +99,7 @@ public class StartView extends View {
    * @param name: name of the class you would like to create
    * @return the new object
    */
-  @Override
-  public InteractiveObject makeInteractiveObject(String name) {
-    Reflection reflection = new Reflection();
-    ResourceBundle buttonResources = ResourceBundle.getBundle(View.BUTTON_PROPERTIES);
-    String className = buttonResources.getString(name);
-    InteractiveObject myButton = (InteractiveObject) reflection.makeObject(className,
-        new Class[]{String.class},
-        new Object[]{myLanguage});
-    String method = buttonResources.getString(String.format(STRING_FORMATTER, name, METHOD));
-    if (name.contains(DROP_DOWN)) {
-      myButton.setAction(reflection.makeMethod(method, StartView.class, new Class[]{Number.class}),
-          this);
-    } else {
-      myButton.setAction(reflection.makeMethod(method, StartView.class, null), this);
-    }
-    return myButton;
-  }
+
 
   /**
    * Set in property files to be the handler method when a suer clicks on a FileUploadButton. Starts
@@ -175,7 +159,8 @@ public class StartView extends View {
       error.showMessage(myLanguage);
     } else {
       Command cmd = new GameStartViewCommand(myConfigFile);
-      GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_GAME_START", cmd);
+      GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_GAME_START",
+          cmd);
       gameEventHandler.publish(event);
       GameView game = new GameView(gameEventHandler, myStyle, myLanguage);
     }
