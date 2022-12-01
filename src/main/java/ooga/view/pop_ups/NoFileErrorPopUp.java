@@ -4,12 +4,11 @@ import java.util.ResourceBundle;
 import javafx.scene.control.Alert;
 import ooga.Main;
 
-public class NoFileErrorPopUp extends PopUp{
+public class NoFileErrorPopUp extends InformationPopUp {
 
   public static final String NO_FILE_ERROR_TITLE = "NoFileErrorTitle";
   public static final String NO_FILE_ERROR = "NoFileError";
   public static final String NO_FILE_ERROR_HEADER = "NoFileErrorHeader";
-
 
   @Override
   public void showMessage(String language) {

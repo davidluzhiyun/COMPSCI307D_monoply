@@ -46,6 +46,11 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
 //  }
 
   @Override
+  public int getOwnerId() {
+    return 0;
+  }
+
+  @Override
   public double getPurchasePrice() {
     return purchasePrice;
   }
@@ -89,14 +94,9 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   }
 
   @Override
-  public int getHousesBuilt() {
-    return 0;
-  }
-
-  @Override
-  public Collection<PlaceAction> getPlaceActions(Player player) {
-    // null for now
-    return null;
+  public void updatePlaceActions(Player player) {
+    //Nothing for now
+    return;
   }
 
   /**

@@ -12,19 +12,27 @@ import ooga.Reflection;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
+import ooga.event.command.Command;
+import ooga.event.command.RollDiceCommand;
+import ooga.view.pop_ups.DiceRollPopUp;
+import ooga.view.pop_ups.GamePiecePopUp;
+import ooga.view.pop_ups.RentPopUp;
+import ooga.view.pop_ups.RollResultPopUp;
 
 public class GameView extends View implements GameEventListener {
 
-  private GameEventHandler gameEventHandler;
-  private Stage myStage;
+  private final GameEventHandler gameEventHandler;
+  private final Stage myStage;
   private Scene myScene;
   private String myStyle;
   private String myLanguage;
+  private DiceRollPopUp myDicePopUp;
   private final ResourceBundle myScreenResources;
   public static final String GAME_WIDTH_KEY = "GameWidth";
   public static final String GAME_HEIGHT_KEY = "GameHeight";
   public static final String GAME_OBJECTS_KEY = "GameObjects";
   public static final String GAME_BUTTONS_ID = "GameButtons";
+  public static final String GAME_PIECE = "GamePiece";
   private BorderPane myBorderPane;
   private final ResourceBundle myLanguageResources;
 
@@ -55,41 +63,17 @@ public class GameView extends View implements GameEventListener {
     HBox box = new HBox();
     String[] names = myScreenResources.getString(GAME_OBJECTS_KEY).split(StartView.SPACE_REGEX);
     for (String name : names) {
-      box.getChildren().add((Node) makeInteractiveObject(name));
+      box.getChildren().add((Node) makeInteractiveObject(name, myLanguage, this));
     }
     box.setId(GAME_BUTTONS_ID);
     return box;
   }
 
-  @Override
-  public InteractiveObject makeInteractiveObject(String name) {
-    Reflection reflection = new Reflection();
-    ResourceBundle resources = ResourceBundle.getBundle(View.BUTTON_PROPERTIES);
-    String className = resources.getString(name);
-    InteractiveObject object = (InteractiveObject) reflection.makeObject(className,
-        new Class[]{String.class},
-        new Object[]{myLanguage});
-    String method = resources.getString(
-        String.format(StartView.STRING_FORMATTER, name, StartView.METHOD));
-    if (name.contains(StartView.DROP_DOWN)) {
-      object.setAction(reflection.makeMethod(method, GameView.class, new Class[]{Number.class}),
-          this);
-    } else {
-      object.setAction(reflection.makeMethod(method, GameView.class, null), this);
-    }
-    return object;
-  }
-
-  @Override
-  public void onGameEvent(GameEvent event) {
-
-  }
-
-  @Override
   public void changeStyle(Number newValue) {
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
-    myStyle = choiceResources.getString(String.format(StartView.STRING_INT_FORMATTER, StartView.STYLE, newValue));
+    myStyle = choiceResources.getString(
+        String.format(StartView.STRING_INT_FORMATTER, StartView.STYLE, newValue));
     myStage.close();
     setUpScene();
   }
@@ -97,8 +81,47 @@ public class GameView extends View implements GameEventListener {
   /**
    * Set in property files to be the handler method when someone clicks the "Save game" button. This
    * should be implemented as one of our project extensions.
+   * TODO: change this to actually implement the savegame feature.
    */
   public void saveGame() {
-    System.out.println("nothing to see here... yet");
+  }
+
+  /**
+   * Will later need to take in current player (int) parameter -- or use instance variable
+   */
+  private void startPlayerTurn() {
+    myDicePopUp = new DiceRollPopUp(1, myStyle, myLanguage);
+    myDicePopUp.showMessage(myLanguage);
+    myDicePopUp.makeButtonActive(this);
+  }
+
+  /**
+   * Set in property files to be called when the user clicks "Roll" within the RollDicePopUp
+   */
+  public void rollDice() {
+    Command cmd = new RollDiceCommand();
+    GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE",
+        cmd);
+    gameEventHandler.publish(event);
+  }
+
+  /**
+   * TODO: change this to actually get the dice result from the controller and show it.
+   */
+  private void showDiceResult(int roll) {
+    myDicePopUp.close();
+    RollResultPopUp pop = new RollResultPopUp(roll);
+    pop.showMessage(myLanguage);
+  }
+
+  @Override
+  public void onGameEvent(GameEvent event) {
+    switch (event.getGameEventType()) {
+      case "CONTROLLER_TO_VIEW_PLAYER_START" -> startPlayerTurn();
+      case "CONTROLLER_TO_VIEW_ROLL_DICE" -> {
+        Command cmd = event.getGameEventCommand().getCommand();
+        showDiceResult((int) cmd.getCommandArgs());
+      }
+    }
   }
 }

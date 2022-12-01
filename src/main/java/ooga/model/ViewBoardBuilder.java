@@ -1,18 +1,19 @@
 package ooga.model;
 
 import java.util.Collection;
-import ooga.model.place.AbstractPlace;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.place.Place;
 
 /**
  * Builds a ViewPlace from list of Place, a player(likely the current player) and a PlayerTurn
  * @author David Lu
  */
-
+@Deprecated
 public class ViewBoardBuilder implements ViewBoard{
   private List<ViewPlace> viewBoardList;
 
@@ -49,6 +50,7 @@ public class ViewBoardBuilder implements ViewBoard{
    * Inner data class for helping
    * Builds a ViewPlace from a Place, a player and a PlayerTurn
    */
+  @Deprecated
   private static class ViewPlaceBuilder implements ViewPlace {
     private final Place place;
     private final Player player;
@@ -58,18 +60,25 @@ public class ViewBoardBuilder implements ViewBoard{
     }
 
     @Override
-    public Collection<? extends ViewPlayer> getViewPlayers() {
+    public Collection<? extends ControllerPlayer> getViewPlayers() {
       return place.getPlayers();
     }
 
     @Override
     public int getHousesNum() {
-      return place.getHousesBuilt();
+      try {
+        return place.getHouseCount();
+      }
+      catch (CannotBuildHouseException e) {
+//        LOGGER.info(e.getMessage());
+        return 0;
+      }
     }
 
     @Override
     public Collection<PlaceAction> getPlaceActions() {
-      return place.getPlaceActions(player);
+      place.updatePlaceActions(player);
+      return place.getPlaceActions();
     }
   }
 }

@@ -1,14 +1,13 @@
 package ooga.model;
 
-import ooga.model.place.SuperPlace;
-
 import java.util.Collection;
 
 /**
  * Place data for view to update.
  */
-public interface ViewPlace extends SuperPlace {
-  Collection<? extends ViewPlayer> getViewPlayers();
+@Deprecated
+public interface ViewPlace{
+  Collection<? extends ControllerPlayer> getViewPlayers();
   int getHousesNum();
   Collection<PlaceAction> getPlaceActions();
 }

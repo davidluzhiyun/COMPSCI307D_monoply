@@ -1,5 +1,6 @@
-package ooga.model;
+package ooga.model.components;
 
+import ooga.model.Player;
 import ooga.model.place.Place;
 
 import java.awt.*;
@@ -11,6 +12,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
   private final List<? extends Player> players;
   private final List<? extends Place> places;
   private Dice dice;
+  private Point diceNum;
 
 
   public ConcretePlayerTurn(List<? extends Player> players, List<? extends Place> places) {
@@ -28,6 +30,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
     int r1 = point.x;
     int r2 = point.y;
     currentPlayer.decrementOneDiceLeft();
+    diceNum = point;
     if (r1 == r2)
       currentPlayer.addOneDiceRoll();
 //    if (currentPlayer.goJail())
@@ -65,5 +68,18 @@ public class ConcretePlayerTurn implements PlayerTurn {
     if (currentPlayerId < players.size()) currentPlayer = players.get(currentPlayerId + 1);
     else currentPlayer = players.get(0);
     currentPlayer.newTurn();
+  }
+
+  @Override
+  public Place getCurrentPlace() {
+    return currentPlace;
+  }
+
+  @Override
+  public Point getDiceNum() {
+    if (diceNum == null){
+      diceNum = dice.roll();
+    }
+    return new Point(diceNum);
   }
 }

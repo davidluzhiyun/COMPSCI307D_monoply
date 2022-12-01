@@ -38,7 +38,6 @@ public class GameStartRunnable implements EventGenerator {
     }
 
     private void parseJSON() {
-
         try (Reader reader = new FileReader(file)) {
             // Convert JSON File to Java Object
             parsedJson = new Gson().fromJson(reader, Map.class);

@@ -3,6 +3,8 @@ package ooga.model.place;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import ooga.model.*;
+import ooga.model.exception.CannotBuildHouseException;
+import ooga.model.exception.NoColorAttributeException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,23 +14,28 @@ import java.util.Map;
 
 /**
  * abstract class representing generic place
+ *
  * @author david_luzhiyun Modified the class and design
  * @author Luyao Wang original class
  */
-public abstract class AbstractPlace implements Place{
+public abstract class AbstractPlace implements Place {
   private final int placeId;
   private Collection<ConcretePlayer> players;
   private Collection<StationaryAction> inherentStationaryActions;
+  private Collection<StationaryAction> stationaryActions;
   private Collection<PlaceAction> inherentPlaceActions;
-  public static final String DEFAULT_RESOURCE_PACKAGE = AbstractPlace.class.getPackageName() + ".";
+
+  private Collection<PlaceAction> updatedPlaceActions;
+  public static final String PLACE_PACKAGE_NAME = AbstractPlace.class.getPackageName() + ".";
   public static final String DEFAULT_RESOURCE_FOLDER =
-    "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
+          "/" + PLACE_PACKAGE_NAME.replace(".", "/");
   private Map<String, ?> config;
 
   public AbstractPlace(int id) {
     placeId = id;
     players = new ArrayList<>();
     inherentStationaryActions = new ArrayList<>();
+    stationaryActions = new ArrayList<>();
     Gson gson = new Gson();
     Reader reader = null;
     try {
@@ -37,11 +44,6 @@ public abstract class AbstractPlace implements Place{
       TypeToken<Map<String, ?>> mapType = new TypeToken<>() {
       };
       config = gson.fromJson(reader, mapType);
-//      for (Map.Entry<String, ?> entry : config.entrySet()) {
-//        System.out.println(entry.getKey() + "=" + entry.getValue());
-//        // close reader
-//        reader.close();
-//      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -58,13 +60,13 @@ public abstract class AbstractPlace implements Place{
   }
 
 
-  public Collection<? extends ViewPlayer> getViewPlayers() {
+  public Collection<? extends ControllerPlayer> getViewPlayers() {
     return players;
   }
 
   @Override
-  public Collection<? extends Player> getPlayers() {
-    return players;
+  public Collection<ControllerPlayer> getPlayers() {
+    return new ArrayList<>(players);
   }
 
   @Override
@@ -74,20 +76,40 @@ public abstract class AbstractPlace implements Place{
 
   /**
    * Rewritten by
-   * @author David Lu
+   *
    * @param player the current player
    * @return
+   * @author David Lu
    */
   @Override
   public Collection<StationaryAction> getStationaryActions(Player player) {
-    Collection<StationaryAction> actions = getCommonTurnBasedStationaryAction(player);
-    actions.addAll(inherentStationaryActions);
-    return actions;
+    updateStationaryActions(player);
+    return stationaryActions;
+  }
+
+  private void updateStationaryActions(Player player) {
+    stationaryActions = getCommonTurnBasedStationaryAction(player);
+    stationaryActions.addAll(inherentStationaryActions);
   }
 
   @Override
-  public Collection<PlaceAction> getPlaceActions(Player player) {
-    return inherentPlaceActions;
+  public void updatePlaceActions(Player player) {
+    updatedPlaceActions = new ArrayList<>(inherentPlaceActions);
+  }
+
+  @Override
+  public Collection<PlaceAction> getPlaceActions(){
+    return updatedPlaceActions;
+  }
+
+  @Override
+  public int getHouseCount() throws CannotBuildHouseException {
+    throw new CannotBuildHouseException();
+  }
+
+  @Override
+  public int getColorSetId() throws NoColorAttributeException {
+    throw new NoColorAttributeException();
   }
 
   public void addStationaryAction(StationaryAction stationaryAction) {
@@ -96,27 +118,23 @@ public abstract class AbstractPlace implements Place{
 
   /**
    * Helper method for getting turn related stationary actions
+   *
+   * @param player current player playing
+   * @return A collection of stationary actions
    * @author David Lu
    * Modified based on code from defunct class StationaryActionManager from
    * @author Luyao Wang
-   * @param player current player playing
-   * @return A collection of stationary actions
    */
   protected Collection<StationaryAction> getCommonTurnBasedStationaryAction(Player player) {
     List<StationaryAction> stationaryActionList = new ArrayList<>();
-//    if (player.hasNextTurn())
-//      stationaryActionList.add(StationaryAction.ROLL_DICE);
-//    else
-//      stationaryActionList.add(StationaryAction.END_TURN);
+    if (player.hasNextDice())
+      stationaryActionList.add(StationaryAction.ROLL_DICE);
+    else
+      stationaryActionList.add(StationaryAction.END_TURN);
     return stationaryActionList;
   }
 
   public void addPlaceAction(PlaceAction placeAction) {
     this.inherentPlaceActions.add(placeAction);
-  }
-
-  @Override
-  public int getHousesBuilt(){
-    return 0;
   }
 }

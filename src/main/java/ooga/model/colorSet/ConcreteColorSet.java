@@ -1,3 +1,4 @@
+
 package ooga.model.colorSet;
 
 
@@ -31,13 +32,13 @@ public class ConcreteColorSet implements ImmutableColorSet{
       // Here the down-casting and typechecking is for ignoring non-Street places
       // Remove if plans to only input streets
       if (place instanceof Street myStreet){
-        if (allSets.get(myStreet.getColorId()) == null){
+        if (allSets.get(myStreet.getColorSetId()) == null){
           Collection<Integer> newColorSet = new ArrayList<>();
           newColorSet.add(myStreet.getPlaceId());
-          allSets.put(myStreet.getColorId(),newColorSet);
+          allSets.put(myStreet.getColorSetId(),newColorSet);
         }
         else {
-          allSets.get(myStreet.getColorId()).add(myStreet.getPlaceId());
+          allSets.get(myStreet.getColorSetId()).add(myStreet.getPlaceId());
         }
       }
     }
@@ -68,5 +69,4 @@ public class ConcreteColorSet implements ImmutableColorSet{
     }
     return colorIds;
   }
-
 }

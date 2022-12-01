@@ -7,7 +7,7 @@ import ooga.model.place.property.Property;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ConcretePlayer implements Player, ViewPlayer {
+public class ConcretePlayer implements Player, ControllerPlayer {
   private double money;
   private int playerId;
   private int currentPlaceId;
@@ -16,15 +16,13 @@ public class ConcretePlayer implements Player, ViewPlayer {
   private int dicesTotal;
   private int remainingJailTurns;
   private final Collection<Property> properties;
+
   public ConcretePlayer(int playerId) {
     this.currentPlaceId = 0;
+    this.money = 0;
     this.playerId = playerId;
     properties = new ArrayList<>();
   }
-//  @Override
-//  public int getPlayerId() {
-//    return playerId;
-//  }
 
   public void newTurn() {
     dicesLeft = 1;
@@ -34,12 +32,13 @@ public class ConcretePlayer implements Player, ViewPlayer {
 
   @Override
   public void earnMoney(double money) {
-    this.money += money;
+    this. money += money;
   }
 
   public void decrementOneDiceLeft() {
     dicesLeft--;
   }
+
   public void addOneDiceRoll() {
     dicesLeft++;
     dicesTotal++;
