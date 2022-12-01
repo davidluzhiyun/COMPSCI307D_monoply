@@ -81,6 +81,21 @@ public class GameView extends View implements GameEventListener {
   }
 
   /**
+   * NOTE: Currently this is just pseudo-code because we do not have full support for this yet.
+   * Theoretically, should present the GamePiecePopUp to each player, let them pick their piece,
+   * then should add this piece to our Board class -- presumably there will be a method in Board
+   * class that allows for a new piece to be initialized on the Go button
+   */
+  public void chooseGamePieces() {
+//     for (int i = 0; i < numPlayers; i ++) {
+//       GamePiecePopUp pop = new GamePiecePopUp(i, myStyle, myLanguage);
+//       pop.showMessage(myLanguage);
+//       GamePiece piece = pop.getGamePiece();
+//       myBoard.addPiece(piece, i);
+//     }
+  }
+
+  /**
    * Set in property files to be the handler method when someone clicks the "Save game" button. This
    * should be implemented as one of our project extensions.
    * TODO: change this to actually implement the savegame feature.
