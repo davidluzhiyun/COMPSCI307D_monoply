@@ -29,9 +29,9 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     GameEventHandler gameEventHandler = new GameEventHandler();
-    MainView mainView = new MainView(primaryStage, gameEventHandler);
-    mainView.start();
-//    StartView start = new StartView(primaryStage, gameEventHandler);
+//    MainView mainView = new MainView(primaryStage, gameEventHandler);
+//    mainView.start();
+    StartView start = new StartView(primaryStage, gameEventHandler);
   }
 
   /**

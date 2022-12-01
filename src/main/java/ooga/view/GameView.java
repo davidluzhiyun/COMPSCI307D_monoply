@@ -84,6 +84,10 @@ public class GameView extends View implements GameEventListener {
    * TODO: change this to actually implement the savegame feature.
    */
   public void saveGame() {
+    DiceRollPopUp pop = new DiceRollPopUp(1, myStyle, myLanguage);
+    pop.showMessage(myLanguage);
+    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myLanguage);
+    popUp.showMessage(myLanguage);
   }
 
   /**
@@ -97,6 +101,7 @@ public class GameView extends View implements GameEventListener {
 
   /**
    * Set in property files to be called when the user clicks "Roll" within the RollDicePopUp
+   * TODO: change to communicate directly to model -- view_to_model
    */
   public void rollDice() {
     Command cmd = new RollDiceCommand();
@@ -107,6 +112,7 @@ public class GameView extends View implements GameEventListener {
 
   /**
    * TODO: change this to actually get the dice result from the controller and show it.
+   * may need to change to display the separate rolls of each die... can also have images for each!
    */
   private void showDiceResult(int roll) {
     myDicePopUp.close();
