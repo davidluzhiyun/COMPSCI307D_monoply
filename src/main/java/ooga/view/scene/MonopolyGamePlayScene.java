@@ -1,8 +1,8 @@
 package ooga.view.scene;
 
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import ooga.view.components.Board;
 
 public class MonopolyGamePlayScene extends BorderPane {
 
@@ -11,9 +11,10 @@ public class MonopolyGamePlayScene extends BorderPane {
   }
 
   private void setupGamePlayScene() {
-    this.setCenter(); // monopoly board
-    this.setRight(); // player status
-    this.setTop(); // HUD?
-    this.setBottom(); // Action Buttons
+    Board test = new Board();
+    this.setCenter(test.getBoard()); // monopoly board
+//    this.setRight(); // player status
+//    this.setTop(); // HUD?
+//    this.setBottom(); // Action Buttons
   }
 }
