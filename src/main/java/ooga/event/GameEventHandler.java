@@ -5,8 +5,10 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GameEventHandler {
+
   private final Collection<GameEventListener> subscribers;
-  public GameEventHandler(){
+
+  public GameEventHandler() {
     subscribers = new ConcurrentLinkedQueue<>();
   }
 
@@ -28,8 +30,17 @@ public class GameEventHandler {
     publish(new GameEvent(t));
   }
 
+  public void publish(GameEventType gameEventType) {
+    publish(new GameEvent(gameEventType));
+  }
+
   public static GameEvent makeGameEventwithCommand(String eventType, Command command) {
     GameEventType t = getGameEventTypefromString(eventType);
+    GameEventCommand cmd = new GameEventCommand(t, command);
+    return new GameEvent(t, cmd);
+  }
+
+  public GameEvent makeGameEventwithCommand(GameEventType t, Command command) {
     GameEventCommand cmd = new GameEventCommand(t, command);
     return new GameEvent(t, cmd);
   }

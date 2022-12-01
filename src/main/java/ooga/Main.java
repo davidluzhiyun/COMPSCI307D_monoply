@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 import ooga.controller.SampleController;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
+import ooga.view.MainView;
 import ooga.view.SampleView;
 import ooga.view.StartView;
 
@@ -24,7 +25,9 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     GameEventHandler gameEventHandler = new GameEventHandler();
-    StartView start = new StartView(primaryStage, gameEventHandler);
+    MainView mainView = new MainView(primaryStage, gameEventHandler);
+    mainView.start();
+//    StartView start = new StartView(primaryStage, gameEventHandler);
   }
 
   /**
