@@ -35,8 +35,12 @@ public class RollResultPopUp extends InformationPopUp {
 
   private HBox makeDiceImage() {
     ResourceBundle resources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
-    Image die1 = new Image(resources.getString(String.format("DiceRoll%d", myRoll1)));
-    Image die2 = new Image(resources.getString(String.format("DiceRoll%d", myRoll2)));
-    return new HBox(new ImageView(die1), new ImageView(die2));
+    ImageView die1 = new ImageView(new Image(resources.getString(String.format("DiceRoll%d", myRoll1))));
+    ImageView die2 = new ImageView(new Image(resources.getString(String.format("DiceRoll%d", myRoll2))));
+    die1.setFitWidth(Integer.parseInt(resources.getString(DiceRollPopUp.DICE_WIDTH)));
+    die2.setFitWidth(Integer.parseInt(resources.getString(DiceRollPopUp.DICE_WIDTH)));
+    die1.setPreserveRatio(true);
+    die2.setPreserveRatio(true);
+    return new HBox(die1, die2);
   }
 }

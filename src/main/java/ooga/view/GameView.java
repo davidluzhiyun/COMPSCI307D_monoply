@@ -124,7 +124,7 @@ public class GameView extends View implements GameEventListener {
     GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE",
         cmd);
     gameEventHandler.publish(event);
-    showDiceResult(new int[]{1,3});
+    showDiceResult(new int[]{2,3});
   }
 
   /**
