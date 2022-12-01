@@ -101,10 +101,9 @@ public class GameView extends View implements GameEventListener {
    * TODO: change this to actually implement the savegame feature.
    */
   public void saveGame() {
-    DiceRollPopUp pop = new DiceRollPopUp(1, myStyle, myLanguage);
-    pop.showMessage(myLanguage);
     GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myLanguage);
     popUp.showMessage(myLanguage);
+    startPlayerTurn();
   }
 
   /**
@@ -125,15 +124,17 @@ public class GameView extends View implements GameEventListener {
     GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE",
         cmd);
     gameEventHandler.publish(event);
+    showDiceResult(new int[]{1,3});
   }
 
   /**
    * TODO: change this to actually get the dice result from the controller and show it.
    * may need to change to display the separate rolls of each die... can also have images for each!
    */
-  private void showDiceResult(int roll) {
+  private void showDiceResult(int[] roll) {
     myDicePopUp.close();
-    RollResultPopUp pop = new RollResultPopUp(roll);
+    System.out.println("hello");
+    RollResultPopUp pop = new RollResultPopUp(roll[0], roll[1]);
     pop.showMessage(myLanguage);
   }
 
@@ -143,7 +144,7 @@ public class GameView extends View implements GameEventListener {
       case "CONTROLLER_TO_VIEW_PLAYER_START" -> startPlayerTurn();
       case "CONTROLLER_TO_VIEW_ROLL_DICE" -> {
         Command cmd = event.getGameEventCommand().getCommand();
-        showDiceResult((int) cmd.getCommandArgs());
+        showDiceResult((int[]) cmd.getCommandArgs());
       }
     }
   }
