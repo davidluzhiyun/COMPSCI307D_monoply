@@ -27,4 +27,12 @@ public interface Place extends ControllerPlace{
    */
   void updatePlaceActions(Player player);
 
+  /**
+   * Get the price to purchase the property.
+   *
+   * @return the price to purchase the property
+   */
+  double getPurchasePrice() throws IllegalStateException;
+
+  void purchaseBy(Player player) throws IllegalStateException;
 }

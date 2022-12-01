@@ -14,12 +14,6 @@ public interface Property extends Place{
    * @return the id of owner
    */
   int getOwnerId();
-  /**
-   * Get the price to purchase the property.
-   *
-   * @return the price to purchase the property
-   */
-  double getPurchasePrice();
 
   /**
    * Get the rent paid to owner when pass by the property.
@@ -49,6 +43,5 @@ public interface Property extends Place{
    * @return mopey earned by mortgaging the property
    */
   double getMortgagePrice();
-  void purchaseBy(Player player);
   List<Double> getRentWithProperties();
 }
