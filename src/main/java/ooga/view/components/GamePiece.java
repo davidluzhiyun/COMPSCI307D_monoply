@@ -3,12 +3,10 @@ package ooga.view.components;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import ooga.Main;
 import ooga.view.View;
 
-public class GamePiece {
+public class GamePiece extends ImageView {
 
-  private ImageView myIcon;
   private int myPlayer;
 
   /**
@@ -19,12 +17,19 @@ public class GamePiece {
   public GamePiece(String piece, int player) {
     ResourceBundle resources = ResourceBundle.getBundle(View.CHOICE_BOX_PROPERTIES);
     Image image = new Image(resources.getString(piece));
-    myIcon = new ImageView(image);
+    this.setImage(image);
     this.myPlayer = player;
   }
 
-  public void movePiece(int location) {
-    // not too sure how I'm going to do this yet...
+  /**
+   * This is not fully implemented just yet, need to first figure out how we want to decide where
+   * the piece is going to go... eventually will use transition animations or something of the sort
+   * @param xLocation: subject to change
+   * @param yLocation: subject to change
+   */
+  public void movePiece(int xLocation, int yLocation) {
+    this.setX(xLocation);
+    this.setY(yLocation);
   }
 
 }

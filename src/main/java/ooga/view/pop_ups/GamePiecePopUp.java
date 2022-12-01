@@ -8,13 +8,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ooga.Main;
-import ooga.Reflection;
 import ooga.view.GameView;
-import ooga.view.InteractiveObject;
 import ooga.view.StartView;
 import ooga.view.View;
 import ooga.view.button.CustomizedButton;
 import ooga.view.button.SelectButton;
+import ooga.view.components.GamePiece;
 import ooga.view.drop_down.CustomizedDropDown;
 import ooga.view.drop_down.GamePieceDropDown;
 
@@ -33,10 +32,12 @@ public class GamePiecePopUp extends ActionPopUp {
   private String myStyle;
   private VBox root;
   private ImageView icon;
-  private String imageURL;
+  private String pieceKey;
   private CustomizedButton selectButton;
+  private GamePiece myPiece;
   public static final String PREVIEW_TEXT_KEY = "GamePiecePreviewText";
   public static final String ICON_HEIGHT_KEY = "IconHeight";
+  public static final String GAME_PIECE_POP_UP_ID = "GamePiecePopUp";
 
   public GamePiecePopUp(int player, String style, String language) {
     super(language);
@@ -55,7 +56,7 @@ public class GamePiecePopUp extends ActionPopUp {
     root = new VBox(playerText,
         (CustomizedDropDown) makeInteractiveObject(GamePieceDropDown.GAME_PIECE_KEY, myLanguage,
             this), previewText);
-    root.setId("GamePiecePopUp");
+    root.setId(GAME_PIECE_POP_UP_ID);
     int height = Integer.parseInt(popUpResources.getString(HEIGHT));
     int width = Integer.parseInt(popUpResources.getString(WIDTH));
     selectButton = (CustomizedButton) makeInteractiveObject(SelectButton.SELECT_BUTTON_KEY,
@@ -78,7 +79,6 @@ public class GamePiecePopUp extends ActionPopUp {
     myStage.close();
   }
 
-
   /**
    * Set within property files to handle changes to GamePieceDropDown by removing the current
    * visible icon and creating a new one
@@ -87,8 +87,8 @@ public class GamePiecePopUp extends ActionPopUp {
     root.getChildren().removeAll(icon, selectButton);
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
-    imageURL = choiceResources.getString(
-        String.format(StartView.STRING_INT_FORMATTER, GameView.GAME_PIECE, newValue));
+    pieceKey = String.format(StartView.STRING_INT_FORMATTER, GameView.GAME_PIECE, newValue);
+    String imageURL = choiceResources.getString(pieceKey);
     Image image = new Image(imageURL);
     icon = new ImageView(image);
     icon.setPreserveRatio(true);
@@ -100,11 +100,12 @@ public class GamePiecePopUp extends ActionPopUp {
 
   /**
    * Currently set within property file as the method for when the SelectButton is clicked.
-   * TODO: actually use this information to generate a new game piece for the player.
-   * (Perhaps we can have a map of player to player image
    */
   public void saveChanges() {
-    System.out.println(imageURL);
+    myPiece = new GamePiece(pieceKey, 1);
     this.close();
   }
+
+  // For now this is a getter, may want to change this later...
+  public GamePiece getGamePiece() {return myPiece;}
 }
