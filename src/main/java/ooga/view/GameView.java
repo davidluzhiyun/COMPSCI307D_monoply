@@ -14,6 +14,7 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.RollDiceCommand;
+import ooga.view.components.Board;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
 import ooga.view.pop_ups.RentPopUp;
@@ -53,6 +54,7 @@ public class GameView extends View implements GameEventListener {
     background.setId(StartView.BACKGROUND);
     myBorderPane = new BorderPane(background);
     myBorderPane.setTop(makeInteractiveObjects());
+    myBorderPane.setCenter(new Board().getBoard());
     myScene = new Scene(myBorderPane, width, height);
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
