@@ -8,6 +8,7 @@ import ooga.event.GameEventType;
 import ooga.event.command.BoardSetUpCommand;
 import ooga.event.command.Command;
 import ooga.model.ModelOutput;
+import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
 
@@ -55,7 +56,11 @@ public class BoardSetUpRunnable implements EventGenerator{
     private List<ParsedProperty> getParsedProperty() {
         List<ParsedProperty> parsedProperties = new ArrayList<>();
         for(ControllerPlace place : this.boardInfo.getBoard()) {
-            parsedProperties.add(new ParsedProperty(getPlaceType(place), getPlaceName(place), place.getColorSetId())); //TODO: change later
+            try {
+                parsedProperties.add(new ParsedProperty(getPlaceType(place), getPlaceName(place), place.getColorSetId()));
+            } catch (NoColorAttributeException e) {
+                parsedProperties.add(new ParsedProperty(getPlaceType(place), getPlaceName(place), -1));
+            }
         }
         return parsedProperties;
     }
