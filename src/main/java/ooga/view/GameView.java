@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ooga.Main;
 import ooga.Reflection;
@@ -14,16 +13,17 @@ import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.command.Command;
-import ooga.event.command.DiceResultCommand;
 import ooga.event.command.RollDiceCommand;
+import ooga.view.components.Board;
 import ooga.view.pop_ups.DiceRollPopUp;
+import ooga.view.pop_ups.GamePiecePopUp;
 import ooga.view.pop_ups.RentPopUp;
 import ooga.view.pop_ups.RollResultPopUp;
 
 public class GameView extends View implements GameEventListener {
 
-  private GameEventHandler gameEventHandler;
-  private Stage myStage;
+  private final GameEventHandler gameEventHandler;
+  private final Stage myStage;
   private Scene myScene;
   private String myStyle;
   private String myLanguage;
@@ -33,6 +33,7 @@ public class GameView extends View implements GameEventListener {
   public static final String GAME_HEIGHT_KEY = "GameHeight";
   public static final String GAME_OBJECTS_KEY = "GameObjects";
   public static final String GAME_BUTTONS_ID = "GameButtons";
+  public static final String GAME_PIECE = "GamePiece";
   private BorderPane myBorderPane;
   private final ResourceBundle myLanguageResources;
 
@@ -53,6 +54,7 @@ public class GameView extends View implements GameEventListener {
     background.setId(StartView.BACKGROUND);
     myBorderPane = new BorderPane(background);
     myBorderPane.setTop(makeInteractiveObjects());
+    myBorderPane.setCenter(new Board().getBoard());
     myScene = new Scene(myBorderPane, width, height);
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
@@ -63,74 +65,71 @@ public class GameView extends View implements GameEventListener {
     HBox box = new HBox();
     String[] names = myScreenResources.getString(GAME_OBJECTS_KEY).split(StartView.SPACE_REGEX);
     for (String name : names) {
-      box.getChildren().add((Node) makeInteractiveObject(name));
+      box.getChildren().add((Node) makeInteractiveObject(name, myLanguage, this));
     }
     box.setId(GAME_BUTTONS_ID);
     return box;
   }
 
-  @Override
-  public InteractiveObject makeInteractiveObject(String name) {
-    Reflection reflection = new Reflection();
-    ResourceBundle resources = ResourceBundle.getBundle(View.BUTTON_PROPERTIES);
-    String className = resources.getString(name);
-    InteractiveObject object = (InteractiveObject) reflection.makeObject(className,
-        new Class[]{String.class},
-        new Object[]{myLanguage});
-    String method = resources.getString(
-        String.format(StartView.STRING_FORMATTER, name, StartView.METHOD));
-    if (name.contains(StartView.DROP_DOWN)) {
-      object.setAction(reflection.makeMethod(method, GameView.class, new Class[]{Number.class}),
-          this);
-    } else {
-      object.setAction(reflection.makeMethod(method, GameView.class, null), this);
-    }
-    return object;
-  }
-
-
-  @Override
   public void changeStyle(Number newValue) {
     ResourceBundle choiceResources = ResourceBundle.getBundle(
         Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
-    myStyle = choiceResources.getString(String.format(StartView.STRING_INT_FORMATTER, StartView.STYLE, newValue));
+    myStyle = choiceResources.getString(
+        String.format(StartView.STRING_INT_FORMATTER, StartView.STYLE, newValue));
     myStage.close();
     setUpScene();
   }
 
   /**
+   * NOTE: Currently this is just pseudo-code because we do not have full support for this yet.
+   * Theoretically, should present the GamePiecePopUp to each player, let them pick their piece,
+   * then should add this piece to our Board class -- presumably there will be a method in Board
+   * class that allows for a new piece to be initialized on the Go button
+   */
+  public void chooseGamePieces() {
+//     for (int i = 0; i < numPlayers; i ++) {
+//       GamePiecePopUp pop = new GamePiecePopUp(i, myStyle, myLanguage);
+//       pop.showMessage(myLanguage);
+//       GamePiece piece = pop.getGamePiece();
+//       myBoard.addPiece(piece, i);
+//     }
+  }
+
+  /**
    * Set in property files to be the handler method when someone clicks the "Save game" button. This
    * should be implemented as one of our project extensions.
-   * TODO: change this to actually implement the savegame feature. currently this is just showing
-   * the pop ups.
+   * TODO: change this to actually implement the savegame feature.
    */
   public void saveGame() {
-    RentPopUp pop = new RentPopUp();
+    DiceRollPopUp pop = new DiceRollPopUp(1, myStyle, myLanguage);
     pop.showMessage(myLanguage);
-    startPlayerTurn();
+    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myLanguage);
+    popUp.showMessage(myLanguage);
   }
 
   /**
    * Will later need to take in current player (int) parameter -- or use instance variable
    */
   private void startPlayerTurn() {
-    myDicePopUp = new DiceRollPopUp(1);
+    myDicePopUp = new DiceRollPopUp(1, myStyle, myLanguage);
     myDicePopUp.showMessage(myLanguage);
     myDicePopUp.makeButtonActive(this);
   }
 
   /**
    * Set in property files to be called when the user clicks "Roll" within the RollDicePopUp
+   * TODO: change to communicate directly to model -- view_to_model
    */
   public void rollDice() {
     Command cmd = new RollDiceCommand();
-    GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE", cmd);
+    GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE",
+        cmd);
     gameEventHandler.publish(event);
   }
 
   /**
-   * TODO: change this to actually get the dice result from the controller and show it. also change
-   * how it is displayed. maybe this could be another type of pop-up?
+   * TODO: change this to actually get the dice result from the controller and show it.
+   * may need to change to display the separate rolls of each die... can also have images for each!
    */
   private void showDiceResult(int roll) {
     myDicePopUp.close();

@@ -1,8 +1,10 @@
 package ooga.view;
 
+import java.util.ResourceBundle;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import ooga.Main;
+import ooga.Reflection;
 
 public abstract class View {
 
@@ -10,9 +12,7 @@ public abstract class View {
   public static final String STYLESHEETS = "/" + DEFAULT_STYLE_PACKAGE.replace(".", "/");
   public static final String BUTTON_PROPERTIES = Main.DEFAULT_RESOURCE_PACKAGE + "Button";
   public static final String CHOICE_BOX_PROPERTIES = Main.DEFAULT_RESOURCE_PACKAGE + "DropDown";
-
-  public abstract InteractiveObject makeInteractiveObject(String name);
-  public abstract void changeStyle(Number newValue);
+  public static final String POP_UP_PROPERTIES = Main.DEFAULT_RESOURCE_PACKAGE + "PopUp";
 
   public void styleScene(Scene scene, String file) {
     String fileName = String.format("%s.css", file);
@@ -42,4 +42,33 @@ public abstract class View {
     node.setLayoutY(yCoordinate);
 
   }
+
+
+  /**
+   * Creates new object of type InteractiveObject & also uses its setAction method to invoke the
+   * desired method (which is specified in property files!).
+   *
+   * @param name:     name of the class you would like to create
+   * @param language: String, language that you want the object labeled in
+   * @param view:     type of View subclass that contains the desired handler method for the object
+   * @return the new object
+   */
+  public InteractiveObject makeInteractiveObject(String name, String language, View view) {
+    Reflection reflection = new Reflection();
+    ResourceBundle resources = ResourceBundle.getBundle(View.BUTTON_PROPERTIES);
+    String className = resources.getString(name);
+    InteractiveObject object = (InteractiveObject) reflection.makeObject(className,
+        new Class[]{String.class},
+        new Object[]{language});
+    String method = resources.getString(
+        String.format(StartView.STRING_FORMATTER, name, StartView.METHOD));
+    if (name.contains(StartView.DROP_DOWN)) {
+      object.setAction(reflection.makeMethod(method, view.getClass(), new Class[]{Number.class}),
+          view);
+    } else {
+      object.setAction(reflection.makeMethod(method, view.getClass(), null), view);
+    }
+    return object;
+  }
+
 }
