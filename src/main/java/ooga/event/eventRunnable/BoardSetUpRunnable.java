@@ -38,6 +38,8 @@ public class BoardSetUpRunnable implements EventGenerator{
 
     private String typeRegex = ".+\"type\": \"(\\w+)\".?";
 
+    private String nameRegex = ".+\"name\": \"(.+)\".?";
+
     /**@param arguments; should be a model interface from the model**/
     public BoardSetUpRunnable(Command arguments) {
         this.boardInfo = (ModelOutput) arguments.getCommandArgs();
@@ -53,12 +55,16 @@ public class BoardSetUpRunnable implements EventGenerator{
     private List<ParsedProperty> getParsedProperty() {
         List<ParsedProperty> parsedProperties = new ArrayList<>();
         for(ControllerPlace place : this.boardInfo.getBoard()) {
-            parsedProperties.add(new ParsedProperty(getPlaceType(place), place.getColorSetId())); //TODO: change later
+            parsedProperties.add(new ParsedProperty(getPlaceType(place), getPlaceName(place), place.getColorSetId())); //TODO: change later
         }
         return parsedProperties;
     }
 
-    private String getPlaceType(ControllerPlace place) {
+    private String getPlaceName(ControllerPlace place) {
+        return getString(place, nameRegex);
+    }
+
+    private String getString(ControllerPlace place, String regex) {
         String fileName = placePath + place.getPlaceId() + jsonExtension;
 
         try {
@@ -66,7 +72,7 @@ public class BoardSetUpRunnable implements EventGenerator{
             BufferedReader fr = new BufferedReader(new FileReader(file));
             String line;
             while ((line = fr.readLine()) != null) {
-                Pattern pattern = Pattern.compile(typeRegex);
+                Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(line);
                 if (matcher.matches()) {
                     String type = matcher.group(1);
@@ -78,6 +84,10 @@ public class BoardSetUpRunnable implements EventGenerator{
             System.out.println("Unable to get file"); //TODO: maybe make errors a popup?
         }
         return null;
+    }
+
+    private String getPlaceType(ControllerPlace place) {
+        return getString(place, typeRegex);
     }
 
     //https://mkyong.com/java/java-read-a-file-from-resources-folder/#:~:text=In%20Java%2C%20we%20can%20use,getClassLoader().
