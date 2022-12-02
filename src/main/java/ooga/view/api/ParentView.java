@@ -9,7 +9,7 @@ import javafx.scene.Node;
  * @author Hosung Kim
  */
 @FunctionalInterface
-public interface ParentView<T extends Node> {
+public interface ParentView<T> {
 
   /**
    * This method adds a child Node to the ParentView in a hierarchical manner.

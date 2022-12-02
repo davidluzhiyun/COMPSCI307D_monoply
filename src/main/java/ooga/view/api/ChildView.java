@@ -6,7 +6,7 @@ import javafx.scene.Node;
  * This functional interface is implemented by frontend elements that can be added as a child of
  * Parent Nodes.
  *
- * @param <T> extends JavaFX Node
+ * @param <T> extends a JavaFX Node
  * @author Hosung Kim
  */
 @FunctionalInterface
