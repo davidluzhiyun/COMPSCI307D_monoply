@@ -19,6 +19,7 @@ public class EventSelector {
         eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), UpdateViewRunnable::new);
         eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_GET_PLACE_ACTIONS.name(), GetPlaceActionsRunnableToView::new);
         eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_PLAYER_START.name(), PlayerStartRunnable::new);
+        eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_BUY_PROPERTY.name(), BuyPropertyRunnable::new);
     }
 
     public EventGenerator selectEventRunnable(String eventName, Command command) {

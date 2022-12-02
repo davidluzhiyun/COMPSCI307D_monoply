@@ -2,11 +2,11 @@ package ooga.event.command;
 
 import ooga.model.ControllerPlayer;
 
-public class PlayerStartCommand implements Command{
+public class GetPlayerCommand implements Command{
 
     private ControllerPlayer player;
 
-    public PlayerStartCommand(ControllerPlayer player) {
+    public GetPlayerCommand(ControllerPlayer player) {
         this.player = player;
     }
 
