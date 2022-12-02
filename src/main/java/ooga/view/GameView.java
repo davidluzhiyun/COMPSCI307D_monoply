@@ -14,6 +14,7 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.RollDiceCommand;
+import ooga.view.components.Board;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
 import ooga.view.pop_ups.RentPopUp;
@@ -53,6 +54,7 @@ public class GameView extends View implements GameEventListener {
     background.setId(StartView.BACKGROUND);
     myBorderPane = new BorderPane(background);
     myBorderPane.setTop(makeInteractiveObjects());
+    myBorderPane.setCenter(new Board().getBoard());
     myScene = new Scene(myBorderPane, width, height);
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
@@ -79,11 +81,30 @@ public class GameView extends View implements GameEventListener {
   }
 
   /**
+   * NOTE: Currently this is just pseudo-code because we do not have full support for this yet.
+   * Theoretically, should present the GamePiecePopUp to each player, let them pick their piece,
+   * then should add this piece to our Board class -- presumably there will be a method in Board
+   * class that allows for a new piece to be initialized on the Go button
+   */
+  public void chooseGamePieces() {
+//     for (int i = 0; i < numPlayers; i ++) {
+//       GamePiecePopUp pop = new GamePiecePopUp(i, myStyle, myLanguage);
+//       pop.showMessage(myLanguage);
+//       GamePiece piece = pop.getGamePiece();
+//       myBoard.addPiece(piece, i);
+//     }
+  }
+
+  /**
    * Set in property files to be the handler method when someone clicks the "Save game" button. This
    * should be implemented as one of our project extensions.
    * TODO: change this to actually implement the savegame feature.
    */
   public void saveGame() {
+    DiceRollPopUp pop = new DiceRollPopUp(1, myStyle, myLanguage);
+    pop.showMessage(myLanguage);
+    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myLanguage);
+    popUp.showMessage(myLanguage);
   }
 
   /**
@@ -97,6 +118,7 @@ public class GameView extends View implements GameEventListener {
 
   /**
    * Set in property files to be called when the user clicks "Roll" within the RollDicePopUp
+   * TODO: change to communicate directly to model -- view_to_model
    */
   public void rollDice() {
     Command cmd = new RollDiceCommand();
@@ -107,6 +129,7 @@ public class GameView extends View implements GameEventListener {
 
   /**
    * TODO: change this to actually get the dice result from the controller and show it.
+   * may need to change to display the separate rolls of each die... can also have images for each!
    */
   private void showDiceResult(int roll) {
     myDicePopUp.close();
