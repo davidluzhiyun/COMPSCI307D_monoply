@@ -8,6 +8,7 @@ import ooga.event.GameEventHandler;
 import ooga.view.MainView;
 import ooga.view.SampleView;
 import ooga.view.StartView;
+import ooga.view.scene.SceneManager;
 
 public class Main extends Application {
 
@@ -31,7 +32,7 @@ public class Main extends Application {
     GameEventHandler gameEventHandler = new GameEventHandler();
 //    MainView mainView = new MainView(primaryStage, gameEventHandler);
 //    mainView.start();
-    StartView start = new StartView(primaryStage, gameEventHandler);
+    StartView startView = new StartView(primaryStage, gameEventHandler);
   }
 
   /**

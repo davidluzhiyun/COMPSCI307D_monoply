@@ -16,6 +16,7 @@ import ooga.event.GameEventHandler;
 import ooga.event.command.Command;
 import ooga.event.command.GameStartViewCommand;
 import ooga.view.pop_ups.NoFileErrorPopUp;
+import ooga.view.scene.SceneManager;
 
 /**
  * @author Leila. Responsible for the creation of the start screen, where users can select a
@@ -161,9 +162,10 @@ public class StartView extends View {
       error.showMessage(myLanguage);
     } else {
       Command cmd = new GameStartViewCommand(myConfigFile);
-      GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_GAME_START",
+      GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_GAME_START",
           cmd);
       gameEventHandler.publish(event);
+      SceneManager sceneManager = new SceneManager(myStage, myLanguage, gameEventHandler);
       GameView game = new GameView(gameEventHandler, myStyle, myLanguage);
     }
   }
