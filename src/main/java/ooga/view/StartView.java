@@ -78,6 +78,8 @@ public class StartView extends View {
     layout.setId(LAYOUT_ID);
     myRoot.getChildren().addAll(background, layout);
     makeInteractiveObjects();
+
+    // make scene in scenemanager instead
     myScene = new Scene(myRoot, width, height);
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);

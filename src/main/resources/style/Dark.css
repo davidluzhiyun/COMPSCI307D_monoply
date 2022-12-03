@@ -93,3 +93,14 @@
   -fx-text-fill: white;
   -fx-background-color: rgba(0,77,51, 0.2);
 }
+
+#DicePopPlayerText {
+  -fx-text-fill: white;
+}
+#DicePopRollText {
+  -fx-text-fill: white;
+}
+
+#RollResultPreviewText {
+  -fx-text-fill: white;
+}
