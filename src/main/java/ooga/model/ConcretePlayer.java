@@ -60,7 +60,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     }
 
     @Override
-    public int getCurrentPlaceId() {
+    public String getCurrentPlaceId() {
         return currentPlaceId;
     }
 

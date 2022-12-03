@@ -14,7 +14,7 @@ public interface ControllerPlace {
    *
    * @return the id of the place
    */
-  int getPlaceId();
+  String getPlaceId();
 
 
   /**

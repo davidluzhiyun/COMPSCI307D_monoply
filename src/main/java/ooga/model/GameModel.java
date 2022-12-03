@@ -84,7 +84,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     places = new ArrayList<>();
     int j = 1;
     while (map.containsKey(String.valueOf(j))) {
-      places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (int) (double) map.get(String.valueOf(j)).get("id")));
+      places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (String) map.get(String.valueOf(j)).get("id")));
       j++;
     }
     players = new ArrayList<>();
@@ -98,7 +98,7 @@ public class GameModel implements GameEventListener, ModelOutput {
    *
    * @param type
    */
-  protected Place createPlace(String type, int id) {
+  protected Place createPlace(String type, String id) {
     Place newPlace;
     Class<?> placeClass;
     try {
