@@ -49,7 +49,7 @@ public class SceneManager implements GameEventListener {
     setPrimaryStageToCurrScene();
   }
 
-  private void setGameSelectionScene() {
+  public void setGameSelectionScene() {
     GameSelectionScene gameSelectionScene = new GameSelectionScene(myLanguage, primaryStage);
     currentScene = gameSelectionScene.createScene(primaryStage.getMaxWidth(), primaryStage.getMaxHeight());
     setPrimaryStageToCurrScene();

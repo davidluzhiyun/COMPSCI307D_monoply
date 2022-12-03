@@ -28,17 +28,29 @@ public class GameSelectionScene extends View {
   }
 
   public Scene createScene(double width, double height) {
+    System.out.println("HELLO>>>");
     createButtons();
     return new Scene(myRoot, width, height);
   }
 
   private void createButtons() {
+    System.out.println("hello??");
     VBox buttons = new VBox();
     ResourceBundle screenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SCREEN);
     String[] objects = screenResources.getString("GameSelectionObjects").split(COMMA_REGEX);
     for (String button : objects) {
       buttons.getChildren().add((Node) makeInteractiveObject(button, myLanguage, this));
     }
+    myRoot.getChildren().add(buttons);
+  }
+  public void startNewGame() {
+
+  }
+  public void loadGame() {
+
+  }
+  public void goToEditor(){
+
   }
 
 }
