@@ -17,6 +17,7 @@ public abstract class ActionPopUp extends View implements PopUp {
   public static final String PLAYER_TEXT_KEY = "PlayerText";
   public static final String WIDTH = "Width";
   public static final String HEIGHT = "Height";
+
   private String myLanguage;
   private ImageView icon;
 
