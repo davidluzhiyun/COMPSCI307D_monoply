@@ -100,3 +100,7 @@
 #DicePopRollText {
   -fx-text-fill: white;
 }
+
+#RollResultPreviewText {
+  -fx-text-fill: white;
+}

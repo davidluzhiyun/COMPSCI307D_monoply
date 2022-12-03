@@ -27,7 +27,6 @@ class DiceRollPopUpTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) throws Exception {
-//    myPop = new DiceRollPopUp(1, "Default", "English");
     player = (int) Math.random();
     myPop = new DiceRollPopUp(player, "Light", "English");
     myPop.showMessage("English");
@@ -44,5 +43,4 @@ class DiceRollPopUpTest extends DukeApplicationTest {
     Label playerText = lookup("#DicePopPlayerText").query();
     assertEquals(expected, playerText.getText());
   }
-
 }

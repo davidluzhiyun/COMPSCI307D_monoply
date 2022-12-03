@@ -2,6 +2,7 @@ package ooga.view.pop_ups;
 
 import java.util.ResourceBundle;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -50,9 +51,12 @@ public class GamePiecePopUp extends ActionPopUp {
 
   @Override
   public void createScene() {
-    Text playerText = new Text(
+    ResourceBundle idResources = ResourceBundle.getBundle(Main.ID_PROPERTIES);
+    Label playerText = new Label(
         String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
-    Text previewText = new Text(myResources.getString(PREVIEW_TEXT_KEY));
+    playerText.setId(idResources.getString("PlayerText"));
+    Label previewText = new Label(myResources.getString(PREVIEW_TEXT_KEY));
+    previewText.setId(idResources.getString("PreviewText"));
     root = new VBox(playerText,
         (CustomizedDropDown) makeInteractiveObject(GamePieceDropDown.GAME_PIECE_KEY, myLanguage,
             this), previewText);
