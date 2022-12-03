@@ -39,6 +39,7 @@ public class GamePiecePopUp extends ActionPopUp {
   public static final String PREVIEW_TEXT_KEY = "GamePiecePreviewText";
   public static final String ICON_HEIGHT_KEY = "IconHeight";
   public static final String GAME_PIECE_POP_UP_ID = "GamePiecePopUp";
+  public static final String PREVIEW_TEXT = "PreviewText";
 
   public GamePiecePopUp(int player, String style, String language) {
     super(language);
@@ -54,9 +55,9 @@ public class GamePiecePopUp extends ActionPopUp {
     ResourceBundle idResources = ResourceBundle.getBundle(Main.ID_PROPERTIES);
     Label playerText = new Label(
         String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
-    playerText.setId(idResources.getString("PlayerText"));
+    playerText.setId(idResources.getString(PLAYER_TEXT_KEY));
     Label previewText = new Label(myResources.getString(PREVIEW_TEXT_KEY));
-    previewText.setId(idResources.getString("PreviewText"));
+    previewText.setId(idResources.getString(PREVIEW_TEXT));
     root = new VBox(playerText,
         (CustomizedDropDown) makeInteractiveObject(GamePieceDropDown.GAME_PIECE_KEY, myLanguage,
             this), previewText);

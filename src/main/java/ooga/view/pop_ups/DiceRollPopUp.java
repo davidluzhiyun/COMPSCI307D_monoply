@@ -37,6 +37,9 @@ public class DiceRollPopUp extends ActionPopUp {
   private final int myHeight;
   private final String myStyle;
   private final ResourceBundle idResources;
+  public static final String ROLL_TEXT = "RollText";
+  public static final String DICE_ROLL_POP_UP_KEY = "DiceRollPopUp";
+
 
   public DiceRollPopUp(int player, String style, String language) {
     super(language);
@@ -61,11 +64,11 @@ public class DiceRollPopUp extends ActionPopUp {
   public void createScene() {
     Label playerText = new Label(
         String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
-    playerText.setId(idResources.getString("PlayerText"));
+    playerText.setId(idResources.getString(PLAYER_TEXT_KEY));
     Label rollText = new Label(myResources.getString(ROLL_DICE_TEXT_KEY));
-    rollText.setId(idResources.getString("RollText"));
+    rollText.setId(idResources.getString(ROLL_TEXT));
     VBox root = new VBox(playerText, rollText, createDiceImage(), createRollButton());
-    root.setId(idResources.getString("DiceRollPopUp"));
+    root.setId(idResources.getString(DICE_ROLL_POP_UP_KEY));
     Scene scene = new Scene(root, myWidth, myHeight);
     myStage.setTitle(myResources.getString(START_TURN));
     myStage.setScene(scene);
