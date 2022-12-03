@@ -5,13 +5,15 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ooga.view.View;
 
+/**
+ * Allows users to
+ */
 public class GameSelectionScene extends View {
 
   private Group myRoot;
   private String myLanguage;
   private Stage myStage;
 
-  // might not even need stage parameter
   public GameSelectionScene(String language, Stage stage) {
     this.myRoot = new Group();
     this.myLanguage = language;
