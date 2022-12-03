@@ -6,13 +6,11 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
-import ooga.model.ConcretePlayer;
-import ooga.model.ModelOutput;
-import ooga.model.StationaryAction;
-import ooga.model.ControllerPlayer;
+import ooga.model.*;
 import ooga.model.colorSet.DummyPlace;
+import ooga.model.exception.CannotBuildHouseException;
+import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
-import ooga.model.place.Place;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -43,13 +41,76 @@ public class UpdateViewEventTest extends TestCase {
         gameEventHandler.addEventListener(controller);
         players.add(new ConcretePlayer(0));
         players.add(new ConcretePlayer(1));
-        places.add(new DummyPlace(0));
-        places.add(new DummyPlace(1));
+        places.add(new ControllerPlace() {
+            @Override
+            public int getPlaceId() {
+                return 0;
+            }
+
+            @Override
+            public Collection<ControllerPlayer> getPlayers() {
+                Collection<ControllerPlayer> onHere = new ArrayList<>();
+                onHere.add(players.get(0));
+                return onHere;
+            }
+
+            @Override
+            public double getMoney() {
+                return 0;
+            }
+
+            @Override
+            public Collection<PlaceAction> getPlaceActions() {
+                return null;
+            }
+
+            @Override
+            public int getHouseCount() throws CannotBuildHouseException {
+                return 0;
+            }
+
+            @Override
+            public int getColorSetId() throws NoColorAttributeException {
+                return 0;
+            }
+        });
+        places.add(new ControllerPlace() {
+            @Override
+            public int getPlaceId() {
+                return 0;
+            }
+
+            @Override
+            public Collection<ControllerPlayer> getPlayers() {
+                Collection<ControllerPlayer> onHere = new ArrayList<>();
+                return onHere;
+            }
+
+            @Override
+            public double getMoney() {
+                return 0;
+            }
+
+            @Override
+            public Collection<PlaceAction> getPlaceActions() {
+                return null;
+            }
+
+            @Override
+            public int getHouseCount() throws CannotBuildHouseException {
+                return 0;
+            }
+
+            @Override
+            public int getColorSetId() throws NoColorAttributeException {
+                return 0;
+            }
+        });
         actions.add(StationaryAction.ROLL_DICE);
     }
 
     public void testBoardSetUp() {
-        listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_UPDATE_DATA.name());
+        listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_ROLL_DICE.name());
         gameEventHandler.addEventListener(listener);
         GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {
             @Override
@@ -106,12 +167,11 @@ public class UpdateViewEventTest extends TestCase {
             if (event.getGameEventType().equals(eventToTest)) {
                 System.out.println("Got game event:");
                 System.out.println(event.getGameEventType());
-                assertEquals(GameEventType.CONTROLLER_TO_VIEW_UPDATE_DATA.name(), event.getGameEventType());
+                assertEquals(GameEventType.CONTROLLER_TO_VIEW_ROLL_DICE.name(), event.getGameEventType());
                 UpdateViewRecord command = (UpdateViewRecord) event.getGameEventCommand().getCommand().getCommandArgs();
                 assertEquals(0, command.currentPlayerId());
                 assertEquals(actions, command.stationaryActions());
-                assertEquals(players, command.players());
-                assertEquals(places, command.places());
+                assertEquals(0, command.placeIndex());
                 assertEquals(diceRoll, command.dice());
             }
         }

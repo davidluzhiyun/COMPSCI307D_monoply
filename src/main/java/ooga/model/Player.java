@@ -10,7 +10,7 @@ import ooga.model.place.property.Property;
  */
 public interface Player extends ControllerPlayer {
   void move(Place place);
-  void purchase(Property place);
+  void purchase(Place place) throws IllegalStateException;
   void decrementOneDiceLeft();
   void addOneDiceRoll();
   /**

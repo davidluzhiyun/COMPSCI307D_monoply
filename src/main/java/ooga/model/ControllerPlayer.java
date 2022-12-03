@@ -1,5 +1,6 @@
 package ooga.model;
 
+import ooga.model.place.Place;
 import ooga.model.place.property.Property;
 
 import java.util.Collection;
@@ -12,6 +13,6 @@ public interface ControllerPlayer {
   int getCurrentPlaceId();
   Boolean isInJail();
   int remainingJailTurns();
-  Collection<Property> getProperties();
+  Collection<Place> getProperties();
   double getTotalMoney();
 }

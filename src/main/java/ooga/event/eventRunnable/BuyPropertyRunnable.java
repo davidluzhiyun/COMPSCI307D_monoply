@@ -7,17 +7,17 @@ import ooga.event.command.Command;
 import ooga.event.command.GetPlayerCommand;
 import ooga.model.ModelOutput;
 
-public class PlayerStartRunnable implements EventGenerator{
+public class BuyPropertyRunnable implements EventGenerator{
 
     private ModelOutput boardInfo;
 
-    public PlayerStartRunnable(Command arguments) {
+    public BuyPropertyRunnable(Command arguments) {
         this.boardInfo = (ModelOutput) arguments.getCommandArgs();
     }
 
     @Override
     public GameEvent processEvent() {
-        GetPlayerCommand playerStartCommand = new GetPlayerCommand(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayer()));
-        return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_PLAYER_START.name(), playerStartCommand);
+        GetPlayerCommand buyPropertyCommand = new GetPlayerCommand(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayer()));
+        return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_BUY_PROPERTY.name(), buyPropertyCommand);
     }
 }
