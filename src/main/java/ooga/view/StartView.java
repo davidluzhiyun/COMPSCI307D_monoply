@@ -15,7 +15,9 @@ import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.command.Command;
 import ooga.event.command.GameStartViewCommand;
+import ooga.event.command.GoToGameSelectionCommand;
 import ooga.view.pop_ups.NoFileErrorPopUp;
+import ooga.view.scene.SceneManager;
 
 /**
  * @author Leila. Responsible for the creation of the start screen, where users can select a
@@ -44,15 +46,13 @@ public class StartView extends View {
   public static final String BACKGROUND = "Background";
   private Group myRoot;
   private final Stage myStage;
-  private File myConfigFile;
   private VBox layout;
   private final int width;
   private final int height;
   private String myLanguage;
   private String myStyle;
-  private Scene myScene;
   private final ResourceBundle myScreenResources;
-  private GameEventHandler gameEventHandler;
+  private final GameEventHandler gameEventHandler;
 
   public StartView(Stage stage, GameEventHandler gameEventHandler) {
     this.gameEventHandler = gameEventHandler;
@@ -78,9 +78,7 @@ public class StartView extends View {
     layout.setId(LAYOUT_ID);
     myRoot.getChildren().addAll(background, layout);
     makeInteractiveObjects();
-
-    // make scene in scenemanager instead
-    myScene = new Scene(myRoot, width, height);
+    Scene myScene = new Scene(myRoot, width, height);
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
     myStage.show();
@@ -95,28 +93,19 @@ public class StartView extends View {
   }
 
   /**
-   * Creates new object of type InteractiveObject & also uses its setAction method to invoke the
-   * desired method (which is specified in property files!).
-   *
-   * @param name: name of the class you would like to create
-   * @return the new object
-   */
-
-
-  /**
    * Set in property files to be the handler method when a suer clicks on a FileUploadButton. Starts
    * up a FileChooser dialog to let the user select a file from their computer & restricts them to
    * choosing only JSON files (since that is our designated file format for config files). Saves
    * this file to instance variable myConfigFile.
    */
-  public void fileHandler() {
-    FileChooser fileChooser = new FileChooser();
-    fileChooser.setInitialDirectory(new File(DATA_FILE_FOLDER));
-    fileChooser.getExtensionFilters()
-        .setAll(new FileChooser.ExtensionFilter(JSON_FILE_EXTENSION,
-            DATA_FILE_JSON_EXTENSION));
-    myConfigFile = fileChooser.showOpenDialog(myStage);
-  }
+//  public void fileHandler() {
+//    FileChooser fileChooser = new FileChooser();
+//    fileChooser.setInitialDirectory(new File(DATA_FILE_FOLDER));
+//    fileChooser.getExtensionFilters()
+//        .setAll(new FileChooser.ExtensionFilter(JSON_FILE_EXTENSION,
+//            DATA_FILE_JSON_EXTENSION));
+//    myConfigFile = fileChooser.showOpenDialog(myStage);
+//  }
 
   /**
    * Set in property files to be the method called whenever a user changes their selection in the
@@ -151,29 +140,19 @@ public class StartView extends View {
   }
 
   /**
-   * Throws an error if users click on it without first uploading a file (or selecting a language)
-   * Should act as an event that signals controller to parse the file, start up the main game
-   * screen.
+   * Should
    */
   public void startButtonHandler() {
-    if (myConfigFile == null) {
-      NoFileErrorPopUp error = new NoFileErrorPopUp();
-      error.showMessage(myLanguage);
-    } else {
-      Command cmd = new GameStartViewCommand(myConfigFile);
-      GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_GAME_START",
-          cmd);
-      gameEventHandler.publish(event);
-      GameView game = new GameView(gameEventHandler, myStyle, myLanguage);
-    }
-  }
-
-  /**
-   * Used for testing purposes only...
-   *
-   * @return File configFile that the user has uploaded
-   */
-  public File getMyConfigFile() {
-    return myConfigFile;
+    // this code should be moved to the next screen
+//      Command cmd = new GameStartViewCommand();
+//      GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SCREEN",
+//          cmd);
+//      gameEventHandler.publish(event);
+    Command cmd = new GoToGameSelectionCommand();
+    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SELECTION_SCREEN", cmd);
+    SceneManager sceneManager = new SceneManager(new Stage(), myLanguage, gameEventHandler);
+    GameView v = new GameView(gameEventHandler, myStyle, myLanguage);
+    gameEventHandler.publish(event);
+//      GameView game = new GameView(gameEventHandler, myStyle, myLanguage);
   }
 }

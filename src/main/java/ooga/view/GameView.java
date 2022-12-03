@@ -87,6 +87,7 @@ public class GameView extends View implements GameEventListener {
    * class that allows for a new piece to be initialized on the Go button
    */
   public void chooseGamePieces() {
+    // make pop up to select number of players, then for each player, do that.
 //     for (int i = 0; i < numPlayers; i ++) {
 //       GamePiecePopUp pop = new GamePiecePopUp(i, myStyle, myLanguage);
 //       pop.showMessage(myLanguage);
@@ -103,6 +104,8 @@ public class GameView extends View implements GameEventListener {
   public void saveGame() {
     GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myLanguage);
     popUp.showMessage(myLanguage);
+    RentPopUp pop = new RentPopUp(20);
+    pop.showMessage(myLanguage);
     startPlayerTurn();
   }
 
