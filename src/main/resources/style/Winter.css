@@ -98,3 +98,7 @@
 #RollResultPreviewText {
   -fx-text-fill: white;
 }
+#GameSelectVBox {
+  -fx-padding: 20;
+  -fx-alignment: center;
+}

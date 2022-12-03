@@ -99,3 +99,7 @@
   -fx-background-color: rgba(0,77,51, 0.2);
 }
 
+#GameSelectVBox {
+  -fx-padding: 20;
+  -fx-alignment: center;
+}

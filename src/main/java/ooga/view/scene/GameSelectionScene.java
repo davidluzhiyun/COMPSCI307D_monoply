@@ -17,32 +17,35 @@ public class GameSelectionScene extends View {
 
   private final Group myRoot;
   private String myLanguage;
-  private Stage myStage;
-  private final ResourceBundle myLanguageResources;
-
-  public GameSelectionScene(String language, Stage stage) {
-    this.myLanguageResources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + language);
+  private String myStyle;
+  private VBox buttons;
+  public static final String GAME_SELECTION_OBJECTS_KEY = "GameSelectionObjects";
+  public GameSelectionScene(String language, Stage stage, String style) {
     this.myRoot = new Group();
     this.myLanguage = language;
-    this.myStage = stage;
+    this.myStyle = style;
   }
 
   public Scene createScene(double width, double height) {
-    System.out.println("HELLO>>>");
     createButtons();
-    return new Scene(myRoot, width, height);
+    Scene scene = new Scene(myRoot, width, height);
+    styleScene(scene, myStyle);
+    return scene;
   }
 
   private void createButtons() {
-    System.out.println("hello??");
-    VBox buttons = new VBox();
+    buttons = new VBox();
+    ResourceBundle idResources = ResourceBundle.getBundle(Main.ID_PROPERTIES);
+    buttons.setId(idResources.getString(GAME_SELECTION_OBJECTS_KEY));
     ResourceBundle screenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SCREEN);
-    String[] objects = screenResources.getString("GameSelectionObjects").split(COMMA_REGEX);
+    String[] objects = screenResources.getString(GAME_SELECTION_OBJECTS_KEY).split(COMMA_REGEX);
     for (String button : objects) {
       buttons.getChildren().add((Node) makeInteractiveObject(button, myLanguage, this));
     }
     myRoot.getChildren().add(buttons);
   }
+
+  public VBox getButtons() {return buttons;}
   public void startNewGame() {
 
   }

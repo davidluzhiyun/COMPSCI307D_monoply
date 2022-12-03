@@ -12,7 +12,7 @@ public class MainView {
 
   public MainView(Stage primaryStage, GameEventHandler gameEventHandler) {
     myGameEventHandler = gameEventHandler;
-    SceneManager sceneManager = new SceneManager(primaryStage, "English", gameEventHandler);
+    SceneManager sceneManager = new SceneManager("English", gameEventHandler, "Light");
     myGameEventHandler.addEventListener(sceneManager);
   }
 

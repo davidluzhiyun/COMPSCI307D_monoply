@@ -143,7 +143,7 @@ public class StartView extends View {
 //      gameEventHandler.publish(event);
     Command cmd = new GoToGameSelectionCommand();
     GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SELECTION_SCREEN", cmd);
-    SceneManager sceneManager = new SceneManager(new Stage(), myLanguage, gameEventHandler);
+    SceneManager sceneManager = new SceneManager(myLanguage, gameEventHandler, myStyle);
     gameEventHandler.addEventListener(sceneManager);
     gameEventHandler.publish(event);
   }

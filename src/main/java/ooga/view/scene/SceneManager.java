@@ -24,11 +24,13 @@ public class SceneManager implements GameEventListener {
   private final ResourceBundle languageResources;
   private Scene currentScene;
   private String myLanguage;
+  private String myStyle;
 
-  public SceneManager(Stage primaryStage, String language, GameEventHandler gameEventHandler) {
-    this.primaryStage = primaryStage;
+  public SceneManager(String language, GameEventHandler gameEventHandler, String style) {
+    this.primaryStage = new Stage();
     this.gameEventHandler = gameEventHandler;
     this.myLanguage = language;
+    this.myStyle = style;
     languageResources = ResourceBundle.getBundle(BASE_DIR_UI_LANGUAGE + language);
     setupStage();
   }
@@ -50,9 +52,12 @@ public class SceneManager implements GameEventListener {
   }
 
   public void setGameSelectionScene() {
-    GameSelectionScene gameSelectionScene = new GameSelectionScene(myLanguage, primaryStage);
+    GameSelectionScene gameSelectionScene = new GameSelectionScene(myLanguage, primaryStage, myStyle);
     currentScene = gameSelectionScene.createScene(primaryStage.getMaxWidth(), primaryStage.getMaxHeight());
     setPrimaryStageToCurrScene();
+    gameSelectionScene.centerHorizontally(gameSelectionScene.getButtons(), primaryStage.getMaxWidth());
+    gameSelectionScene.centerVertically(gameSelectionScene.getButtons(), primaryStage.getMaxHeight());
+
   }
 
   @Override
