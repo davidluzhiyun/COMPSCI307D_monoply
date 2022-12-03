@@ -7,8 +7,10 @@ import ooga.model.place.Place;
 public interface PlayerTurn {
   /**
    * Current player roll the dice and move to a place.
+   *
+   * @return
    */
-  void roll();
+  Point roll();
   int getCurrentPlayerTurnId();
   /**
    * Current player ends turn and switch next player's turn.

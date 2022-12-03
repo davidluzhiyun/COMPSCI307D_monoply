@@ -9,13 +9,13 @@ import java.util.List;
 public class ConcretePlayerTurn implements PlayerTurn {
   private Player currentPlayer;
   private Place currentPlace;
-  private final List<? extends Player> players;
-  private final List<? extends Place> places;
+  private final List<Player> players;
+  private final List<Place> places;
   private Dice dice;
   private Point diceNum;
 
 
-  public ConcretePlayerTurn(List<? extends Player> players, List<? extends Place> places) {
+  public ConcretePlayerTurn(List<Player> players, List<Place> places) {
     this.players = players;
     this.places = places;
     currentPlayer = players.get(0);
@@ -25,7 +25,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
   }
 
   @Override
-  public void roll() {
+  public Point roll() {
     Point point = dice.roll();
     int r1 = point.x;
     int r2 = point.y;
@@ -37,6 +37,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
 //      currentPlayer.move(jail);
     //TODO: roll triple doubles and go jail
     go(r1 + r2);
+    return  point;
   }
 
   /**
