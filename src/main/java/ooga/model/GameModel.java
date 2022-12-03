@@ -43,16 +43,7 @@ public class GameModel implements GameEventListener, ModelOutput {
   protected ResourceBundle getResources() {
     return modelResources;
   }
-/*
-  public void rollDice() {
-    Player currentPlayer = players.get(turn.getCurrentPlayerTurnId());
-    turn.roll();
-    SampleViewData d = null;//TODO
-    Command cmd = new SampleCommand(d);
-    GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_DICE_ROLLED", cmd);
-    gameEventHandler.publish(event);
-  }
-*/
+
   public void rollDice() {
     turn.roll();
   }
@@ -99,7 +90,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     players = new ArrayList<>();
     for (int i = 0; i < (int) (double) map.get("meta").get("players"); i++)
       players.add(new ConcretePlayer(i));
-//    turn = new ConcretePlayerTurn(players, places);
+    turn = new ConcretePlayerTurn(players, places);
   }
 
   /**
