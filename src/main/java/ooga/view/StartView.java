@@ -7,16 +7,12 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ooga.Main;
-import ooga.Reflection;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.command.Command;
-import ooga.event.command.GameStartViewCommand;
 import ooga.event.command.GoToGameSelectionCommand;
-import ooga.view.pop_ups.NoFileErrorPopUp;
 import ooga.view.scene.SceneManager;
 
 /**
@@ -25,14 +21,11 @@ import ooga.view.scene.SceneManager;
  */
 public class StartView extends View {
 
-  public static final String SCREEN = "Screen";
   public static final String DEFAULT_LANGUAGE_KEY = "DefaultLanguage";
   public static final String DEFAULT_STYLE_KEY = "DefaultStyle";
   public static final String WIDTH_KEY = "Width";
   public static final String HEIGHT_KEY = "Height";
   public static final String START_OBJECTS_KEY = "StartObjects";
-  public static final String SPACE_REGEX = " ";
-  public static final String COMMA_REGEX = ", ";
   public static final String STRING_FORMATTER = "%s%s";
   public static final String STRING_INT_FORMATTER = "%s%d";
   public static final String LANGUAGE = "Language";
