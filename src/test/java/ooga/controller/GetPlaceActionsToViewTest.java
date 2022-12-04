@@ -42,8 +42,8 @@ public class GetPlaceActionsToViewTest extends TestCase {
         gameEventHandler.addEventListener(listener);
         GameEvent getPlaceActions = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_GET_PLACE_ACTIONS.name(), new TestCommand(new ControllerPlace() {
             @Override
-            public int getPlaceId() {
-                return 0;
+            public String getPlaceId() {
+                return "0";
             }
 
             @Override

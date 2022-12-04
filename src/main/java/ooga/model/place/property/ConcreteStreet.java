@@ -7,7 +7,7 @@ public class ConcreteStreet extends AbstractProperty implements Street {
   private final double housePrice;
   private int housesBuilt = 0;
 
-  public ConcreteStreet(int id) {
+  public ConcreteStreet(String id) {
     super(id);
     colorId = (int) (double) getConfig().get("colorId");;
     housePrice = (double) getConfig().get("houseCost");
@@ -40,5 +40,10 @@ public class ConcreteStreet extends AbstractProperty implements Street {
 
   public void print() {
     System.out.println(11111);
+  }
+
+  @Override
+  public void setHouseCount(int count) throws IllegalStateException {
+    housesBuilt = count;
   }
 }

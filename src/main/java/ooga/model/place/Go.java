@@ -9,7 +9,7 @@ import ooga.model.Player;
 public class Go extends AbstractPlace {
 
   public Go() {
-    super(0);
+    super("0");
 //    addStationaryAction(StationaryAction.ROLL_DICE);
   }
 

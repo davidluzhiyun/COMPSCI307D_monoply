@@ -21,12 +21,10 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
-import ooga.event.command.SampleCommand;
 import ooga.model.components.ConcretePlayerTurn;
 import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
 import ooga.model.place.property.Property;
-import ooga.view.SampleViewData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,9 +56,9 @@ public class GameModel implements GameEventListener, ModelOutput {
     turn.nextTurn();
   }
 
-  private void buyProperty(Property property) {
+  private void buyProperty(int propertyIndex) {
     Player currentPlayer = getCurrentPlayerHelper();
-    currentPlayer.purchase(property);
+    currentPlayer.purchase(places.get(propertyIndex), propertyIndex);
   }
 
   private void publishGameData() {
@@ -92,7 +90,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     places = new ArrayList<>();
     int j = 1;
     while (map.containsKey(String.valueOf(j))) {
-      places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (int) (double) map.get(String.valueOf(j)).get("id")));
+      places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (String) map.get(String.valueOf(j)).get("id")));
       j++;
     }
     players = new ArrayList<>();
@@ -124,7 +122,7 @@ public class GameModel implements GameEventListener, ModelOutput {
         String type = (String) config.get("type");
         Place newPlace = createPlace(type, placeId);
         newPlace.purchaseBy((int) singlePlaceData.get("owner"));
-        newPlace.
+        newPlace.setHouseCount((int) singlePlaceData.get("house count"));
         places.add(newPlace);
       } catch (IOException e) {
         throw new RuntimeException(e);
@@ -137,7 +135,7 @@ public class GameModel implements GameEventListener, ModelOutput {
    *
    * @param type
    */
-  protected Place createPlace(String type, int id) {
+  protected Place createPlace(String type, String id) {
     Place newPlace;
     Class<?> placeClass;
     try {
@@ -182,7 +180,7 @@ public class GameModel implements GameEventListener, ModelOutput {
   @Override
   public Collection<StationaryAction> getStationaryAction() {
     Player currentPlayer = getCurrentPlayerHelper();
-    Place currentPlace = places.get(currentPlayer.getCurrentPlaceId());
+    Place currentPlace = places.get(currentPlayer.getCurrentPlaceIndex());
     Collection<StationaryAction> stationaryActions = currentPlace.getStationaryActions(currentPlayer);
     return stationaryActions;
   }
@@ -205,7 +203,8 @@ public class GameModel implements GameEventListener, ModelOutput {
       }
       case "CONTROLLER_TO_MODEL_PURCHASE_PROPERTY" -> {
         Command cmd = event.getGameEventCommand().getCommand();
-        buyProperty((Property) places.get((int) cmd.getCommandArgs()));
+        int propertyIndex = (int) cmd.getCommandArgs();
+        buyProperty(propertyIndex);
         publishGameData();
       }
       case "CONTROLLER_TO_MODEL_END_TURN" -> {

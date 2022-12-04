@@ -25,7 +25,7 @@
       "id": 0,
       "money": "1111",
       "jail": "0",
-      "current placeId": "2",
+      "current place index": "2",
       "properties": [
         1,
         2,
@@ -37,7 +37,7 @@
       "id": 1,
       "money": "999",
       "jail": "3",
-      "current placeId": "11",
+      "current place index": "11",
       "properties": [
         6,
         7,

@@ -71,8 +71,8 @@ public class BoardSave {
             singlePlayerData.put("id", player.getPlayerId());
             singlePlayerData.put("money", player.getTotalMoney());
             singlePlayerData.put("jail", player.isInJail()); //TODO: refactor this method so that returns 1, 2, 3 if in jail and 0 if not so only method is needed related to jail
-            singlePlayerData.put("current placeId", player.getCurrentPlaceId());
-            singlePlayerData.put("properties", player.getProperties());//List of placeIds
+            singlePlayerData.put("current place index", player.getCurrentPlaceIndex());
+            singlePlayerData.put("properties", player.getPropertyIndices());//List of placeIds
             playerData.add(singlePlayerData);
         }
         return playerData;

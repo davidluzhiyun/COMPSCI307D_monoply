@@ -35,7 +35,7 @@ public class BoardSaveTest {
 
             @Override
             public List<ControllerPlace> getBoard() {
-                return List.of(new ConcreteStreet(121),new ConcreteStreet(123));
+                return List.of(new ConcreteStreet("121"),new ConcreteStreet("123"));
             }
 
             @Override

@@ -34,7 +34,7 @@ class GameModelTest {
 
   @Test
   void testCreatePlaceStreet() {
-    Street street = (Street) model.createPlace("Street", 121);
+    Street street = (Street) model.createPlace("Street", "121");
     assertEquals(100, street.getHousePrice());
   }
 
