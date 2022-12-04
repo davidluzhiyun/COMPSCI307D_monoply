@@ -17,7 +17,6 @@ public abstract class View {
   public static final String SPACE_REGEX = " ";
   public static final String COMMA_REGEX = ", ";
 
-
   public void styleScene(Scene scene, String file) {
     String fileName = String.format("%s.css", file);
     scene.getStylesheets()

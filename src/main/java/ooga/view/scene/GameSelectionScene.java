@@ -5,9 +5,11 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import ooga.Main;
 import ooga.view.InteractiveObject;
+import ooga.view.StartView;
 import ooga.view.View;
 
 /**
@@ -19,6 +21,7 @@ public class GameSelectionScene extends View {
   private String myLanguage;
   private String myStyle;
   private VBox buttons;
+  private ResourceBundle idResources;
   public static final String GAME_SELECTION_OBJECTS_KEY = "GameSelectionObjects";
   public GameSelectionScene(String language, Stage stage, String style) {
     this.myRoot = new Group();
@@ -27,6 +30,10 @@ public class GameSelectionScene extends View {
   }
 
   public Scene createScene(double width, double height) {
+    Rectangle background = new Rectangle(width, height);
+    this.idResources = ResourceBundle.getBundle(Main.ID_PROPERTIES);
+    background.setId(idResources.getString(StartView.BACKGROUND));
+    myRoot.getChildren().add(background);
     createButtons();
     Scene scene = new Scene(myRoot, width, height);
     styleScene(scene, myStyle);
@@ -35,7 +42,6 @@ public class GameSelectionScene extends View {
 
   private void createButtons() {
     buttons = new VBox();
-    ResourceBundle idResources = ResourceBundle.getBundle(Main.ID_PROPERTIES);
     buttons.setId(idResources.getString(GAME_SELECTION_OBJECTS_KEY));
     ResourceBundle screenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SCREEN);
     String[] objects = screenResources.getString(GAME_SELECTION_OBJECTS_KEY).split(COMMA_REGEX);

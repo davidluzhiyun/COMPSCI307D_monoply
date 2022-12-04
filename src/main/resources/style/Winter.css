@@ -99,6 +99,31 @@
   -fx-text-fill: white;
 }
 #GameSelectVBox {
-  -fx-padding: 20;
+  -fx-spacing: 20;
   -fx-alignment: center;
+  -fx-padding: 100;
+  -fx-border-color: rgb(77,0,13);
+  -fx-border-width:8;
+}
+#StartGameButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: rgb(25,77,0);
+  -fx-background-color: rgba(230,255,230, 0.1);
+  -fx-text-fill: rgb(77,0,13);
+}
+#LoadGameButton {
+  -fx-padding: 10;
+  -fx-highlight-text-fill: white;
+  -fx-text-alignment: center;
+  -fx-border-color: rgb(25,77,0);
+  -fx-background-color: rgba(230,255,230, 0.1);
+  -fx-text-fill: rgb(77,0,13);
+}
+#GoToGameEditorButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: rgb(25,77,0);
+  -fx-background-color: rgba(230,255,230, 0.1);
+  -fx-text-fill: rgb(77,0,13);
 }
