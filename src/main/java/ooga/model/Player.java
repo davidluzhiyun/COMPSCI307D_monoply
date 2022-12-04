@@ -9,7 +9,14 @@ import ooga.model.place.property.Property;
  * @author David Lu decided to extend from ViewPlayer
  */
 public interface Player extends ControllerPlayer {
-  void move(Place place);
+  /**
+   * By Luyao Wang, updated by Zhiyun Lu
+   * Method moves the player to specified index. Doesn't check if the index is legal because
+   * the player class is blind to the board. The job of calculating the correct index is of
+   * playerTurn
+   * @param destinationIndex the index the player should be moved to.
+   */
+  void move(int destinationIndex);
   void purchase(Place place) throws IllegalStateException;
   void decrementOneDiceLeft();
   void addOneDiceRoll();
@@ -26,6 +33,7 @@ public interface Player extends ControllerPlayer {
 
   /**
    * Earn money, either through passing GO, collecting rent, or collecting communist chest.
+   * Edit by David Lu: The same method will also be used for decreasing money
    * @param money
    */
   void earnMoney(double money);

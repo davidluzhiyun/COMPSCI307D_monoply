@@ -20,7 +20,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
     this.places = places;
     currentPlayer = players.get(0);
     currentPlayer.newTurn();
-    currentPlace = this.places.get(currentPlayer.getCurrentPlaceId());
+    currentPlace = this.places.get(currentPlayer.getCurrentPlaceIndex());
     dice = new ConcreteDice();
   }
 
@@ -41,20 +41,30 @@ public class ConcretePlayerTurn implements PlayerTurn {
   }
 
   /**
+   * @author Luyao Wang
+   * @author David Lu modified the method to accomodate new definitions
    * Step can be negative, in the case of "go to jail do not pass GO" in chance.
+   * This method also takes care of thing like wrap around
    *
    * @param step
    */
   private void go(int step) {
-    if (currentPlayer.getCurrentPlaceId() + step < places.size())
-      currentPlace = places.get(currentPlayer.getCurrentPlaceId() + step);
-    else {
-      currentPlace = places.get(currentPlayer.getCurrentPlaceId() + step - places.size());
-      if (currentPlayer.getCurrentPlaceId() + step - places.size() > 0)
-        //the player goes past GO and still gets money
-        currentPlayer.earnMoney(places.get(0).getMoney());
+    //the player goes past GO (including landing on go) and get money
+    if (currentPlayer.getCurrentPlaceIndex() + step >= places.size()){
+      int passes = (int) ((currentPlayer.getCurrentPlaceIndex() + step) / places.size());
+      // Passing the place multiple times gives the player salaries multiple times
+      currentPlayer.earnMoney(passes * (places.get(0).getMoney()));
     }
-    currentPlayer.move(currentPlace);
+    int index = (currentPlayer.getCurrentPlaceIndex() + step) % places.size();
+    currentPlace = places.get(index);
+    // to prevent giving salary repetitively
+    if (index != 0){
+      // since the move method no longer accepts place, this step can't be done automatically
+      // TODO: publish event when rent levied
+      double money = currentPlace.getMoney();
+      currentPlayer.earnMoney(money);
+    }
+    currentPlayer.move(index);
   }
 
 
