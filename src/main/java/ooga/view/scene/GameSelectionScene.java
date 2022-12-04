@@ -17,6 +17,7 @@ import ooga.event.command.GameEditorCommand;
 import ooga.event.command.GameStartViewCommand;
 import ooga.view.StartView;
 import ooga.view.View;
+import ooga.view.pop_ups.NoFileErrorPopUp;
 
 /**
  * Allows users to
@@ -100,10 +101,15 @@ public class GameSelectionScene extends View {
     fileChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(JSON_FILE_EXTENSION,
         DATA_FILE_JSON_EXTENSION));
     File configFile = fileChooser.showOpenDialog(myStage);
-    Command cmd = new GameStartViewCommand(configFile);
-    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SCREEN",
-        cmd);
-    myGameEventHandler.publish(event);
+    if (configFile == null) {
+      NoFileErrorPopUp pop = new NoFileErrorPopUp();
+      pop.showMessage(myLanguage);
+    } else {
+      Command cmd = new GameStartViewCommand(configFile);
+      GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SCREEN",
+          cmd);
+      myGameEventHandler.publish(event);
+    }
   }
 
   /**
