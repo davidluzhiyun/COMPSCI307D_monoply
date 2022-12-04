@@ -1,21 +1,18 @@
 package ooga.view;
 
-import java.io.File;
 import java.util.ResourceBundle;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ooga.Main;
-import ooga.Reflection;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.command.Command;
-import ooga.event.command.GameStartViewCommand;
-import ooga.view.pop_ups.NoFileErrorPopUp;
+import ooga.event.command.GoToGameSelectionCommand;
+import ooga.view.scene.SceneManager;
 
 /**
  * @author Leila. Responsible for the creation of the start screen, where users can select a
@@ -23,36 +20,28 @@ import ooga.view.pop_ups.NoFileErrorPopUp;
  */
 public class StartView extends View {
 
-  public static final String SCREEN = "Screen";
   public static final String DEFAULT_LANGUAGE_KEY = "DefaultLanguage";
   public static final String DEFAULT_STYLE_KEY = "DefaultStyle";
   public static final String WIDTH_KEY = "Width";
   public static final String HEIGHT_KEY = "Height";
   public static final String START_OBJECTS_KEY = "StartObjects";
-  public static final String SPACE_REGEX = " ";
-  public static final String COMMA_REGEX = ", ";
   public static final String STRING_FORMATTER = "%s%s";
   public static final String STRING_INT_FORMATTER = "%s%d";
   public static final String LANGUAGE = "Language";
   public static final String STYLE = "Style";
   public static final String METHOD = "Method";
-  public static final String JSON_FILE_EXTENSION = "JSON Files";
-  public static final String DATA_FILE_JSON_EXTENSION = "*.json";
   public static final String DROP_DOWN = "DropDown";
-  public static final String DATA_FILE_FOLDER = System.getProperty("user.dir") + "/data";
   public static final String LAYOUT_ID = "MainVBox";
   public static final String BACKGROUND = "Background";
   private Group myRoot;
   private final Stage myStage;
-  private File myConfigFile;
   private VBox layout;
   private final int width;
   private final int height;
   private String myLanguage;
   private String myStyle;
-  private Scene myScene;
   private final ResourceBundle myScreenResources;
-  private GameEventHandler gameEventHandler;
+  private final GameEventHandler gameEventHandler;
 
   public StartView(Stage stage, GameEventHandler gameEventHandler) {
     this.gameEventHandler = gameEventHandler;
@@ -78,9 +67,7 @@ public class StartView extends View {
     layout.setId(LAYOUT_ID);
     myRoot.getChildren().addAll(background, layout);
     makeInteractiveObjects();
-
-    // make scene in scenemanager instead
-    myScene = new Scene(myRoot, width, height);
+    Scene myScene = new Scene(myRoot, width, height);
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
     myStage.show();
@@ -92,30 +79,6 @@ public class StartView extends View {
     for (String name : names) {
       layout.getChildren().add((Node) makeInteractiveObject(name, myLanguage, this));
     }
-  }
-
-  /**
-   * Creates new object of type InteractiveObject & also uses its setAction method to invoke the
-   * desired method (which is specified in property files!).
-   *
-   * @param name: name of the class you would like to create
-   * @return the new object
-   */
-
-
-  /**
-   * Set in property files to be the handler method when a suer clicks on a FileUploadButton. Starts
-   * up a FileChooser dialog to let the user select a file from their computer & restricts them to
-   * choosing only JSON files (since that is our designated file format for config files). Saves
-   * this file to instance variable myConfigFile.
-   */
-  public void fileHandler() {
-    FileChooser fileChooser = new FileChooser();
-    fileChooser.setInitialDirectory(new File(DATA_FILE_FOLDER));
-    fileChooser.getExtensionFilters()
-        .setAll(new FileChooser.ExtensionFilter(JSON_FILE_EXTENSION,
-            DATA_FILE_JSON_EXTENSION));
-    myConfigFile = fileChooser.showOpenDialog(myStage);
   }
 
   /**
@@ -151,29 +114,15 @@ public class StartView extends View {
   }
 
   /**
-   * Throws an error if users click on it without first uploading a file (or selecting a language)
-   * Should act as an event that signals controller to parse the file, start up the main game
+   * Initializes the SceneManager with the chosen language; publishes event to launch the next
    * screen.
    */
   public void startButtonHandler() {
-    if (myConfigFile == null) {
-      NoFileErrorPopUp error = new NoFileErrorPopUp();
-      error.showMessage(myLanguage);
-    } else {
-      Command cmd = new GameStartViewCommand(myConfigFile);
-      GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_GAME_START",
-          cmd);
-      gameEventHandler.publish(event);
-      GameView game = new GameView(gameEventHandler, myStyle, myLanguage);
-    }
-  }
-
-  /**
-   * Used for testing purposes only...
-   *
-   * @return File configFile that the user has uploaded
-   */
-  public File getMyConfigFile() {
-    return myConfigFile;
+    Command cmd = new GoToGameSelectionCommand();
+    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SELECTION_SCREEN",
+        cmd);
+    SceneManager sceneManager = new SceneManager(myLanguage, gameEventHandler, myStyle);
+    gameEventHandler.addEventListener(sceneManager);
+    gameEventHandler.publish(event);
   }
 }
