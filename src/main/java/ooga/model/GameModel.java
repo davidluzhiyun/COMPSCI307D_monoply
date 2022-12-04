@@ -1,6 +1,10 @@
 package ooga.model;
 
 import java.awt.Point;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -9,7 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
@@ -24,6 +30,7 @@ import ooga.view.SampleViewData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static ooga.model.place.AbstractPlace.DEFAULT_RESOURCE_FOLDER;
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
 
 public class GameModel implements GameEventListener, ModelOutput {
@@ -78,7 +85,8 @@ public class GameModel implements GameEventListener, ModelOutput {
 
 
   /**
-   * For test purpose
+   * Initialize the game using data from controller
+   * "protected" is for test purpose
    */
   protected void initializeGame(Map<String, LinkedTreeMap> map) {
     places = new ArrayList<>();
@@ -94,7 +102,38 @@ public class GameModel implements GameEventListener, ModelOutput {
   }
 
   /**
-   * For test purposes
+   * "protected" is for test purpose
+   *
+   * @param map
+   */
+  protected void loadGame(Map<String, Object> map) {
+    places = new ArrayList<>();
+    List<Map<String, Object>> placesData = (List<Map<String, Object>>) map.get("places");
+    for (Map<String, Object> singlePlaceData: placesData) {
+      String placeId = (String) singlePlaceData.get("id");
+
+      Gson gson = new Gson();
+      Reader reader;
+      Map<String, ?> config;
+      try {
+        File file = new File("." + "/src/main/resources" + DEFAULT_RESOURCE_FOLDER + placeId + ".json");
+        reader = new FileReader(file);
+        TypeToken<Map<String, ?>> mapType = new TypeToken<>() {
+        };
+        config = gson.fromJson(reader, mapType);
+        String type = (String) config.get("type");
+        Place newPlace = createPlace(type, placeId);
+        newPlace.purchaseBy((int) singlePlaceData.get("owner"));
+        newPlace.
+        places.add(newPlace);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
+
+  /**
+   * "protected" is for test purpose
    *
    * @param type
    */

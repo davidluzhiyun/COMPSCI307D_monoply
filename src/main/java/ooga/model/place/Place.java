@@ -35,4 +35,6 @@ public interface Place extends ControllerPlace{
   double getPurchasePrice() throws IllegalStateException;
 
   void purchaseBy(Player player) throws IllegalStateException;
+
+  void setHouseCount() throws IllegalStateException;
 }
