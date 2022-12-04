@@ -77,11 +77,25 @@ public class GameSelectionScene extends View {
 
   /**
    * Set within property files to be the method invoked when users click the StartNewGameButton.
-   * Loads a file chooser that has their
+   * Loads a file chooser that opens to the directory for configuration files.
+   * NOTE: should eventually publish some event to the controller...
    */
   public void startNewGame() {
+    makeFileDialog(Main.CONFIG_FILES_DIRECTORY);
+  }
+
+  /**
+   * Set within property files to be the method invoked when users click the LoadGameButton.
+   * This opens a different directory for JSON files that represent paused games.
+   * NOTE: should eventually also publish some event to the controller...
+   */
+  public void loadGame() {
+   makeFileDialog(Main.PAUSED_GAME_DIRECTORY);
+  }
+
+  private void makeFileDialog(String initialDirectory) {
     FileChooser fileChooser = new FileChooser();
-    fileChooser.setInitialDirectory(new File(Main.DATA_FILE_FOLDER));
+    fileChooser.setInitialDirectory(new File(initialDirectory));
     fileChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(JSON_FILE_EXTENSION,
         DATA_FILE_JSON_EXTENSION));
     File configFile = fileChooser.showOpenDialog(myStage);
@@ -89,13 +103,6 @@ public class GameSelectionScene extends View {
     GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SCREEN",
         cmd);
     myGameEventHandler.publish(event);
-  }
-
-  /**
-   * Set within property files to be the method invoked when users click the LoadGameButton.
-   */
-  public void loadGame() {
-
   }
 
   /**
