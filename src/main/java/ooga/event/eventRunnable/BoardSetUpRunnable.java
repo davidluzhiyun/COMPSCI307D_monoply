@@ -22,17 +22,9 @@ import java.util.regex.Pattern;
 /**
  * Represents the logic/functions that need to occur when the Controller sends the board set up information to the view
  */
-public class BoardSetUpRunnable implements EventGenerator{
+public class BoardSetUpRunnable extends ParsingJsonRunnable implements EventGenerator{
 
     private ModelOutput boardInfo;
-
-    public static final String PLACE_PATH = "ooga/model/place/";
-
-    public static final String JSON_EXTENSION = ".json";
-
-    private String typeRegex = ".+\"type\": \"(\\w+)\".?";
-
-    private String nameRegex = ".+\"name\": \"(.+)\".?";
 
     /**@param arguments; should be a model interface from the model**/
     public BoardSetUpRunnable(Command arguments) {
@@ -56,59 +48,6 @@ public class BoardSetUpRunnable implements EventGenerator{
             }
         }
         return parsedProperties;
-    }
-
-    private String getPlaceName(ControllerPlace place) {
-        return getString(place, nameRegex);
-    }
-
-    private String getString(ControllerPlace place, String regex) {
-        String fileName = PLACE_PATH + place.getPlaceId() + JSON_EXTENSION;
-
-        try {
-            File file = getFileFromResource(fileName);
-            BufferedReader fr = new BufferedReader(new FileReader(file));
-            String line;
-            while ((line = fr.readLine()) != null) {
-                Pattern pattern = Pattern.compile(regex);
-                Matcher matcher = pattern.matcher(line);
-                if (matcher.matches()) {
-                    String type = matcher.group(1);
-//                    System.out.println(type);
-                    return type;
-                }
-            }
-        } catch (URISyntaxException | IOException e) {
-            System.out.println("Unable to get file"); //TODO: maybe make errors a popup?
-        }
-        return null;
-    }
-
-    private String getPlaceType(ControllerPlace place) {
-        return getString(place, typeRegex);
-    }
-
-    /**
-     * Returns the file when searching for the string of a filename
-     * @param fileName
-     * @return File
-     * @throws URISyntaxException
-     */
-    //https://mkyong.com/java/java-read-a-file-from-resources-folder/#:~:text=In%20Java%2C%20we%20can%20use,getClassLoader().
-    public static File getFileFromResource(String fileName) throws URISyntaxException {
-
-        ClassLoader classLoader = BoardSetUpRunnable.class.getClassLoader();
-        URL resource = classLoader.getResource(fileName);
-        if (resource == null) {
-            throw new IllegalArgumentException("file not found! " + fileName);
-        } else {
-
-            // failed if files have whitespaces or special characters
-            //return new File(resource.getFile());
-
-            return new File(resource.toURI());
-        }
-
     }
 
     /** Prints out the file read for testing purposes **/

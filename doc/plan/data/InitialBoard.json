@@ -1,6 +1,8 @@
 {
   "meta": {
-    "players": 2
+    "players": 2,
+    "rows": 4,
+    "columns": 5
   },
   "0": {
     "id": 0,
