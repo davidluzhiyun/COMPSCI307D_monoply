@@ -26,7 +26,7 @@ public class UpdateViewRunnable implements EventGenerator{
 
     @Override
     public GameEvent processEvent() {
-        UpdateViewRecord updateRecord = new UpdateViewRecord(this.boardInfo.getDiceNum(), getCurrentPlaceIndex(), this.boardInfo.getStationaryAction(), this.boardInfo.getCurrentPlayer());
+        UpdateViewRecord updateRecord = new UpdateViewRecord(this.boardInfo.getDiceNum(), getCurrentPlaceIndex(), this.boardInfo.getStationaryAction(), getCurrentPlayer());
         UpdateViewCommand updateView = new UpdateViewCommand(updateRecord);
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_ROLL_DICE.name(), updateView);
     }
