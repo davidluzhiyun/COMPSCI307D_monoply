@@ -19,13 +19,10 @@ import ooga.view.StartView;
 import ooga.view.View;
 import ooga.view.pop_ups.NoFileErrorPopUp;
 
-/**
- * Allows users to
- */
 public class GameSelectionScene extends View {
 
   private final Group myRoot;
-  private String myLanguage;
+  private final String myLanguage;
   private VBox buttons;
   private Scene scene;
   private ResourceBundle idResources;
@@ -52,7 +49,9 @@ public class GameSelectionScene extends View {
     return scene;
   }
 
-  public void setStyle(String style) {styleScene(scene, style);}
+  public void setStyle(String style) {
+    styleScene(scene, style);
+  }
 
   private void createButtons() {
     buttons = new VBox();
@@ -79,20 +78,20 @@ public class GameSelectionScene extends View {
 
   /**
    * Set within property files to be the method invoked when users click the StartNewGameButton.
-   * Loads a file chooser that opens to the directory for configuration files.
-   * NOTE: should eventually publish some event to the controller...
+   * Loads a file chooser that opens to the directory for configuration files. NOTE: should
+   * eventually publish some event to the controller...
    */
   public void startNewGame() {
     makeFileDialog(Main.CONFIG_FILES_DIRECTORY);
   }
 
   /**
-   * Set within property files to be the method invoked when users click the LoadGameButton.
-   * This opens a different directory for JSON files that represent paused games.
-   * NOTE: should eventually also publish some event to the controller...
+   * Set within property files to be the method invoked when users click the LoadGameButton. This
+   * opens a different directory for JSON files that represent paused games. NOTE: should eventually
+   * also publish some event to the controller...
    */
   public void loadGame() {
-   makeFileDialog(Main.PAUSED_GAME_DIRECTORY);
+    makeFileDialog(Main.PAUSED_GAME_DIRECTORY);
   }
 
   private void makeFileDialog(String initialDirectory) {

@@ -9,6 +9,7 @@ import ooga.Main;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
+import ooga.view.GameView;
 import ooga.view.MainView;
 
 public class SceneManager implements GameEventListener {
@@ -52,8 +53,10 @@ public class SceneManager implements GameEventListener {
   }
 
   private void setGameSelectionScene() {
-    GameSelectionScene gameSelectionScene = new GameSelectionScene(myLanguage, primaryStage, gameEventHandler);
-    currentScene = gameSelectionScene.createScene(primaryStage.getMaxWidth(), primaryStage.getMaxHeight());
+    GameSelectionScene gameSelectionScene = new GameSelectionScene(myLanguage, primaryStage,
+        gameEventHandler);
+    currentScene = gameSelectionScene.createScene(primaryStage.getMaxWidth(),
+        primaryStage.getMaxHeight());
     gameSelectionScene.setStyle(myStyle);
     setPrimaryStageToCurrScene();
     gameSelectionScene.placeButtons(primaryStage.getMaxWidth(), primaryStage.getMaxHeight());
@@ -63,11 +66,18 @@ public class SceneManager implements GameEventListener {
     System.out.println("Nothing to see here yet");
   }
 
+  private void setGameView() {
+    GameView gameViewScene = new GameView(gameEventHandler, myStyle, myLanguage, primaryStage);
+    currentScene = gameViewScene.setUpScene(primaryStage.getMaxWidth(),
+        primaryStage.getMaxHeight());
+    setPrimaryStageToCurrScene();
+  }
+
   @Override
   public void onGameEvent(GameEvent event) {
     System.out.println(event.getGameEventType());
     if (event.getGameEventType().equals("VIEW_LAUNCH_GAME_SCREEN")) {
-      setMonopolyGamePlayScene();
+      setGameView();
     }
     if (event.getGameEventType().equals("VIEW_LAUNCH_GAME_SELECTION_SCREEN")) {
       setGameSelectionScene();
