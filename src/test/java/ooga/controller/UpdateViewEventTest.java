@@ -73,6 +73,11 @@ public class UpdateViewEventTest extends TestCase {
             public int getColorSetId() throws NoColorAttributeException {
                 return 0;
             }
+
+            @Override
+            public int getOwnerId() {
+                return 0;
+            }
         });
         places.add(new ControllerPlace() {
             @Override
@@ -103,6 +108,11 @@ public class UpdateViewEventTest extends TestCase {
 
             @Override
             public int getColorSetId() throws NoColorAttributeException {
+                return 0;
+            }
+
+            @Override
+            public int getOwnerId() {
                 return 0;
             }
         });

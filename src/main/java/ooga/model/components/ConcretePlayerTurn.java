@@ -53,6 +53,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
       if (currentPlayer.getCurrentPlaceId() + step - places.size() > 0)
         //the player goes past GO and still gets money
         currentPlayer.earnMoney(places.get(0).getMoney());
+      //TODO: Publish an event
     }
     currentPlayer.move(currentPlace);
   }

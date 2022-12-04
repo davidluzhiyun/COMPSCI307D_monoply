@@ -122,6 +122,11 @@ public abstract class AbstractPlace implements Place {
         throw new NoColorAttributeException();
     }
 
+    @Override
+    public int getOwnerId() throws IllegalStateException{
+        throw new IllegalStateException();
+    }
+
     public void addStationaryAction(StationaryAction stationaryAction) {
         this.inherentStationaryActions.add(stationaryAction);
     }

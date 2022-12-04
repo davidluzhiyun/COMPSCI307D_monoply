@@ -50,4 +50,11 @@ public interface ControllerPlace {
    *
    */
   int getColorSetId() throws NoColorAttributeException;
+
+
+  /**
+   * Get the id of owner.
+   * @return the id of owner
+   */
+  int getOwnerId();
 }

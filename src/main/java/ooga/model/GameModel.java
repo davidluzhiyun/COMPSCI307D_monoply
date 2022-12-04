@@ -152,6 +152,7 @@ public class GameModel implements GameEventListener, ModelOutput {
 
   @Override
   public void onGameEvent(GameEvent event) {
+    //TODO: Refactor the switch expression
     switch (event.getGameEventType()) {
       case "CONTROLLER_TO_MODEL_GAME_START" -> {
         Command cmd = event.getGameEventCommand().getCommand();

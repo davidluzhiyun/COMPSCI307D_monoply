@@ -74,6 +74,11 @@ public class GetPlaceActionsToViewTest extends TestCase {
             public int getColorSetId() throws NoColorAttributeException {
                 return 0;
             }
+
+            @Override
+            public int getOwnerId() {
+                return 0;
+            }
         }));
         gameEventHandler.publish(getPlaceActions);
         System.out.println("GetPlaceActions event published!");
