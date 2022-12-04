@@ -23,10 +23,12 @@ public class SceneManager implements GameEventListener {
 
   private final ResourceBundle languageResources;
   private Scene currentScene;
+  private String myLanguage;
 
   public SceneManager(Stage primaryStage, String language, GameEventHandler gameEventHandler) {
     this.primaryStage = primaryStage;
     this.gameEventHandler = gameEventHandler;
+    this.myLanguage = language;
     languageResources = ResourceBundle.getBundle(BASE_DIR_UI_LANGUAGE + language);
     setupStage();
   }
@@ -47,11 +49,20 @@ public class SceneManager implements GameEventListener {
     setPrimaryStageToCurrScene();
   }
 
+  private void setGameSelectionScene() {
+    GameSelectionScene gameSelectionScene = new GameSelectionScene(myLanguage, primaryStage);
+    currentScene = gameSelectionScene.createScene(primaryStage.getMaxWidth(), primaryStage.getMaxHeight());
+    setPrimaryStageToCurrScene();
+  }
+
   @Override
   public void onGameEvent(GameEvent event) {
     System.out.println(event.getGameEventType());
     if (event.getGameEventType().equals("VIEW_LAUNCH_GAME_SCREEN")) {
       setMonopolyGamePlayScene();
+    }
+    if (event.getGameEventType().equals("VIEW_LAUNCH_GAME_SELECTION_SCREEN")) {
+      setGameSelectionScene();
     }
 
   }
