@@ -22,7 +22,6 @@ public class Main extends Application {
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
 
 
-
   /**
    * We can definitely change this later!
    *
