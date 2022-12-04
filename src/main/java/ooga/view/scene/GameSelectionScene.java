@@ -13,6 +13,7 @@ import ooga.Main;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.command.Command;
+import ooga.event.command.GameEditorCommand;
 import ooga.event.command.GameStartViewCommand;
 import ooga.view.StartView;
 import ooga.view.View;
@@ -109,7 +110,10 @@ public class GameSelectionScene extends View {
    * Set within property files to be the method invoked when users click the GoToEditorButton.
    */
   public void goToEditor() {
-
+    Command cmd = new GameEditorCommand();
+    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_BOARD_EDITOR",
+        cmd);
+    myGameEventHandler.publish(event);
   }
 
 }

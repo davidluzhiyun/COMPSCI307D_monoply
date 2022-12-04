@@ -59,6 +59,10 @@ public class SceneManager implements GameEventListener {
     gameSelectionScene.placeButtons(primaryStage.getMaxWidth(), primaryStage.getMaxHeight());
   }
 
+  private void setBoardEditorScene() {
+    System.out.println("Nothing to see here yet");
+  }
+
   @Override
   public void onGameEvent(GameEvent event) {
     System.out.println(event.getGameEventType());
@@ -67,6 +71,9 @@ public class SceneManager implements GameEventListener {
     }
     if (event.getGameEventType().equals("VIEW_LAUNCH_GAME_SELECTION_SCREEN")) {
       setGameSelectionScene();
+    }
+    if (event.getGameEventType().equals("VIEW_LAUNCH_BOARD_EDITOR")) {
+      setBoardEditorScene();
     }
   }
 
