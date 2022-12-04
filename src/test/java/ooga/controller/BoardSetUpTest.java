@@ -83,7 +83,7 @@ public class BoardSetUpTest extends TestCase {
         System.out.println("BoardSetUp event published!");
     }
 
-    public class TestCommand implements Command{
+    public static class TestCommand implements Command{
 
         private final ModelOutput boardSetUp;
 

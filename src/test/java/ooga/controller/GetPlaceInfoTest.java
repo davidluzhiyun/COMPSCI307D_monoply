@@ -1,5 +1,6 @@
 package ooga.controller;
 
+import com.google.gson.internal.LinkedTreeMap;
 import junit.framework.TestCase;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
@@ -7,7 +8,6 @@ import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.model.*;
-import ooga.model.colorSet.DummyPlace;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
@@ -16,8 +16,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
-public class UpdateViewEventTest extends TestCase {
+public class GetPlaceInfoTest extends TestCase {
 
     private GameEventHandler gameEventHandler;
 
@@ -25,13 +26,7 @@ public class UpdateViewEventTest extends TestCase {
 
     private MockListener listener;
 
-    List<ControllerPlayer> players = new ArrayList<>();
-
     List<ControllerPlace> places = new ArrayList<>();
-
-    Collection<StationaryAction> actions = new ArrayList<>();
-
-    Point diceRoll = new Point(3,2);
 
     @Override
     public void setUp(){
@@ -39,8 +34,6 @@ public class UpdateViewEventTest extends TestCase {
         gameEventHandler = new GameEventHandler();
         controller = new Controller(gameEventHandler);
         gameEventHandler.addEventListener(controller);
-        players.add(new ConcretePlayer(0));
-        players.add(new ConcretePlayer(1));
         places.add(new ControllerPlace() {
             @Override
             public int getPlaceId() {
@@ -49,9 +42,7 @@ public class UpdateViewEventTest extends TestCase {
 
             @Override
             public Collection<ControllerPlayer> getPlayers() {
-                Collection<ControllerPlayer> onHere = new ArrayList<>();
-                onHere.add(players.get(0));
-                return onHere;
+                return null;
             }
 
             @Override
@@ -77,13 +68,12 @@ public class UpdateViewEventTest extends TestCase {
         places.add(new ControllerPlace() {
             @Override
             public int getPlaceId() {
-                return 0;
+                return 121;
             }
 
             @Override
             public Collection<ControllerPlayer> getPlayers() {
-                Collection<ControllerPlayer> onHere = new ArrayList<>();
-                return onHere;
+                return null;
             }
 
             @Override
@@ -106,16 +96,15 @@ public class UpdateViewEventTest extends TestCase {
                 return 0;
             }
         });
-        actions.add(StationaryAction.ROLL_DICE);
     }
 
-    public void testBoardSetUp() {
-        listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_ROLL_DICE.name());
+    public void testGetPlaceInfo() {
+        listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_GET_PLACE_INFO.name());
         gameEventHandler.addEventListener(listener);
-        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {
+        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_BOARD_SET_UP.name(), new BoardSetUpTest.TestCommand(new ModelOutput() {
             @Override
             public Point getDiceNum() {
-                return diceRoll;
+                return null;
             }
 
             @Override
@@ -125,7 +114,7 @@ public class UpdateViewEventTest extends TestCase {
 
             @Override
             public List<ControllerPlayer> getPlayers() {
-                return players;
+                return null;
             }
 
             @Override
@@ -135,24 +124,26 @@ public class UpdateViewEventTest extends TestCase {
 
             @Override
             public Collection<StationaryAction> getStationaryAction() {
-                return actions;
+                return null;
             }
         }));
         gameEventHandler.publish(boardSetUp);
-        System.out.println("BoardSetUp event published!");
+        GameEvent getPlaceInfo = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_CONTROLLER_GET_PLACE_INFO.name(), new TestCommand(0));
+        gameEventHandler.publish(getPlaceInfo);
+        System.out.println("GetPlaceInfo event published!");
     }
 
     public class TestCommand implements Command {
 
-        private final ModelOutput boardInfo;
+        private final int index;
 
-        public TestCommand(ModelOutput setUp){
-            this.boardInfo = setUp;
+        public TestCommand(int index){
+            this.index = index;
         }
 
         @Override
         public Object getCommandArgs() {
-            return this.boardInfo;
+            return this.index;
         }
     }
 
@@ -167,13 +158,21 @@ public class UpdateViewEventTest extends TestCase {
             if (event.getGameEventType().equals(eventToTest)) {
                 System.out.println("Got game event:");
                 System.out.println(event.getGameEventType());
-                assertEquals(GameEventType.CONTROLLER_TO_VIEW_ROLL_DICE.name(), event.getGameEventType());
-                UpdateViewRecord command = (UpdateViewRecord) event.getGameEventCommand().getCommand().getCommandArgs();
-                assertEquals(players.get(0), command.currentPlayer());
-                assertEquals(actions, command.stationaryActions());
-                assertEquals(0, command.placeIndex());
-                assertEquals(diceRoll, command.dice());
+                assertEquals(GameEventType.CONTROLLER_TO_VIEW_GET_PLACE_INFO.name(), event.getGameEventType());
+                Map<String, LinkedTreeMap> map = (Map<String, LinkedTreeMap>) event.getGameEventCommand().getCommand().getCommandArgs();
+                for (String key: map.keySet()) {
+                    System.out.println(key);
+                        if (key.equals("id")) {
+                            assertEquals(0.0, map.get(key));
+                        } else if (key.equals("type")){
+                            assertEquals("Go", map.get(key));
+                        } else if (key.equals("name")) {
+                            assertEquals("Go", map.get(key));
+                        }
+                        System.out.println(map.get(key));
+                    }
+            }
             }
         }
-    }
 }
+
