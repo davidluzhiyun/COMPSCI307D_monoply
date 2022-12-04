@@ -51,13 +51,12 @@ public class SceneManager implements GameEventListener {
     setPrimaryStageToCurrScene();
   }
 
-  public void setGameSelectionScene() {
-    GameSelectionScene gameSelectionScene = new GameSelectionScene(myLanguage, primaryStage, myStyle);
+  private void setGameSelectionScene() {
+    GameSelectionScene gameSelectionScene = new GameSelectionScene(myLanguage, primaryStage, gameEventHandler);
     currentScene = gameSelectionScene.createScene(primaryStage.getMaxWidth(), primaryStage.getMaxHeight());
+    gameSelectionScene.setStyle(myStyle);
     setPrimaryStageToCurrScene();
-    gameSelectionScene.centerHorizontally(gameSelectionScene.getButtons(), primaryStage.getMaxWidth());
-    gameSelectionScene.centerVertically(gameSelectionScene.getButtons(), primaryStage.getMaxHeight());
-
+    gameSelectionScene.placeButtons(primaryStage.getMaxWidth(), primaryStage.getMaxHeight());
   }
 
   @Override
@@ -69,7 +68,6 @@ public class SceneManager implements GameEventListener {
     if (event.getGameEventType().equals("VIEW_LAUNCH_GAME_SELECTION_SCREEN")) {
       setGameSelectionScene();
     }
-
   }
 
   private void setPrimaryStageToCurrScene() {

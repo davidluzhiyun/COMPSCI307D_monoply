@@ -31,10 +31,7 @@ public class StartView extends View {
   public static final String LANGUAGE = "Language";
   public static final String STYLE = "Style";
   public static final String METHOD = "Method";
-  public static final String JSON_FILE_EXTENSION = "JSON Files";
-  public static final String DATA_FILE_JSON_EXTENSION = "*.json";
   public static final String DROP_DOWN = "DropDown";
-  public static final String DATA_FILE_FOLDER = System.getProperty("user.dir") + "/data";
   public static final String LAYOUT_ID = "MainVBox";
   public static final String BACKGROUND = "Background";
   private Group myRoot;
@@ -86,21 +83,6 @@ public class StartView extends View {
   }
 
   /**
-   * Set in property files to be the handler method when a suer clicks on a FileUploadButton. Starts
-   * up a FileChooser dialog to let the user select a file from their computer & restricts them to
-   * choosing only JSON files (since that is our designated file format for config files). Saves
-   * this file to instance variable myConfigFile.
-   */
-//  public void fileHandler() {
-//    FileChooser fileChooser = new FileChooser();
-//    fileChooser.setInitialDirectory(new File(DATA_FILE_FOLDER));
-//    fileChooser.getExtensionFilters()
-//        .setAll(new FileChooser.ExtensionFilter(JSON_FILE_EXTENSION,
-//            DATA_FILE_JSON_EXTENSION));
-//    myConfigFile = fileChooser.showOpenDialog(myStage);
-//  }
-
-  /**
    * Set in property files to be the method called whenever a user changes their selection in the
    * LanguageDropDown
    *
@@ -133,16 +115,13 @@ public class StartView extends View {
   }
 
   /**
-   * Should
+   * Initializes the SceneManager with the chosen language; publishes event to launch the next
+   * screen.
    */
   public void startButtonHandler() {
-    // this code should be moved to the next screen
-//      Command cmd = new GameStartViewCommand();
-//      GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SCREEN",
-//          cmd);
-//      gameEventHandler.publish(event);
     Command cmd = new GoToGameSelectionCommand();
-    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SELECTION_SCREEN", cmd);
+    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SELECTION_SCREEN",
+        cmd);
     SceneManager sceneManager = new SceneManager(myLanguage, gameEventHandler, myStyle);
     gameEventHandler.addEventListener(sceneManager);
     gameEventHandler.publish(event);

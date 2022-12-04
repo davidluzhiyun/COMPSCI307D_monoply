@@ -15,7 +15,7 @@ public class Main extends Application {
   public static final String DEFAULT_RESOURCE_PACKAGE = "properties.";
   public static final String DEFAULT_LANGUAGE_PACKAGE = DEFAULT_RESOURCE_PACKAGE + "language.";
   public static final String ID_PROPERTIES = Main.DEFAULT_RESOURCE_PACKAGE + "ID";
-
+  public static final String DATA_FILE_FOLDER = System.getProperty("user.dir") + "/data";
   public static final String DEFAULT_RESOURCE_FOLDER =
       "/" + DEFAULT_RESOURCE_PACKAGE.replace(".", "/");
 
