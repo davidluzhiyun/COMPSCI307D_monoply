@@ -45,7 +45,12 @@ public class DummyPlace implements Place {
   }
 
   @Override
-  public void purchaseBy(Player player) throws IllegalStateException {
+  public void purchaseBy(int playerId) throws IllegalStateException {
+
+  }
+
+  @Override
+  public void setHouseCount(int count) throws IllegalStateException {
 
   }
 
@@ -61,6 +66,11 @@ public class DummyPlace implements Place {
 
   @Override
   public int getColorSetId() throws NoColorAttributeException {
+    return 0;
+  }
+
+  @Override
+  public int getOwnerId() {
     return 0;
   }
 }

@@ -9,11 +9,6 @@ import java.util.List;
  * This interface is a shared interface of properties, including railroad, street, and utility.
  */
 public interface Property extends Place{
-  /**
-   * Get the id of owner.
-   * @return the id of owner
-   */
-  int getOwnerId();
 
   /**
    * Get the rent paid to owner when pass by the property.

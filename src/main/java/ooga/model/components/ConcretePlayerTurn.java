@@ -51,7 +51,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
   private void go(int step) {
     //the player goes past GO (including landing on go) and get money
     if (currentPlayer.getCurrentPlaceIndex() + step >= places.size()){
-      int passes = (int) ((currentPlayer.getCurrentPlaceIndex() + step) / places.size());
+      int passes = (currentPlayer.getCurrentPlaceIndex() + step) / places.size();
       // Passing the place multiple times gives the player salaries multiple times
       currentPlayer.earnMoney(passes * (places.get(0).getMoney()));
     }

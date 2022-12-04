@@ -31,10 +31,10 @@ class PlayerTest {
 
   @Test
   void getProperties() {
-    Property place = new ConcreteStreet(121);
-    player.purchase(place);
+    Property place = new ConcreteStreet("121");
+    player.purchase(place, 1);
     List<Place> places = List.of(place);
-    assertEquals(places, player.getProperties());
+    assertEquals(places, player.getPropertyIndices());
   }
 
   @Test

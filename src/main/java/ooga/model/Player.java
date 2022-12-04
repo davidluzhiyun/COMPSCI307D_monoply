@@ -1,7 +1,6 @@
 package ooga.model;
 
 import ooga.model.place.Place;
-import ooga.model.place.property.Property;
 
 /**
  * @author Luyao Wang
@@ -17,7 +16,7 @@ public interface Player extends ControllerPlayer {
    * @param destinationIndex the index the player should be moved to.
    */
   void move(int destinationIndex);
-  void purchase(Place place) throws IllegalStateException;
+  void purchase(Place place, int propertyIndex) throws IllegalStateException;
   void decrementOneDiceLeft();
   void addOneDiceRoll();
   /**

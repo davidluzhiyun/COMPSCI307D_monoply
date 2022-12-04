@@ -103,7 +103,12 @@ public abstract class AbstractPlace implements Place {
     }
 
     @Override
-    public void purchaseBy(Player player) throws IllegalStateException {
+    public void purchaseBy(int playerId) throws IllegalStateException {
+        throw new IllegalStateException();
+    }
+
+    @Override
+    public void setHouseCount(int count) throws IllegalStateException {
         throw new IllegalStateException();
     }
 
@@ -120,6 +125,11 @@ public abstract class AbstractPlace implements Place {
     @Override
     public int getColorSetId() throws NoColorAttributeException {
         throw new NoColorAttributeException();
+    }
+
+    @Override
+    public int getOwnerId() throws IllegalStateException{
+        throw new IllegalStateException();
     }
 
     public void addStationaryAction(StationaryAction stationaryAction) {

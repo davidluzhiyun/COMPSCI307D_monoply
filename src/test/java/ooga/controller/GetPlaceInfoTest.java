@@ -36,8 +36,8 @@ public class GetPlaceInfoTest extends TestCase {
         gameEventHandler.addEventListener(controller);
         places.add(new ControllerPlace() {
             @Override
-            public int getPlaceId() {
-                return 0;
+            public String getPlaceId() {
+                return "0";
             }
 
             @Override
@@ -62,13 +62,18 @@ public class GetPlaceInfoTest extends TestCase {
 
             @Override
             public int getColorSetId() throws NoColorAttributeException {
+                return 0;
+            }
+
+            @Override
+            public int getOwnerId() {
                 return 0;
             }
         });
         places.add(new ControllerPlace() {
             @Override
-            public int getPlaceId() {
-                return 121;
+            public String getPlaceId() {
+                return "121";
             }
 
             @Override
@@ -93,6 +98,11 @@ public class GetPlaceInfoTest extends TestCase {
 
             @Override
             public int getColorSetId() throws NoColorAttributeException {
+                return 0;
+            }
+
+            @Override
+            public int getOwnerId() {
                 return 0;
             }
         });

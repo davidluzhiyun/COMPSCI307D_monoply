@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "players": 4,
+    "current player": 2
+  },
+  "places": [
+    {
+      "id": "go",
+      "owner": "Not Defined",
+      "house count": "Not Defined"
+    },
+    {
+      "id": "Paris1",
+      "owner": "1",
+      "house count": "0"
+    },
+    {
+      "id": "Paris2",
+      "owner": "1",
+      "house count": "1"
+    }
+  ],
+  "players": [
+    {
+      "id": 0,
+      "money": "1111",
+      "jail": "0",
+      "current place index": "2",
+      "properties": [
+        1,
+        2,
+        3,
+        11
+      ]
+    },
+    {
+      "id": 1,
+      "money": "999",
+      "jail": "3",
+      "current place index": "11",
+      "properties": [
+        6,
+        7,
+        12
+      ]
+    }
+  ]
+}

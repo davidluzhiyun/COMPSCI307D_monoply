@@ -12,7 +12,7 @@ class ConcreteStreetTest {
 
   @BeforeAll
   static void setUpTest() {
-    street = new ConcreteStreet(121);
+    street = new ConcreteStreet("121");
   }
 
   @Test

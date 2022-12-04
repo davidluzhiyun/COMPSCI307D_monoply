@@ -67,7 +67,7 @@ public class StartView extends View {
     layout.setId(LAYOUT_ID);
     myRoot.getChildren().addAll(background, layout);
     makeInteractiveObjects();
-    Scene myScene = new Scene(myRoot, width, height);
+    Scene myScene = new Scene(myRoot, width, height);;
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
     myStage.show();
