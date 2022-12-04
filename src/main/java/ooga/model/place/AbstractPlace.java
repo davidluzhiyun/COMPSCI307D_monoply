@@ -19,7 +19,7 @@ import java.util.Map;
  * @author Luyao Wang original class
  */
 public abstract class AbstractPlace implements Place {
-    private final int placeId;
+    private final String placeId;
     private Collection<ConcretePlayer> players;
     private Collection<StationaryAction> inherentStationaryActions;
     private Collection<StationaryAction> stationaryActions;
@@ -31,7 +31,7 @@ public abstract class AbstractPlace implements Place {
             "/" + PLACE_PACKAGE_NAME.replace(".", "/");
     private Map<String, ?> config;
 
-    public AbstractPlace(int id) {
+    public AbstractPlace(String id) {
         placeId = id;
         players = new ArrayList<>();
         inherentStationaryActions = new ArrayList<>();
@@ -55,7 +55,7 @@ public abstract class AbstractPlace implements Place {
 
 
     @Override
-    public int getPlaceId() {
+    public String getPlaceId() {
         return placeId;
     }
 

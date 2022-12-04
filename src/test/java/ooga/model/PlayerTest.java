@@ -3,7 +3,6 @@ package ooga.model;
 import ooga.model.place.Place;
 import ooga.model.place.property.ConcreteStreet;
 import ooga.model.place.property.Property;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,8 +39,8 @@ class PlayerTest {
 
   @Test
   void move() {
-    player.move(new ConcreteStreet(121));
-    assertEquals(121, player.getCurrentPlaceId());
+    player.move(1);
+    assertEquals(1, player.getCurrentPlaceIndex());
   }
 
   @Test

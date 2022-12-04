@@ -15,12 +15,10 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
-import ooga.event.command.SampleCommand;
 import ooga.model.components.ConcretePlayerTurn;
 import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
 import ooga.model.place.property.Property;
-import ooga.view.SampleViewData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -84,7 +82,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     places = new ArrayList<>();
     int j = 1;
     while (map.containsKey(String.valueOf(j))) {
-      places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (int) (double) map.get(String.valueOf(j)).get("id")));
+      places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (String) map.get(String.valueOf(j)).get("id")));
       j++;
     }
     players = new ArrayList<>();
@@ -98,7 +96,7 @@ public class GameModel implements GameEventListener, ModelOutput {
    *
    * @param type
    */
-  protected Place createPlace(String type, int id) {
+  protected Place createPlace(String type, String id) {
     Place newPlace;
     Class<?> placeClass;
     try {
@@ -143,7 +141,7 @@ public class GameModel implements GameEventListener, ModelOutput {
   @Override
   public Collection<StationaryAction> getStationaryAction() {
     Player currentPlayer = getCurrentPlayerHelper();
-    Place currentPlace = places.get(currentPlayer.getCurrentPlaceId());
+    Place currentPlace = places.get(currentPlayer.getCurrentPlaceIndex());
     Collection<StationaryAction> stationaryActions = currentPlace.getStationaryActions(currentPlayer);
     return stationaryActions;
   }

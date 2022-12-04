@@ -8,13 +8,13 @@ import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.Place;
 
 public class DummyPlace implements Place {
-  private int id;
-  public DummyPlace(int id){
+  private String id;
+  public DummyPlace(String id){
     this.id = id;
   }
 
   @Override
-  public int getPlaceId() {
+  public String getPlaceId() {
     return this.id;
   }
 
