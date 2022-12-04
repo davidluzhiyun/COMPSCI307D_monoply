@@ -9,6 +9,7 @@ import ooga.Main;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
+import ooga.view.GameView;
 import ooga.view.MainView;
 
 public class SceneManager implements GameEventListener {
@@ -24,11 +25,13 @@ public class SceneManager implements GameEventListener {
   private final ResourceBundle languageResources;
   private Scene currentScene;
   private String myLanguage;
+  private String myStyle;
 
-  public SceneManager(Stage primaryStage, String language, GameEventHandler gameEventHandler) {
-    this.primaryStage = primaryStage;
+  public SceneManager(String language, GameEventHandler gameEventHandler, String style) {
+    this.primaryStage = new Stage();
     this.gameEventHandler = gameEventHandler;
     this.myLanguage = language;
+    this.myStyle = style;
     languageResources = ResourceBundle.getBundle(BASE_DIR_UI_LANGUAGE + language);
     setupStage();
   }
@@ -50,8 +53,23 @@ public class SceneManager implements GameEventListener {
   }
 
   private void setGameSelectionScene() {
-    GameSelectionScene gameSelectionScene = new GameSelectionScene(myLanguage, primaryStage);
-    currentScene = gameSelectionScene.createScene(primaryStage.getMaxWidth(), primaryStage.getMaxHeight());
+    GameSelectionScene gameSelectionScene = new GameSelectionScene(myLanguage, primaryStage,
+        gameEventHandler);
+    currentScene = gameSelectionScene.createScene(primaryStage.getMaxWidth(),
+        primaryStage.getMaxHeight());
+    gameSelectionScene.setStyle(myStyle);
+    setPrimaryStageToCurrScene();
+    gameSelectionScene.placeButtons(primaryStage.getMaxWidth(), primaryStage.getMaxHeight());
+  }
+
+  private void setBoardEditorScene() {
+    System.out.println("Nothing to see here yet");
+  }
+
+  private void setGameView() {
+    GameView gameViewScene = new GameView(gameEventHandler, myStyle, myLanguage, primaryStage);
+    currentScene = gameViewScene.setUpScene(primaryStage.getMaxWidth(),
+        primaryStage.getMaxHeight());
     setPrimaryStageToCurrScene();
   }
 
@@ -59,12 +77,14 @@ public class SceneManager implements GameEventListener {
   public void onGameEvent(GameEvent event) {
     System.out.println(event.getGameEventType());
     if (event.getGameEventType().equals("VIEW_LAUNCH_GAME_SCREEN")) {
-      setMonopolyGamePlayScene();
+      setGameView();
     }
     if (event.getGameEventType().equals("VIEW_LAUNCH_GAME_SELECTION_SCREEN")) {
       setGameSelectionScene();
     }
-
+    if (event.getGameEventType().equals("VIEW_LAUNCH_BOARD_EDITOR")) {
+      setBoardEditorScene();
+    }
   }
 
   private void setPrimaryStageToCurrScene() {

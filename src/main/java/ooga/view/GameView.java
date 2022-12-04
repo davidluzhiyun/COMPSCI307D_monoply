@@ -8,7 +8,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import ooga.Main;
-import ooga.Reflection;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
@@ -24,41 +23,39 @@ public class GameView extends View implements GameEventListener {
 
   private final GameEventHandler gameEventHandler;
   private final Stage myStage;
-  private Scene myScene;
   private String myStyle;
-  private String myLanguage;
+  private final String myLanguage;
   private DiceRollPopUp myDicePopUp;
+  private double width;
+  private double height;
   private final ResourceBundle myScreenResources;
   public static final String GAME_WIDTH_KEY = "GameWidth";
   public static final String GAME_HEIGHT_KEY = "GameHeight";
   public static final String GAME_OBJECTS_KEY = "GameObjects";
   public static final String GAME_BUTTONS_ID = "GameButtons";
   public static final String GAME_PIECE = "GamePiece";
-  private BorderPane myBorderPane;
-  private final ResourceBundle myLanguageResources;
 
-  public GameView(GameEventHandler gameEventHandler, String style, String language) {
-    this.myStage = new Stage();
+  public GameView(GameEventHandler gameEventHandler, String style, String language, Stage stage) {
     this.myStyle = style;
     this.myLanguage = language;
+    this.myStage = stage;
     this.gameEventHandler = gameEventHandler;
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + StartView.SCREEN);
-    myLanguageResources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + myLanguage);
-    setUpScene();
   }
 
-  private void setUpScene() {
-    int width = Integer.parseInt(myScreenResources.getString(GAME_WIDTH_KEY));
-    int height = Integer.parseInt(myScreenResources.getString(GAME_HEIGHT_KEY));
+  public Scene setUpScene(double width, double height) {
+    this.width = width;
+    this.height = height;
     Rectangle background = new Rectangle(width, height);
     background.setId(StartView.BACKGROUND);
-    myBorderPane = new BorderPane(background);
+    BorderPane myBorderPane = new BorderPane(background);
     myBorderPane.setTop(makeInteractiveObjects());
     myBorderPane.setCenter(new Board().getBoard());
-    myScene = new Scene(myBorderPane, width, height);
+    Scene myScene = new Scene(myBorderPane, width, height);
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
     myStage.show();
+    return myScene;
   }
 
   private HBox makeInteractiveObjects() {
@@ -77,7 +74,7 @@ public class GameView extends View implements GameEventListener {
     myStyle = choiceResources.getString(
         String.format(StartView.STRING_INT_FORMATTER, StartView.STYLE, newValue));
     myStage.close();
-    setUpScene();
+    setUpScene(width, height);
   }
 
   /**
@@ -127,7 +124,7 @@ public class GameView extends View implements GameEventListener {
     GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE",
         cmd);
     gameEventHandler.publish(event);
-    showDiceResult(new int[]{6,5});
+    showDiceResult(new int[]{6, 5});
   }
 
   /**
@@ -136,7 +133,6 @@ public class GameView extends View implements GameEventListener {
    */
   private void showDiceResult(int[] roll) {
     myDicePopUp.close();
-    System.out.println("hello");
     RollResultPopUp pop = new RollResultPopUp(roll[0], roll[1]);
     pop.showMessage(myLanguage);
   }
