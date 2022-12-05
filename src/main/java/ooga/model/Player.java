@@ -11,6 +11,13 @@ import java.util.Collection;
  */
 public interface Player extends ControllerPlayer {
   void purchase(Place place, int propertyIndex) throws IllegalStateException;
+
+  /**
+   * @author David Lu
+   * default purchase method without the need to specify index
+   * @param place
+   */
+  void purchase(Place place) throws IllegalStateException;
   void decrementOneDiceLeft();
   void addOneDiceRoll();
   /**

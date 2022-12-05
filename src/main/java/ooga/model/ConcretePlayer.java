@@ -15,7 +15,8 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private int dicesLeft;
   private int dicesTotal;
   private int remainingJailTurns;
-  private Collection<Integer> properties;
+  private Collection<Integer> propertyIndices;
+  private Collection<Place> properties;
 
   /**
    * Universal constructor for loading the game./
@@ -36,14 +37,14 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     this.currentPlaceIndex = currentPlaceIndex;
     this.isInJail = isInJail;
     this.dicesLeft = dicesLeft;
-    this.properties = properties;
+    this.propertyIndices = properties;
   }
 
   public ConcretePlayer(int playerId) {
     this.currentPlaceIndex = 0;
     this.money = 0;
     this.playerId = playerId;
-    properties = new ArrayList<>();
+    propertyIndices = new ArrayList<>();
   }
 
   public void newTurn() {
@@ -54,7 +55,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
 
   @Override
   public void setProperties(Collection<Integer> propertyIndices) {
-    properties = propertyIndices;
+    this.propertyIndices = propertyIndices;
   }
 
   @Override
@@ -113,7 +114,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
 
   @Override
   public Collection<Integer> getPropertyIndices() {
-    return new HashSet<>(properties);
+    return new HashSet<>(propertyIndices);
   }
 
   @Override
@@ -125,10 +126,15 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   public void purchase(Place property, int propertyIndex) {
     try {
       money -= property.getPurchasePrice();
-      properties.add(propertyIndex);
+      propertyIndices.add(propertyIndex);
+      properties.add(property);
       property.setOwner(playerId);
     } catch (IllegalStateException e) {
       throw new IllegalStateException();
     }
+  }
+  @Override
+  public void purchase(Place property) throws IllegalStateException{
+    purchase(property, currentPlaceIndex);
   }
 }
