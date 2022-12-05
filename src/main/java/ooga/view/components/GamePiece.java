@@ -8,12 +8,11 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import ooga.Main;
 import ooga.view.View;
-import ooga.view.scene.SceneManager;
 
 /**
  *
  */
-public class GamePiece extends ImageView implements BoardObjects {
+public class GamePiece extends ImageView implements BoardObject {
 
   private int myPlayer;
   private final ResourceBundle myResources;

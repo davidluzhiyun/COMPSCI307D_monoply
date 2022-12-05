@@ -1,6 +1,6 @@
 package ooga.view.components;
 
-public interface BoardObjects {
+public interface BoardObject {
 
   public void placeObject(int xLocation, int yLocation);
 
