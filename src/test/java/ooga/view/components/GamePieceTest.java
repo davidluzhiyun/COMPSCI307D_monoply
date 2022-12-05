@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
 
 class GamePieceTest extends DukeApplicationTest {
+
   private GamePiece piece;
+
   @Override
   public void start(Stage stage) throws Exception {
     this.piece = new GamePiece("GamePiece1", 1);
@@ -22,10 +24,14 @@ class GamePieceTest extends DukeApplicationTest {
   }
 
   @Test
-  void testPlaceAtGo(){
-    piece.placeAtGo(0,100);
-    assertEquals(0, piece.getX());
+  void testPlaceAtGo() {
+    piece.placeAtGo(20, 100);
+    assertEquals(20, piece.getX());
     assertEquals(100, piece.getY());
   }
 
+  @Test
+  void testMovement() {
+    piece.placeObject(200, 300);
+  }
 }
