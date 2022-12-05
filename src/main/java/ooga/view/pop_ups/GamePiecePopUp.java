@@ -14,6 +14,7 @@ import ooga.view.StartView;
 import ooga.view.View;
 import ooga.view.button.CustomizedButton;
 import ooga.view.button.SelectButton;
+import ooga.view.components.Board;
 import ooga.view.components.GamePiece;
 import ooga.view.drop_down.CustomizedDropDown;
 import ooga.view.drop_down.GamePieceDropDown;
@@ -40,14 +41,16 @@ public class GamePiecePopUp extends ActionPopUp {
   public static final String ICON_HEIGHT_KEY = "IconHeight";
   public static final String GAME_PIECE_POP_UP_ID = "GamePiecePopUp";
   public static final String PREVIEW_TEXT = "PreviewText";
+  private Board myBoard;
 
-  public GamePiecePopUp(int player, String style, String language) {
+  public GamePiecePopUp(int player, String style, String language, Board board) {
     super(language);
     this.currentPlayer = player;
     this.myStage = new Stage();
     this.popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
     this.myStyle = style;
     this.icon = new ImageView();
+    this.myBoard = board;
   }
 
   @Override
@@ -107,10 +110,9 @@ public class GamePiecePopUp extends ActionPopUp {
    * Currently set within property file as the method for when the SelectButton is clicked.
    */
   public void saveChanges() {
-    myPiece = new GamePiece(pieceKey, 1);
+    myPiece = new GamePiece(pieceKey, currentPlayer);
+    myBoard.initializeGamePiece(myPiece, currentPlayer);
     this.close();
   }
 
-  // For now this is a getter, may want to change this later...
-  public GamePiece getGamePiece() {return myPiece;}
 }

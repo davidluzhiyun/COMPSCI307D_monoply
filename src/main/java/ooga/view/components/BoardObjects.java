@@ -2,7 +2,7 @@ package ooga.view.components;
 
 public interface BoardObjects {
 
-  public void moveObject(int xLocation, int yLocation);
-  public void rotateObject(boolean isClockwise);
+  public void placeObject(int xLocation, int yLocation);
+  public void rotateObject(double angleToRotate);
 
 }

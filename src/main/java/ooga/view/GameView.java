@@ -14,6 +14,7 @@ import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.RollDiceCommand;
 import ooga.view.components.Board;
+import ooga.view.components.GamePiece;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
 import ooga.view.pop_ups.RentPopUp;
@@ -34,6 +35,7 @@ public class GameView extends View implements GameEventListener {
   public static final String GAME_OBJECTS_KEY = "GameObjects";
   public static final String GAME_BUTTONS_ID = "GameButtons";
   public static final String GAME_PIECE = "GamePiece";
+  private Board myBoard;
 
   public GameView(GameEventHandler gameEventHandler, String style, String language, Stage stage) {
     this.myStyle = style;
@@ -50,7 +52,8 @@ public class GameView extends View implements GameEventListener {
     background.setId(StartView.BACKGROUND);
     BorderPane myBorderPane = new BorderPane(background);
     myBorderPane.setTop(makeInteractiveObjects());
-    myBorderPane.setCenter(new Board().getBoard());
+    myBoard = new Board();
+    myBorderPane.setCenter(myBoard.getBoard());
     Scene myScene = new Scene(myBorderPane, width, height);
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
@@ -99,7 +102,7 @@ public class GameView extends View implements GameEventListener {
    * TODO: change this to actually implement the savegame feature.
    */
   public void saveGame() {
-    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myLanguage);
+    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myLanguage, myBoard);
     popUp.showMessage(myLanguage);
     RentPopUp pop = new RentPopUp(20);
     pop.showMessage(myLanguage);
