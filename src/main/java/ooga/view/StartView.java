@@ -126,5 +126,4 @@ public class StartView extends View {
     gameEventHandler.addEventListener(sceneManager);
     gameEventHandler.publish(event);
   }
-  public File getMyConfigFile() {return new File("hello");}
 }
