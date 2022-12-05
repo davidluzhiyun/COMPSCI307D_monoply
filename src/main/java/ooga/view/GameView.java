@@ -15,6 +15,7 @@ import ooga.event.command.Command;
 import ooga.event.command.RollDiceCommand;
 import ooga.view.components.Board;
 import ooga.view.components.GamePiece;
+import ooga.view.pop_ups.BuyHousePopUp;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
 import ooga.view.pop_ups.RentPopUp;
@@ -137,6 +138,11 @@ public class GameView extends View implements GameEventListener {
   private void showDiceResult(int[] roll) {
     myDicePopUp.close();
     RollResultPopUp pop = new RollResultPopUp(roll[0], roll[1]);
+    pop.showMessage(myLanguage);
+  }
+
+  public void buyHouse() {
+    BuyHousePopUp pop = new BuyHousePopUp(1, myStyle, myBoard);
     pop.showMessage(myLanguage);
   }
 
