@@ -42,7 +42,7 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
 
   @Override
   public int getOwnerId() {
-    return 0;
+    return ownerId;
   }
 
   @Override
@@ -71,7 +71,7 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   }
 
   @Override
-  public void purchaseBy(int playerId) {
+  public void setOwner(int playerId) {
     ownerId = playerId;
   }
 

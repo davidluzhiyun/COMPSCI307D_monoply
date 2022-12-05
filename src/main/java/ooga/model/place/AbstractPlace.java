@@ -103,7 +103,7 @@ public abstract class AbstractPlace implements Place {
     }
 
     @Override
-    public void purchaseBy(int playerId) throws IllegalStateException {
+    public void setOwner(int playerId) throws IllegalStateException {
         throw new IllegalStateException();
     }
 

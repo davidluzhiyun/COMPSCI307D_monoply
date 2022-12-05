@@ -53,7 +53,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
     if (currentPlayer.getCurrentPlaceIndex() + step >= places.size()){
       int passes = (currentPlayer.getCurrentPlaceIndex() + step) / places.size();
       // Passing the place multiple times gives the player salaries multiple times
-      currentPlayer.earnMoney(passes * (places.get(0).getMoney()));
+      currentPlayer.setMoney(currentPlayer.getTotalMoney() + passes * (places.get(0).getMoney()));
     }
     int index = (currentPlayer.getCurrentPlaceIndex() + step) % places.size();
     currentPlace = places.get(index);
@@ -62,9 +62,9 @@ public class ConcretePlayerTurn implements PlayerTurn {
       // since the move method no longer accepts place, this step can't be done automatically
       // TODO: publish event when rent levied
       double money = currentPlace.getMoney();
-      currentPlayer.earnMoney(money);
+      currentPlayer.setMoney(currentPlayer.getTotalMoney() + money);
     }
-    currentPlayer.move(index);
+    currentPlayer.setIndex(currentPlayer.getCurrentPlaceIndex() + index);
   }
 
 

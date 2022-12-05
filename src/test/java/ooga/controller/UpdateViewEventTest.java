@@ -7,7 +7,6 @@ import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.model.*;
-import ooga.model.colorSet.DummyPlace;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
@@ -43,8 +42,8 @@ public class UpdateViewEventTest extends TestCase {
         players.add(new ConcretePlayer(1));
         places.add(new ControllerPlace() {
             @Override
-            public int getPlaceId() {
-                return 0;
+            public String getPlaceId() {
+                return "0";
             }
 
             @Override
@@ -81,8 +80,8 @@ public class UpdateViewEventTest extends TestCase {
         });
         places.add(new ControllerPlace() {
             @Override
-            public int getPlaceId() {
-                return 0;
+            public String getPlaceId() {
+                return "0";
             }
 
             @Override

@@ -8,124 +8,127 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class ConcretePlayer implements Player, ControllerPlayer {
-    private double money;
-    private int playerId;
-    private int currentPlaceIndex;
-    private boolean isInJail = false;
-    private int dicesLeft;
-    private int dicesTotal;
-    private int remainingJailTurns;
-    private final Collection<Integer> properties;
+  private double money;
+  private int playerId;
+  private int currentPlaceIndex;
+  private boolean isInJail = false;
+  private int dicesLeft;
+  private int dicesTotal;
+  private int remainingJailTurns;
+  private Collection<Integer> properties;
 
-    /**
-     * Universal constructor for loading the game./
-     * @param money
-     * @param playerId
-     * @param currentPlaceIndex
-     * @param isInJail
-     * @param dicesLeft
-     * @param dicesTotal
-     * @param remainingJailTurns
-     * @param properties
-     */
-    public ConcretePlayer(double money, int playerId, int currentPlaceIndex, boolean isInJail,
-        int dicesLeft, int dicesTotal, int remainingJailTurns, Collection<Integer> properties){
-        this.money = money;
-        this.playerId = playerId;
-        this.currentPlaceIndex = currentPlaceIndex;
-        this.isInJail = isInJail;
-        this.dicesLeft = dicesLeft;
-        this.properties = properties;
-    }
+  /**
+   * Universal constructor for loading the game./
+   *
+   * @param money
+   * @param playerId
+   * @param currentPlaceIndex
+   * @param isInJail
+   * @param dicesLeft
+   * @param dicesTotal
+   * @param remainingJailTurns
+   * @param properties
+   */
+  public ConcretePlayer(double money, int playerId, int currentPlaceIndex, boolean isInJail,
+                        int dicesLeft, int dicesTotal, int remainingJailTurns, Collection<Integer> properties) {
+    this.money = money;
+    this.playerId = playerId;
+    this.currentPlaceIndex = currentPlaceIndex;
+    this.isInJail = isInJail;
+    this.dicesLeft = dicesLeft;
+    this.properties = properties;
+  }
 
-    public ConcretePlayer(int playerId) {
-        this.currentPlaceIndex = 0;
-        this.money = 0;
-        this.playerId = playerId;
-        properties = new ArrayList<>();
-    }
+  public ConcretePlayer(int playerId) {
+    this.currentPlaceIndex = 0;
+    this.money = 0;
+    this.playerId = playerId;
+    properties = new ArrayList<>();
+  }
 
-    public void newTurn() {
-        dicesLeft = 1;
-        dicesTotal = 1;
-        //TODO: when in jail
-    }
+  public void newTurn() {
+    dicesLeft = 1;
+    dicesTotal = 1;
+    //TODO: when in jail
+  }
 
-    @Override
-    public void earnMoney(double money) {
-        this.money += money;
-    }
+  @Override
+  public void setProperties(Collection<Integer> propertyIndices) {
+    properties = propertyIndices;
+  }
 
-    public void decrementOneDiceLeft() {
-        dicesLeft--;
-    }
+  @Override
+  public void setMoney(double money) {
+    this.money = money;
+  }
 
-    public void addOneDiceRoll() {
-        dicesLeft++;
-        dicesTotal++;
-        if (dicesTotal == 4)
-            isInJail = true;
-    }
+  @Override
+  public void setJail(int jailTurns) {
+    remainingJailTurns = jailTurns;
+  }
 
-    public boolean hasNextDice() {
-        return dicesLeft > 0;
-    }
+  @Override
+  public void setIndex(int destinationIndex) {
 
-    public boolean goJail() {
-        return isInJail;
-    }
+  }
 
-    @Override
-    public int getPlayerId() {
-        return 0;
-    }
+  public void decrementOneDiceLeft() {
+    dicesLeft--;
+  }
 
-    @Override
-    public int getCurrentPlaceIndex() {
-        return currentPlaceIndex;
-    }
+  public void addOneDiceRoll() {
+    dicesLeft++;
+    dicesTotal++;
+    if (dicesTotal == 4)
+      isInJail = true;
+  }
 
-    @Override
-    public Boolean isInJail() {
-        return isInJail;
-    }
+  public boolean hasNextDice() {
+    return dicesLeft > 0;
+  }
 
-    @Override
-    public int remainingJailTurns() {
-        return remainingJailTurns;
-    }
+  public boolean goJail() {
+    return isInJail;
+  }
 
-    @Override
-    public Collection<Integer> getPropertyIndices() {
-        return new HashSet<>(properties);
-    }
+  @Override
+  public int getPlayerId() {
+    return 0;
+  }
 
-    @Override
-    public double getTotalMoney() {
-        return money;
-    }
+  @Override
+  public int getCurrentPlaceIndex() {
+    return currentPlaceIndex;
+  }
 
-    /**
-     * By Luyao Wang, updated by Zhiyun Lu
-     * Method moves the player to specified index. Doesn't check if the index is legal because
-     * the player class is blind to the board. The job of calculating the correct index is of
-     * playerTurn
-     * @param destinationIndex the index the player should be moved to.
-     */
-    @Override
-    public void move(int destinationIndex) {
-        //Auto part
-        currentPlaceIndex = destinationIndex;
-    }
+  @Override
+  public Boolean isInJail() {
+    return isInJail;
+  }
 
-    @Override
-    public void purchase(Place property, int propertyIndex) {
-        try {
-            money -= property.getPurchasePrice();
-            properties.add(propertyIndex);
-            property.purchaseBy(playerId);
-        } catch (IllegalStateException e) {
-            throw new IllegalStateException();
-        }
+  @Override
+  public int remainingJailTurns() {
+    return remainingJailTurns;
+  }
+
+  @Override
+  public Collection<Integer> getPropertyIndices() {
+    return new HashSet<>(properties);
+  }
+
+  @Override
+  public double getTotalMoney() {
+    return money;
+  }
+
+  @Override
+  public void purchase(Place property, int propertyIndex) {
+    try {
+      money -= property.getPurchasePrice();
+      properties.add(propertyIndex);
+      property.setOwner(playerId);
+    } catch (IllegalStateException e) {
+      throw new IllegalStateException();
     }
+  }
 }

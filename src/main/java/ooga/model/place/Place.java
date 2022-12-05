@@ -1,8 +1,6 @@
 package ooga.model.place;
 
 import ooga.model.*;
-import ooga.model.exception.CannotBuildHouseException;
-import ooga.model.exception.NoColorAttributeException;
 
 import java.util.Collection;
 
@@ -34,7 +32,7 @@ public interface Place extends ControllerPlace{
    */
   double getPurchasePrice() throws IllegalStateException;
 
-  void purchaseBy(int playerId) throws IllegalStateException;
+  void setOwner(int playerId) throws IllegalStateException;
 
   void setHouseCount(int count) throws IllegalStateException;
 }
