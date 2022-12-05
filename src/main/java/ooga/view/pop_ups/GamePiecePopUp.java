@@ -26,25 +26,23 @@ import ooga.view.drop_down.GamePieceDropDown;
  */
 public class GamePiecePopUp extends ActionPopUp {
 
-  private int currentPlayer;
+  private final int currentPlayer;
   private final Stage myStage;
   private String myLanguage;
   private ResourceBundle myResources;
   private final ResourceBundle popUpResources;
-  private String myStyle;
+  private final String myStyle;
   private VBox root;
   private ImageView icon;
   private String pieceKey;
   private CustomizedButton selectButton;
-  private GamePiece myPiece;
   public static final String PREVIEW_TEXT_KEY = "GamePiecePreviewText";
   public static final String ICON_HEIGHT_KEY = "IconHeight";
   public static final String GAME_PIECE_POP_UP_ID = "GamePiecePopUp";
   public static final String PREVIEW_TEXT = "PreviewText";
-  private Board myBoard;
+  private final Board myBoard;
 
-  public GamePiecePopUp(int player, String style, String language, Board board) {
-    super(language);
+  public GamePiecePopUp(int player, String style, Board board) {
     this.currentPlayer = player;
     this.myStage = new Stage();
     this.popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
@@ -110,7 +108,7 @@ public class GamePiecePopUp extends ActionPopUp {
    * Currently set within property file as the method for when the SelectButton is clicked.
    */
   public void saveChanges() {
-    myPiece = new GamePiece(pieceKey, currentPlayer);
+    GamePiece myPiece = new GamePiece(pieceKey, currentPlayer);
     myBoard.initializeGamePiece(myPiece, currentPlayer);
     this.close();
   }

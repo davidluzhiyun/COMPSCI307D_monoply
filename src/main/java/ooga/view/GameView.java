@@ -102,7 +102,7 @@ public class GameView extends View implements GameEventListener {
    * TODO: change this to actually implement the savegame feature.
    */
   public void saveGame() {
-    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myLanguage, myBoard);
+    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myBoard);
     popUp.showMessage(myLanguage);
     RentPopUp pop = new RentPopUp(20);
     pop.showMessage(myLanguage);
@@ -113,7 +113,7 @@ public class GameView extends View implements GameEventListener {
    * Will later need to take in current player (int) parameter -- or use instance variable
    */
   private void startPlayerTurn() {
-    myDicePopUp = new DiceRollPopUp(1, myStyle, myLanguage);
+    myDicePopUp = new DiceRollPopUp(1, myStyle);
     myDicePopUp.showMessage(myLanguage);
     myDicePopUp.makeButtonActive(this);
   }

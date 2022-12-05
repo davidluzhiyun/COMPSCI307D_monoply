@@ -28,7 +28,7 @@ class DiceRollPopUpTest extends DukeApplicationTest {
   @Override
   public void start(Stage stage) throws Exception {
     player = (int) Math.random();
-    myPop = new DiceRollPopUp(player, "Light", "English");
+    myPop = new DiceRollPopUp(player, "Light");
     myPop.showMessage("English");
     english = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + "English");
     german = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + "German");

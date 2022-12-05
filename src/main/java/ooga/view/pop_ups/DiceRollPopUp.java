@@ -23,7 +23,7 @@ import ooga.view.button.DiceRollButton;
  */
 public class DiceRollPopUp extends ActionPopUp {
 
-  private int currentPlayer;
+  private final int currentPlayer;
   private final Stage myStage;
   private String myLanguage;
   private DiceRollButton button;
@@ -41,8 +41,7 @@ public class DiceRollPopUp extends ActionPopUp {
   public static final String DICE_ROLL_POP_UP_KEY = "DiceRollPopUp";
 
 
-  public DiceRollPopUp(int player, String style, String language) {
-    super(language);
+  public DiceRollPopUp(int player, String style) {
     this.currentPlayer = player;
     this.myStage = new Stage();
     this.popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
