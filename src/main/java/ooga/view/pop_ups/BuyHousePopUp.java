@@ -1,9 +1,9 @@
 package ooga.view.pop_ups;
 
 import java.util.ResourceBundle;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ooga.Main;
@@ -42,13 +42,21 @@ public class BuyHousePopUp extends ActionPopUp{
     playerText.setId(idResources.getString(PLAYER_TEXT_KEY));
     Label text = new Label(myResources.getString(HOUSE_POP_UP_TEXT));
     text.setWrapText(true);
-    VBox root = new VBox(playerText, text, (CustomizedButton) makeInteractiveObject("PurchaseButton", myLanguage, this));
+    VBox root = new VBox(playerText, text, makeButtons());
     root.setId(idResources.getString("BuyHousePopUpVBox"));
     Scene scene = new Scene(root, Integer.parseInt(popUpResources.getString(HEIGHT)), Integer.parseInt(popUpResources.getString(WIDTH)));
     myStage.setScene(scene);
     popUpStyle(scene, myStyle);
   }
 
+  private HBox makeButtons() {
+    HBox box = new HBox();
+    String[] buttons = popUpResources.getString("HousePopUpButtons").split(COMMA_REGEX);
+    for (String button : buttons) {
+      box.getChildren().add((CustomizedButton) makeInteractiveObject(button, myLanguage, this));
+    }
+    return box;
+  }
   @Override
   public void showMessage(String language) {
     this.myLanguage = language;
