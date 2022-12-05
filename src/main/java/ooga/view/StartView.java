@@ -1,5 +1,6 @@
 package ooga.view;
 
+import java.io.File;
 import java.util.ResourceBundle;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -125,4 +126,5 @@ public class StartView extends View {
     gameEventHandler.addEventListener(sceneManager);
     gameEventHandler.publish(event);
   }
+  public File getMyConfigFile() {return new File("hello");}
 }

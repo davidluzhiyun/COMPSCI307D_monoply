@@ -1,11 +1,18 @@
-package ooga.model;
+package ooga.model.gamesaver;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import ooga.model.ConcretePlayer;
+import ooga.model.ControllerPlayer;
+import ooga.model.ModelOutput;
+import ooga.model.StationaryAction;
 import ooga.model.place.ControllerPlace;
 import ooga.model.place.property.ConcreteStreet;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +32,7 @@ public class BoardSaveTest {
 
             @Override
             public int getCurrentPlayer() {
-                return 0;
+                return 1;
             }
 
             @Override
@@ -45,7 +52,7 @@ public class BoardSaveTest {
         };
         BoardSave boardSave = new BoardSave(output);
         boardSave.saveToJson();
-        Map<String, Object> meta = (Map<String, Object>) boardSave.getJsonMap().get("meta");
-        assertEquals(2, meta.get("players"));
+        Metadata meta = (Metadata) boardSave.getJsonMap().get("meta");
+        assertEquals(2, meta.playerCount());
     }
 }
