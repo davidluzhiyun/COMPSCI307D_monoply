@@ -18,9 +18,9 @@ public class SceneManager implements GameEventListener {
   private final GameEventHandler gameEventHandler;
   private static final String DEFAULT_RESOURCE_DIR = Main.DEFAULT_RESOURCE_PACKAGE;
   private static final String BASE_DIR_UI_LANGUAGE = Main.DEFAULT_LANGUAGE_PACKAGE;
-
+  public static final String USER_INTERFACE = "UserInterface";
   private final ResourceBundle resources = ResourceBundle.getBundle(
-      DEFAULT_RESOURCE_DIR + "UserInterface");
+      DEFAULT_RESOURCE_DIR + USER_INTERFACE);
 
   private final ResourceBundle languageResources;
   private Scene currentScene;
