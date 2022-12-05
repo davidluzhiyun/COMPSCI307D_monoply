@@ -10,6 +10,6 @@ class GameViewTest extends DukeApplicationTest {
   private GameView myView;
   @Override
   public void start(Stage stage) throws Exception {
-    myView = new GameView(new GameEventHandler(), "Default", "English");
+//    myView = new GameView(new GameEventHandler(), "Default", "English");
   }
 }
