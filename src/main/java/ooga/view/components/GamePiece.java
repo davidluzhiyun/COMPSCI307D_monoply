@@ -1,6 +1,7 @@
 package ooga.view.components;
 
 import java.util.ResourceBundle;
+import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,10 +16,13 @@ import ooga.view.scene.SceneManager;
 public class GamePiece extends ImageView implements BoardObjects {
 
   private int myPlayer;
+  private final ResourceBundle myResources;
 
   /**
-   * constructor should also probably take in a location parameter for go/where to initially place it ?
-   * @param piece: should be like GamePiece0, GamePiece1, etc.
+   * constructor should also probably take in a location parameter for go/where to initially place
+   * it ?
+   *
+   * @param piece:  should be like GamePiece0, GamePiece1, etc.
    * @param player: int representing which player this game piece belongs to -- might not need this
    */
   public GamePiece(String piece, int player) {
@@ -26,8 +30,9 @@ public class GamePiece extends ImageView implements BoardObjects {
     Image image = new Image(resources.getString(piece));
     this.setImage(image);
     this.setPreserveRatio(true);
-    ResourceBundle resources2 = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + "UserInterface");
-    int size = Integer.parseInt(resources2.getString("GamePieceSize"));
+    this.myResources = ResourceBundle.getBundle(
+        Main.DEFAULT_RESOURCE_PACKAGE + "UserInterface");
+    int size = Integer.parseInt(myResources.getString("GamePieceSize"));
     this.setFitHeight(size);
     this.myPlayer = player;
   }
@@ -38,15 +43,17 @@ public class GamePiece extends ImageView implements BoardObjects {
   }
 
   /**
-   * This will move the piece forward in whatever direction it is currently facing
-   * @param xLocation: subject to change
-   * @param yLocation: subject to change
-   *                 https://youtu.be/MB97h89xjDw
+   * This will move the piece to the given coordinates. Note: referenced this video for help with
+   * JavaFX specifics: https://youtu.be/MB97h89xjDw
+   *
+   * @param xLocation: int, x-coordinate of target location
+   * @param yLocation: int, y-coordinate of target location
    */
   @Override
   public void placeObject(int xLocation, int yLocation) {
     TranslateTransition transition = new TranslateTransition();
-    transition.setDuration(Duration.seconds(1));
+    double duration = Double.parseDouble(myResources.getString("MovementDuration"));
+    transition.setDuration(Duration.millis(duration));
     transition.setNode(this);
     transition.setToX(xLocation);
     transition.setToY(yLocation);
@@ -55,7 +62,11 @@ public class GamePiece extends ImageView implements BoardObjects {
 
   @Override
   public void rotateObject(double angleToRotate) {
-    // rotate 90 *
-
+    RotateTransition transition = new RotateTransition();
+    double duration = Double.parseDouble(myResources.getString("RotateDuration"));
+    transition.setDuration(Duration.millis(duration));
+    transition.setNode(this);
+    transition.setByAngle(angleToRotate);
+    transition.play();
   }
 }
