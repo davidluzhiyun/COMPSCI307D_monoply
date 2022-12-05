@@ -1,11 +1,10 @@
 package ooga.view.components;
 
 import java.util.ResourceBundle;
-import javafx.animation.RotateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
-import javafx.util.Duration;
 import ooga.Main;
 import ooga.view.scene.SceneManager;
 
@@ -14,7 +13,7 @@ public class House extends ImageView implements BoardObject {
   private final ResourceBundle myResources;
   public static final String HOUSE_IMAGE = "house.png";
   public static final String HOUSE_SIZE_KEY = "HouseSize";
-  public static final String ROTATION_DURATION_HOUSE_KEY = "RotateDurationHouse";
+  public static final String HOTEL_IMAGE = "hotel.png";
 
   public House() {
     this.myResources = ResourceBundle.getBundle(
@@ -39,11 +38,22 @@ public class House extends ImageView implements BoardObject {
 
   @Override
   public void rotateObject(double angleToRotate) {
-    RotateTransition transition = new RotateTransition();
-    double duration = Double.parseDouble(myResources.getString(ROTATION_DURATION_HOUSE_KEY));
-    transition.setDuration(Duration.millis(duration));
-    transition.setNode(this);
-    transition.setByAngle(angleToRotate);
-    transition.play();
+    this.setOpacity(1.0);
+    Rotate rotate = new Rotate();
+    rotate.setAngle(angleToRotate);
+    this.getTransforms().add(rotate);
+  }
+
+  /**
+   * Method to upgrade a house to a hotel by changing the image.
+   */
+  public void upgradeToHotel() {
+    this.setOpacity(0);
+    Image image = new Image(HOTEL_IMAGE);
+    this.setImage(image);
+    this.setPreserveRatio(true);
+    int size = Integer.parseInt(myResources.getString(HOUSE_SIZE_KEY));
+    this.setFitHeight(size);
+    this.setOpacity(1.0);
   }
 }
