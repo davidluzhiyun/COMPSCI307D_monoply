@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import ooga.view.View;
 
-public class GamePiece extends ImageView {
+public class GamePiece extends ImageView implements BoardObjects {
 
   private int myPlayer;
 
@@ -19,6 +19,7 @@ public class GamePiece extends ImageView {
     Image image = new Image(resources.getString(piece));
     this.setImage(image);
     this.myPlayer = player;
+    // should place at Go. might need to take that in as a parameter in the constructor
   }
 
   /**
@@ -27,9 +28,15 @@ public class GamePiece extends ImageView {
    * @param xLocation: subject to change
    * @param yLocation: subject to change
    */
-  public void movePiece(int xLocation, int yLocation) {
+  @Override
+  public void moveObject(int xLocation, int yLocation) {
     this.setX(xLocation);
     this.setY(yLocation);
   }
 
+  @Override
+  public void rotateObject(boolean isClockwise) {
+    // rotate 90 *
+
+  }
 }
