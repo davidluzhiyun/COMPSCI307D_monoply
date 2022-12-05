@@ -22,9 +22,11 @@ import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
 import ooga.model.components.ConcretePlayerTurn;
+import ooga.model.gamesaver.Metadata;
+import ooga.model.gamesaver.PlaceSaver;
+import ooga.model.gamesaver.PlayerSaver;
 import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
-import ooga.model.place.property.Property;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,6 +54,7 @@ public class GameModel implements GameEventListener, ModelOutput {
   public void rollDice() {
     turn.roll();
   }
+
   private void endTurn() {
     turn.nextTurn();
   }
@@ -63,7 +66,7 @@ public class GameModel implements GameEventListener, ModelOutput {
 
   private void publishGameData() {
     Player currentPlayer = getCurrentPlayerHelper();
-    for (Place place :places){
+    for (Place place : places) {
       place.updatePlaceActions(currentPlayer);
     }
     ModelOutput gameData = this;
@@ -71,7 +74,6 @@ public class GameModel implements GameEventListener, ModelOutput {
     GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_GAME_DATA", cmd);
     gameEventHandler.publish(event);
   }
-
 
 
   /**
@@ -105,11 +107,31 @@ public class GameModel implements GameEventListener, ModelOutput {
    * @param map
    */
   protected void loadGame(Map<String, Object> map) {
+    players = new ArrayList<>();
     places = new ArrayList<>();
-    List<Map<String, Object>> placesData = (List<Map<String, Object>>) map.get("places");
-    for (Map<String, Object> singlePlaceData: placesData) {
-      String placeId = (String) singlePlaceData.get("id");
+    loadPlaceData(map);
+    loadPlayerData(map);
+    Metadata metaData = (Metadata) map.get("meta");
+    turn = new ConcretePlayerTurn(players, places);//TODO: set current player
+  }
 
+  private void loadPlayerData(Map<String, Object> map) {
+    List<PlayerSaver> playersData = (List<PlayerSaver>) map.get("players");
+    for (PlayerSaver singlePlayersData : playersData) {
+      int playerId = singlePlayersData.id();
+      Player newPlayer = new ConcretePlayer(playerId);
+      newPlayer.setMoney(1500);//TODO: use properties file
+      newPlayer.setJail(singlePlayersData.jail());
+      newPlayer.setIndex(singlePlayersData.currentPlaceIndex());
+      newPlayer.setProperties(singlePlayersData.properties());
+      players.add(newPlayer);
+    }
+  }
+
+  private void loadPlaceData(Map<String, Object> map) {
+    List<PlaceSaver> placesData = (List<PlaceSaver>) map.get("places");
+    for (PlaceSaver singlePlaceData : placesData) {
+      String placeId = singlePlaceData.id();
       Gson gson = new Gson();
       Reader reader;
       Map<String, ?> config;
@@ -121,8 +143,10 @@ public class GameModel implements GameEventListener, ModelOutput {
         config = gson.fromJson(reader, mapType);
         String type = (String) config.get("type");
         Place newPlace = createPlace(type, placeId);
-        newPlace.purchaseBy((int) singlePlaceData.get("owner"));
-        newPlace.setHouseCount((int) singlePlaceData.get("house count"));
+        if (singlePlaceData.owner() != null && singlePlaceData.owner() != -1) //if the place can be purchased and there is someone who purchased it
+          newPlace.setOwner(singlePlaceData.owner());
+        if (singlePlaceData.houseCount() != null)
+          newPlace.setHouseCount(singlePlaceData.houseCount());
         places.add(newPlace);
       } catch (IOException e) {
         throw new RuntimeException(e);

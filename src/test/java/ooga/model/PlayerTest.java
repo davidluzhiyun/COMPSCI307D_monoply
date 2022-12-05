@@ -25,7 +25,7 @@ class PlayerTest {
 
   @Test
   void getTotalMoney() {
-    player.earnMoney(200);
+    player.setMoney(200);
     assertEquals(200, player.getTotalMoney());
   }
 
@@ -39,7 +39,7 @@ class PlayerTest {
 
   @Test
   void move() {
-    player.move(1);
+    player.setIndex(1);
     assertEquals(1, player.getCurrentPlaceIndex());
   }
 
