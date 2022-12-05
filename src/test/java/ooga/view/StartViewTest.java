@@ -32,18 +32,6 @@ class StartViewTest extends DukeApplicationTest {
     myLanguageDropDown = lookup("#LanguageChoice").query();
   }
 
-  /**
-   * NOTE: DURING THE PAUSE, YOU MUST SELECT A FILE -- otherwise the test will fail
-   * Verify that the printed file path matches your selection.
-   */
-  @Test
-  void testFileUploadBasic() {
-    clickOn(myFileButton);
-    sleep(3000);
-//    System.out.println(myStart.getMyConfigFile());
-//    assertNotNull(myStart.getMyConfigFile());
-  }
-
   @Test
   void testLanguageChangeGerman() {testLanguages("German", "Deutsch");}
   @Test

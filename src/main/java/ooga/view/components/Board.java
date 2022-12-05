@@ -176,6 +176,17 @@ public class Board {
     ap.getChildren().add(board);
   }
 
+  /**
+   * Called by GamePiecePopUp whenever a new pop up is created. Places the piece at GO (well eventually it will)
+   * @param piece: the new piece that was created
+   * @param player: not used right now, but probably a good idea to create some mapping
+   */
+  public void initializeGamePiece(GamePiece piece, int player) {
+    board.getChildren().add(piece);
+    //TODO: change to actually give the location of go
+    piece.placeAtGo(0,0);
+  }
+
   public Pane getBoard() {
     return ap;
   }

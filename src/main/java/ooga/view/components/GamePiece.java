@@ -1,35 +1,82 @@
 package ooga.view.components;
 
 import java.util.ResourceBundle;
+import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
+import ooga.Main;
 import ooga.view.View;
+import ooga.view.scene.SceneManager;
 
-public class GamePiece extends ImageView {
+/**
+ *
+ */
+public class GamePiece extends ImageView implements BoardObjects {
 
   private int myPlayer;
+  private final ResourceBundle myResources;
 
   /**
-   * constructor should also probably take in a location parameter for go/where to initially place it ?
-   * @param piece: should be like GamePiece0, GamePiece1, etc.
-   * @param player: int representing which player this game piece belongs to
+   * @param piece:  should be like GamePiece0, GamePiece1, etc.
+   * @param player: int representing which player this game piece belongs to -- might not need this
    */
   public GamePiece(String piece, int player) {
     ResourceBundle resources = ResourceBundle.getBundle(View.CHOICE_BOX_PROPERTIES);
     Image image = new Image(resources.getString(piece));
     this.setImage(image);
+    this.setPreserveRatio(true);
+    this.myResources = ResourceBundle.getBundle(
+        Main.DEFAULT_RESOURCE_PACKAGE + "UserInterface");
+    int size = Integer.parseInt(myResources.getString("GamePieceSize"));
+    this.setFitHeight(size);
     this.myPlayer = player;
   }
 
   /**
-   * This is not fully implemented just yet, need to first figure out how we want to decide where
-   * the piece is going to go... eventually will use transition animations or something of the sort
-   * @param xLocation: subject to change
-   * @param yLocation: subject to change
+   * Technically can be used to place the object anywhere, since our game is designed to support
+   * flexibility in the location of the GO piece.
+   *
+   * @param xLocation: int, x-coordinate that the piece should be placed at
+   * @param yLocation: int, y-coordinate that the piece should be placed at
    */
-  public void movePiece(int xLocation, int yLocation) {
+  public void placeAtGo(int xLocation, int yLocation) {
     this.setX(xLocation);
     this.setY(yLocation);
   }
 
+  /**
+   * This will move the piece to the given coordinates. Note: referenced this video for help with
+   * JavaFX specifics: https://youtu.be/MB97h89xjDw.
+   *
+   * @param xLocation: int, x-coordinate of target location
+   * @param yLocation: int, y-coordinate of target location
+   */
+  @Override
+  public void placeObject(int xLocation, int yLocation) {
+    TranslateTransition transition = new TranslateTransition();
+    double duration = Double.parseDouble(myResources.getString("MovementDuration"));
+    transition.setDuration(Duration.millis(duration));
+    transition.setNode(this);
+    transition.setToX(xLocation);
+    transition.setToY(yLocation);
+    transition.play();
+  }
+
+  /**
+   * Rotates the piece. Note: technically in a square board, the rotation will always be 90 degrees
+   * -- however, we have made this more flexible to support different board shapes in the future.
+   *
+   * @param angleToRotate: double, degrees to rotate the piece by
+   */
+  @Override
+  public void rotateObject(double angleToRotate) {
+    RotateTransition transition = new RotateTransition();
+    double duration = Double.parseDouble(myResources.getString("RotateDuration"));
+    transition.setDuration(Duration.millis(duration));
+    transition.setNode(this);
+    transition.setByAngle(angleToRotate);
+    transition.play();
+  }
 }
