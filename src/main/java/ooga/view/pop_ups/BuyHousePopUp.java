@@ -2,6 +2,7 @@ package ooga.view.pop_ups;
 
 import java.util.ResourceBundle;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -40,7 +41,12 @@ public class BuyHousePopUp extends ActionPopUp{
         String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
     playerText.setId(idResources.getString(PLAYER_TEXT_KEY));
     Label text = new Label(myResources.getString(HOUSE_POP_UP_TEXT));
+    text.setWrapText(true);
     VBox root = new VBox(playerText, text, (CustomizedButton) makeInteractiveObject("PurchaseButton", myLanguage, this));
+    root.setId(idResources.getString("BuyHousePopUpVBox"));
+    Scene scene = new Scene(root, Integer.parseInt(popUpResources.getString(HEIGHT)), Integer.parseInt(popUpResources.getString(WIDTH)));
+    myStage.setScene(scene);
+    popUpStyle(scene, myStyle);
   }
 
   @Override
