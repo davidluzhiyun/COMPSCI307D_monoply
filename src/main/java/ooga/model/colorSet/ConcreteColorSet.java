@@ -28,17 +28,15 @@ import org.jetbrains.annotations.NotNull;
 public class ConcreteColorSet implements ImmutableColorSet {
 
   private Map<Integer, Collection<String>> allSets;
-  private List<Place> boardCopy;
 
   /**
    * Constructs color sets from a collection of places
    *
    * @param places a collection of places, for example some representation of the board=
    */
-  public ConcreteColorSet(List<Place> places) throws IllegalStateException {
+  public ConcreteColorSet(Collection<Place> places) throws IllegalStateException {
     try {
       allSets = new HashMap<Integer, Collection<String>>();
-      boardCopy = new ArrayList<>(places);
       for (Place place : places) {
         // Here the down-casting and typechecking is for ignoring non-Street places
         // Remove if plans to only input streets
