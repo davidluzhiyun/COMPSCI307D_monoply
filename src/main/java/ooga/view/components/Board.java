@@ -187,6 +187,19 @@ public class Board {
     piece.placeAtGo(0,0);
   }
 
+  /**
+   * Called by BuyHousePopUp if users decide to buy a house.
+   * TODO: figure out how to get the coordinates of the property in order to place the house there
+   * @param property: int, index of the property they selected
+   */
+  public void buildHouse(int property) {
+    House house = new House();
+    board.getChildren().add(house);
+    //TODO: change to actually get the location of
+    house.placeObject(10,10);
+
+  }
+
   public Pane getBoard() {
     return ap;
   }
