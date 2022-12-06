@@ -1,4 +1,4 @@
-package ooga.model.gamesaver;
+package ooga.model.gameArchive;
 
 
 public record PlaceSaver(String id,

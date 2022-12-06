@@ -2,6 +2,7 @@ package ooga.model;
 
 
 import java.util.HashSet;
+
 import ooga.model.place.Place;
 
 import java.util.ArrayList;
@@ -11,43 +12,36 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private double money;
   private int playerId;
   private int currentPlaceIndex;
-  private boolean isInJail = false;
-  private int dicesLeft;
   private int dicesTotal;
   private int remainingJailTurns;
   private Collection<Integer> properties;
+  private boolean hasNextDice;
 
   /**
    * Universal constructor for loading the game./
    *
-   * @param money
-   * @param playerId
-   * @param currentPlaceIndex
-   * @param isInJail
-   * @param dicesLeft
-   * @param dicesTotal
-   * @param remainingJailTurns
-   * @param properties
    */
-  public ConcretePlayer(double money, int playerId, int currentPlaceIndex, boolean isInJail,
-                        int dicesLeft, int dicesTotal, int remainingJailTurns, Collection<Integer> properties) {
-    this.money = money;
+  public ConcretePlayer(int playerId, double money,  int remainingJailTurns, int currentPlaceIndex, int dicesTotal, boolean hasNextDice, Collection<Integer> properties) {
     this.playerId = playerId;
+    this.money = money;
     this.currentPlaceIndex = currentPlaceIndex;
-    this.isInJail = isInJail;
-    this.dicesLeft = dicesLeft;
+    this.remainingJailTurns = remainingJailTurns;
     this.properties = properties;
+    this.dicesTotal = dicesTotal;
+    this.hasNextDice = hasNextDice;
   }
 
   public ConcretePlayer(int playerId) {
     this.currentPlaceIndex = 0;
     this.money = 0;
     this.playerId = playerId;
+    this.hasNextDice = false;
     properties = new ArrayList<>();
   }
 
+  @Override
   public void newTurn() {
-    dicesLeft = 1;
+    hasNextDice = true;
     dicesTotal = 1;
     //TODO: when in jail
   }
@@ -69,26 +63,25 @@ public class ConcretePlayer implements Player, ControllerPlayer {
 
   @Override
   public void setIndex(int destinationIndex) {
-
+    currentPlaceIndex = destinationIndex;
   }
 
-  public void decrementOneDiceLeft() {
-    dicesLeft--;
-  }
 
   public void addOneDiceRoll() {
-    dicesLeft++;
+    hasNextDice = true;
     dicesTotal++;
     if (dicesTotal == 4)
-      isInJail = true;
+      setJail(3);
   }
 
+  @Override
   public boolean hasNextDice() {
-    return dicesLeft > 0;
+    return hasNextDice;
   }
 
-  public boolean goJail() {
-    return isInJail;
+  @Override
+  public void nextDice() {
+    hasNextDice = false;
   }
 
   @Override
@@ -99,11 +92,6 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   @Override
   public int getCurrentPlaceIndex() {
     return currentPlaceIndex;
-  }
-
-  @Override
-  public Boolean isInJail() {
-    return isInJail;
   }
 
   @Override

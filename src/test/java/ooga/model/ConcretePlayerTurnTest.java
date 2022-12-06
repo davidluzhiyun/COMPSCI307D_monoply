@@ -16,7 +16,7 @@ class ConcretePlayerTurnTest {
   static void setUpTest() {
     places = List.of(new ConcreteStreet("121"), new ConcreteStreet("121"), new ConcreteStreet("121"), new ConcreteStreet("121"), new ConcreteStreet("121"), new ConcreteStreet("121"), new ConcreteStreet("121"), new ConcreteStreet("121"));
     players = List.of(new ConcretePlayer(0), new ConcretePlayer(1), new ConcretePlayer(2), new ConcretePlayer(3));
-    turn = new ConcretePlayerTurn(players, places);
+    turn = new ConcretePlayerTurn(players, places, 0);
   }
 
   @Test

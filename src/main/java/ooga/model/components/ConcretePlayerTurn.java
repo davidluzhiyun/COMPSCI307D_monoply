@@ -15,10 +15,10 @@ public class ConcretePlayerTurn implements PlayerTurn {
   private Point diceNum;
 
 
-  public ConcretePlayerTurn(List<Player> players, List<Place> places) {
+  public ConcretePlayerTurn(List<Player> players, List<Place> places, int currentPlayerIndex) {
     this.players = players;
     this.places = places;
-    currentPlayer = players.get(0);
+    currentPlayer = players.get(currentPlayerIndex);
     currentPlayer.newTurn();
     currentPlace = this.places.get(currentPlayer.getCurrentPlaceIndex());
     dice = new ConcreteDice();
@@ -29,7 +29,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
     Point point = dice.roll();
     int r1 = point.x;
     int r2 = point.y;
-    currentPlayer.decrementOneDiceLeft();
+    currentPlayer.nextDice();
     diceNum = point;
     if (r1 == r2)
       currentPlayer.addOneDiceRoll();

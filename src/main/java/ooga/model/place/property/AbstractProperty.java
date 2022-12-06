@@ -30,7 +30,7 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
     rent = (double) getConfig().get("rent");
     rentWithColorSet = (double) getConfig().get("rentWithColorSet");
     rentWithHouses = (List<Double>) getConfig().get("rentWithHouses");
-    ownerId = -1;
+    ownerId = -1;//no owner
     addStationaryAction(StationaryAction.BUY_PROPERTY);
     addStationaryAction(StationaryAction.AUCTION);
   }

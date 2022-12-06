@@ -1,7 +1,5 @@
-package ooga.model.gamesaver;
+package ooga.model.gameArchive;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import ooga.model.ConcretePlayer;
 import ooga.model.ControllerPlayer;
 import ooga.model.ModelOutput;
@@ -12,10 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -50,7 +46,7 @@ public class BoardSaveTest {
                 return null;
             }
         };
-        BoardSave boardSave = new BoardSave(output);
+        GameSaver boardSave = new GameSaver(output);
         boardSave.saveToJson();
         Metadata meta = (Metadata) boardSave.getJsonMap().get("meta");
         assertEquals(2, meta.playerCount());

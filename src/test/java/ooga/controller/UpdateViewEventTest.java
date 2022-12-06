@@ -1,4 +1,5 @@
-<<<<<<< HEAD
+package ooga.controller;
+
 //package ooga.controller;
 //
 //import junit.framework.TestCase;
@@ -188,8 +189,6 @@
 //        }
 //    }
 //}
-=======
-package ooga.controller;
 
 import junit.framework.TestCase;
 import ooga.event.GameEvent;
@@ -377,4 +376,3 @@ public class UpdateViewEventTest extends TestCase {
         }
     }
 }
->>>>>>> master

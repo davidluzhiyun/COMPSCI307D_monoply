@@ -1,4 +1,4 @@
-package ooga.model.gamesaver;
+package ooga.model.gameArchive;
 
 import com.google.gson.Gson;
 import ooga.model.ControllerPlayer;
@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BoardSave {
+public class GameSaver {
     private ModelOutput data;
     Map<String, Object> loadData = new HashMap<>();
 
-    public BoardSave(ModelOutput modelOutput) {
+    public GameSaver(ModelOutput modelOutput) {
         this.data = modelOutput;
     }
 
@@ -31,13 +31,10 @@ public class BoardSave {
     }
 
     private void writeDataFile() throws IOException {
-        // create a writer
         String filePath = "./src/main/resources/loaddata.json";
         Writer writer = new FileWriter(filePath);
         // convert map to JSON File
         new Gson().toJson(loadData, writer);
-
-        // close the writer
         writer.close();
     }
 
@@ -67,7 +64,8 @@ public class BoardSave {
         List<PlayerSaver> playerData = new ArrayList<>();
         List<ControllerPlayer> players = data.getPlayers();
         for (ControllerPlayer player : players) {
-            PlayerSaver singlePlayerData = new PlayerSaver(player.getPlayerId(),player.getTotalMoney(), player.remainingJailTurns(), player.getCurrentPlaceIndex(), player.getPropertyIndices());
+            PlayerSaver singlePlayerData = new PlayerSaver(player.getPlayerId(),player.getTotalMoney(), player.remainingJailTurns(),
+                player.getCurrentPlaceIndex(), player.getPlayerId(), player.hasNextDice(), player.getPropertyIndices());
              playerData.add(singlePlayerData);
         }
         return playerData;
