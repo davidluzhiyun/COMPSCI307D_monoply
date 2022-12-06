@@ -58,13 +58,15 @@ public class ConcreteStreet extends AbstractProperty implements Street {
     Collection<PlaceAction> inherentPlaceActions = getInherentPlaceActions();
     updatedPlaceActions.clear();
     updatedPlaceActions.addAll(inherentPlaceActions);
-    if (player.canBuildOn(this) && housesBuilt <= MAX_HOUSE){
+    if (player.canBuildOn(this) && housesBuilt <= MAX_HOUSE && (!isMortgaged())){
       updatedPlaceActions.add(PlaceAction.BUILD_HOUSE);
-      //MORTGAGE to be added
+      updatedPlaceActions.add(PlaceAction.MORTGAGE);
     }
     else {
-      //In case build house was put into inherentPlaceAction by teammates
+      //In case build house or mortgage was put into inherentPlaceAction by teammates
       updatedPlaceActions.remove(PlaceAction.BUILD_HOUSE);
+      updatedPlaceActions.remove(PlaceAction.MORTGAGE);
+      //TODO: other effects of mortgage
     }
   }
 }
