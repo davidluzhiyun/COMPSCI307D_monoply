@@ -11,7 +11,8 @@ import ooga.view.View;
 import ooga.view.button.CustomizedButton;
 import ooga.view.components.Board;
 
-public class BuyHousePopUp extends ActionPopUp{
+public class BuyHousePopUp extends ActionPopUp {
+
   private int currentPlayer;
   private final Stage myStage;
   private final ResourceBundle popUpResources;
@@ -21,6 +22,8 @@ public class BuyHousePopUp extends ActionPopUp{
   private String myLanguage;
   private ResourceBundle myResources;
   public static final String HOUSE_POP_UP_TEXT = "BuyHouseText";
+  public static final String HOUSE_POP_UP_BUTTONS_KEY = "HousePopUpButtons";
+  public static final String HOUSE_POP_UP_VBOX = "BuyHousePopUpVBox";
 
   public BuyHousePopUp(int player, String style, Board board) {
     this.currentPlayer = player;
@@ -32,9 +35,10 @@ public class BuyHousePopUp extends ActionPopUp{
   }
 
   @Override
-  public void close() {myStage.close();}
+  public void close() {
+    myStage.close();
+  }
 
-  // going to need a drop down showing available properties
   @Override
   public void createScene() {
     Label playerText = new Label(
@@ -43,20 +47,22 @@ public class BuyHousePopUp extends ActionPopUp{
     Label text = new Label(myResources.getString(HOUSE_POP_UP_TEXT));
     text.setWrapText(true);
     VBox root = new VBox(playerText, text, makeButtons());
-    root.setId(idResources.getString("BuyHousePopUpVBox"));
-    Scene scene = new Scene(root, Integer.parseInt(popUpResources.getString(HEIGHT)), Integer.parseInt(popUpResources.getString(WIDTH)));
+    root.setId(idResources.getString(HOUSE_POP_UP_VBOX));
+    Scene scene = new Scene(root, Integer.parseInt(popUpResources.getString(HEIGHT)),
+        Integer.parseInt(popUpResources.getString(WIDTH)));
     myStage.setScene(scene);
     popUpStyle(scene, myStyle);
   }
 
   private HBox makeButtons() {
     HBox box = new HBox();
-    String[] buttons = popUpResources.getString("HousePopUpButtons").split(COMMA_REGEX);
+    String[] buttons = popUpResources.getString(HOUSE_POP_UP_BUTTONS_KEY).split(COMMA_REGEX);
     for (String button : buttons) {
       box.getChildren().add((CustomizedButton) makeInteractiveObject(button, myLanguage, this));
     }
     return box;
   }
+
   @Override
   public void showMessage(String language) {
     this.myLanguage = language;
@@ -64,7 +70,8 @@ public class BuyHousePopUp extends ActionPopUp{
     createScene();
     myStage.show();
   }
+
   public void buildHouse() {
-    System.out.println("hi");
+    myBoard.buildHouse(0);
   }
 }
