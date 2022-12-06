@@ -10,6 +10,8 @@ import ooga.Main;
 import ooga.view.View;
 import ooga.view.button.CustomizedButton;
 import ooga.view.components.Board;
+import ooga.view.drop_down.BuyHouseDropDown;
+import ooga.view.drop_down.CustomizedDropDown;
 
 public class BuyHousePopUp extends ActionPopUp {
 
@@ -46,7 +48,8 @@ public class BuyHousePopUp extends ActionPopUp {
     playerText.setId(idResources.getString(PLAYER_TEXT_KEY));
     Label text = new Label(myResources.getString(HOUSE_POP_UP_TEXT));
     text.setWrapText(true);
-    VBox root = new VBox(playerText, text, makeButtons());
+    VBox root = new VBox(playerText, text, (CustomizedDropDown) makeInteractiveObject(
+        BuyHouseDropDown.BUY_HOUSE_DROP_DOWN_KEY, myLanguage, this), makeButtons());
     root.setId(idResources.getString(HOUSE_POP_UP_VBOX));
     Scene scene = new Scene(root, Integer.parseInt(popUpResources.getString(HEIGHT)),
         Integer.parseInt(popUpResources.getString(WIDTH)));
@@ -74,4 +77,7 @@ public class BuyHousePopUp extends ActionPopUp {
   public void buildHouse() {
     myBoard.buildHouse(0);
   }
+  public void previewPrice(Number newValue) {
+  }
+
 }
