@@ -86,7 +86,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
 
   @Override
   public int getPlayerId() {
-    return 0;
+    return playerId;
   }
 
   @Override

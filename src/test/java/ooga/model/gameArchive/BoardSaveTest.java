@@ -1,11 +1,10 @@
 package ooga.model.gameArchive;
 
-import ooga.model.ConcretePlayer;
-import ooga.model.ControllerPlayer;
-import ooga.model.ModelOutput;
-import ooga.model.StationaryAction;
+import ooga.model.*;
 import ooga.model.place.ControllerPlace;
+import ooga.model.place.Place;
 import ooga.model.place.property.ConcreteStreet;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
@@ -16,10 +15,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BoardSaveTest {
-    ModelOutput output;
+    static ModelOutput output;
 
-    @Test
-    void TestModelOutput() throws IOException {
+    @BeforeAll
+    static void TestModelOutput() {
+        Place place2 = new ConcreteStreet("123");
+        place2.setOwner(1);
+        Player player1 = new ConcretePlayer(0);
         output = new ModelOutput() {
             @Override
             public Point getDiceNum() {
@@ -33,12 +35,11 @@ public class BoardSaveTest {
 
             @Override
             public List<ControllerPlayer> getPlayers() {
-                return List.of(new ConcretePlayer(0), new ConcretePlayer(1));
+                return List.of(player1, new ConcretePlayer(1));
             }
-
             @Override
             public List<ControllerPlace> getBoard() {
-                return List.of(new ConcreteStreet("121"),new ConcreteStreet("123"));
+                return List.of(new ConcreteStreet("121"),place2);
             }
 
             @Override
@@ -46,9 +47,53 @@ public class BoardSaveTest {
                 return null;
             }
         };
+    }
+
+    @Test
+    void testPlayerCount() throws IOException {
         GameSaver boardSave = new GameSaver(output);
         boardSave.saveToJson();
         Metadata meta = (Metadata) boardSave.getJsonMap().get("meta");
         assertEquals(2, meta.playerCount());
+    }
+
+    @Test
+    void testCurrentPlayer() throws IOException {
+        GameSaver boardSave = new GameSaver(output);
+        boardSave.saveToJson();
+        Metadata meta = (Metadata) boardSave.getJsonMap().get("meta");
+        assertEquals(1, meta.currentPlayerId());
+    }
+
+    @Test
+    void testPlaceId() throws IOException {
+        GameSaver boardSave = new GameSaver(output);
+        boardSave.saveToJson();
+        List<PlaceSaver> places = (List<PlaceSaver>) boardSave.getJsonMap().get("places");
+        assertEquals("121", places.get(0).id());
+    }
+
+    @Test
+    void testOwnerNoOwner() throws IOException {
+        GameSaver boardSave = new GameSaver(output);
+        boardSave.saveToJson();
+        List<PlaceSaver> places = (List<PlaceSaver>) boardSave.getJsonMap().get("places");
+        assertEquals(-1, places.get(0).owner());
+    }
+
+    @Test
+    void testOwner() throws IOException {
+        GameSaver boardSave = new GameSaver(output);
+        boardSave.saveToJson();
+        List<PlaceSaver> places = (List<PlaceSaver>) boardSave.getJsonMap().get("places");
+        assertEquals(1, places.get(1).owner());
+    }
+
+    @Test
+    void testPlayer() throws IOException {
+        GameSaver boardSave = new GameSaver(output);
+        boardSave.saveToJson();
+        List<PlayerSaver> players = (List<PlayerSaver>) boardSave.getJsonMap().get("players");
+        assertEquals(1, players.get(1).id());
     }
 }
