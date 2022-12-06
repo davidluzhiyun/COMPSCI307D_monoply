@@ -2,6 +2,7 @@ package ooga.model.place;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.util.HashSet;
 import ooga.model.*;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
@@ -52,7 +53,6 @@ public abstract class AbstractPlace implements Place {
     protected Map<String, ?> getConfig() {
         return config;
     }
-
 
     @Override
     public String getPlaceId() {
@@ -112,6 +112,12 @@ public abstract class AbstractPlace implements Place {
         throw new IllegalStateException();
     }
 
+    /**
+     * @author David Lu
+     * Returns updated place actions. Modification of the collection doesn't affect the model
+     * The method is also used for modifying the collection by subclasses
+     * @return
+     */
     @Override
     public Collection<PlaceAction> getPlaceActions() {
         return updatedPlaceActions;
@@ -156,5 +162,12 @@ public abstract class AbstractPlace implements Place {
 
     public void addPlaceAction(PlaceAction placeAction) {
         this.inherentPlaceActions.add(placeAction);
+    }
+    /**
+     * @author David Lu
+     * Fetch a copy of the inherentPlaceActions for subclass
+     */
+    public Collection<PlaceAction> getInherentPlaceActions() {
+        return new HashSet<>(inherentPlaceActions);
     }
 }

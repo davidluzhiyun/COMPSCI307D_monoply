@@ -1,11 +1,17 @@
 package ooga.model.place.property;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import ooga.model.PlaceAction;
+import ooga.model.Player;
 import ooga.model.exception.CannotBuildHouseException;
 
 public class ConcreteStreet extends AbstractProperty implements Street {
   private final int colorId;
   private final double housePrice;
   private int housesBuilt = 0;
+  // refactor to resource later
+  public static final int MAX_HOUSE = 5;
 
   public ConcreteStreet(String id) {
     super(id);
@@ -45,5 +51,20 @@ public class ConcreteStreet extends AbstractProperty implements Street {
   @Override
   public void setHouseCount(int count) throws IllegalStateException {
     housesBuilt = count;
+  }
+  @Override
+  public void updatePlaceActions(Player player) {
+    Collection<PlaceAction> updatedPlaceActions = getPlaceActions();
+    Collection<PlaceAction> inherentPlaceActions = getInherentPlaceActions();
+    updatedPlaceActions.clear();
+    updatedPlaceActions.addAll(inherentPlaceActions);
+    if (player.canBuildOn(this) && housesBuilt <= MAX_HOUSE){
+      updatedPlaceActions.add(PlaceAction.BUILD_HOUSE);
+      //MORTGAGE to be added
+    }
+    else {
+      //In case build house was put into inherentPlaceAction by teammates
+      updatedPlaceActions.remove(PlaceAction.BUILD_HOUSE);
+    }
   }
 }
