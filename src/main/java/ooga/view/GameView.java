@@ -59,6 +59,9 @@ public class GameView extends View implements GameEventListener {
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
     myStage.show();
+    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myBoard);
+    popUp.showMessage(myLanguage);
+
     return myScene;
   }
 

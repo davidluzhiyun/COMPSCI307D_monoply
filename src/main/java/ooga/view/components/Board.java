@@ -184,7 +184,8 @@ public class Board {
   public void initializeGamePiece(GamePiece piece, int player) {
     board.getChildren().add(piece);
     //TODO: change to actually give the location of go
-    piece.placeAtGo(0,0);
+//    piece.placeAtGo(10,700);
+    piece.placeObject(10,565);
   }
 
   /**
@@ -196,7 +197,7 @@ public class Board {
     House house = new House();
     board.getChildren().add(house);
     //TODO: change to actually get the location of
-    house.placeObject(10,10);
+    house.placeObject(30,10);
 
   }
 
