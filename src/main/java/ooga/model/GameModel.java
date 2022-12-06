@@ -16,11 +16,13 @@ import java.util.ResourceBundle;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
+import java.util.function.Predicate;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
+import ooga.model.colorSet.ConcreteColorSet;
 import ooga.model.components.ConcretePlayerTurn;
 import ooga.model.gamesaver.Metadata;
 import ooga.model.gamesaver.PlaceSaver;
@@ -95,9 +97,13 @@ public class GameModel implements GameEventListener, ModelOutput {
       places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (String) map.get(String.valueOf(j)).get("id")));
       j++;
     }
+    Map<Integer, Predicate<Collection<Place>>> checkers = new ConcreteColorSet(places).outputCheckers();
     players = new ArrayList<>();
-    for (int i = 0; i < (int) (double) map.get("meta").get("players"); i++)
-      players.add(new ConcretePlayer(i));
+    for (int i = 0; i < (int) (double) map.get("meta").get("players"); i++){
+      Player newPlayer = new ConcretePlayer(i);
+      newPlayer.setColorSetCheckers(checkers);
+      players.add(newPlayer);
+    }
     turn = new ConcretePlayerTurn(players, places);
   }
 
@@ -112,8 +118,13 @@ public class GameModel implements GameEventListener, ModelOutput {
     loadPlaceData(map);
     loadPlayerData(map);
     Metadata metaData = (Metadata) map.get("meta");
+    Map<Integer, Predicate<Collection<Place>>> checkers = new ConcreteColorSet(places).outputCheckers();
+    for (Player p: players) {
+      p.setColorSetCheckers(checkers);
+    }
     turn = new ConcretePlayerTurn(players, places);//TODO: set current player
   }
+
 
   private void loadPlayerData(Map<String, Object> map) {
     List<PlayerSaver> playersData = (List<PlayerSaver>) map.get("players");
@@ -136,14 +147,16 @@ public class GameModel implements GameEventListener, ModelOutput {
       Reader reader;
       Map<String, ?> config;
       try {
-        File file = new File("." + "/src/main/resources" + DEFAULT_RESOURCE_FOLDER + placeId + ".json");
+        File file = new File(
+            "." + "/src/main/resources" + DEFAULT_RESOURCE_FOLDER + placeId + ".json");
         reader = new FileReader(file);
         TypeToken<Map<String, ?>> mapType = new TypeToken<>() {
         };
         config = gson.fromJson(reader, mapType);
         String type = (String) config.get("type");
         Place newPlace = createPlace(type, placeId);
-        if (singlePlaceData.owner() != null && singlePlaceData.owner() != -1) //if the place can be purchased and there is someone who purchased it
+        if (singlePlaceData.owner() != null && singlePlaceData.owner()
+            != -1) //if the place can be purchased and there is someone who purchased it
           newPlace.setOwner(singlePlaceData.owner());
         if (singlePlaceData.houseCount() != null)
           newPlace.setHouseCount(singlePlaceData.houseCount());
@@ -153,6 +166,8 @@ public class GameModel implements GameEventListener, ModelOutput {
       }
     }
   }
+
+
 
   /**
    * "protected" is for test purpose

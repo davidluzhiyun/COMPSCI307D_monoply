@@ -1,16 +1,19 @@
 package ooga.model.colorSet;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.function.Predicate;
 import ooga.model.place.Place;
 
 /**
  * Immutable interface for color set
  */
 public interface ImmutableColorSet {
+
   /**
-   * Check the complete color sets a collection of places contains
-   * @param properties a collection of places, such as the properties owned by a player
-   * @return a collection of integer representing the color sets the input has monopoly over
+   * Output ColorSet checkers
+   * @return a map that maps each color to a predicate that checks if
+   * a collection of places have monopoly over a color id
    */
-  public Collection<Integer> monopolizedBy(Collection<Place> properties);
+  Map<Integer, Predicate<Collection<Place>>> outputCheckers();
 }
