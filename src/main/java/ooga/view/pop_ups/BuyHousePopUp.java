@@ -26,6 +26,7 @@ public class BuyHousePopUp extends ActionPopUp {
   public static final String HOUSE_POP_UP_TEXT = "BuyHouseText";
   public static final String HOUSE_POP_UP_BUTTONS_KEY = "HousePopUpButtons";
   public static final String HOUSE_POP_UP_VBOX = "BuyHousePopUpVBox";
+  private VBox root;
 
   public BuyHousePopUp(int player, String style, Board board) {
     this.currentPlayer = player;
@@ -48,8 +49,8 @@ public class BuyHousePopUp extends ActionPopUp {
     playerText.setId(idResources.getString(PLAYER_TEXT_KEY));
     Label text = new Label(myResources.getString(HOUSE_POP_UP_TEXT));
     text.setWrapText(true);
-    VBox root = new VBox(playerText, text, (CustomizedDropDown) makeInteractiveObject(
-        BuyHouseDropDown.BUY_HOUSE_DROP_DOWN_KEY, myLanguage, this), makeButtons());
+    root = new VBox(playerText, text, (CustomizedDropDown) makeInteractiveObject(
+        BuyHouseDropDown.BUY_HOUSE_DROP_DOWN_KEY, myLanguage, this));
     root.setId(idResources.getString(HOUSE_POP_UP_VBOX));
     Scene scene = new Scene(root, Integer.parseInt(popUpResources.getString(HEIGHT)),
         Integer.parseInt(popUpResources.getString(WIDTH)));
@@ -77,7 +78,16 @@ public class BuyHousePopUp extends ActionPopUp {
   public void buildHouse() {
     myBoard.buildHouse(0);
   }
+
+  /**
+   * TODO: also need to actually get the amount that this will cost the player.
+   * @param newValue
+   */
   public void previewPrice(Number newValue) {
+    int price = (int) newValue;
+    Label priceText = new Label(String.format(myResources.getString("PriceText"), price));
+    priceText.setWrapText(true);
+    root.getChildren().addAll(priceText, makeButtons());
   }
 
 }

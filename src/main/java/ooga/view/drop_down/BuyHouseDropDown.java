@@ -25,6 +25,10 @@ public class BuyHouseDropDown extends CustomizedDropDown {
     createChoices();
   }
 
+  /**
+   * TODO: actually find way to get the current player's properties that they can buy a house on.
+   * Then change this once you do
+   */
   @Override
   public void createChoices() {
     String placeHolder = "Paris, Seoul";
@@ -32,5 +36,4 @@ public class BuyHouseDropDown extends CustomizedDropDown {
     choiceBox = new ChoiceBox<>(FXCollections.observableArrayList(availablePlaces));
     this.getChildren().add(choiceBox);
   }
-
 }
