@@ -9,6 +9,7 @@ import ooga.Main;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
+import ooga.view.GameView;
 import ooga.view.MainView;
 
 public class SceneManager implements GameEventListener {
@@ -17,16 +18,20 @@ public class SceneManager implements GameEventListener {
   private final GameEventHandler gameEventHandler;
   private static final String DEFAULT_RESOURCE_DIR = Main.DEFAULT_RESOURCE_PACKAGE;
   private static final String BASE_DIR_UI_LANGUAGE = Main.DEFAULT_LANGUAGE_PACKAGE;
-
+  public static final String USER_INTERFACE = "UserInterface";
   private final ResourceBundle resources = ResourceBundle.getBundle(
-      DEFAULT_RESOURCE_DIR + "UserInterface");
+      DEFAULT_RESOURCE_DIR + USER_INTERFACE);
 
   private final ResourceBundle languageResources;
   private Scene currentScene;
+  private String myLanguage;
+  private String myStyle;
 
-  public SceneManager(Stage primaryStage, String language, GameEventHandler gameEventHandler) {
-    this.primaryStage = primaryStage;
+  public SceneManager(String language, GameEventHandler gameEventHandler, String style) {
+    this.primaryStage = new Stage();
     this.gameEventHandler = gameEventHandler;
+    this.myLanguage = language;
+    this.myStyle = style;
     languageResources = ResourceBundle.getBundle(BASE_DIR_UI_LANGUAGE + language);
     setupStage();
   }
@@ -54,12 +59,40 @@ public class SceneManager implements GameEventListener {
     setPrimaryStageToCurrScene();
   }
 
+  private void setGameSelectionScene() {
+    GameSelectionScene gameSelectionScene = new GameSelectionScene(myLanguage, primaryStage,
+        gameEventHandler);
+    currentScene = gameSelectionScene.createScene(primaryStage.getMaxWidth(),
+        primaryStage.getMaxHeight());
+    gameSelectionScene.setStyle(myStyle);
+    setPrimaryStageToCurrScene();
+    gameSelectionScene.placeButtons(primaryStage.getMaxWidth(), primaryStage.getMaxHeight());
+  }
+
+  private void setBoardEditorScene() {
+    System.out.println("Nothing to see here yet");
+  }
+
+  private void setGameView() {
+    GameView gameViewScene = new GameView(gameEventHandler, myStyle, myLanguage, primaryStage);
+    currentScene = gameViewScene.setUpScene(primaryStage.getMaxWidth(),
+        primaryStage.getMaxHeight());
+    setPrimaryStageToCurrScene();
+  }
+
   @Override
   public void onGameEvent(GameEvent event) {
     String eventType = event.getGameEventType();
-    if (eventType.equals("VIEW_LAUNCH_GAME_SCREEN")) {
-      setMonopolyGamePlayScene();
-    } else if (eventType.equals("VIEW_LAUNCH_GAME_EDITOR_SCREEN")) {
+    if (event.getGameEventType().equals("VIEW_LAUNCH_GAME_SCREEN")) {
+      setGameView();
+    }
+    if (event.getGameEventType().equals("VIEW_LAUNCH_GAME_SELECTION_SCREEN")) {
+      setGameSelectionScene();
+    }
+    if (event.getGameEventType().equals("VIEW_LAUNCH_BOARD_EDITOR")) {
+      setBoardEditorScene();
+    }
+    if (eventType.equals("VIEW_LAUNCH_GAME_EDITOR_SCREEN")) {
       setMonopolyGameEditorScene();
     }
   }

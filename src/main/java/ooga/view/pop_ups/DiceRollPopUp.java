@@ -2,6 +2,7 @@ package ooga.view.pop_ups;
 
 import java.util.ResourceBundle;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -22,7 +23,7 @@ import ooga.view.button.DiceRollButton;
  */
 public class DiceRollPopUp extends ActionPopUp {
 
-  private int currentPlayer;
+  private final int currentPlayer;
   private final Stage myStage;
   private String myLanguage;
   private DiceRollButton button;
@@ -32,18 +33,22 @@ public class DiceRollPopUp extends ActionPopUp {
   public static final String DICE_WIDTH = "DiceWidth";
   private final ResourceBundle popUpResources;
   private ResourceBundle myResources;
-  private int myWidth;
-  private int myHeight;
-  private String myStyle;
+  private final int myWidth;
+  private final int myHeight;
+  private final String myStyle;
+  private final ResourceBundle idResources;
+  public static final String ROLL_TEXT = "RollText";
+  public static final String DICE_ROLL_POP_UP_KEY = "DiceRollPopUp";
 
-  public DiceRollPopUp(int player, String style, String language) {
-    super(language);
+
+  public DiceRollPopUp(int player, String style) {
     this.currentPlayer = player;
     this.myStage = new Stage();
-    popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
+    this.popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
     this.myHeight = Integer.parseInt(popUpResources.getString(HEIGHT));
     this.myWidth = Integer.parseInt(popUpResources.getString(WIDTH));
     this.myStyle = style;
+    this.idResources = ResourceBundle.getBundle(Main.ID_PROPERTIES);
   }
 
   @Override
@@ -56,11 +61,13 @@ public class DiceRollPopUp extends ActionPopUp {
 
   @Override
   public void createScene() {
-    Text playerText = new Text(
+    Label playerText = new Label(
         String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
-    Text rollText = new Text(myResources.getString(ROLL_DICE_TEXT_KEY));
+    playerText.setId(idResources.getString(PLAYER_TEXT_KEY));
+    Label rollText = new Label(myResources.getString(ROLL_DICE_TEXT_KEY));
+    rollText.setId(idResources.getString(ROLL_TEXT));
     VBox root = new VBox(playerText, rollText, createDiceImage(), createRollButton());
-    root.setId("DiceRollPopUp");
+    root.setId(idResources.getString(DICE_ROLL_POP_UP_KEY));
     Scene scene = new Scene(root, myWidth, myHeight);
     myStage.setTitle(myResources.getString(START_TURN));
     myStage.setScene(scene);

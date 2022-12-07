@@ -43,11 +43,11 @@ public class BoardSetUpTest extends TestCase {
         gameEventHandler.addEventListener(controller);
         players.add(new ConcretePlayer(0));
         players.add(new ConcretePlayer(1));
-        places.add(new DummyPlace(0));
-        places.add(new DummyPlace(121));
+        places.add(new DummyPlace("0"));
+        places.add(new DummyPlace("121"));
         actions.add(StationaryAction.ROLL_DICE);
-        parsedProperties.add(new ParsedProperty("Go", 0));
-        parsedProperties.add(new ParsedProperty("Street", 0));
+        parsedProperties.add(new ParsedProperty("Go", "Go", 0));
+        parsedProperties.add(new ParsedProperty("Street", "Campus Drive", 0));
     }
 
     public void testBoardSetUp() {
@@ -83,7 +83,7 @@ public class BoardSetUpTest extends TestCase {
         System.out.println("BoardSetUp event published!");
     }
 
-    public class TestCommand implements Command{
+    public static class TestCommand implements Command{
 
         private final ModelOutput boardSetUp;
 

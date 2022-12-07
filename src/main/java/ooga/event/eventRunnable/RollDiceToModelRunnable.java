@@ -8,12 +8,14 @@ import ooga.event.command.Command;
 /**
  * Represents function needed to tell model to simulate dice roll
  */
+@Deprecated
 public class RollDiceToModelRunnable implements EventGenerator{
 
     public RollDiceToModelRunnable(Command command) {};
 
     @Override
     public GameEvent processEvent() {
-        return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_MODEL_ROLL_DICE.name(), null);
+        return null;
+        // return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_MODEL_ROLL_DICE.name(), null);
     }
 }

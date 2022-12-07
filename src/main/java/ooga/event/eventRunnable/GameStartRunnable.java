@@ -16,7 +16,7 @@ import java.util.Map;
  * the game start event from the view. Parses the config file in order to pass to the
  * model.
  */
-public class GameStartRunnable implements EventGenerator {
+public class GameStartRunnable extends ParsingJsonRunnable implements EventGenerator {
 
     private File file;
 
@@ -32,21 +32,9 @@ public class GameStartRunnable implements EventGenerator {
 
     @Override
     public GameEvent processEvent() {
-        parseJSON();
+        this.parsedJson = parseJSON(this.file);
         GameStartCommand gameStart = new GameStartCommand(parsedJson);
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name(), gameStart);
     }
 
-    private void parseJSON() {
-        try (Reader reader = new FileReader(file)) {
-            // Convert JSON File to Java Object
-            parsedJson = new Gson().fromJson(reader, Map.class);
-        } catch (FileNotFoundException e) {
-            System.out.println("Config file not found1");
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            System.out.println("IOException thrown1");
-            throw new RuntimeException(e);
-        }
-    }
 }

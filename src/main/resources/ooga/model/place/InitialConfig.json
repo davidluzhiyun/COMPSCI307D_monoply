@@ -3,19 +3,15 @@
     "players": 4
   },
   "0": {
-    "id": 0,
-    "type": "Go"
+    "id": 0
   },
   "1": {
-    "id": 121,
-    "type": "Street"
+    "id": 121
   },
   "2": {
-    "id": 123,
-    "type": "Street"
+    "id": 123
   },
   "3": {
-    "id": 125,
-    "type": "Street"
+    "id": 125
   }
 }

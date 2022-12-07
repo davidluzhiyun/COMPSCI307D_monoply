@@ -1,6 +1,5 @@
 package ooga.model.place.property;
 
-import ooga.model.PlaceAction;
 import ooga.model.Player;
 import ooga.model.StationaryAction;
 import ooga.model.place.AbstractPlace;
@@ -21,9 +20,9 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   private final double rent;
   private final double rentWithColorSet;
   private final List<Double> rentWithHouses;
-  private Player owner;
+  private int ownerId;
   
-  public AbstractProperty(int id) {
+  public AbstractProperty(String id) {
     super(id);
     name = (String) getConfig().get("name");
     purchasePrice = (double) getConfig().get("purchasePrice");
@@ -31,6 +30,7 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
     rent = (double) getConfig().get("rent");
     rentWithColorSet = (double) getConfig().get("rentWithColorSet");
     rentWithHouses = (List<Double>) getConfig().get("rentWithHouses");
+    ownerId = -1;
     addStationaryAction(StationaryAction.BUY_PROPERTY);
     addStationaryAction(StationaryAction.AUCTION);
   }
@@ -40,14 +40,9 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
     return name;
   }
 
-//  @Override
-//  public int getOwnerId() {
-//    return owner.getPlayerId();
-//  }
-
   @Override
   public int getOwnerId() {
-    return 0;
+    return ownerId;
   }
 
   @Override
@@ -76,8 +71,8 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   }
 
   @Override
-  public void purchaseBy(Player player) {
-    owner = player;
+  public void setOwner(int playerId) {
+    ownerId = playerId;
   }
 
   @Override
@@ -107,7 +102,7 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
    */
   @Override
   public Collection<StationaryAction> getStationaryActions(Player player){
-    if (owner != null){
+    if (ownerId != -1){
       return null;
     }
     else {

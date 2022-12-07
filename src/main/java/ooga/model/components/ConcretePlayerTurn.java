@@ -9,23 +9,23 @@ import java.util.List;
 public class ConcretePlayerTurn implements PlayerTurn {
   private Player currentPlayer;
   private Place currentPlace;
-  private final List<? extends Player> players;
-  private final List<? extends Place> places;
+  private final List<Player> players;
+  private final List<Place> places;
   private Dice dice;
   private Point diceNum;
 
 
-  public ConcretePlayerTurn(List<? extends Player> players, List<? extends Place> places) {
+  public ConcretePlayerTurn(List<Player> players, List<Place> places) {
     this.players = players;
     this.places = places;
     currentPlayer = players.get(0);
     currentPlayer.newTurn();
-    currentPlace = this.places.get(currentPlayer.getCurrentPlaceId());
+    currentPlace = this.places.get(currentPlayer.getCurrentPlaceIndex());
     dice = new ConcreteDice();
   }
 
   @Override
-  public void roll() {
+  public Point roll() {
     Point point = dice.roll();
     int r1 = point.x;
     int r2 = point.y;
@@ -37,23 +37,34 @@ public class ConcretePlayerTurn implements PlayerTurn {
 //      currentPlayer.move(jail);
     //TODO: roll triple doubles and go jail
     go(r1 + r2);
+    return  point;
   }
 
   /**
+   * @author Luyao Wang
+   * @author David Lu modified the method to accomodate new definitions
    * Step can be negative, in the case of "go to jail do not pass GO" in chance.
+   * This method also takes care of thing like wrap around
    *
    * @param step
    */
   private void go(int step) {
-    if (currentPlayer.getCurrentPlaceId() + step < places.size())
-      currentPlace = places.get(currentPlayer.getCurrentPlaceId() + step);
-    else {
-      currentPlace = places.get(currentPlayer.getCurrentPlaceId() + step - places.size());
-      if (currentPlayer.getCurrentPlaceId() + step - places.size() > 0)
-        //the player goes past GO and still gets money
-        currentPlayer.earnMoney(places.get(0).getMoney());
+    //the player goes past GO (including landing on go) and get money
+    if (currentPlayer.getCurrentPlaceIndex() + step >= places.size()){
+      int passes = (currentPlayer.getCurrentPlaceIndex() + step) / places.size();
+      // Passing the place multiple times gives the player salaries multiple times
+      currentPlayer.setMoney(currentPlayer.getTotalMoney() + passes * (places.get(0).getMoney()));
     }
-    currentPlayer.move(currentPlace);
+    int index = (currentPlayer.getCurrentPlaceIndex() + step) % places.size();
+    currentPlace = places.get(index);
+    // to prevent giving salary repetitively
+    if (index != 0){
+      // since the move method no longer accepts place, this step can't be done automatically
+      // TODO: publish event when rent levied
+      double money = currentPlace.getMoney();
+      currentPlayer.setMoney(currentPlayer.getTotalMoney() + money);
+    }
+    currentPlayer.setIndex(currentPlayer.getCurrentPlaceIndex() + index);
   }
 
 

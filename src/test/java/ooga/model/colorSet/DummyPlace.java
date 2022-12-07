@@ -8,13 +8,13 @@ import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.Place;
 
 public class DummyPlace implements Place {
-  private int id;
-  public DummyPlace(int id){
+  private String id;
+  public DummyPlace(String id){
     this.id = id;
   }
 
   @Override
-  public int getPlaceId() {
+  public String getPlaceId() {
     return this.id;
   }
 
@@ -40,6 +40,21 @@ public class DummyPlace implements Place {
   }
 
   @Override
+  public double getPurchasePrice() throws IllegalStateException {
+    return 0;
+  }
+
+  @Override
+  public void setOwner(int playerId) throws IllegalStateException {
+
+  }
+
+  @Override
+  public void setHouseCount(int count) throws IllegalStateException {
+
+  }
+
+  @Override
   public Collection<PlaceAction> getPlaceActions() {
     return null;
   }
@@ -51,6 +66,11 @@ public class DummyPlace implements Place {
 
   @Override
   public int getColorSetId() throws NoColorAttributeException {
+    return 0;
+  }
+
+  @Override
+  public int getOwnerId() {
     return 0;
   }
 }

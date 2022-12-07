@@ -2,6 +2,7 @@ package ooga.view.pop_ups;
 
 import java.util.ResourceBundle;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -13,6 +14,7 @@ import ooga.view.StartView;
 import ooga.view.View;
 import ooga.view.button.CustomizedButton;
 import ooga.view.button.SelectButton;
+import ooga.view.components.Board;
 import ooga.view.components.GamePiece;
 import ooga.view.drop_down.CustomizedDropDown;
 import ooga.view.drop_down.GamePieceDropDown;
@@ -24,35 +26,39 @@ import ooga.view.drop_down.GamePieceDropDown;
  */
 public class GamePiecePopUp extends ActionPopUp {
 
-  private int currentPlayer;
+  private final int currentPlayer;
   private final Stage myStage;
   private String myLanguage;
   private ResourceBundle myResources;
   private final ResourceBundle popUpResources;
-  private String myStyle;
+  private final String myStyle;
   private VBox root;
   private ImageView icon;
   private String pieceKey;
   private CustomizedButton selectButton;
-  private GamePiece myPiece;
   public static final String PREVIEW_TEXT_KEY = "GamePiecePreviewText";
   public static final String ICON_HEIGHT_KEY = "IconHeight";
   public static final String GAME_PIECE_POP_UP_ID = "GamePiecePopUp";
+  public static final String PREVIEW_TEXT = "PreviewText";
+  private final Board myBoard;
 
-  public GamePiecePopUp(int player, String style, String language) {
-    super(language);
+  public GamePiecePopUp(int player, String style, Board board) {
     this.currentPlayer = player;
     this.myStage = new Stage();
     this.popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
     this.myStyle = style;
     this.icon = new ImageView();
+    this.myBoard = board;
   }
 
   @Override
   public void createScene() {
-    Text playerText = new Text(
+    ResourceBundle idResources = ResourceBundle.getBundle(Main.ID_PROPERTIES);
+    Label playerText = new Label(
         String.format(myResources.getString(PLAYER_TEXT_KEY), currentPlayer));
-    Text previewText = new Text(myResources.getString(PREVIEW_TEXT_KEY));
+    playerText.setId(idResources.getString(PLAYER_TEXT_KEY));
+    Label previewText = new Label(myResources.getString(PREVIEW_TEXT_KEY));
+    previewText.setId(idResources.getString(PREVIEW_TEXT));
     root = new VBox(playerText,
         (CustomizedDropDown) makeInteractiveObject(GamePieceDropDown.GAME_PIECE_KEY, myLanguage,
             this), previewText);
@@ -102,10 +108,9 @@ public class GamePiecePopUp extends ActionPopUp {
    * Currently set within property file as the method for when the SelectButton is clicked.
    */
   public void saveChanges() {
-    myPiece = new GamePiece(pieceKey, 1);
+    GamePiece myPiece = new GamePiece(pieceKey, currentPlayer);
+    myBoard.initializeGamePiece(myPiece, currentPlayer);
     this.close();
   }
 
-  // For now this is a getter, may want to change this later...
-  public GamePiece getGamePiece() {return myPiece;}
 }

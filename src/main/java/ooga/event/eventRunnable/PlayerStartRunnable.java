@@ -4,7 +4,7 @@ import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
-import ooga.event.command.PlayerStartCommand;
+import ooga.event.command.GetPlayerCommand;
 import ooga.model.ModelOutput;
 
 public class PlayerStartRunnable implements EventGenerator{
@@ -17,7 +17,7 @@ public class PlayerStartRunnable implements EventGenerator{
 
     @Override
     public GameEvent processEvent() {
-        PlayerStartCommand playerStartCommand = new PlayerStartCommand(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayer()));
+        GetPlayerCommand playerStartCommand = new GetPlayerCommand(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayer()));
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_PLAYER_START.name(), playerStartCommand);
     }
 }

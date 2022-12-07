@@ -3,7 +3,6 @@ package ooga.model;
 import ooga.model.place.Place;
 import ooga.model.place.property.ConcreteStreet;
 import ooga.model.place.property.Property;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,22 +25,22 @@ class PlayerTest {
 
   @Test
   void getTotalMoney() {
-    player.earnMoney(200);
+    player.setMoney(200);
     assertEquals(200, player.getTotalMoney());
   }
 
   @Test
   void getProperties() {
-    Property place = new ConcreteStreet(121);
-    player.purchase(place);
+    Property place = new ConcreteStreet("121");
+    player.purchase(place, 1);
     List<Place> places = List.of(place);
-    assertEquals(places, player.getProperties());
+    assertEquals(places, player.getPropertyIndices());
   }
 
   @Test
   void move() {
-    player.move(new ConcreteStreet(121));
-    assertEquals(121, player.getCurrentPlaceId());
+    player.setIndex(1);
+    assertEquals(1, player.getCurrentPlaceIndex());
   }
 
   @Test

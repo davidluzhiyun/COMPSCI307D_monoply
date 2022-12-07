@@ -8,13 +8,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import ooga.Main;
-import ooga.Reflection;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.RollDiceCommand;
 import ooga.view.components.Board;
+import ooga.view.components.GamePiece;
+import ooga.view.pop_ups.BuyHousePopUp;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
 import ooga.view.pop_ups.RentPopUp;
@@ -24,41 +25,44 @@ public class GameView extends View implements GameEventListener {
 
   private final GameEventHandler gameEventHandler;
   private final Stage myStage;
-  private Scene myScene;
   private String myStyle;
-  private String myLanguage;
+  private final String myLanguage;
   private DiceRollPopUp myDicePopUp;
+  private double width;
+  private double height;
   private final ResourceBundle myScreenResources;
   public static final String GAME_WIDTH_KEY = "GameWidth";
   public static final String GAME_HEIGHT_KEY = "GameHeight";
   public static final String GAME_OBJECTS_KEY = "GameObjects";
   public static final String GAME_BUTTONS_ID = "GameButtons";
   public static final String GAME_PIECE = "GamePiece";
-  private BorderPane myBorderPane;
-  private final ResourceBundle myLanguageResources;
+  private Board myBoard;
 
-  public GameView(GameEventHandler gameEventHandler, String style, String language) {
-    this.myStage = new Stage();
+  public GameView(GameEventHandler gameEventHandler, String style, String language, Stage stage) {
     this.myStyle = style;
     this.myLanguage = language;
+    this.myStage = stage;
     this.gameEventHandler = gameEventHandler;
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + StartView.SCREEN);
-    myLanguageResources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + myLanguage);
-    setUpScene();
   }
 
-  private void setUpScene() {
-    int width = Integer.parseInt(myScreenResources.getString(GAME_WIDTH_KEY));
-    int height = Integer.parseInt(myScreenResources.getString(GAME_HEIGHT_KEY));
+  public Scene setUpScene(double width, double height) {
+    this.width = width;
+    this.height = height;
     Rectangle background = new Rectangle(width, height);
     background.setId(StartView.BACKGROUND);
-    myBorderPane = new BorderPane(background);
+    BorderPane myBorderPane = new BorderPane(background);
     myBorderPane.setTop(makeInteractiveObjects());
-    myBorderPane.setCenter(new Board().getBoard());
-    myScene = new Scene(myBorderPane, width, height);
+    myBoard = new Board();
+    myBorderPane.setCenter(myBoard.getBoard());
+    Scene myScene = new Scene(myBorderPane, width, height);
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
     myStage.show();
+    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myBoard);
+    popUp.showMessage(myLanguage);
+
+    return myScene;
   }
 
   private HBox makeInteractiveObjects() {
@@ -77,7 +81,7 @@ public class GameView extends View implements GameEventListener {
     myStyle = choiceResources.getString(
         String.format(StartView.STRING_INT_FORMATTER, StartView.STYLE, newValue));
     myStage.close();
-    setUpScene();
+    setUpScene(width, height);
   }
 
   /**
@@ -87,6 +91,7 @@ public class GameView extends View implements GameEventListener {
    * class that allows for a new piece to be initialized on the Go button
    */
   public void chooseGamePieces() {
+    // make pop up to select number of players, then for each player, do that.
 //     for (int i = 0; i < numPlayers; i ++) {
 //       GamePiecePopUp pop = new GamePiecePopUp(i, myStyle, myLanguage);
 //       pop.showMessage(myLanguage);
@@ -101,17 +106,18 @@ public class GameView extends View implements GameEventListener {
    * TODO: change this to actually implement the savegame feature.
    */
   public void saveGame() {
-    DiceRollPopUp pop = new DiceRollPopUp(1, myStyle, myLanguage);
-    pop.showMessage(myLanguage);
-    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myLanguage);
+    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myBoard);
     popUp.showMessage(myLanguage);
+    RentPopUp pop = new RentPopUp(20);
+    pop.showMessage(myLanguage);
+    startPlayerTurn();
   }
 
   /**
    * Will later need to take in current player (int) parameter -- or use instance variable
    */
   private void startPlayerTurn() {
-    myDicePopUp = new DiceRollPopUp(1, myStyle, myLanguage);
+    myDicePopUp = new DiceRollPopUp(1, myStyle);
     myDicePopUp.showMessage(myLanguage);
     myDicePopUp.makeButtonActive(this);
   }
@@ -125,15 +131,21 @@ public class GameView extends View implements GameEventListener {
     GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE",
         cmd);
     gameEventHandler.publish(event);
+    showDiceResult(new int[]{6, 5});
   }
 
   /**
    * TODO: change this to actually get the dice result from the controller and show it.
    * may need to change to display the separate rolls of each die... can also have images for each!
    */
-  private void showDiceResult(int roll) {
+  private void showDiceResult(int[] roll) {
     myDicePopUp.close();
-    RollResultPopUp pop = new RollResultPopUp(roll);
+    RollResultPopUp pop = new RollResultPopUp(roll[0], roll[1]);
+    pop.showMessage(myLanguage);
+  }
+
+  public void buyHouse() {
+    BuyHousePopUp pop = new BuyHousePopUp(1, myStyle, myBoard);
     pop.showMessage(myLanguage);
   }
 
@@ -143,7 +155,7 @@ public class GameView extends View implements GameEventListener {
       case "CONTROLLER_TO_VIEW_PLAYER_START" -> startPlayerTurn();
       case "CONTROLLER_TO_VIEW_ROLL_DICE" -> {
         Command cmd = event.getGameEventCommand().getCommand();
-        showDiceResult((int) cmd.getCommandArgs());
+        showDiceResult((int[]) cmd.getCommandArgs());
       }
     }
   }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class DummyStreet extends DummyPlace implements Street {
   private int color;
-  DummyStreet(int color,int id) {
+  DummyStreet(int color,String id) {
     super(id);
     this.color = color;
   }
@@ -38,8 +38,12 @@ public class DummyStreet extends DummyPlace implements Street {
   }
 
   @Override
-  public void purchaseBy(Player player) {
+  public void setOwner(int playerId) {
 
+  }
+  @Override
+  public int getColorSetId(){
+    return color;
   }
 
   @Override

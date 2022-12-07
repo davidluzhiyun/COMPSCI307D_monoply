@@ -196,6 +196,31 @@ public class Board {
     ap.getChildren().add(board);
   }
 
+  /**
+   * Called by GamePiecePopUp whenever a new pop up is created. Places the piece at GO (well eventually it will)
+   * @param piece: the new piece that was created
+   * @param player: not used right now, but probably a good idea to create some mapping
+   */
+  public void initializeGamePiece(GamePiece piece, int player) {
+    board.getChildren().add(piece);
+    //TODO: change to actually give the location of go
+//    piece.placeAtGo(10,700);
+    piece.placeObject(10,565);
+  }
+
+  /**
+   * Called by BuyHousePopUp if users decide to buy a house.
+   * TODO: figure out how to get the coordinates of the property in order to place the house there
+   * @param property: int, index of the property they selected
+   */
+  public void buildHouse(int property) {
+    House house = new House();
+    board.getChildren().add(house);
+    //TODO: change to actually get the location of
+    house.placeObject(30,10);
+
+  }
+
   public Pane getBoard() {
     return ap;
   }

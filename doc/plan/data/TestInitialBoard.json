@@ -1,4 +1,9 @@
 {
+  "meta": {
+    "players": 4,
+    "rows": 4,
+    "columns": 5
+  },
   "0": {
     "id": 0,
     "type": "go"

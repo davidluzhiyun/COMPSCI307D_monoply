@@ -4,6 +4,12 @@
   -fx-text-alignment: center;
   -fx-text-fill: white;
 }
+
+.label {
+  -fx-text-fill: white;
+  -fx-text-alignment: center;
+}
+
 #GamePiecePopUp {
   -fx-alignment: center;
   -fx-base: black;
@@ -92,4 +98,52 @@
   -fx-border-color: white;
   -fx-text-fill: white;
   -fx-background-color: rgba(0,77,51, 0.2);
+}
+
+#BuyHouseButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: white;
+  -fx-text-fill: white;
+  -fx-background-color: rgba(0,77,51, 0.2);
+}
+
+#StartGameButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: white;
+  -fx-text-fill: white;
+  -fx-background-color: rgba(0,77,51, 0.2);
+}
+#LoadGameButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: white;
+  -fx-text-fill: white;
+  -fx-background-color: rgba(0,77,51, 0.2);
+}
+
+
+#GoToGameEditorButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: white;
+  -fx-text-fill: white;
+  -fx-background-color: rgba(0,77,51, 0.2);
+}
+#GameSelectVBox {
+  -fx-spacing: 20;
+  -fx-alignment: center;
+  -fx-padding: 105;
+  -fx-border-color: white;
+  -fx-border-style: dotted;
+  -fx-border-width:10;
+  -fx-background-color: rgba(0, 13,26, 0.2)
+}
+
+#BuyHouseVBox {
+  -fx-alignment: center;
+  -fx-text-alignment: center;
+  -fx-base: black;
+  -fx-padding: 20;
 }

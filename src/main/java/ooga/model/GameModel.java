@@ -1,6 +1,10 @@
 package ooga.model;
 
 import java.awt.Point;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -9,21 +13,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
+import java.util.function.Predicate;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
-import ooga.event.command.SampleCommand;
+import ooga.model.colorSet.ConcreteColorSet;
 import ooga.model.components.ConcretePlayerTurn;
+import ooga.model.gamesaver.Metadata;
+import ooga.model.gamesaver.PlaceSaver;
+import ooga.model.gamesaver.PlayerSaver;
 import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
-import ooga.model.place.property.Property;
-import ooga.view.SampleViewData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static ooga.model.place.AbstractPlace.DEFAULT_RESOURCE_FOLDER;
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
 
 public class GameModel implements GameEventListener, ModelOutput {
@@ -43,31 +52,23 @@ public class GameModel implements GameEventListener, ModelOutput {
   protected ResourceBundle getResources() {
     return modelResources;
   }
-/*
-  public void rollDice() {
-    Player currentPlayer = players.get(turn.getCurrentPlayerTurnId());
-    turn.roll();
-    SampleViewData d = null;//TODO
-    Command cmd = new SampleCommand(d);
-    GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_DICE_ROLLED", cmd);
-    gameEventHandler.publish(event);
-  }
-*/
+
   public void rollDice() {
     turn.roll();
   }
+
   private void endTurn() {
     turn.nextTurn();
   }
 
-  private void buyProperty(Property property) {
+  private void buyProperty(int propertyIndex) {
     Player currentPlayer = getCurrentPlayerHelper();
-    currentPlayer.purchase(property);
+    currentPlayer.purchase(places.get(propertyIndex), propertyIndex);
   }
 
   private void publishGameData() {
     Player currentPlayer = getCurrentPlayerHelper();
-    for (Place place :places){
+    for (Place place : places) {
       place.updatePlaceActions(currentPlayer);
     }
     ModelOutput gameData = this;
@@ -75,7 +76,6 @@ public class GameModel implements GameEventListener, ModelOutput {
     GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_GAME_DATA", cmd);
     gameEventHandler.publish(event);
   }
-
 
 
   /**
@@ -87,27 +87,94 @@ public class GameModel implements GameEventListener, ModelOutput {
 
 
   /**
-   * For test purpose
+   * Initialize the game using data from controller
+   * "protected" is for test purpose
    */
   protected void initializeGame(Map<String, LinkedTreeMap> map) {
     places = new ArrayList<>();
     int j = 1;
     while (map.containsKey(String.valueOf(j))) {
-      places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (int) (double) map.get(String.valueOf(j)).get("id")));
+      places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (String) map.get(String.valueOf(j)).get("id")));
       j++;
     }
+    Map<Integer, Predicate<Collection<Place>>> checkers = new ConcreteColorSet(places).outputCheckers();
     players = new ArrayList<>();
-    for (int i = 0; i < (int) (double) map.get("meta").get("players"); i++)
-      players.add(new ConcretePlayer(i));
-//    turn = new ConcretePlayerTurn(players, places);
+    for (int i = 0; i < (int) (double) map.get("meta").get("players"); i++){
+      Player newPlayer = new ConcretePlayer(i);
+      newPlayer.setColorSetCheckers(checkers);
+      players.add(newPlayer);
+    }
+    turn = new ConcretePlayerTurn(players, places);
   }
 
   /**
-   * For test purposes
+   * "protected" is for test purpose
+   *
+   * @param map
+   */
+  protected void loadGame(Map<String, Object> map) {
+    players = new ArrayList<>();
+    places = new ArrayList<>();
+    loadPlaceData(map);
+    loadPlayerData(map);
+    Metadata metaData = (Metadata) map.get("meta");
+    Map<Integer, Predicate<Collection<Place>>> checkers = new ConcreteColorSet(places).outputCheckers();
+    for (Player p: players) {
+      p.setColorSetCheckers(checkers);
+    }
+    turn = new ConcretePlayerTurn(players, places);//TODO: set current player
+  }
+
+
+  private void loadPlayerData(Map<String, Object> map) {
+    List<PlayerSaver> playersData = (List<PlayerSaver>) map.get("players");
+    for (PlayerSaver singlePlayersData : playersData) {
+      int playerId = singlePlayersData.id();
+      Player newPlayer = new ConcretePlayer(playerId);
+      newPlayer.setMoney(1500);//TODO: use properties file
+      newPlayer.setJail(singlePlayersData.jail());
+      newPlayer.setIndex(singlePlayersData.currentPlaceIndex());
+      newPlayer.setProperties(singlePlayersData.properties());
+      players.add(newPlayer);
+    }
+  }
+
+  private void loadPlaceData(Map<String, Object> map) {
+    List<PlaceSaver> placesData = (List<PlaceSaver>) map.get("places");
+    for (PlaceSaver singlePlaceData : placesData) {
+      String placeId = singlePlaceData.id();
+      Gson gson = new Gson();
+      Reader reader;
+      Map<String, ?> config;
+      try {
+        File file = new File(
+            "." + "/src/main/resources" + DEFAULT_RESOURCE_FOLDER + placeId + ".json");
+        reader = new FileReader(file);
+        TypeToken<Map<String, ?>> mapType = new TypeToken<>() {
+        };
+        config = gson.fromJson(reader, mapType);
+        String type = (String) config.get("type");
+        Place newPlace = createPlace(type, placeId);
+        if (singlePlaceData.owner() != null && singlePlaceData.owner()
+            != -1) //if the place can be purchased and there is someone who purchased it
+          newPlace.setOwner(singlePlaceData.owner());
+        if (singlePlaceData.houseCount() != null)
+          newPlace.setHouseCount(singlePlaceData.houseCount());
+        places.add(newPlace);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
+
+
+
+  /**
+   * "protected" is for test purpose
    *
    * @param type
    */
-  protected Place createPlace(String type, int id) {
+  protected Place createPlace(String type, String id) {
     Place newPlace;
     Class<?> placeClass;
     try {
@@ -152,7 +219,7 @@ public class GameModel implements GameEventListener, ModelOutput {
   @Override
   public Collection<StationaryAction> getStationaryAction() {
     Player currentPlayer = getCurrentPlayerHelper();
-    Place currentPlace = places.get(currentPlayer.getCurrentPlaceId());
+    Place currentPlace = places.get(currentPlayer.getCurrentPlaceIndex());
     Collection<StationaryAction> stationaryActions = currentPlace.getStationaryActions(currentPlayer);
     return stationaryActions;
   }
@@ -161,6 +228,7 @@ public class GameModel implements GameEventListener, ModelOutput {
 
   @Override
   public void onGameEvent(GameEvent event) {
+    //TODO: Refactor the switch expression
     switch (event.getGameEventType()) {
       case "CONTROLLER_TO_MODEL_GAME_START" -> {
         Command cmd = event.getGameEventCommand().getCommand();
@@ -174,7 +242,8 @@ public class GameModel implements GameEventListener, ModelOutput {
       }
       case "CONTROLLER_TO_MODEL_PURCHASE_PROPERTY" -> {
         Command cmd = event.getGameEventCommand().getCommand();
-        buyProperty((Property) places.get((int) cmd.getCommandArgs()));
+        int propertyIndex = (int) cmd.getCommandArgs();
+        buyProperty(propertyIndex);
         publishGameData();
       }
       case "CONTROLLER_TO_MODEL_END_TURN" -> {
