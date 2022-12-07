@@ -3,13 +3,13 @@ package ooga.view.components;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderImage;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
@@ -22,11 +22,16 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public class Board {
 
   private static final int ROW = 13 * 4;
   private static final int CELL_SIZE = 12;
+  private final double defaultFontSize = 13;
+  private final double MAX_TEXT_WIDTH = 60;
+  private final Font defaultFont = Font.font(defaultFontSize);
   private Pane ap;
   private GridPane board;
 
@@ -44,9 +49,9 @@ public class Board {
     StackPane p = new StackPane();
     p.setPrefSize(478, 478);
 
-//    p.setBorder(new Border(
-//        new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
-//            new BorderWidths(2, 2, 2, 2))));
+    p.setBorder(new Border(
+        new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
+            new BorderWidths(1, 1, 1, 1))));
 
     Rectangle rect = new Rectangle(478, 478);
 
@@ -67,13 +72,13 @@ public class Board {
 
   private void addCards() {
     addBottomCards();
-    addLeftCards();
+//    addLeftCards();
   }
 
   private void addBottomCards() {
     int row = 9;
     for (int col = 1; col <= 8; ++col) {
-      StackPane card = makeCard(0, Color.BROWN, "Seoul");
+      Pane card = makeCard(0, Color.BROWN, "League of Legends");
       GridPane.setRowIndex(card, row);
       GridPane.setColumnIndex(card, col);
 //      GridPane.setMargin(card, new Insets(1.0, 0, 0, 0));
@@ -84,7 +89,7 @@ public class Board {
   private void addLeftCards() {
     int col = 0;
     for (int row = 1; row <= 8; ++row) {
-      StackPane card = makeCard(1, Color.RED, "Paris");
+      Pane card = makeCard(1, Color.RED, "Paris");
       GridPane.setRowIndex(card, row);
       GridPane.setColumnIndex(card, col);
 //      GridPane.setMargin(card, new Insets(.0, 1.0, 0, 0));
@@ -94,37 +99,52 @@ public class Board {
   }
 
   private StackPane makeCard(int location, Color color, String text) {
-    StackPane card = new StackPane();
+    Pane colorCard = new Pane();
+    colorCard.setMaxSize(60, 20);
+    colorCard.setBorder(new Border(
+        new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
+            new BorderWidths(0, 0, 2, 0))));
+    colorCard.setBackground(Background.fill(color));
+
+    final TextField tf = new TextField(text);
+    Label city = new Label();
+    city.setFont(defaultFont);
+    city.textProperty().addListener((observable, oldValue, newValue) -> {
+      //create temp Text object with the same text as the label
+      //and measure its width using default label font size
+      Text tmpText = new Text(newValue);
+      tmpText.setFont(defaultFont);
+
+      double textWidth = tmpText.getLayoutBounds().getWidth();
+      System.out.println(textWidth);
+
+      //check if text width is smaller than maximum width allowed
+      if (textWidth <= MAX_TEXT_WIDTH) {
+        city.setFont(defaultFont);
+      } else {
+        //and if it isn't, calculate new font size,
+        // so that label text width matches MAX_TEXT_WIDTH
+        double newFontSize = defaultFontSize * MAX_TEXT_WIDTH / textWidth - 1;
+        System.out.println(newFontSize);
+        city.setFont(Font.font(defaultFont.getFamily(), newFontSize));
+      }
+
+    });
+    city.textProperty().bind(tf.textProperty());
+
+    city.setTranslateY(-8);
+//    city.setMinWidth(Region.USE_PREF_SIZE);
+
+    Label price = new Label("$90");
+
+    StackPane card = new StackPane(colorCard, city, price);
     card.setBorder(new Border(
         new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
-            new BorderWidths(1, 1, 1, 1))));
-
-    if (location == 0) {
-      Rectangle theme = new Rectangle(60, 20);
-      theme.setFill(color);
-      theme.setStroke(Color.BLACK);
-      theme.setStrokeWidth(1);
-
-      StackPane.setAlignment(theme, Pos.TOP_CENTER);
-
-      Label city = new Label(text);
-      StackPane.setAlignment(city, Pos.CENTER);
-
-      card.getChildren().addAll(theme, city);
-    } else if (location == 1) {
-      Rectangle theme1 = new Rectangle(20, 60);
-      theme1.setFill(color);
-//      theme1.setStroke(Color.BLACK);
-//      theme1.setStrokeWidth(2);
-
-      StackPane.setAlignment(theme1, Pos.CENTER_RIGHT);
-
-      Label city = new Label(text);
-      city.setRotate(90.0);
-      StackPane.setAlignment(city, Pos.CENTER);
-
-      card.getChildren().addAll(theme1, city);
-    }
+            new BorderWidths(1, 1, 2, 1))));
+    StackPane.setAlignment(colorCard, Pos.TOP_CENTER);
+    StackPane.setAlignment(city, Pos.CENTER);
+    StackPane.setAlignment(price, Pos.BOTTOM_CENTER);
+//    card.getChildren().add(colorCard);
 
     return card;
   }

@@ -47,13 +47,21 @@ public class SceneManager implements GameEventListener {
     setPrimaryStageToCurrScene();
   }
 
+  private void setMonopolyGameEditorScene() {
+    MonopolyGameEditorScene monopolyGameEditorScene = new MonopolyGameEditorScene(primaryStage);
+    currentScene = new Scene(monopolyGameEditorScene.getRootPane(), primaryStage.getMaxWidth(),
+        primaryStage.getMaxHeight());
+    setPrimaryStageToCurrScene();
+  }
+
   @Override
   public void onGameEvent(GameEvent event) {
-    System.out.println(event.getGameEventType());
-    if (event.getGameEventType().equals("VIEW_LAUNCH_GAME_SCREEN")) {
+    String eventType = event.getGameEventType();
+    if (eventType.equals("VIEW_LAUNCH_GAME_SCREEN")) {
       setMonopolyGamePlayScene();
+    } else if (eventType.equals("VIEW_LAUNCH_GAME_EDITOR_SCREEN")) {
+      setMonopolyGameEditorScene();
     }
-
   }
 
   private void setPrimaryStageToCurrScene() {

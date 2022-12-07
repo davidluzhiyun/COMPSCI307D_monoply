@@ -22,7 +22,4 @@ public abstract class MonopolyScene {
   protected abstract void setChildrenLocation();
 
   protected abstract void addChildrenToRoot();
-
-  //setup
-  // 1, 2, 3
 }
