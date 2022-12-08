@@ -13,25 +13,16 @@ import java.util.Collection;
  */
 public interface Player extends ControllerPlayer {
   void purchase(Place place, int propertyIndex) throws IllegalStateException;
-
-  /**
-   * @author David Lu
-   * default purchase method without the need to specify index
-   * @param place
-   */
-  void purchase(Place place) throws IllegalStateException;
-  void decrementOneDiceLeft();
   void addOneDiceRoll();
   /**
    * A method to check if the player is able to roll dice
    * @return
    */
-  boolean hasNextDice();
-  boolean goJail();
+  void nextDice();
+  void newTurn();
   /**
    * Called when switch from one player's turn to another. Reset turn used and turn left.
    */
-  void newTurn();
 
   /**
    * This method is meant for load the game from .json file.
