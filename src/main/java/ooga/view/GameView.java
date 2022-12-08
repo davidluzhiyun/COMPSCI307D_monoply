@@ -148,6 +148,8 @@ public class GameView extends View implements GameEventListener {
     pop.showMessage(myLanguage);
   }
 
+  public void endTurn() {}
+
   @Override
   public void onGameEvent(GameEvent event) {
     switch (event.getGameEventType()) {

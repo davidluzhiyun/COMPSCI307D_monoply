@@ -27,7 +27,6 @@ public class BuyHouseDropDown extends CustomizedDropDown {
 
   /**
    * TODO: actually find way to get the current player's properties that they can buy a house on.
-   * OR !!! JUST MAKE THIS A
    */
   @Override
   public void createChoices() {
