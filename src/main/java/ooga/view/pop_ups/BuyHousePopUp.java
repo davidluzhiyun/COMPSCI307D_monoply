@@ -27,6 +27,7 @@ public class BuyHousePopUp extends ActionPopUp {
   public static final String HOUSE_POP_UP_BUTTONS_KEY = "HousePopUpButtons";
   public static final String HOUSE_POP_UP_VBOX = "BuyHousePopUpVBox";
   private VBox root;
+  private int selectedProperty;
 
   public BuyHousePopUp(int player, String style, Board board) {
     this.currentPlayer = player;
@@ -75,8 +76,11 @@ public class BuyHousePopUp extends ActionPopUp {
     myStage.show();
   }
 
+  /**
+   * Called when you press the purchase button (set in Buttons.properties file)
+   */
   public void buildHouse() {
-    myBoard.buildHouse(0);
+    myBoard.buildHouse(selectedProperty);
     close();
   }
 
@@ -89,6 +93,6 @@ public class BuyHousePopUp extends ActionPopUp {
     Label priceText = new Label(String.format(myResources.getString("PriceText"), price));
     priceText.setWrapText(true);
     root.getChildren().addAll(priceText, makeButtons());
+    selectedProperty = price;
   }
-
 }

@@ -14,6 +14,7 @@ import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.RollDiceCommand;
 import ooga.view.components.Board;
+import ooga.view.components.GamePiece;
 import ooga.view.pop_ups.BuyHousePopUp;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
@@ -36,11 +37,15 @@ public class GameView extends View implements GameEventListener {
   public static final String GAME_BUTTONS_ID = "GameButtons";
   public static final String GAME_PIECE = "GamePiece";
   private Board myBoard;
+  // TODO: get this instead from controller
+  private int numPlayers;
 
   public GameView(GameEventHandler gameEventHandler, String language, Stage stage) {
     this.myLanguage = language;
     this.myStage = stage;
     this.gameEventHandler = gameEventHandler;
+    //TODO: Change this
+    this.numPlayers = 4;
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + StartView.SCREEN);
   }
 
@@ -58,9 +63,7 @@ public class GameView extends View implements GameEventListener {
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
     myStage.show();
-    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myBoard);
-    popUp.showMessage(myLanguage);
-
+    chooseGamePieces();
     return myScene;
   }
 
@@ -90,13 +93,10 @@ public class GameView extends View implements GameEventListener {
    * class that allows for a new piece to be initialized on the Go button
    */
   public void chooseGamePieces() {
-    // make pop up to select number of players, then for each player, do that.
-//     for (int i = 0; i < numPlayers; i ++) {
-//       GamePiecePopUp pop = new GamePiecePopUp(i, myStyle, myLanguage);
-//       pop.showMessage(myLanguage);
-//       GamePiece piece = pop.getGamePiece();
-//       myBoard.addPiece(piece, i);
-//     }
+     for (int i = numPlayers; i > 0; i --) {
+       GamePiecePopUp pop = new GamePiecePopUp(i, myStyle, myBoard);
+       pop.showMessage(myLanguage);
+     }
   }
 
   /**
