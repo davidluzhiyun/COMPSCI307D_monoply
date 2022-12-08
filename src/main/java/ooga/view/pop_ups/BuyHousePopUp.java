@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import ooga.Main;
 import ooga.view.View;
 import ooga.view.button.CustomizedButton;
@@ -35,12 +36,13 @@ public class BuyHousePopUp extends ActionPopUp {
     this.popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
     this.myStyle = style;
     this.myBoard = board;
+    this.selectedProperty = -1;
     this.idResources = ResourceBundle.getBundle(Main.ID_PROPERTIES);
   }
 
   @Override
   public void close() {
-    myStage.close();
+      myStage.close();
   }
 
   @Override
