@@ -1,6 +1,10 @@
 package ooga.model;
 
 import java.awt.Point;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -9,20 +13,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
+import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
+import ooga.model.colorSet.ConcreteColorSet;
 import ooga.model.components.ConcretePlayerTurn;
-import ooga.model.gameArchive.GameLoader;
-import ooga.model.gameArchive.Metadata;
+import ooga.model.gamearchive.Metadata;
+import ooga.model.gamearchive.PlaceSaver;
+import ooga.model.gamearchive.PlayerSaver;
 import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static ooga.model.place.AbstractPlace.DEFAULT_RESOURCE_FOLDER;
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
 
 public class GameModel implements GameEventListener, ModelOutput {
@@ -33,6 +46,8 @@ public class GameModel implements GameEventListener, ModelOutput {
   public static final String DEFAULT_RESOURCE_PACKAGE = "properties.";
   private ResourceBundle modelResources;
   private static final Logger LOG = LogManager.getLogger(GameModel.class);
+  private GameState gameState;
+  private final String pattern = "MODEL_TO_MODEL_w+";
 
   public GameModel(GameEventHandler gameEventHandler) {
     this.gameEventHandler = gameEventHandler;
@@ -43,9 +58,6 @@ public class GameModel implements GameEventListener, ModelOutput {
     return modelResources;
   }
 
-  public void rollDice() {
-    turn.roll();
-  }
 
   private void endTurn() {
     turn.nextTurn();
@@ -56,7 +68,8 @@ public class GameModel implements GameEventListener, ModelOutput {
     currentPlayer.purchase(places.get(propertyIndex), propertyIndex);
   }
 
-  private void publishGameData() {
+  private void publishGameData(String gameState) {
+    this.gameState = GameState.valueOf(gameState);
     Player currentPlayer = getCurrentPlayerHelper();
     for (Place place : places) {
       place.updatePlaceActions(currentPlayer);
@@ -87,10 +100,14 @@ public class GameModel implements GameEventListener, ModelOutput {
       places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (String) map.get(String.valueOf(j)).get("id")));
       j++;
     }
+    Map<Integer, Predicate<Collection<Place>>> checkers = new ConcreteColorSet(places).outputCheckers();
     players = new ArrayList<>();
-    for (int i = 0; i < (int) (double) map.get("meta").get("players"); i++)
-      players.add(new ConcretePlayer(i));
-    turn = new ConcretePlayerTurn(players, places, 0);
+    for (int i = 0; i < (int) (double) map.get("meta").get("players"); i++){
+      Player newPlayer = new ConcretePlayer(i);
+      newPlayer.setColorSetCheckers(checkers);
+      players.add(newPlayer);
+    }
+    turn = new ConcretePlayerTurn(players, places);
   }
 
   /**
@@ -99,12 +116,60 @@ public class GameModel implements GameEventListener, ModelOutput {
    * @param map
    */
   protected void loadGame(Map<String, Object> map) {
-    GameLoader gameLoader = new GameLoader(map, modelResources);
-    places = gameLoader.loadPlaceData(map);
-    players = gameLoader.loadPlayerData(map);
-    Metadata metaData = gameLoader.getMetadata();
-    turn = new ConcretePlayerTurn(players, places, metaData.currentPlayerId());//TODO: set current player
+    players = new ArrayList<>();
+    places = new ArrayList<>();
+    loadPlaceData(map);
+    loadPlayerData(map);
+    Metadata metaData = (Metadata) map.get("meta");
+    Map<Integer, Predicate<Collection<Place>>> checkers = new ConcreteColorSet(places).outputCheckers();
+    for (Player p: players) {
+      p.setColorSetCheckers(checkers);
+    }
+    turn = new ConcretePlayerTurn(players, places);//TODO: set current player
   }
+
+
+  private void loadPlayerData(Map<String, Object> map) {
+    List<PlayerSaver> playersData = (List<PlayerSaver>) map.get("players");
+    for (PlayerSaver singlePlayersData : playersData) {
+      int playerId = singlePlayersData.id();
+      Player newPlayer = new ConcretePlayer(playerId);
+      newPlayer.setMoney(1500);//TODO: use properties file
+      newPlayer.setJail(singlePlayersData.jail());
+      newPlayer.setIndex(singlePlayersData.currentPlaceIndex());
+      newPlayer.setProperties(singlePlayersData.properties());
+      players.add(newPlayer);
+    }
+  }
+
+  private void loadPlaceData(Map<String, Object> map) {
+    List<PlaceSaver> placesData = (List<PlaceSaver>) map.get("places");
+    for (PlaceSaver singlePlaceData : placesData) {
+      String placeId = singlePlaceData.id();
+      Gson gson = new Gson();
+      Reader reader;
+      Map<String, ?> config;
+      try {
+        File file = new File(
+            "." + "/src/main/resources" + DEFAULT_RESOURCE_FOLDER + placeId + ".json");
+        reader = new FileReader(file);
+        TypeToken<Map<String, ?>> mapType = new TypeToken<>() {
+        };
+        config = gson.fromJson(reader, mapType);
+        String type = (String) config.get("type");
+        Place newPlace = createPlace(type, placeId);
+        if (singlePlaceData.owner() != null && singlePlaceData.owner()
+            != -1) //if the place can be purchased and there is someone who purchased it
+          newPlace.setOwner(singlePlaceData.owner());
+        if (singlePlaceData.houseCount() != null)
+          newPlace.setHouseCount(singlePlaceData.houseCount());
+        places.add(newPlace);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
+
 
 
   /**
@@ -131,6 +196,11 @@ public class GameModel implements GameEventListener, ModelOutput {
     return newPlace;
   }
   // beginning of ModelOutput methods
+
+  @Override
+  public GameState getGameState() {
+    return gameState;
+  }
 
   @Override
   public Point getDiceNum() {
@@ -171,23 +241,28 @@ public class GameModel implements GameEventListener, ModelOutput {
       case "CONTROLLER_TO_MODEL_GAME_START" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         initializeGame((Map) cmd.getCommandArgs());
-        publishGameData();
+//        publishGameData();
       }
       case "CONTROLLER_TO_MODEL_ROLL_DICE" -> {
         Command cmd = event.getGameEventCommand().getCommand();
-        rollDice();
-        publishGameData();
+        turn.roll();
       }
       case "CONTROLLER_TO_MODEL_PURCHASE_PROPERTY" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         int propertyIndex = (int) cmd.getCommandArgs();
         buyProperty(propertyIndex);
-        publishGameData();
+//        publishGameData();
       }
       case "CONTROLLER_TO_MODEL_END_TURN" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         endTurn();
-        publishGameData();
+//        publishGameData();
+      }
+      case "MODEL_TO_MODEL_END_TURN" -> {
+        Pattern pattern = Pattern.compile("MODEL_TO_MODEL_(.+)");
+        Matcher matcher = pattern.matcher("MODEL_TO_MODEL_END_TURN");
+        matcher.find();
+        publishGameData(matcher.group(1));
       }
     }
   }

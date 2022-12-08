@@ -12,6 +12,7 @@ import ooga.model.place.Place;
  * @author Luyao Wang
  */
 public interface ModelOutput {
+  GameState getGameState();
   /**
    * Publish the current number on the two dice
    */

@@ -1,4 +1,4 @@
-package ooga.model.gameArchive;
+package ooga.model.gamearchive;
 
 import ooga.model.*;
 import ooga.model.place.ControllerPlace;

@@ -1,4 +1,4 @@
-package ooga.model.gameArchive;
+package ooga.model.gamearchive;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import static ooga.model.GameModel.DEFAULT_RESOURCE_PACKAGE;
-import static org.junit.jupiter.api.Assertions.*;
 
 class GameLoaderTest {
   static GameLoader loader;

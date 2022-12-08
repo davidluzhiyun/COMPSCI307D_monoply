@@ -1,4 +1,4 @@
-package ooga.model.gameArchive;
+package ooga.model.gamearchive;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

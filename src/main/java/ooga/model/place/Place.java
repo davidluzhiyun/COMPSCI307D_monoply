@@ -35,4 +35,6 @@ public interface Place extends ControllerPlace{
   void setOwner(int playerId) throws IllegalStateException;
 
   void setHouseCount(int count) throws IllegalStateException;
+
+  void landingEffect(Player player);
 }

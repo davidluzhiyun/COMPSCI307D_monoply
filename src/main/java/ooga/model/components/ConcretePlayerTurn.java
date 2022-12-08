@@ -1,5 +1,10 @@
 package ooga.model.components;
 
+import ooga.event.GameEvent;
+import ooga.event.GameEventHandler;
+import ooga.event.command.Command;
+import ooga.event.command.GameDataCommand;
+import ooga.model.GameState;
 import ooga.model.Player;
 import ooga.model.place.Place;
 
@@ -13,58 +18,56 @@ public class ConcretePlayerTurn implements PlayerTurn {
   private final List<Place> places;
   private Dice dice;
   private Point diceNum;
+  private GameEventHandler gameEventHandler;
 
 
-  public ConcretePlayerTurn(List<Player> players, List<Place> places, int currentPlayerIndex) {
+  public ConcretePlayerTurn(List<Player> players, List<Place> places) {
     this.players = players;
     this.places = places;
-    currentPlayer = players.get(currentPlayerIndex);
+    currentPlayer = players.get(0);
     currentPlayer.newTurn();
     currentPlace = this.places.get(currentPlayer.getCurrentPlaceIndex());
     dice = new ConcreteDice();
+    gameEventHandler = new GameEventHandler();
   }
 
   @Override
-  public Point roll() {
-    Point point = dice.roll();
-    int r1 = point.x;
-    int r2 = point.y;
+  public void roll() {
+    diceNum = dice.roll();
+    int r1 = diceNum.x;
+    int r2 = diceNum.y;
     currentPlayer.nextDice();
-    diceNum = point;
     if (r1 == r2)
       currentPlayer.addOneDiceRoll();
 //    if (currentPlayer.goJail())
 //      currentPlayer.move(jail);
     //TODO: roll triple doubles and go jail
+    gameEventHandler.publish("MODEL_TO_MODEL_ROLL_DICE");
     go(r1 + r2);
-    return  point;
   }
 
   /**
+   * @param step
    * @author Luyao Wang
    * @author David Lu modified the method to accomodate new definitions
    * Step can be negative, in the case of "go to jail do not pass GO" in chance.
    * This method also takes care of thing like wrap around
-   *
-   * @param step
    */
-  private void go(int step) {
-    //the player goes past GO (including landing on go) and get money
-    if (currentPlayer.getCurrentPlaceIndex() + step >= places.size()){
-      int passes = (currentPlayer.getCurrentPlaceIndex() + step) / places.size();
+  public void go(int step) {
+    int passes = 0;
+    //the player goes past GO (not including landing on go) and get money
+    if (currentPlayer.getCurrentPlaceIndex() + step + 1 >= places.size()) {
+      passes = (currentPlayer.getCurrentPlaceIndex() + step) / places.size();
       // Passing the place multiple times gives the player salaries multiple times
-      currentPlayer.setMoney(currentPlayer.getTotalMoney() + passes * (places.get(0).getMoney()));
     }
     int index = (currentPlayer.getCurrentPlaceIndex() + step) % places.size();
-    currentPlace = places.get(index);
-    // to prevent giving salary repetitively
-    if (index != 0){
-      // since the move method no longer accepts place, this step can't be done automatically
-      // TODO: publish event when rent levied
-      double money = currentPlace.getMoney();
-      currentPlayer.setMoney(currentPlayer.getTotalMoney() + money);
-    }
     currentPlayer.setIndex(currentPlayer.getCurrentPlaceIndex() + index);
+    gameEventHandler.publish("MODEL_TO_MODEL_MOVE");
+    currentPlayer.setMoney(currentPlayer.getTotalMoney() + passes * (places.get(0).getMoney()));
+    gameEventHandler.publish("MODEL_TO_MODEL_COLLECT_SALARY");
+    currentPlace = places.get(index);
+
+    currentPlace.landingEffect(currentPlayer);
   }
 
 
@@ -88,9 +91,10 @@ public class ConcretePlayerTurn implements PlayerTurn {
 
   @Override
   public Point getDiceNum() {
-    if (diceNum == null){
-      diceNum = dice.roll();
-    }
-    return new Point(diceNum);
+//    if (diceNum == null){
+//      diceNum = dice.roll();
+//    }
+//    return new Point(diceNum);
+    return diceNum;
   }
 }
