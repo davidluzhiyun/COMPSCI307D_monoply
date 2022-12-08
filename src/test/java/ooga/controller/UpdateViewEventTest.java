@@ -1,4 +1,5 @@
 package ooga.controller;
+<<<<<<< HEAD
 
 //package ooga.controller;
 //
@@ -189,6 +190,8 @@ package ooga.controller;
 //        }
 //    }
 //}
+=======
+>>>>>>> master
 
 import junit.framework.TestCase;
 import ooga.event.GameEvent;

@@ -175,6 +175,7 @@ public abstract class AbstractPlace implements Place {
         return new HashSet<>(inherentPlaceActions);
     }
 
+    @Override
     public void landingEffect(Player player) {
         EventHandler eventHandler;
     }

@@ -1,5 +1,7 @@
 package ooga.model;
 
+import java.util.Map;
+import java.util.function.Predicate;
 import ooga.model.place.Place;
 
 import java.util.Collection;
@@ -45,4 +47,16 @@ public interface Player extends ControllerPlayer {
    * @param destinationIndex the index the player should be moved to.
    */
   void setIndex(int destinationIndex);
+
+  /**
+   * @author David Lu
+   * @param colorSetCheckers see ConcreteColorSet
+   */
+  void setColorSetCheckers(Map<Integer, Predicate<Collection<Place>>> colorSetCheckers);
+  /**
+   * Check if the player can build a house at a place
+   * Through error if input is null or colorSetCheckers weren't set
+   * @author David Lu
+   */
+  boolean canBuildOn(Place place);
 }

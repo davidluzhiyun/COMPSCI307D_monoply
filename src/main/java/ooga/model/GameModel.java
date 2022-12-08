@@ -47,7 +47,6 @@ public class GameModel implements GameEventListener, ModelOutput {
   private ResourceBundle modelResources;
   private static final Logger LOG = LogManager.getLogger(GameModel.class);
   private GameState gameState;
-  private final String pattern = "MODEL_TO_MODEL_w+";
 
   public GameModel(GameEventHandler gameEventHandler) {
     this.gameEventHandler = gameEventHandler;
@@ -236,6 +235,11 @@ public class GameModel implements GameEventListener, ModelOutput {
 
   @Override
   public void onGameEvent(GameEvent event) {
+    Pattern pattern = Pattern.compile("MODEL_TO_MODEL_(.+)");
+    Matcher matcher = pattern.matcher(event.getGameEventType());
+    if(matcher.find())
+      publishGameData(matcher.group(1));
+
     //TODO: Refactor the switch expression
     switch (event.getGameEventType()) {
       case "CONTROLLER_TO_MODEL_GAME_START" -> {
@@ -257,12 +261,6 @@ public class GameModel implements GameEventListener, ModelOutput {
         Command cmd = event.getGameEventCommand().getCommand();
         endTurn();
 //        publishGameData();
-      }
-      case "MODEL_TO_MODEL_END_TURN" -> {
-        Pattern pattern = Pattern.compile("MODEL_TO_MODEL_(.+)");
-        Matcher matcher = pattern.matcher("MODEL_TO_MODEL_END_TURN");
-        matcher.find();
-        publishGameData(matcher.group(1));
       }
     }
   }

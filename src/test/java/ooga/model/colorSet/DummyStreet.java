@@ -41,6 +41,10 @@ public class DummyStreet extends DummyPlace implements Street {
   public void setOwner(int playerId) {
 
   }
+  @Override
+  public int getColorSetId(){
+    return color;
+  }
 
   @Override
   public boolean isMortgaged() {

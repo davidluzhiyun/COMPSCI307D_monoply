@@ -18,9 +18,9 @@ public class SceneManager implements GameEventListener {
   private final GameEventHandler gameEventHandler;
   private static final String DEFAULT_RESOURCE_DIR = Main.DEFAULT_RESOURCE_PACKAGE;
   private static final String BASE_DIR_UI_LANGUAGE = Main.DEFAULT_LANGUAGE_PACKAGE;
-
+  public static final String USER_INTERFACE = "UserInterface";
   private final ResourceBundle resources = ResourceBundle.getBundle(
-      DEFAULT_RESOURCE_DIR + "UserInterface");
+      DEFAULT_RESOURCE_DIR + USER_INTERFACE);
 
   private final ResourceBundle languageResources;
   private Scene currentScene;
@@ -52,6 +52,13 @@ public class SceneManager implements GameEventListener {
     setPrimaryStageToCurrScene();
   }
 
+  private void setMonopolyGameEditorScene() {
+    MonopolyGameEditorScene monopolyGameEditorScene = new MonopolyGameEditorScene(primaryStage);
+    currentScene = new Scene(monopolyGameEditorScene.getRootPane(), primaryStage.getMaxWidth(),
+        primaryStage.getMaxHeight());
+    setPrimaryStageToCurrScene();
+  }
+
   private void setGameSelectionScene() {
     GameSelectionScene gameSelectionScene = new GameSelectionScene(myLanguage, primaryStage,
         gameEventHandler);
@@ -75,7 +82,7 @@ public class SceneManager implements GameEventListener {
 
   @Override
   public void onGameEvent(GameEvent event) {
-    System.out.println(event.getGameEventType());
+    String eventType = event.getGameEventType();
     if (event.getGameEventType().equals("VIEW_LAUNCH_GAME_SCREEN")) {
       setGameView();
     }
@@ -84,6 +91,9 @@ public class SceneManager implements GameEventListener {
     }
     if (event.getGameEventType().equals("VIEW_LAUNCH_BOARD_EDITOR")) {
       setBoardEditorScene();
+    }
+    if (eventType.equals("VIEW_LAUNCH_GAME_EDITOR_SCREEN")) {
+      setMonopolyGameEditorScene();
     }
   }
 

@@ -15,6 +15,7 @@ import ooga.event.command.Command;
 import ooga.event.command.RollDiceCommand;
 import ooga.view.components.Board;
 import ooga.view.components.GamePiece;
+import ooga.view.pop_ups.BuyHousePopUp;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
 import ooga.view.pop_ups.RentPopUp;
@@ -58,6 +59,9 @@ public class GameView extends View implements GameEventListener {
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
     myStage.show();
+    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myBoard);
+    popUp.showMessage(myLanguage);
+
     return myScene;
   }
 
@@ -102,7 +106,7 @@ public class GameView extends View implements GameEventListener {
    * TODO: change this to actually implement the savegame feature.
    */
   public void saveGame() {
-    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myLanguage, myBoard);
+    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myBoard);
     popUp.showMessage(myLanguage);
     RentPopUp pop = new RentPopUp(20);
     pop.showMessage(myLanguage);
@@ -113,7 +117,7 @@ public class GameView extends View implements GameEventListener {
    * Will later need to take in current player (int) parameter -- or use instance variable
    */
   private void startPlayerTurn() {
-    myDicePopUp = new DiceRollPopUp(1, myStyle, myLanguage);
+    myDicePopUp = new DiceRollPopUp(1, myStyle);
     myDicePopUp.showMessage(myLanguage);
     myDicePopUp.makeButtonActive(this);
   }
@@ -137,6 +141,11 @@ public class GameView extends View implements GameEventListener {
   private void showDiceResult(int[] roll) {
     myDicePopUp.close();
     RollResultPopUp pop = new RollResultPopUp(roll[0], roll[1]);
+    pop.showMessage(myLanguage);
+  }
+
+  public void buyHouse() {
+    BuyHousePopUp pop = new BuyHousePopUp(1, myStyle, myBoard);
     pop.showMessage(myLanguage);
   }
 

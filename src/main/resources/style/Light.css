@@ -16,6 +16,12 @@
   -fx-background-color: rgba(238,204,255, 0.2);
 }
 
+#BuyHouseButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: white;
+  -fx-background-color: rgba(238,204,255, 0.2);
+}
 #GamePiecePopUp {
   -fx-alignment: center;
   -fx-base: cornflowerblue;
@@ -26,6 +32,12 @@
   -fx-base: cornflowerblue;
 }
 
+#BuyHouseVBox {
+  -fx-alignment: center;
+  -fx-text-alignment: center;
+  -fx-base: cornflowerblue;
+  -fx-padding: 20;
+}
 
 #FileUploadButton {
   -fx-padding: 10;

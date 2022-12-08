@@ -13,10 +13,13 @@ import ooga.view.scene.SceneManager;
 /**
  *
  */
-public class GamePiece extends ImageView implements BoardObjects {
+public class GamePiece extends ImageView implements BoardObject {
 
   private int myPlayer;
   private final ResourceBundle myResources;
+  public static final String PIECE_SIZE_KEY = "GamePieceSize";
+  public static final String MOVEMENT_DURATION_KEY = "MovementDuration";
+  public static final String ROTATION_DURATION_KEY = "RotateDuration";
 
   /**
    * @param piece:  should be like GamePiece0, GamePiece1, etc.
@@ -28,8 +31,8 @@ public class GamePiece extends ImageView implements BoardObjects {
     this.setImage(image);
     this.setPreserveRatio(true);
     this.myResources = ResourceBundle.getBundle(
-        Main.DEFAULT_RESOURCE_PACKAGE + "UserInterface");
-    int size = Integer.parseInt(myResources.getString("GamePieceSize"));
+        Main.DEFAULT_RESOURCE_PACKAGE + SceneManager.USER_INTERFACE);
+    int size = Integer.parseInt(myResources.getString(PIECE_SIZE_KEY));
     this.setFitHeight(size);
     this.myPlayer = player;
   }
@@ -56,7 +59,7 @@ public class GamePiece extends ImageView implements BoardObjects {
   @Override
   public void placeObject(int xLocation, int yLocation) {
     TranslateTransition transition = new TranslateTransition();
-    double duration = Double.parseDouble(myResources.getString("MovementDuration"));
+    double duration = Double.parseDouble(myResources.getString(MOVEMENT_DURATION_KEY));
     transition.setDuration(Duration.millis(duration));
     transition.setNode(this);
     transition.setToX(xLocation);
@@ -73,7 +76,7 @@ public class GamePiece extends ImageView implements BoardObjects {
   @Override
   public void rotateObject(double angleToRotate) {
     RotateTransition transition = new RotateTransition();
-    double duration = Double.parseDouble(myResources.getString("RotateDuration"));
+    double duration = Double.parseDouble(myResources.getString(ROTATION_DURATION_KEY));
     transition.setDuration(Duration.millis(duration));
     transition.setNode(this);
     transition.setByAngle(angleToRotate);
