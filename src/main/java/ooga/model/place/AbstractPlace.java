@@ -106,7 +106,7 @@ public abstract class AbstractPlace implements Place {
     }
 
     @Override
-    public void setOwner(int playerId) throws IllegalStateException {
+    public void setOwner(int playerId, Player owner) throws IllegalStateException {
         throw new IllegalStateException();
     }
 

@@ -45,7 +45,8 @@ public class GameLoader {
         String type = (String) config.get("type");
         Place newPlace = createPlace(type, placeId);
         if (singlePlaceData.owner() != null && singlePlaceData.owner() != -1) //if the place can be purchased and there is someone who purchased it
-          newPlace.setOwner(singlePlaceData.owner());
+//          newPlace.setOwner(singlePlaceData.owner());
+          // TODO: Load owner and ownerid
         if (singlePlaceData.houseCount() != null) newPlace.setHouseCount(singlePlaceData.houseCount());
         //TODO: use constructor to create place instead of setters
         places.add(newPlace);

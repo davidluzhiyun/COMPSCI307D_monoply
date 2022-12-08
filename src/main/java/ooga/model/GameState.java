@@ -6,5 +6,9 @@ public enum GameState {
   MOVE,
   //only getCurrentPlaceIndex() of the current player is updated
   PAY_RENT,
-  COLLECT_SALARY
+  //The amounts of money of the current player and the owner of the property are updated
+  PAY_TAX,
+  //The amount of money of the current player is updated
+  COLLECT_SALARY,
+  //The amount of money of the current player is updated
 }

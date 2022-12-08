@@ -20,9 +20,15 @@ public class BoardSaveTest {
     @BeforeAll
     static void TestModelOutput() {
         Place place2 = new ConcreteStreet("123");
-        place2.setOwner(1);
+//        place2.setOwner(1);
+        //TODO:
         Player player1 = new ConcretePlayer(0);
         output = new ModelOutput() {
+            @Override
+            public GameState getGameState() {
+                return null;
+            }
+
             @Override
             public Point getDiceNum() {
                 return null;

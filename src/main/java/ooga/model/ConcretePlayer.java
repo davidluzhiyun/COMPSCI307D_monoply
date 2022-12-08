@@ -171,7 +171,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
       money -= property.getPurchasePrice();
       propertyIndices.add(propertyIndex);
       properties.add(property);
-      property.setOwner(playerId);
+      property.setOwner(playerId, this);
     } catch (IllegalStateException e) {
       throw new IllegalStateException();
     }

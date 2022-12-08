@@ -32,7 +32,7 @@ public interface Place extends ControllerPlace{
    */
   double getPurchasePrice() throws IllegalStateException;
 
-  void setOwner(int playerId) throws IllegalStateException;
+  void setOwner(int playerId, Player owner) throws IllegalStateException;
 
   void setHouseCount(int count) throws IllegalStateException;
 

@@ -45,12 +45,17 @@ public class DummyPlace implements Place {
   }
 
   @Override
-  public void setOwner(int playerId) throws IllegalStateException {
+  public void setOwner(int playerId, Player owner) throws IllegalStateException {
 
   }
 
   @Override
   public void setHouseCount(int count) throws IllegalStateException {
+
+  }
+
+  @Override
+  public void landingEffect(Player player) {
 
   }
 

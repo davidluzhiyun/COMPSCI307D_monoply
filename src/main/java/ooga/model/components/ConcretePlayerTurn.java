@@ -19,12 +19,13 @@ public class ConcretePlayerTurn implements PlayerTurn {
   private Dice dice;
   private Point diceNum;
   private GameEventHandler gameEventHandler;
+  public static final String modelToken = "MODEL_TO_MODEL_";
 
 
-  public ConcretePlayerTurn(List<Player> players, List<Place> places) {
+  public ConcretePlayerTurn(List<Player> players, List<Place> places, int currentPlayerIndex) {
     this.players = players;
     this.places = places;
-    currentPlayer = players.get(0);
+    currentPlayer = players.get(currentPlayerIndex);
     currentPlayer.newTurn();
     currentPlace = this.places.get(currentPlayer.getCurrentPlaceIndex());
     dice = new ConcreteDice();
@@ -42,7 +43,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
 //    if (currentPlayer.goJail())
 //      currentPlayer.move(jail);
     //TODO: roll triple doubles and go jail
-    gameEventHandler.publish("MODEL_TO_MODEL_ROLL_DICE");
+    gameEventHandler.publish(modelToken + GameState.DICE_RESULT);
     go(r1 + r2);
   }
 
@@ -62,9 +63,9 @@ public class ConcretePlayerTurn implements PlayerTurn {
     }
     int index = (currentPlayer.getCurrentPlaceIndex() + step) % places.size();
     currentPlayer.setIndex(currentPlayer.getCurrentPlaceIndex() + index);
-    gameEventHandler.publish("MODEL_TO_MODEL_MOVE");
+    gameEventHandler.publish(modelToken + GameState.MOVE);
     currentPlayer.setMoney(currentPlayer.getTotalMoney() + passes * (places.get(0).getMoney()));
-    gameEventHandler.publish("MODEL_TO_MODEL_COLLECT_SALARY");
+    gameEventHandler.publish(modelToken + GameState.COLLECT_SALARY);
     currentPlace = places.get(index);
 
     currentPlace.landingEffect(currentPlayer);
