@@ -10,7 +10,7 @@ public interface PlayerTurn {
    *
    * @return
    */
-  Point roll();
+  void roll();
   int getCurrentPlayerTurnId();
   /**
    * Current player ends turn and switch next player's turn.

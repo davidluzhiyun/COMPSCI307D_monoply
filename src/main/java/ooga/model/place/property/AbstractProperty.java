@@ -1,11 +1,16 @@
 package ooga.model.place.property;
 
+import ooga.event.GameEventHandler;
+import ooga.model.GameState;
 import ooga.model.Player;
 import ooga.model.StationaryAction;
 import ooga.model.place.AbstractPlace;
 
+import java.beans.EventHandler;
 import java.util.Collection;
 import java.util.List;
+
+import static ooga.model.components.ConcretePlayerTurn.modelToken;
 
 /**
  * @author David Lu refactoring and integration
@@ -21,7 +26,8 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   private final double rentWithColorSet;
   private final List<Double> rentWithHouses;
   private int ownerId;
-  
+  private Player owner;
+
   public AbstractProperty(String id) {
     super(id);
     name = (String) getConfig().get("name");
@@ -71,8 +77,9 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   }
 
   @Override
-  public void setOwner(int playerId) {
+  public void setOwner(int playerId, Player owner) {
     ownerId = playerId;
+    this.owner = owner;
   }
 
   @Override
@@ -95,18 +102,25 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   }
 
   /**
-   * @author David Lu added this method to override parent by adding new condition.
-   * The property need to be unimproved to be purchased
    * @param player the current player
    * @return see the place interface
+   * @author David Lu added this method to override parent by adding new condition.
+   * The property need to be unimproved to be purchased
    */
   @Override
-  public Collection<StationaryAction> getStationaryActions(Player player){
-    if (ownerId != -1){
+  public Collection<StationaryAction> getStationaryActions(Player player) {
+    if (ownerId != -1) {
       return null;
-    }
-    else {
+    } else {
       return super.getStationaryActions(player);
     }
+  }
+
+  @Override
+  public void landingEffect(Player player) {
+    player.setMoney(player.getTotalMoney() - getMoney());
+    owner.setMoney(player.getTotalMoney() + getMoney());
+    GameEventHandler gameEventHandler = new GameEventHandler();
+    gameEventHandler.publish(modelToken + GameState.PAY_RENT);
   }
 }

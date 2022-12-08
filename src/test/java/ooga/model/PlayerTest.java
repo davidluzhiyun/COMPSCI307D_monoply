@@ -41,28 +41,28 @@ class PlayerTest {
   void move() {
     player.setIndex(1);
     assertEquals(1, player.getCurrentPlaceIndex());
-  }
+  } 
 
   @Test
   void rollTestInJail() {
     player.newTurn();
-    player.decrementOneDiceLeft();
+    player.nextDice();
     player.addOneDiceRoll();
-    player.decrementOneDiceLeft();
+    player.nextDice();
     player.addOneDiceRoll();
-    player.decrementOneDiceLeft();
+    player.nextDice();
     player.addOneDiceRoll();
-    assertTrue(player.isInJail());
+    assertEquals(3, player.remainingJailTurns());
   }
 
   @Test
   void rollTestNotInJail() {
     player.newTurn();
-    player.decrementOneDiceLeft();
+    player.nextDice();
     player.addOneDiceRoll();
-    player.decrementOneDiceLeft();
+    player.nextDice();
     player.addOneDiceRoll();
-    player.decrementOneDiceLeft();
-    assertFalse(player.isInJail());
+    player.nextDice();
+    assertEquals(0, player.remainingJailTurns());
   }
 }

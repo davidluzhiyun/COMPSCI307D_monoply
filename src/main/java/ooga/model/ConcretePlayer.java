@@ -3,11 +3,13 @@ package ooga.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
+
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
+
 import ooga.model.place.Place;
 
 import java.util.ArrayList;
@@ -17,10 +19,9 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private double money;
   private int playerId;
   private int currentPlaceIndex;
-  private boolean isInJail = false;
-  private int dicesLeft;
   private int dicesTotal;
   private int remainingJailTurns;
+  private boolean hasNextDice;
   private Collection<Integer> propertyIndices;
   private Collection<Place> properties;
   private Map<Integer, Predicate<Collection<Place>>> colorSetCheckers;
@@ -28,34 +29,30 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   /**
    * Universal constructor for loading the game./
    *
-   * @param money
-   * @param playerId
-   * @param currentPlaceIndex
-   * @param isInJail
-   * @param dicesLeft
-   * @param dicesTotal
-   * @param remainingJailTurns
-   * @param properties
    */
-  public ConcretePlayer(double money, int playerId, int currentPlaceIndex, boolean isInJail,
-                        int dicesLeft, int dicesTotal, int remainingJailTurns, Collection<Integer> properties) {
-    this.money = money;
+  public ConcretePlayer(int playerId, double money,  int remainingJailTurns, int currentPlaceIndex, int dicesTotal, boolean hasNextDice, Collection<Integer> propertyIndices) {
     this.playerId = playerId;
+    this.money = money;
     this.currentPlaceIndex = currentPlaceIndex;
-    this.isInJail = isInJail;
-    this.dicesLeft = dicesLeft;
-    this.propertyIndices = properties;
+    this.remainingJailTurns = remainingJailTurns;
+//    this.properties = properties;
+    this.dicesTotal = dicesTotal;
+    this.hasNextDice = hasNextDice;
+    this.propertyIndices = propertyIndices;
   }
 
   public ConcretePlayer(int playerId) {
     this.currentPlaceIndex = 0;
     this.money = 0;
     this.playerId = playerId;
+    this.hasNextDice = false;
+    properties = new ArrayList<>();
     propertyIndices = new ArrayList<>();
   }
 
+  @Override
   public void newTurn() {
-    dicesLeft = 1;
+    hasNextDice = true;
     dicesTotal = 1;
     //TODO: when in jail
   }
@@ -77,7 +74,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
 
   @Override
   public void setIndex(int destinationIndex) {
-
+    currentPlaceIndex = destinationIndex;
   }
 
   @Override
@@ -126,39 +123,31 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     }
   }
 
-
-  public void decrementOneDiceLeft() {
-    dicesLeft--;
-  }
-
   public void addOneDiceRoll() {
-    dicesLeft++;
+    hasNextDice = true;
     dicesTotal++;
     if (dicesTotal == 4)
-      isInJail = true;
+      setJail(3);
   }
 
+  @Override
   public boolean hasNextDice() {
-    return dicesLeft > 0;
+    return hasNextDice;
   }
 
-  public boolean goJail() {
-    return isInJail;
+  @Override
+  public void nextDice() {
+    hasNextDice = false;
   }
 
   @Override
   public int getPlayerId() {
-    return 0;
+    return playerId;
   }
 
   @Override
   public int getCurrentPlaceIndex() {
     return currentPlaceIndex;
-  }
-
-  @Override
-  public Boolean isInJail() {
-    return isInJail;
   }
 
   @Override
@@ -182,13 +171,9 @@ public class ConcretePlayer implements Player, ControllerPlayer {
       money -= property.getPurchasePrice();
       propertyIndices.add(propertyIndex);
       properties.add(property);
-      property.setOwner(playerId);
+      property.setOwner(playerId, this);
     } catch (IllegalStateException e) {
       throw new IllegalStateException();
     }
-  }
-  @Override
-  public void purchase(Place property) throws IllegalStateException{
-    purchase(property, currentPlaceIndex);
   }
 }

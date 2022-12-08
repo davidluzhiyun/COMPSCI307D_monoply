@@ -2,7 +2,10 @@ package ooga.model.place;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.beans.EventHandler;
 import java.util.HashSet;
+
 import ooga.model.*;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
@@ -29,7 +32,7 @@ public abstract class AbstractPlace implements Place {
     private Collection<PlaceAction> updatedPlaceActions;
     public static final String PLACE_PACKAGE_NAME = AbstractPlace.class.getPackageName() + ".";
     public static final String DEFAULT_RESOURCE_FOLDER =
-            "/" + PLACE_PACKAGE_NAME.replace(".", "/");
+        "/" + PLACE_PACKAGE_NAME.replace(".", "/");
     private Map<String, ?> config;
 
     public AbstractPlace(String id) {
@@ -103,7 +106,7 @@ public abstract class AbstractPlace implements Place {
     }
 
     @Override
-    public void setOwner(int playerId) throws IllegalStateException {
+    public void setOwner(int playerId, Player owner) throws IllegalStateException {
         throw new IllegalStateException();
     }
 
@@ -113,10 +116,10 @@ public abstract class AbstractPlace implements Place {
     }
 
     /**
+     * @return
      * @author David Lu
      * Returns updated place actions. Modification of the collection doesn't affect the model
      * The method is also used for modifying the collection by subclasses
-     * @return
      */
     @Override
     public Collection<PlaceAction> getPlaceActions() {
@@ -134,7 +137,7 @@ public abstract class AbstractPlace implements Place {
     }
 
     @Override
-    public int getOwnerId() throws IllegalStateException{
+    public int getOwnerId() throws IllegalStateException {
         throw new IllegalStateException();
     }
 
@@ -163,11 +166,17 @@ public abstract class AbstractPlace implements Place {
     public void addPlaceAction(PlaceAction placeAction) {
         this.inherentPlaceActions.add(placeAction);
     }
+
     /**
      * @author David Lu
      * Fetch a copy of the inherentPlaceActions for subclass
      */
     public Collection<PlaceAction> getInherentPlaceActions() {
         return new HashSet<>(inherentPlaceActions);
+    }
+
+    @Override
+    public void landingEffect(Player player) {
+        EventHandler eventHandler;
     }
 }

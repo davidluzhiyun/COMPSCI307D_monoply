@@ -38,7 +38,7 @@ public class DummyStreet extends DummyPlace implements Street {
   }
 
   @Override
-  public void setOwner(int playerId) {
+  public void setOwner(int playerId, Player owner) {
 
   }
   @Override
