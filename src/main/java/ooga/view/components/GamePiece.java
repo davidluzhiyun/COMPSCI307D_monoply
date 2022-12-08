@@ -5,6 +5,7 @@ import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 import ooga.Main;
 import ooga.view.View;
@@ -38,18 +39,6 @@ public class GamePiece extends ImageView implements BoardObject {
   }
 
   /**
-   * Technically can be used to place the object anywhere, since our game is designed to support
-   * flexibility in the location of the GO piece.
-   *
-   * @param xLocation: int, x-coordinate that the piece should be placed at
-   * @param yLocation: int, y-coordinate that the piece should be placed at
-   */
-  public void placeAtGo(int xLocation, int yLocation) {
-    this.setX(xLocation);
-    this.setY(yLocation);
-  }
-
-  /**
    * This will move the piece to the given coordinates. Note: referenced this video for help with
    * JavaFX specifics: https://youtu.be/MB97h89xjDw.
    *
@@ -58,6 +47,7 @@ public class GamePiece extends ImageView implements BoardObject {
    */
   @Override
   public void placeObject(int xLocation, int yLocation) {
+    this.setOpacity(0);
     TranslateTransition transition = new TranslateTransition();
     double duration = Double.parseDouble(myResources.getString(MOVEMENT_DURATION_KEY));
     transition.setDuration(Duration.millis(duration));
@@ -65,6 +55,7 @@ public class GamePiece extends ImageView implements BoardObject {
     transition.setToX(xLocation);
     transition.setToY(yLocation);
     transition.play();
+    this.setOpacity(1.0);
   }
 
   /**

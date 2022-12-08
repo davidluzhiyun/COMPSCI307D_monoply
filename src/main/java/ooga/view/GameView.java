@@ -14,7 +14,6 @@ import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.RollDiceCommand;
 import ooga.view.components.Board;
-import ooga.view.components.GamePiece;
 import ooga.view.pop_ups.BuyHousePopUp;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
@@ -38,17 +37,17 @@ public class GameView extends View implements GameEventListener {
   public static final String GAME_PIECE = "GamePiece";
   private Board myBoard;
 
-  public GameView(GameEventHandler gameEventHandler, String style, String language, Stage stage) {
-    this.myStyle = style;
+  public GameView(GameEventHandler gameEventHandler, String language, Stage stage) {
     this.myLanguage = language;
     this.myStage = stage;
     this.gameEventHandler = gameEventHandler;
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + StartView.SCREEN);
   }
 
-  public Scene setUpScene(double width, double height) {
+  public Scene setUpScene(double width, double height, String style) {
     this.width = width;
     this.height = height;
+    this.myStyle = style;
     Rectangle background = new Rectangle(width, height);
     background.setId(StartView.BACKGROUND);
     BorderPane myBorderPane = new BorderPane(background);
@@ -81,7 +80,7 @@ public class GameView extends View implements GameEventListener {
     myStyle = choiceResources.getString(
         String.format(StartView.STRING_INT_FORMATTER, StartView.STYLE, newValue));
     myStage.close();
-    setUpScene(width, height);
+    setUpScene(width, height, myStyle);
   }
 
   /**
@@ -128,7 +127,7 @@ public class GameView extends View implements GameEventListener {
    */
   public void rollDice() {
     Command cmd = new RollDiceCommand();
-    GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE",
+    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE",
         cmd);
     gameEventHandler.publish(event);
     showDiceResult(new int[]{6, 5});

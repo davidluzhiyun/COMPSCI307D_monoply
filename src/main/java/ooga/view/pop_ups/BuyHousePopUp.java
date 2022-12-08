@@ -77,6 +77,7 @@ public class BuyHousePopUp extends ActionPopUp {
 
   public void buildHouse() {
     myBoard.buildHouse(0);
+    close();
   }
 
   /**

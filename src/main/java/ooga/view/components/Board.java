@@ -203,9 +203,8 @@ public class Board {
    */
   public void initializeGamePiece(GamePiece piece, int player) {
     board.getChildren().add(piece);
-    //TODO: change to actually give the location of go
-//    piece.placeAtGo(10,700);
-    piece.placeObject(10,565);
+    //TODO: change to give the location of go!!!
+    piece.placeObject(20, 550);
   }
 
   /**
@@ -216,9 +215,8 @@ public class Board {
   public void buildHouse(int property) {
     House house = new House();
     board.getChildren().add(house);
-    //TODO: change to actually get the location of
-    house.placeObject(30,10);
-
+    //TODO: change to actually get the location of the property
+    house.placeObject(30, 10);
   }
 
   public Pane getBoard() {
