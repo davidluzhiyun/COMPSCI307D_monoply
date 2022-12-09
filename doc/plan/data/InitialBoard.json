@@ -6,38 +6,38 @@
   },
   "0": {
     "id": 0,
-    "type": "go"
+    "type": "Go"
   },
   "1": {
     "id": 121,
-    "type": "street"
+    "type": "Street"
   },
   "2": {
     "id": 123,
-    "type": "street"
+    "type": "Street"
   },
   "3": {
     "id": 125,
-    "type": "street"
+    "type": "Street"
   },
   "4": {
-    "id": 8,
-    "type": "communist chest"
+    "id": 125,
+    "type": "Street"
   },
   "5": {
     "id": 45,
-    "type": "railroad"
+    "type": "Street"
   },
   "11": {
-    "id": 4,
-    "type": "jail"
+    "id": 121,
+    "type": "Street"
   },
   "12": {
     "id": 9,
-    "type": "chance"
+    "type": "Street"
   },
   "13": {
     "id": 9,
-    "type": "utility"
+    "type": "Street"
   }
 }

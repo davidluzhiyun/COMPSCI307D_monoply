@@ -105,9 +105,11 @@ public class GameSelectionScene extends View {
       pop.showMessage(myLanguage);
     } else {
       Command cmd = new GameStartViewCommand(configFile);
-      GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SCREEN",
+      GameEvent eventForView = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SCREEN",
           cmd);
-      myGameEventHandler.publish(event);
+      GameEvent eventForController = GameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_GAME_START", cmd);
+      myGameEventHandler.publish(eventForView);
+      myGameEventHandler.publish(eventForController);
     }
   }
 

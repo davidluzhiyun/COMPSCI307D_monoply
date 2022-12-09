@@ -14,7 +14,6 @@ import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.RollDiceCommand;
 import ooga.view.components.Board;
-import ooga.view.components.GamePiece;
 import ooga.view.pop_ups.BuyHousePopUp;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
@@ -127,7 +126,7 @@ public class GameView extends View implements GameEventListener {
    */
   public void rollDice() {
     Command cmd = new RollDiceCommand();
-    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE",
+    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_TO_MODEL_ROLL_DICE",
         cmd);
     gameEventHandler.publish(event);
     showDiceResult(new int[]{6, 5});
