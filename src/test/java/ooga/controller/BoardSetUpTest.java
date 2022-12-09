@@ -55,6 +55,11 @@ public class BoardSetUpTest extends TestCase {
         gameEventHandler.addEventListener(listener);
         GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_BOARD_SET_UP.name(), new TestCommand(new ModelOutput() {
             @Override
+            public GameState getGameState() {
+                return null;
+            }
+
+            @Override
             public Point getDiceNum() {
                 return null;
             }

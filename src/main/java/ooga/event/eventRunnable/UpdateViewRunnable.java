@@ -7,6 +7,7 @@ import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.event.command.UpdateViewCommand;
 import ooga.model.ControllerPlayer;
+import ooga.model.GameState;
 import ooga.model.ModelOutput;
 import ooga.model.place.ControllerPlace;
 
@@ -26,7 +27,7 @@ public class UpdateViewRunnable implements EventGenerator{
 
     @Override
     public GameEvent processEvent() {
-        UpdateViewRecord updateRecord = new UpdateViewRecord(this.boardInfo.getDiceNum(), getCurrentPlaceIndex(), this.boardInfo.getStationaryAction(), getCurrentPlayer());
+        UpdateViewRecord updateRecord = new UpdateViewRecord(this.boardInfo.getDiceNum(), getCurrentPlaceIndex(), this.boardInfo.getStationaryAction(), getCurrentPlayer(), (this.boardInfo.getGameState().equals(GameState.PAY_RENT)));
         UpdateViewCommand updateView = new UpdateViewCommand(updateRecord);
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_ROLL_DICE.name(), updateView);
     }

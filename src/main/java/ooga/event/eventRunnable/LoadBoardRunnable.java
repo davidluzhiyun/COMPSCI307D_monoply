@@ -10,13 +10,9 @@ import ooga.event.command.Command;
 import ooga.event.command.LoadBoardCommand;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static ooga.event.eventRunnable.BoardSetUpRunnable.JSON_EXTENSION;
-import static ooga.event.eventRunnable.BoardSetUpRunnable.PLACE_PATH;
 
 public class LoadBoardRunnable extends ParsingJsonRunnable implements EventGenerator{
 

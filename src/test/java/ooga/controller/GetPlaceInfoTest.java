@@ -113,6 +113,11 @@ public class GetPlaceInfoTest extends TestCase {
         gameEventHandler.addEventListener(listener);
         GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_BOARD_SET_UP.name(), new BoardSetUpTest.TestCommand(new ModelOutput() {
             @Override
+            public GameState getGameState() {
+                return null;
+            }
+
+            @Override
             public Point getDiceNum() {
                 return null;
             }
