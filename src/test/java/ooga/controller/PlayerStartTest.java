@@ -42,6 +42,11 @@ public class PlayerStartTest extends TestCase {
         gameEventHandler.addEventListener(listener);
         GameEvent playerStart = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_PLAYER_START.name(), new TestCommand(new ModelOutput() {
             @Override
+            public GameState getGameState() {
+                return null;
+            }
+
+            @Override
             public Point getDiceNum() {
                 return null;
             }

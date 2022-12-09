@@ -8,5 +8,5 @@ import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 
-public record UpdateViewRecord(Point dice, int placeIndex, Collection<StationaryAction> stationaryActions, ControllerPlayer currentPlayer) {
+public record UpdateViewRecord(Point dice, int placeIndex, Collection<StationaryAction> stationaryActions, ControllerPlayer currentPlayer, boolean paidRent) {
 }

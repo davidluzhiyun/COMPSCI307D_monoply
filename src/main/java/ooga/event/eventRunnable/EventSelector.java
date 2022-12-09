@@ -22,6 +22,7 @@ public class EventSelector {
         eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_BUY_PROPERTY.name(), BuyPropertyRunnable::new);
         eventTypeMap.put(GameEventType.VIEW_TO_CONTROLLER_GET_PLACE_INFO.name(), GetPlaceInfoRunnable::new);
         eventTypeMap.put(GameEventType.VIEW_TO_CONTROLLER_LOAD_BOARD.name(), LoadBoardRunnable::new);
+        eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_MORTGAGE.name(), MortgageRunnable::new);
     }
 
     public EventGenerator selectEventRunnable(String eventName, Command command) {
