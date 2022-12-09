@@ -34,10 +34,10 @@ public class Main extends Application {
   public void start(Stage primaryStage) throws Exception {
     GameEventHandler gameEventHandler = new GameEventHandler();
     StartView startView = new StartView(primaryStage, gameEventHandler);
-//    GameModel model = new GameModel(gameEventHandler);
-//    Controller controller = new Controller(gameEventHandler);
-//    gameEventHandler.addEventListener(model);
-//    gameEventHandler.addEventListener(controller);
+    GameModel model = new GameModel(gameEventHandler);
+    Controller controller = new Controller(gameEventHandler);
+    gameEventHandler.addEventListener(model);
+    gameEventHandler.addEventListener(controller);
   }
 
   /**
