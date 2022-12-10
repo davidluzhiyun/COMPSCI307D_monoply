@@ -151,6 +151,11 @@ public class UpdateViewEventTest extends TestCase {
             public Collection<StationaryAction> getStationaryAction() {
                 return actions;
             }
+
+            @Override
+            public int getQueryIndex() {
+                return -1;
+            }
         }));
         gameEventHandler.publish(boardSetUp);
         System.out.println("BoardSetUp event published!");

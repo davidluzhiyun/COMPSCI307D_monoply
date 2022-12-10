@@ -70,6 +70,11 @@ public class PlayerStartTest extends TestCase {
             public Collection<StationaryAction> getStationaryAction() {
                 return null;
             }
+
+            @Override
+            public int getQueryIndex() {
+                return -1;
+            }
         }));
         gameEventHandler.publish(playerStart);
         System.out.println("PlayerStart event published!");

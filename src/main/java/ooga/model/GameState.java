@@ -16,4 +16,8 @@ public enum GameState {
   NEXT_PLAYER,
 
   BUY_PROPERTY,
+
+  MORTGAGE,
+
+  GET_PLACE_ACTIONS,
 }

@@ -112,7 +112,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     GameLoader gameLoader = new GameLoader(map, modelResources);
     places = gameLoader.loadPlaceData(map);
     players = gameLoader.loadPlayerData(map);
-    gameLoader.setUpPlayersProperties(players);
+    //gameLoader.setUpPlayersProperties(players);
     Metadata metaData = gameLoader.getMetadata();
     turn = new ConcretePlayerTurn(players, places, metaData.currentPlayerId());//TODO: set current player
   }

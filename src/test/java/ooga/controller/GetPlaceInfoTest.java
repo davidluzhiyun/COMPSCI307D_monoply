@@ -141,6 +141,11 @@ public class GetPlaceInfoTest extends TestCase {
             public Collection<StationaryAction> getStationaryAction() {
                 return null;
             }
+
+            @Override
+            public int getQueryIndex() {
+                return -1;
+            }
         }));
         gameEventHandler.publish(boardSetUp);
         GameEvent getPlaceInfo = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_CONTROLLER_GET_PLACE_INFO.name(), new TestCommand(0));

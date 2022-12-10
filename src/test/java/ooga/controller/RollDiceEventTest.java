@@ -66,6 +66,11 @@ public class RollDiceEventTest extends TestCase {
             public Collection<StationaryAction> getStationaryAction() {
                 return null;
             }
+
+            @Override
+            public int getQueryIndex() {
+                return -1;
+            }
         }));
         gameEventHandler.publish(rollDice);
         System.out.println("RollDice event published!");
