@@ -64,4 +64,12 @@ public interface Player extends ControllerPlayer {
 
   void setOwnedRailroadsCount(int count);
   void setDice(int result);
+
+  /**
+   * @author David Lu
+   * Check if the player has monopoly over a color set
+   * @param colorId color id
+   * @return true if player has monopoly over color set of given id
+   */
+  boolean checkMonopolyOver(int colorId);
 }
