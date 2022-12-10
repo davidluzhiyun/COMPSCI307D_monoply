@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "players": 2,
+    "rows": 4,
+    "columns": 5
+  },
+  "0": {
+    "id": 0,
+    "type": "go"
+  },
+  "1": {
+    "id": 121,
+    "type": "Street"
+  },
+  "2": {
+    "id": 123,
+    "type": "Street"
+  },
+  "3": {
+    "id": 125,
+    "type": "Street"
+  }
+}

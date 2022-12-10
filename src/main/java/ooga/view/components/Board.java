@@ -1,5 +1,6 @@
 package ooga.view.components;
 
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -81,6 +82,8 @@ public class Board {
       Pane card = makeCard(0, Color.BROWN, "League of Legends");
       GridPane.setRowIndex(card, row);
       GridPane.setColumnIndex(card, col);
+      Bounds boundsInScene = card.localToScene(card.getBoundsInLocal());
+      System.out.println(boundsInScene);
 //      GridPane.setMargin(card, new Insets(1.0, 0, 0, 0));
       board.getChildren().add(card);
     }
