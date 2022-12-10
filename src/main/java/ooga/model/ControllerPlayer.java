@@ -12,4 +12,5 @@ public interface ControllerPlayer {
   Collection<Integer> getPropertyIndices();
   double getTotalMoney();
   boolean hasNextDice();
+  int getDice();
 }

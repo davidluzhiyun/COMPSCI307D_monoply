@@ -4,7 +4,7 @@
   "name": "North Railroad",
   "purchasePrice": 200,
   "mortgagePrice": 100,
-  "rent": [
+  "rent with railroads": [
     25,
     50,
     100,

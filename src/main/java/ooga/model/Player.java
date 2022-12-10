@@ -59,4 +59,9 @@ public interface Player extends ControllerPlayer {
    * @author David Lu
    */
   boolean canBuildOn(Place place);
+
+  int getOwnedRailroadsCount();
+
+  void setOwnedRailroadsCount(int count);
+  void setDice(int result);
 }

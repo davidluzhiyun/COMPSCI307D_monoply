@@ -17,6 +17,8 @@ public interface Place extends ControllerPlace{
    */
   Collection<StationaryAction> getStationaryActions(Player player);
 
+  Collection<StationaryAction> getPlaceBasedStationaryActions(Player player);
+
   /**
    * A method to update place actions for the current player
    *
