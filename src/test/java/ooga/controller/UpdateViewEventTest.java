@@ -9,6 +9,7 @@ import ooga.model.*;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
+import ooga.model.place.Place;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class UpdateViewEventTest extends TestCase {
             }
 
             @Override
-            public double getMoney() {
+            public double getMoney(Player player) {
                 return 0;
             }
 
@@ -90,7 +91,7 @@ public class UpdateViewEventTest extends TestCase {
             }
 
             @Override
-            public double getMoney() {
+            public double getMoney(Player player) {
                 return 0;
             }
 

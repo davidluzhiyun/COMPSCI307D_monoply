@@ -12,14 +12,14 @@ public class ConcreteTax extends AbstractPlace{
   }
 
   @Override
-  public double getMoney() {
+  public double getMoney(Player player) {
     return -100;
     //TODO:
   }
 
   @Override
   public void landingEffect(Player player) {
-    player.setMoney(player.getTotalMoney() - getMoney());
+    player.setMoney(player.getTotalMoney() - getMoney(player));
     GameEventHandler gameEventHandler = new GameEventHandler();
     gameEventHandler.publish(modelToken + GameState.PAY_TAX);
   }

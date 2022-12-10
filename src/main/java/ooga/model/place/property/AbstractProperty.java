@@ -23,9 +23,6 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   private final String name;
   private final double purchasePrice;
   private final double mortgagePrice;
-  private final double rent;
-  private final double rentWithColorSet;
-  private final List<Double> rentWithHouses;
   private int ownerId;
   private Player owner;
 
@@ -34,9 +31,6 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
     name = (String) getConfig().get("name");
     purchasePrice = (double) getConfig().get("purchasePrice");
     mortgagePrice = (double) getConfig().get("mortgagePrice");
-    rent = (double) getConfig().get("rent");
-    rentWithColorSet = (double) getConfig().get("rentWithColorSet");
-    rentWithHouses = (List<Double>) getConfig().get("rentWithHouses");
     ownerId = -1;
   }
 
@@ -81,17 +75,8 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
     this.owner = owner;
   }
 
-  @Override
-  public List<Double> getRentWithProperties() {
-    return rentWithHouses;
-  }
-
-  protected double getRent() {
-    return rent;
-  }
-
-  protected double getRentWithColorSet() {
-    return rentWithColorSet;
+  protected Player getOwner() {
+    return owner;
   }
 
   @Override
@@ -109,8 +94,8 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   @Override
   public Collection<StationaryAction> getStationaryActions(Player player) {
     if (ownerId != -1) {
-      //if owned, no stationary actions are available
-      return null;
+      //if owned, no stationary actions related to places are available
+      return getCommonTurnBasedStationaryAction(player);
     } else {
       return super.getStationaryActions(player);
     }
@@ -128,8 +113,8 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   @Override
   public void landingEffect(Player player) {
     if (ownerId != -1) {//if owned
-      player.setMoney(player.getTotalMoney() - getMoney());
-      owner.setMoney(player.getTotalMoney() + getMoney());
+      player.setMoney(player.getTotalMoney() - getMoney(player));
+      owner.setMoney(player.getTotalMoney() + getMoney(player));
       GameEventHandler gameEventHandler = new GameEventHandler();
       gameEventHandler.publish(modelToken + GameState.PAY_RENT);
     }

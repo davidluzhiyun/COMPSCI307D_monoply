@@ -24,7 +24,7 @@ public class DummyPlace implements Place {
   }
 
   @Override
-  public double getMoney() {
+  public double getMoney(Player player) {
     return 0;
   }
 

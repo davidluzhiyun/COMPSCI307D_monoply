@@ -46,7 +46,7 @@ public class GetPlaceInfoTest extends TestCase {
             }
 
             @Override
-            public double getMoney() {
+            public double getMoney(Player player) {
                 return 0;
             }
 
@@ -82,7 +82,7 @@ public class GetPlaceInfoTest extends TestCase {
             }
 
             @Override
-            public double getMoney() {
+            public double getMoney(Player player) {
                 return 0;
             }
 
