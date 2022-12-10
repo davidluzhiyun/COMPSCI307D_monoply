@@ -1,9 +1,6 @@
-package ooga.model.components;
+package ooga.model.component;
 
-import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
-import ooga.event.command.Command;
-import ooga.event.command.GameDataCommand;
 import ooga.model.GameState;
 import ooga.model.Player;
 import ooga.model.place.Place;
@@ -91,8 +88,11 @@ public class ConcretePlayerTurn implements PlayerTurn {
     currentPlace = places.get(currentPlayer.getCurrentPlaceIndex());
   }
 
-  @Override
-  public Place getCurrentPlace() {
+  /**
+   * For test purpose
+   * @return
+   */
+  protected Place getCurrentPlace() {
     return currentPlace;
   }
 
