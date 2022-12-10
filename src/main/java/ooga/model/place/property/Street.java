@@ -1,5 +1,9 @@
 package ooga.model.place.property;
 
+import ooga.model.Player;
+
+import java.util.List;
+
 public interface Street extends Property {
   /**
    * Get the price it takes to build a house on the street.
@@ -14,7 +18,9 @@ public interface Street extends Property {
    * @return rent of the street
    */
   @Override
-  double getMoney();
+  double getMoney(Player player);
 
   void addOneHouse();
+  List<Double> getRentWithProperties();
+
 }

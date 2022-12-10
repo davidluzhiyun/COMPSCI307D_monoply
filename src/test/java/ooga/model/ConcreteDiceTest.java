@@ -1,7 +1,7 @@
 package ooga.model;
 
-import ooga.model.components.ConcreteDice;
-import ooga.model.components.Dice;
+import ooga.model.component.ConcreteDice;
+import ooga.model.component.Dice;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;

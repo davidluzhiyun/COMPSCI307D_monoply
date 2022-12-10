@@ -30,7 +30,7 @@ public interface Player extends ControllerPlayer {
    * You should use void purchase(Place place, int propertyIndex) for purchasing properties in the game.
    * @param propertyIndices
    */
-  void setProperties(Collection<Integer> propertyIndices);
+  void setProperties(Collection<Place> properties);
 
   /**
    * Set money, either through passing GO, collecting rent, or collecting communist chest.
@@ -59,4 +59,9 @@ public interface Player extends ControllerPlayer {
    * @author David Lu
    */
   boolean canBuildOn(Place place);
+
+  int getOwnedRailroadsCount();
+
+  void setOwnedRailroadsCount(int count);
+  void setDice(int result);
 }

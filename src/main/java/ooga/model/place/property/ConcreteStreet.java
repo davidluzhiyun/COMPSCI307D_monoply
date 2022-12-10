@@ -2,6 +2,8 @@ package ooga.model.place.property;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
 import ooga.model.PlaceAction;
 import ooga.model.Player;
 import ooga.model.exception.CannotBuildHouseException;
@@ -9,6 +11,9 @@ import ooga.model.exception.CannotBuildHouseException;
 public class ConcreteStreet extends AbstractProperty implements Street {
   private final int colorId;
   private final double housePrice;
+  private final double rent;
+  private final double rentWithColorSet;
+  private final List<Double> rentWithHouses;
   private int housesBuilt = 0;
   // refactor to resource later
   public static final int MAX_HOUSE = 5;
@@ -17,6 +22,9 @@ public class ConcreteStreet extends AbstractProperty implements Street {
     super(id);
     colorId = (int) (double) getConfig().get("colorId");;
     housePrice = (double) getConfig().get("houseCost");
+    rent = (double) getConfig().get("rent");
+    rentWithColorSet = (double) getConfig().get("rentWithColorSet");
+    rentWithHouses = (List<Double>) getConfig().get("rentWithHouses");
   }
 
   @Override
@@ -29,9 +37,17 @@ public class ConcreteStreet extends AbstractProperty implements Street {
     housesBuilt++;
   }
 
+  public List<Double> getRentWithProperties() {
+    return rentWithHouses;
+  }
+
+  protected double getRentWithColorSet() {
+    return rentWithColorSet;
+  }
+
   @Override
-  public double getMoney() {
-    return getRent();
+  public double getMoney(Player player) {
+    return rent;
   }
 
   @Override

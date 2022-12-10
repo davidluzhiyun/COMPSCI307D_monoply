@@ -15,7 +15,7 @@ public class Go extends AbstractPlace {
   }
 
   @Override
-  public double getMoney() {
+  public double getMoney(Player player) {
     return 200;
   }
 
@@ -26,7 +26,7 @@ public class Go extends AbstractPlace {
 
   @Override
   public void landingEffect(Player player) {
-    player.setMoney(player.getTotalMoney() + getMoney());
+    player.setMoney(player.getTotalMoney() + getMoney(player));
     GameEventHandler gameEventHandler = new GameEventHandler();
     gameEventHandler.publish("MODEL_TO_MODEL_COLLECT_SALARY");
   }

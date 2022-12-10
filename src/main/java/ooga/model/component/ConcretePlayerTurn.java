@@ -1,9 +1,6 @@
-package ooga.model.components;
+package ooga.model.component;
 
-import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
-import ooga.event.command.Command;
-import ooga.event.command.GameDataCommand;
 import ooga.model.GameState;
 import ooga.model.Player;
 import ooga.model.place.Place;
@@ -43,6 +40,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
 //    if (currentPlayer.goJail())
 //      currentPlayer.move(jail);
     //TODO: roll triple doubles and go jail
+    currentPlayer.setDice(r1 + r2);
     gameEventHandler.publish(modelToken + GameState.DICE_RESULT);
     go(r1 + r2);
   }
@@ -64,10 +62,11 @@ public class ConcretePlayerTurn implements PlayerTurn {
     int index = (currentPlayer.getCurrentPlaceIndex() + step) % places.size();
     currentPlayer.setIndex(currentPlayer.getCurrentPlaceIndex() + index);
     gameEventHandler.publish(modelToken + GameState.MOVE);
-    currentPlayer.setMoney(currentPlayer.getTotalMoney() + passes * (places.get(0).getMoney()));
-    gameEventHandler.publish(modelToken + GameState.COLLECT_SALARY);
+    if (passes > 0) {
+      currentPlayer.setMoney(currentPlayer.getTotalMoney() + passes * (places.get(0).getMoney(currentPlayer)));
+      gameEventHandler.publish(modelToken + GameState.COLLECT_SALARY);
+    }
     currentPlace = places.get(index);
-
     currentPlace.landingEffect(currentPlayer);
   }
 
@@ -80,13 +79,20 @@ public class ConcretePlayerTurn implements PlayerTurn {
   @Override
   public void nextTurn() {
     int currentPlayerId = currentPlayer.getPlayerId();
-    if (currentPlayerId < players.size()) currentPlayer = players.get(currentPlayerId + 1);
-    else currentPlayer = players.get(0);
+    if (currentPlayerId < players.size()) {
+      currentPlayer = players.get(currentPlayerId + 1);
+    } else {
+      currentPlayer = players.get(0);
+    }
     currentPlayer.newTurn();
+    currentPlace = places.get(currentPlayer.getCurrentPlaceIndex());
   }
 
-  @Override
-  public Place getCurrentPlace() {
+  /**
+   * For test purpose
+   * @return
+   */
+  protected Place getCurrentPlace() {
     return currentPlace;
   }
 

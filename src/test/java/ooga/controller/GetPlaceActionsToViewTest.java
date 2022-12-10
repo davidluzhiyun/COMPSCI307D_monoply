@@ -8,9 +8,11 @@ import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.model.ControllerPlayer;
 import ooga.model.PlaceAction;
+import ooga.model.Player;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
+import ooga.model.place.Place;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,7 +54,7 @@ public class GetPlaceActionsToViewTest extends TestCase {
             }
 
             @Override
-            public double getMoney() {
+            public double getMoney(Player player) {
                 return 0;
             }
 

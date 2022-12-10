@@ -24,7 +24,7 @@ public interface ControllerPlace {
    */
   Collection<ControllerPlayer> getPlayers();
 
-  double getMoney();
+  double getMoney(Player player);
 
   /**
    * A method to update place actions for the current player

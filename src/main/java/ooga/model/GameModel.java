@@ -1,10 +1,6 @@
 package ooga.model;
 
 import java.awt.Point;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -13,9 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
-import com.google.gson.reflect.TypeToken;
+
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,20 +18,18 @@ import java.util.regex.Pattern;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
+import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
 import ooga.model.colorSet.ConcreteColorSet;
-import ooga.model.components.ConcretePlayerTurn;
+import ooga.model.component.ConcretePlayerTurn;
 import ooga.model.gamearchive.GameLoader;
 import ooga.model.gamearchive.Metadata;
-import ooga.model.gamearchive.PlaceSaver;
-import ooga.model.gamearchive.PlayerSaver;
 import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static ooga.model.place.AbstractPlace.DEFAULT_RESOURCE_FOLDER;
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
 
 public class GameModel implements GameEventListener, ModelOutput {
@@ -76,7 +69,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     }
     ModelOutput gameData = this;
     Command cmd = new GameDataCommand(gameData);
-    GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_GAME_DATA", cmd);
+    GameEvent event = gameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_GAME_DATA.name(), cmd);
     gameEventHandler.publish(event);
   }
 
@@ -119,6 +112,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     GameLoader gameLoader = new GameLoader(map, modelResources);
     places = gameLoader.loadPlaceData(map);
     players = gameLoader.loadPlayerData(map);
+    //gameLoader.setUpPlayersProperties(players);
     Metadata metaData = gameLoader.getMetadata();
     turn = new ConcretePlayerTurn(players, places, metaData.currentPlayerId());//TODO: set current player
   }
@@ -183,6 +177,11 @@ public class GameModel implements GameEventListener, ModelOutput {
     return stationaryActions;
   }
 
+  @Override
+  public int getQueryIndex() {
+    return 0;
+  }
+
   //end of ModelOutput methods
 
   @Override
@@ -215,7 +214,7 @@ public class GameModel implements GameEventListener, ModelOutput {
       case "CONTROLLER_TO_MODEL_END_TURN" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         endTurn();
-//        publishGameData();
+        publishGameData("START_TURN");
       }
     }
   }
