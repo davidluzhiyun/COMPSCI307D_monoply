@@ -19,8 +19,8 @@ public class EventSelector {
         eventTypeMap.put(GameState.GAME_SET_UP.name(), BoardSetUpRunnable::new);
         eventTypeMap.put(GameState.DICE_RESULT.name(), RollDiceRunnable::new);
         eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_GET_PLACE_ACTIONS.name(), GetPlaceActionsRunnableToView::new);
-        eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_PLAYER_START.name(), PlayerStartRunnable::new);
-        eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_BUY_PROPERTY.name(), BuyPropertyRunnable::new);
+        eventTypeMap.put(GameState.NEXT_PLAYER.name(), PlayerStartRunnable::new);
+        eventTypeMap.put(GameState.BUY_PROPERTY.name(), BuyPropertyRunnable::new);
         eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_MORTGAGE.name(), MortgageRunnable::new);
     }
 

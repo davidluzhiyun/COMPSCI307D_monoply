@@ -37,13 +37,13 @@ public class PlayerStartTest extends TestCase {
         players.add(new ConcretePlayer(1));
     }
 
-    public void testGetPlaceActions() {
+    public void testPlayerStart() {
         listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_PLAYER_START.name());
         gameEventHandler.addEventListener(listener);
-        GameEvent playerStart = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_PLAYER_START.name(), new TestCommand(new ModelOutput() {
+        GameEvent playerStart = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {
             @Override
             public GameState getGameState() {
-                return null;
+                return GameState.NEXT_PLAYER;
             }
 
             @Override

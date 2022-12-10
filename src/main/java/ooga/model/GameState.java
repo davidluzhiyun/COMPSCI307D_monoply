@@ -12,4 +12,8 @@ public enum GameState {
   COLLECT_SALARY,
   //The amount of money of the current player is updated
   GAME_SET_UP,
+
+  NEXT_PLAYER,
+
+  BUY_PROPERTY,
 }
