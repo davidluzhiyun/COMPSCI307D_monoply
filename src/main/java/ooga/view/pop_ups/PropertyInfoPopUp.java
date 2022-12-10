@@ -1,16 +1,9 @@
 package ooga.view.pop_ups;
 
-public class PropertyInfoPopUp extends ActionPopUp {
-
-  @Override
-  public void close() {
-
-  }
-
-  @Override
-  public void createScene() {
-
-  }
+/**
+ * Should appear when users click on a property on the board.
+ */
+public class PropertyInfoPopUp extends InformationPopUp {
 
   @Override
   public void showMessage(String language) {

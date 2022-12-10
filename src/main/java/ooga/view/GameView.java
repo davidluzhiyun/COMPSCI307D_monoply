@@ -87,10 +87,7 @@ public class GameView extends View implements GameEventListener {
   }
 
   /**
-   * NOTE: Currently this is just pseudo-code because we do not have full support for this yet.
-   * Theoretically, should present the GamePiecePopUp to each player, let them pick their piece,
-   * then should add this piece to our Board class -- presumably there will be a method in Board
-   * class that allows for a new piece to be initialized on the Go button
+   * Presents the GamePiecePopUp to each player to let them pick their piece.
    */
   public void chooseGamePieces() {
      for (int i = numPlayers; i > 0; i --) {
@@ -158,6 +155,7 @@ public class GameView extends View implements GameEventListener {
         Command cmd = event.getGameEventCommand().getCommand();
         showDiceResult((int[]) cmd.getCommandArgs());
       }
+      // add case for CONTROLLER_TO_VIEW_GET_PLACE_ACTIONS -- make new AvailablePlaceActionsPopUp
     }
   }
 }
