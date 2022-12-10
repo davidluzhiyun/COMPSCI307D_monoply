@@ -1,6 +1,7 @@
-package ooga.model;
+package ooga.model.component;
 
-import ooga.model.components.ConcretePlayerTurn;
+import ooga.model.ConcretePlayer;
+import ooga.model.Player;
 import ooga.model.place.Place;
 import ooga.model.place.property.ConcreteRailroad;
 import ooga.model.place.property.ConcreteStreet;
@@ -39,7 +40,6 @@ class ConcretePlayerTurnTest {
   void test() {
     System.out.println(turn.getCurrentPlace().getStationaryActions(players.get(turn.getCurrentPlayerTurnId())));
     turn.roll();
-//    p1.setIndex(4);
     System.out.println(turn.getCurrentPlace().getStationaryActions(players.get(turn.getCurrentPlayerTurnId())));
     System.out.println(turn.getCurrentPlayerTurnId());
     System.out.println(players.get(turn.getCurrentPlayerTurnId()).getTotalMoney());
