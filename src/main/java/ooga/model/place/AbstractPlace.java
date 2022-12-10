@@ -25,8 +25,6 @@ import java.util.Map;
 public abstract class AbstractPlace implements Place {
     private final String placeId;
     private Collection<ConcretePlayer> players;
-    private Collection<StationaryAction> inherentStationaryActions;
-    private Collection<StationaryAction> stationaryActions;
     private Collection<PlaceAction> inherentPlaceActions;
 
     private Collection<PlaceAction> updatedPlaceActions;
@@ -38,8 +36,6 @@ public abstract class AbstractPlace implements Place {
     public AbstractPlace(String id) {
         placeId = id;
         players = new ArrayList<>();
-        inherentStationaryActions = new ArrayList<>();
-        stationaryActions = new ArrayList<>();
         Gson gson = new Gson();
         Reader reader = null;
         try {
@@ -86,13 +82,18 @@ public abstract class AbstractPlace implements Place {
      */
     @Override
     public Collection<StationaryAction> getStationaryActions(Player player) {
-        updateStationaryActions(player);
-        return stationaryActions;
+        Collection<StationaryAction> stationaryActionList = getCommonTurnBasedStationaryAction(player);
+        stationaryActionList.addAll(getPlaceBasedStationaryActions(player));
+        return stationaryActionList;
     }
 
-    private void updateStationaryActions(Player player) {
-        stationaryActions = getCommonTurnBasedStationaryAction(player);
-        stationaryActions.addAll(inherentStationaryActions);
+    public Collection<PlaceAction> getInherentPlaceActions() {
+        return new HashSet<>(inherentPlaceActions);
+    }
+
+    @Override
+    public Collection<StationaryAction> getPlaceBasedStationaryActions(Player player) {
+        return new ArrayList<>();
     }
 
     @Override
@@ -141,10 +142,6 @@ public abstract class AbstractPlace implements Place {
         throw new IllegalStateException();
     }
 
-    public void addStationaryAction(StationaryAction stationaryAction) {
-        this.inherentStationaryActions.add(stationaryAction);
-    }
-
     /**
      * Helper method for getting turn related stationary actions
      *
@@ -171,9 +168,6 @@ public abstract class AbstractPlace implements Place {
      * @author David Lu
      * Fetch a copy of the inherentPlaceActions for subclass
      */
-    public Collection<PlaceAction> getInherentPlaceActions() {
-        return new HashSet<>(inherentPlaceActions);
-    }
 
     @Override
     public void landingEffect(Player player) {

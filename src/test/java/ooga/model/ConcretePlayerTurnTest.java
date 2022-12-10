@@ -12,10 +12,13 @@ class ConcretePlayerTurnTest {
   static ConcretePlayerTurn turn;
   static List<Place> places;
   static List<Player> players;
+
   @BeforeAll
   static void setUpTest() {
-    places = List.of(new ConcreteStreet("121"), new ConcreteStreet("121"), new ConcreteStreet("121"), new ConcreteStreet("121"), new ConcreteStreet("121"), new ConcreteStreet("121"), new ConcreteStreet("121"), new ConcreteStreet("121"));
-    players = List.of(new ConcretePlayer(0), new ConcretePlayer(1), new ConcretePlayer(2), new ConcretePlayer(3));
+    places = List.of(new ConcreteStreet("New York1"), new ConcreteStreet("New York1"), new ConcreteStreet("Shanghai1"), new ConcreteStreet("Shanghai1"), new ConcreteStreet("121"), new ConcreteStreet("121"), new ConcreteStreet("121"), new ConcreteStreet("121"));
+    Player p1 = new ConcretePlayer(0);
+    p1.setMoney(1500);
+    players = List.of(p1, new ConcretePlayer(1), new ConcretePlayer(2), new ConcretePlayer(3));
     turn = new ConcretePlayerTurn(players, places, 0);
   }
 
@@ -28,6 +31,9 @@ class ConcretePlayerTurnTest {
     System.out.println(turn.getCurrentPlace().getStationaryActions(players.get(turn.getCurrentPlayerTurnId())));
     turn.roll();
     System.out.println(turn.getCurrentPlace().getStationaryActions(players.get(turn.getCurrentPlayerTurnId())));
+    System.out.println(turn.getCurrentPlayerTurnId());
+    turn.nextTurn();
+    System.out.println(turn.getCurrentPlayerTurnId());
     System.out.println(turn.getCurrentPlace().getStationaryActions(players.get(turn.getCurrentPlayerTurnId())));
   }
 }

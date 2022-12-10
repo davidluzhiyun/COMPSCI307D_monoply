@@ -33,6 +33,11 @@ public class DummyPlace implements Place {
     return null;
   }
 
+  @Override
+  public Collection<StationaryAction> getPlaceBasedStationaryActions(Player player) {
+    return null;
+  }
+
 
   @Override
   public void updatePlaceActions(Player player) {

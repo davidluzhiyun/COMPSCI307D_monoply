@@ -7,6 +7,7 @@ import ooga.model.StationaryAction;
 import ooga.model.place.AbstractPlace;
 
 import java.beans.EventHandler;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -37,8 +38,6 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
     rentWithColorSet = (double) getConfig().get("rentWithColorSet");
     rentWithHouses = (List<Double>) getConfig().get("rentWithHouses");
     ownerId = -1;
-    addStationaryAction(StationaryAction.BUY_PROPERTY);
-    addStationaryAction(StationaryAction.AUCTION);
   }
 
   @Override
@@ -110,6 +109,7 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   @Override
   public Collection<StationaryAction> getStationaryActions(Player player) {
     if (ownerId != -1) {
+      //if owned, no stationary actions are available
       return null;
     } else {
       return super.getStationaryActions(player);
@@ -117,10 +117,21 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   }
 
   @Override
+  public Collection<StationaryAction> getPlaceBasedStationaryActions(Player player) {
+    Collection<StationaryAction> placeBasedStationaryActions = new ArrayList<>();
+    placeBasedStationaryActions.add(StationaryAction.AUCTION);
+    if (player.getTotalMoney() >= getPurchasePrice())
+      placeBasedStationaryActions.add(StationaryAction.BUY_PROPERTY);
+    return placeBasedStationaryActions;
+  }
+
+  @Override
   public void landingEffect(Player player) {
-    player.setMoney(player.getTotalMoney() - getMoney());
-    owner.setMoney(player.getTotalMoney() + getMoney());
-    GameEventHandler gameEventHandler = new GameEventHandler();
-    gameEventHandler.publish(modelToken + GameState.PAY_RENT);
+    if (ownerId != -1) {//if owned
+      player.setMoney(player.getTotalMoney() - getMoney());
+      owner.setMoney(player.getTotalMoney() + getMoney());
+      GameEventHandler gameEventHandler = new GameEventHandler();
+      gameEventHandler.publish(modelToken + GameState.PAY_RENT);
+    }
   }
 }
