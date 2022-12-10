@@ -24,12 +24,17 @@ public class DummyPlace implements Place {
   }
 
   @Override
-  public double getMoney() {
+  public double getMoney(Player player) {
     return 0;
   }
 
   @Override
   public Collection<StationaryAction> getStationaryActions(Player player) {
+    return null;
+  }
+
+  @Override
+  public Collection<StationaryAction> getPlaceBasedStationaryActions(Player player) {
     return null;
   }
 

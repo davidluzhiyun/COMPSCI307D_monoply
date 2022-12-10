@@ -25,6 +25,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private Collection<Integer> propertyIndices;
   private Collection<Place> properties;
   private Map<Integer, Predicate<Collection<Place>>> colorSetCheckers;
+  private int diceResult;
 
   /**
    * Universal constructor for loading the game./
@@ -123,6 +124,21 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     }
   }
 
+  @Override
+  public int getOwnedRailroadsCount() {
+    return 0;
+  }
+
+  @Override
+  public void setOwnedRailroadsCount(int count) {
+
+  }
+
+  @Override
+  public void setDice(int result) {
+    diceResult = result;
+  }
+
   public void addOneDiceRoll() {
     hasNextDice = true;
     dicesTotal++;
@@ -133,6 +149,11 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   @Override
   public boolean hasNextDice() {
     return hasNextDice;
+  }
+
+  @Override
+  public int getDice() {
+    return diceResult;
   }
 
   @Override
