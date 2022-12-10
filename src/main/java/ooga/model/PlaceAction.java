@@ -6,6 +6,5 @@ package ooga.model;
 public enum PlaceAction {
   //Examples
   MORTGAGE,
-  BUILD_HOUSE,
-  VIEW_INFO;
+  BUILD_HOUSE;
 }
