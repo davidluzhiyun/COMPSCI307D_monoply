@@ -52,6 +52,11 @@ public class BoardSaveTest {
             public Collection<StationaryAction> getStationaryAction() {
                 return null;
             }
+
+            @Override
+            public int getQueryIndex() {
+                return -1;
+            }
         };
     }
 

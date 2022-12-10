@@ -1,10 +1,11 @@
 package ooga.event.eventRunnable;
 
+import ooga.controller.PlaceActionRecord;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventType;
+import ooga.event.command.PlaceActionCommand;
 import ooga.event.command.Command;
-import ooga.event.command.GetPlayerCommand;
 import ooga.model.ModelOutput;
 
 public class BuyPropertyRunnable implements EventGenerator{
@@ -17,7 +18,7 @@ public class BuyPropertyRunnable implements EventGenerator{
 
     @Override
     public GameEvent processEvent() {
-        GetPlayerCommand buyPropertyCommand = new GetPlayerCommand(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayer()));
-        return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_BUY_PROPERTY.name(), buyPropertyCommand);
+        PlaceActionCommand command = new PlaceActionCommand(new PlaceActionRecord(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayer()), this.boardInfo.getQueryIndex()));
+        return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_BUY_PROPERTY.name(), command);
     }
 }

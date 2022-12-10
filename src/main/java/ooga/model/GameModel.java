@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
+import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
 import ooga.model.colorSet.ConcreteColorSet;
@@ -68,7 +69,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     }
     ModelOutput gameData = this;
     Command cmd = new GameDataCommand(gameData);
-    GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_GAME_DATA", cmd);
+    GameEvent event = gameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_GAME_DATA.name(), cmd);
     gameEventHandler.publish(event);
   }
 
@@ -111,7 +112,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     GameLoader gameLoader = new GameLoader(map, modelResources);
     places = gameLoader.loadPlaceData(map);
     players = gameLoader.loadPlayerData(map);
-    gameLoader.setUpPlayersProperties(players);
+    //gameLoader.setUpPlayersProperties(players);
     Metadata metaData = gameLoader.getMetadata();
     turn = new ConcretePlayerTurn(players, places, metaData.currentPlayerId());//TODO: set current player
   }
