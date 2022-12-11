@@ -21,7 +21,17 @@ public class ConcreteStreet extends AbstractProperty implements Street {
 
   public ConcreteStreet(String id) {
     super(id);
-    colorId = (int) (double) getConfig().get("colorId");;
+    colorId = (int) (double) getConfig().get("colorId");
+    housePrice = (double) getConfig().get("houseCost");
+    rent = (double) getConfig().get("rent");
+    rentWithColorSet = (double) getConfig().get("rentWithColorSet");
+    rentWithHouses = (List<Double>) getConfig().get("rentWithHouses");
+  }
+
+  public ConcreteStreet(String id, int owner, int houseCount) {
+    super(id, owner);
+    this.housesBuilt = houseCount;
+    colorId = (int) (double) getConfig().get("colorId");
     housePrice = (double) getConfig().get("houseCost");
     rent = (double) getConfig().get("rent");
     rentWithColorSet = (double) getConfig().get("rentWithColorSet");
@@ -92,17 +102,17 @@ public class ConcreteStreet extends AbstractProperty implements Street {
   public void setHouseCount(int count) throws IllegalStateException {
     housesBuilt = count;
   }
+
   @Override
   public void updatePlaceActions(Player player) {
     Collection<PlaceAction> updatedPlaceActions = getPlaceActions();
     Collection<PlaceAction> inherentPlaceActions = getInherentPlaceActions();
     updatedPlaceActions.clear();
     updatedPlaceActions.addAll(inherentPlaceActions);
-    if (player.canBuildOn(this) && housesBuilt <= MAX_HOUSE && (!isMortgaged())){
+    if (player.canBuildOn(this) && housesBuilt <= MAX_HOUSE && (!isMortgaged())) {
       updatedPlaceActions.add(PlaceAction.BUILD_HOUSE);
       updatedPlaceActions.add(PlaceAction.MORTGAGE);
-    }
-    else {
+    } else {
       //In case build house or mortgage was put into inherentPlaceAction by teammates
       updatedPlaceActions.remove(PlaceAction.BUILD_HOUSE);
       updatedPlaceActions.remove(PlaceAction.MORTGAGE);
