@@ -15,6 +15,8 @@ import ooga.model.place.Place;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ConcretePlayer implements Player, ControllerPlayer {
   private final int playerId;
@@ -27,6 +29,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private Collection<Place> properties;
   private Map<Integer, Predicate<Collection<Place>>> colorSetCheckers;
   private int diceResult;
+  private static final Logger LOG = LogManager.getLogger(GameModel.class);
 
   /**
    * Universal constructor for loading the game./
@@ -130,6 +133,27 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   @Override
   public void setDice(int result) {
     diceResult = result;
+  }
+
+
+  /**
+   * @author David Lu
+   * Check if the player has monopoly over a color set
+   * @param colorId color id
+   * @return true if player has monopoly over color set of given id
+   */
+  @Override
+  public boolean checkMonopolyOver(int colorId) {
+    try {
+      Predicate<Collection<Place>> checker = colorSetCheckers.get(colorId);
+      if (checker == null){
+        return false;
+      }
+      return checker.test(properties);
+    }
+    catch (NullPointerException e){
+      throw new IllegalStateException("Checker unset",e);
+    }
   }
 
   public void addOneDiceRoll() {

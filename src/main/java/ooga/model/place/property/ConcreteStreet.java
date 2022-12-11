@@ -18,6 +18,7 @@ public class ConcreteStreet extends AbstractProperty implements Street {
   // refactor to resource later
   public static final int MAX_HOUSE = 5;
 
+
   public ConcreteStreet(String id) {
     super(id);
     colorId = (int) (double) getConfig().get("colorId");;
@@ -45,9 +46,32 @@ public class ConcreteStreet extends AbstractProperty implements Street {
     return rentWithColorSet;
   }
 
+  /**
+   * @author David Lu
+   * Calculate the amount of money the player passing by need to pay
+   * @param player
+   * @return
+   */
   @Override
   public double getMoney(Player player) {
-    return rent;
+    try {
+      if (isMortgaged() || getOwner() == null){
+        return 0;
+      }
+      if (getOwner().getPlayerId() == player.getPlayerId()){
+        return 0;
+      }
+      if (!getOwner().checkMonopolyOver(colorId)){
+        return rent;
+      }
+      if (housesBuilt == 0){
+        return rentWithColorSet;
+      }
+      return rentWithHouses.get(housesBuilt - 1);
+    }
+    catch (NullPointerException e){
+      throw new IllegalStateException("Input can't be null",e);
+    }
   }
 
   @Override
