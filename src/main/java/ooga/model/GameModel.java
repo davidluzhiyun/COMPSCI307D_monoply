@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
+import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
 import ooga.model.colorSet.ConcreteColorSet;
@@ -61,15 +62,15 @@ public class GameModel implements GameEventListener, ModelOutput {
     currentPlayer.purchase(places.get(propertyIndex), propertyIndex);
   }
 
-  private void publishGameData(String gameState) {
-    this.gameState = GameState.valueOf(gameState);
+  private void publishGameData(GameState gameState) {
+    this.gameState = gameState;
     Player currentPlayer = getCurrentPlayerHelper();
     for (Place place : places) {
       place.updatePlaceActions(currentPlayer);
     }
     ModelOutput gameData = this;
     Command cmd = new GameDataCommand(gameData);
-    GameEvent event = gameEventHandler.makeGameEventwithCommand("MODEL_TO_CONTROLLER_GAME_DATA", cmd);
+    GameEvent event = gameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_GAME_DATA.name(), cmd);
     gameEventHandler.publish(event);
   }
 
@@ -190,7 +191,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     Matcher matcher = pattern.matcher(event.getGameEventType());
     //Inside model
     if(matcher.find())
-      publishGameData(matcher.group(1));
+      publishGameData(GameState.valueOf(matcher.group(1)));
 
     //TODO: Refactor the switch expression
     switch (event.getGameEventType()) {
@@ -205,19 +206,19 @@ public class GameModel implements GameEventListener, ModelOutput {
       }
       case "CONTROLLER_TO_MODEL_CHECK_PLACE_ACTION" -> {
         Command cmd = event.getGameEventCommand().getCommand();
-        queryIndex = cmd.getCommandArgs().getPlaceIndex();
-        publishGameData(GameState.PLACE_ACTION);
+        int propertyIndex = (int) cmd.getCommandArgs();
+        publishGameData(GameState.GET_PLACE_ACTIONS);
       }
       case "CONTROLLER_TO_MODEL_PURCHASE_PROPERTY" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         int propertyIndex = (int) cmd.getCommandArgs();
         buyProperty(propertyIndex);
-        publishGameData(GameState.PURCHASE_PROPERTY);
+        publishGameData(GameState.BUY_PROPERTY);
       }
       case "CONTROLLER_TO_MODEL_END_TURN" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         endTurn();
-        publishGameData("START_TURN");
+        publishGameData(GameState.NEXT_PLAYER);
       }
     }
   }

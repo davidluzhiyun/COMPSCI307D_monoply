@@ -1,33 +1,52 @@
 package ooga.view.scene;
 
+import java.io.File;
 import java.util.Objects;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ooga.Main;
+import ooga.controller.LoadBoardRecord;
+import ooga.event.GameEvent;
+import ooga.event.GameEventHandler;
+import ooga.event.GameEventListener;
+import ooga.event.GameEventType;
+import ooga.event.command.SelectBoardEditConfigCommand;
 import ooga.view.api.ChildView;
 import ooga.view.api.ParentView;
 import ooga.view.components.MonopolyBoardBuilder;
+import ooga.view.components.MonopolyBoardInteractor;
 import ooga.view.components.MonopolyBoardViewModel;
 
-public class MonopolyGameEditorScene extends MonopolyScene implements ParentView<ChildView> {
+public class MonopolyGameEditorScene extends MonopolyScene implements ParentView<ChildView>,
+    GameEventListener {
 
   private MonopolyBoardViewModel model;
   private Region monopolyBoard;
+  private final GameEventHandler gameEventHandler;
+  private MonopolyBoardBuilder monopolyBoardBuilder;
+  private MonopolyBoardInteractor interactor;
 
-  public MonopolyGameEditorScene(Stage primaryStage) {
+  public MonopolyGameEditorScene(Stage primaryStage, GameEventHandler gameEventHandler) {
     super(new AnchorPane());
+
     rootPane.getStylesheets().add(
         Objects.requireNonNull(Main.class.getResource("/style/editor.css")).toString());
+    this.gameEventHandler = gameEventHandler;
+    gameEventHandler.addEventListener(this);
 
+    initChildren();
+    setChildrenLocation();
+    addChildrenToRoot();
+  }
+
+  private void getInitBoardData() {
+    String test = "ooga/model/place/InitialConfig.json";
+    GameEvent gameStart = GameEventHandler.makeGameEventwithCommand(
+        GameEventType.VIEW_TO_CONTROLLER_LOAD_BOARD.name(),
+        new SelectBoardEditConfigCommand(
+            new File(this.getClass().getClassLoader().getResource(test).getFile())));
+    gameEventHandler.publish(gameStart);
   }
 
   @Override
@@ -37,7 +56,10 @@ public class MonopolyGameEditorScene extends MonopolyScene implements ParentView
 
   public void initChildren() {
     model = new MonopolyBoardViewModel();
-    monopolyBoard = new MonopolyBoardBuilder(model).build();
+    interactor = new MonopolyBoardInteractor(model);
+    getInitBoardData();
+    monopolyBoardBuilder = new MonopolyBoardBuilder(model);
+    monopolyBoard = monopolyBoardBuilder.build();
   }
 
   public void setChildrenLocation() {
@@ -45,5 +67,17 @@ public class MonopolyGameEditorScene extends MonopolyScene implements ParentView
 
   public void addChildrenToRoot() {
     rootPane.getChildren().addAll(monopolyBoard);
+  }
+
+  @Override
+  public void onGameEvent(GameEvent event) {
+    if (event.getGameEventType().equals("CONTROLLER_TO_VIEW_LOAD_BOARD")) {
+      LoadBoardRecord command = (LoadBoardRecord) event.getGameEventCommand().getCommand()
+          .getCommandArgs();
+      interactor.initialize(command);
+    }
+    if (event.getGameEventType().equals("VIEW_POST_ACTION_DRAW_BOARD")) {
+      monopolyBoardBuilder.drawPostProcessing();
+    }
   }
 }

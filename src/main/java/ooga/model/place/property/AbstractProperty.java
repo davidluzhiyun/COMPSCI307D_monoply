@@ -35,6 +35,9 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   public AbstractProperty(String id, int ownerId) {
     super(id);
     this.ownerId = ownerId;
+    name = (String) getConfig().get("name");
+    purchasePrice = (double) getConfig().get("purchasePrice");
+    mortgagePrice = (double) getConfig().get("mortgagePrice");
   }
 
   @Override
