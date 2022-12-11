@@ -6,12 +6,10 @@ import ooga.model.Player;
 import ooga.model.StationaryAction;
 import ooga.model.place.AbstractPlace;
 
-import java.beans.EventHandler;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import static ooga.model.components.ConcretePlayerTurn.modelToken;
+import static ooga.model.component.ConcretePlayerTurn.modelToken;
 
 /**
  * @author David Lu refactoring and integration

@@ -53,10 +53,10 @@ public class BoardSetUpTest extends TestCase {
     public void testBoardSetUp() {
         listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_BOARD_SET_UP.name());
         gameEventHandler.addEventListener(listener);
-        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_BOARD_SET_UP.name(), new TestCommand(new ModelOutput() {
+        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {
             @Override
             public GameState getGameState() {
-                return null;
+                return GameState.GAME_SET_UP;
             }
 
             @Override
@@ -82,6 +82,11 @@ public class BoardSetUpTest extends TestCase {
             @Override
             public Collection<StationaryAction> getStationaryAction() {
                 return actions;
+            }
+
+            @Override
+            public int getQueryIndex() {
+                return -1;
             }
         }));
         gameEventHandler.publish(boardSetUp);

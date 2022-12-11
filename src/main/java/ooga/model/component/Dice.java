@@ -1,4 +1,4 @@
-package ooga.model.components;
+package ooga.model.component;
 
 import java.awt.*;
 

@@ -47,7 +47,7 @@ public class GameLoader {
         if (singlePlaceData.owner() != null && singlePlaceData.owner() != -1) //if the place can be purchased and there is someone who purchased it
 //          newPlace.setOwner(singlePlaceData.owner());
           // TODO: Load owner and ownerid
-        if (singlePlaceData.houseCount() != null) newPlace.setHouseCount(singlePlaceData.houseCount());
+          if (singlePlaceData.houseCount() != null) newPlace.setHouseCount(singlePlaceData.houseCount());
         //TODO: use constructor to create place instead of setters
         places.add(newPlace);
       } catch (IOException e) {
@@ -72,11 +72,15 @@ public class GameLoader {
     List<Player> players = new ArrayList<>();
     List<PlayerSaver> playersData = (List<PlayerSaver>) map.get("players");
     for (PlayerSaver singlePlayersData : playersData) {
-      Player newPlayer = new ConcretePlayer(singlePlayersData.id(), singlePlayersData.money(), singlePlayersData.jail(),
-          singlePlayersData.currentPlaceIndex(), singlePlayersData.dicesTotal(), singlePlayersData.hasNextDice(), singlePlayersData.properties());
+      Player newPlayer = new ConcretePlayer(singlePlayersData.id(), singlePlayersData.money(), singlePlayersData.currentPlaceIndex(), singlePlayersData.hasNextDice(), singlePlayersData.jail(),
+          singlePlayersData.dicesTotal(), singlePlayersData.properties());
       players.add(newPlayer);
     }
     return players;
+  }
+
+  public void setUpPlayersProperties() {
+
   }
 
   /**

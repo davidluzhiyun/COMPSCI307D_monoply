@@ -7,6 +7,7 @@ import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.event.eventRunnable.EventGenerator;
 import ooga.event.eventRunnable.EventSelector;
+import ooga.model.GameState;
 import ooga.model.ModelOutput;
 import ooga.model.place.ControllerPlace;
 
@@ -36,9 +37,11 @@ public class Controller implements GameEventListener {
     public void onGameEvent(GameEvent event) {
         boolean isControllerEvent = Pattern.matches(pattern, event.getGameEventType());
         if (isControllerEvent) {
-            if (event.getGameEventType().equals(GameEventType.MODEL_TO_CONTROLLER_BOARD_SET_UP.name())) {
+            if (event.getGameEventType().equals(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name())) {
                 ModelOutput boardInfo = (ModelOutput) event.getGameEventCommand().getCommand().getCommandArgs();
-                this.places = boardInfo.getBoard();
+                if (boardInfo.getGameState().equals(GameState.GAME_SET_UP)) {
+                    this.places = boardInfo.getBoard();
+                }
             }
             EventGenerator eventGenerator = getEventRunnable(event.getGameEventType(), event.getGameEventCommand().getCommand());
             GameEvent toPublish = eventGenerator.processEvent();
@@ -51,7 +54,14 @@ public class Controller implements GameEventListener {
     }
 
     private EventGenerator getEventRunnable(String eventName, Command command) {
-        return this.eventSelector.selectEventRunnable(eventName, command);
+        String eventSelector;
+        if (eventName.equals(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name())) {
+            ModelOutput modelOutput = (ModelOutput) command.getCommandArgs();
+            eventSelector = modelOutput.getGameState().name();
+        } else {
+            eventSelector = eventName;
+        }
+        return this.eventSelector.selectEventRunnable(eventSelector, command);
     }
 }
 

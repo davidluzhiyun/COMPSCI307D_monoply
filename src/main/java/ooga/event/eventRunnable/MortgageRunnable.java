@@ -2,12 +2,14 @@ package ooga.event.eventRunnable;
 
 import ooga.controller.InitBoardRecord;
 import ooga.controller.ParsedProperty;
+import ooga.controller.PlaceActionRecord;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventType;
 import ooga.event.command.BoardSetUpCommand;
 import ooga.event.command.Command;
 import ooga.event.command.GetPlayerCommand;
+import ooga.event.command.PlaceActionCommand;
 import ooga.model.ModelOutput;
 import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
@@ -26,8 +28,8 @@ public class MortgageRunnable implements EventGenerator{
 
     @Override
     public GameEvent processEvent() {
-        GetPlayerCommand mortgageCmd = new GetPlayerCommand(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayer()));
-        return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_MORTGAGE.name(), mortgageCmd);
+        PlaceActionCommand command = new PlaceActionCommand(new PlaceActionRecord(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayer()), this.boardInfo.getQueryIndex()));
+        return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_MORTGAGE.name(), command);
     }
 
 }

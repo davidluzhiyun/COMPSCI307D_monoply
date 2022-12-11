@@ -4,7 +4,7 @@ import ooga.event.GameEventHandler;
 import ooga.model.GameState;
 import ooga.model.Player;
 
-import static ooga.model.components.ConcretePlayerTurn.modelToken;
+import static ooga.model.component.ConcretePlayerTurn.modelToken;
 
 public class ConcreteTax extends AbstractPlace{
   public ConcreteTax(String id) {
