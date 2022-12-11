@@ -12,13 +12,6 @@ public interface Street extends Property {
    */
   int getHousePrice();
 
-  /**
-   * Get rent of the street. The rent of street increases as the owner builds more houses (hotel).
-   *
-   * @return rent of the street
-   */
-  @Override
-  double getMoney(Player player);
 
   void addOneHouse();
   List<Double> getRentWithProperties();

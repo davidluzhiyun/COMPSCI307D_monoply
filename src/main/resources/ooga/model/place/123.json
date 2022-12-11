@@ -1,7 +1,7 @@
 {
   "id": 123,
   "type": "Street",
-  "name": "Campus Drive",
+  "name": "Swift 300",
   "purchasePrice": 100,
   "mortgagePrice": 50,
   "rent": 6,
@@ -14,5 +14,5 @@
     550
   ],
   "houseCost": 100,
-  "colorId": 0
+  "colorId": 255
 }

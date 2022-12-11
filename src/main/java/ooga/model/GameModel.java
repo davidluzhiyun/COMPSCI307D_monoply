@@ -41,6 +41,7 @@ public class GameModel implements GameEventListener, ModelOutput {
   private ResourceBundle modelResources;
   private static final Logger LOG = LogManager.getLogger(GameModel.class);
   private GameState gameState;
+  private int queryIndex;
 
   public GameModel(GameEventHandler gameEventHandler) {
     this.gameEventHandler = gameEventHandler;
@@ -61,8 +62,8 @@ public class GameModel implements GameEventListener, ModelOutput {
     currentPlayer.purchase(places.get(propertyIndex), propertyIndex);
   }
 
-  private void publishGameData(String gameState) {
-    this.gameState = GameState.valueOf(gameState);
+  private void publishGameData(GameState gameState) {
+    this.gameState = gameState;
     Player currentPlayer = getCurrentPlayerHelper();
     for (Place place : places) {
       place.updatePlaceActions(currentPlayer);
@@ -112,7 +113,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     GameLoader gameLoader = new GameLoader(map, modelResources);
     places = gameLoader.loadPlaceData(map);
     players = gameLoader.loadPlayerData(map);
-    //gameLoader.setUpPlayersProperties(players);
+    gameLoader.setUpPlayersPropertiesAndPropertyOwner(players, places);
     Metadata metaData = gameLoader.getMetadata();
     turn = new ConcretePlayerTurn(players, places, metaData.currentPlayerId());//TODO: set current player
   }
@@ -179,7 +180,7 @@ public class GameModel implements GameEventListener, ModelOutput {
 
   @Override
   public int getQueryIndex() {
-    return 0;
+    return queryIndex;
   }
 
   //end of ModelOutput methods
@@ -192,7 +193,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     Matcher matcher = pattern.matcher(event.getGameEventType());
     //Inside model
     if(matcher.find())
-      publishGameData(matcher.group(1));
+      publishGameData(GameState.valueOf(matcher.group(1)));
 
     //TODO: Refactor the switch expression
     switch (event.getGameEventType()) {
@@ -205,16 +206,21 @@ public class GameModel implements GameEventListener, ModelOutput {
         Command cmd = event.getGameEventCommand().getCommand();
         turn.roll();
       }
+      case "CONTROLLER_TO_MODEL_CHECK_PLACE_ACTION" -> {
+        Command cmd = event.getGameEventCommand().getCommand();
+        int propertyIndex = (int) cmd.getCommandArgs();
+        publishGameData(GameState.GET_PLACE_ACTIONS);
+      }
       case "CONTROLLER_TO_MODEL_PURCHASE_PROPERTY" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         int propertyIndex = (int) cmd.getCommandArgs();
         buyProperty(propertyIndex);
-//        publishGameData();
+        publishGameData(GameState.BUY_PROPERTY);
       }
       case "CONTROLLER_TO_MODEL_END_TURN" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         endTurn();
-        publishGameData("START_TURN");
+        publishGameData(GameState.NEXT_PLAYER);
       }
     }
   }

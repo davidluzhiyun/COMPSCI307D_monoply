@@ -18,9 +18,20 @@ public class ConcreteStreet extends AbstractProperty implements Street {
   // refactor to resource later
   public static final int MAX_HOUSE = 5;
 
+
   public ConcreteStreet(String id) {
     super(id);
-    colorId = (int) (double) getConfig().get("colorId");;
+    colorId = (int) (double) getConfig().get("colorId");
+    housePrice = (double) getConfig().get("houseCost");
+    rent = (double) getConfig().get("rent");
+    rentWithColorSet = (double) getConfig().get("rentWithColorSet");
+    rentWithHouses = (List<Double>) getConfig().get("rentWithHouses");
+  }
+
+  public ConcreteStreet(String id, int owner, int houseCount) {
+    super(id, owner);
+    this.housesBuilt = houseCount;
+    colorId = (int) (double) getConfig().get("colorId");
     housePrice = (double) getConfig().get("houseCost");
     rent = (double) getConfig().get("rent");
     rentWithColorSet = (double) getConfig().get("rentWithColorSet");
@@ -45,9 +56,32 @@ public class ConcreteStreet extends AbstractProperty implements Street {
     return rentWithColorSet;
   }
 
+  /**
+   * @author David Lu
+   * Calculate the amount of money the player passing by need to pay
+   * @param player
+   * @return
+   */
   @Override
   public double getMoney(Player player) {
-    return rent;
+    try {
+      if (isMortgaged() || getOwner() == null){
+        return 0;
+      }
+      if (getOwner().getPlayerId() == player.getPlayerId()){
+        return 0;
+      }
+      if (!getOwner().checkMonopolyOver(colorId)){
+        return rent;
+      }
+      if (housesBuilt == 0){
+        return rentWithColorSet;
+      }
+      return rentWithHouses.get(housesBuilt - 1);
+    }
+    catch (NullPointerException e){
+      throw new IllegalStateException("Input can't be null",e);
+    }
   }
 
   @Override
@@ -68,17 +102,17 @@ public class ConcreteStreet extends AbstractProperty implements Street {
   public void setHouseCount(int count) throws IllegalStateException {
     housesBuilt = count;
   }
+
   @Override
   public void updatePlaceActions(Player player) {
     Collection<PlaceAction> updatedPlaceActions = getPlaceActions();
     Collection<PlaceAction> inherentPlaceActions = getInherentPlaceActions();
     updatedPlaceActions.clear();
     updatedPlaceActions.addAll(inherentPlaceActions);
-    if (player.canBuildOn(this) && housesBuilt <= MAX_HOUSE && (!isMortgaged())){
+    if (player.canBuildOn(this) && housesBuilt <= MAX_HOUSE && (!isMortgaged())) {
       updatedPlaceActions.add(PlaceAction.BUILD_HOUSE);
       updatedPlaceActions.add(PlaceAction.MORTGAGE);
-    }
-    else {
+    } else {
       //In case build house or mortgage was put into inherentPlaceAction by teammates
       updatedPlaceActions.remove(PlaceAction.BUILD_HOUSE);
       updatedPlaceActions.remove(PlaceAction.MORTGAGE);

@@ -11,10 +11,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static ooga.model.place.AbstractPlace.DEFAULT_RESOURCE_FOLDER;
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
@@ -24,6 +21,7 @@ public class GameLoader {
   Metadata metadata;
   private static final Logger LOG = LogManager.getLogger(GameLoader.class);
   ResourceBundle myResources;
+  Map<String, Function6<String, String, Integer, Integer, Constructor<?>[], Place>> switchMap;
 
   public GameLoader(Map<String, Object> map, ResourceBundle resources) {
     this.gameData = map;
@@ -50,7 +48,7 @@ public class GameLoader {
           if (singlePlaceData.houseCount() != null) newPlace.setHouseCount(singlePlaceData.houseCount());
         //TODO: use constructor to create place instead of setters
         places.add(newPlace);
-      } catch (IOException e) {
+      } catch (IOException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
         throw new RuntimeException(e);
       }
     }
@@ -79,16 +77,31 @@ public class GameLoader {
     return players;
   }
 
-  public void setUpPlayersProperties() {
-
+  public void setUpPlayersPropertiesAndPropertyOwner(List<Player> players, List<Place> places) {
+    int i = 0;
+    for (Player player : players) {
+      List<Place> ownedProperties = new ArrayList<>();
+      for (int propertyIndex : player.getPropertyIndices()) {
+        ownedProperties.add(places.get(propertyIndex));
+        places.get(propertyIndex).setOwner(i, player);
+      }
+      player.setProperties(ownedProperties);
+      i++;
+    }
   }
 
   /**
    * "protected" is for test purpose
    *
-   * @param type
    */
-  protected Place createPlace(String type, String id) {
+  private void setUpMap() {
+    switchMap = new HashMap<>();
+    Function6<String, String, Integer, Integer, Constructor<?>[], Place> funcStreet = (type1, id1, ownerId, houseCount, constructor) -> (Place) constructor[0].newInstance(id1, ownerId, houseCount);
+    Function6<String, String, Integer, Integer, Constructor<?>[], Place> funcRailroad = (type1, id1, ownerId, houseCount, constructor) -> (Place) constructor[0].newInstance(id1);
+    switchMap.put("Street", funcStreet);
+    switchMap.put("Railroad", funcRailroad);
+  }
+  protected Place createPlace(String type, String id) throws InvocationTargetException, InstantiationException, IllegalAccessException {
     Place newPlace;
     Class<?> placeClass;
     try {
@@ -98,6 +111,7 @@ public class GameLoader {
       throw new IllegalStateException("classNotFound", e);
     }
     Constructor<?>[] makeNewPlace = placeClass.getConstructors();
+    newPlace = switchMap.get("type").apply(type, id, 1, 1, makeNewPlace);
     try {
       newPlace = (Place) makeNewPlace[0].newInstance(id);
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -105,5 +119,10 @@ public class GameLoader {
       throw new RuntimeException(e);
     }
     return newPlace;
+  }
+
+  @FunctionalInterface
+  interface Function6<One, Two, Three, Four, Constructor, Five> {
+    Five apply(One one, Two two, Three three, Four four, Constructor constructor) throws InvocationTargetException, InstantiationException, IllegalAccessException;
   }
 }

@@ -33,27 +33,12 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     GameEventHandler gameEventHandler = new GameEventHandler();
-//    MainView mainView = new MainView(primaryStage, gameEventHandler);
-//    mainView.start();
+    Controller controller = new Controller(gameEventHandler);
+    gameEventHandler.addEventListener(controller);
     StartView startView = new StartView(primaryStage, gameEventHandler);
     GameModel model = new GameModel(gameEventHandler);
     gameEventHandler.addEventListener(model);
     Controller controller = new Controller(gameEventHandler);
     gameEventHandler.addEventListener(controller);
   }
-
-  /**
-   * Start of the program.
-   * NOTE: I (Leila) commented this out for now just to allow the start screen to pop up.
-   */
-
-//  public static void main(String[] args) {
-//    GameEventHandler gameEventHandler = new GameEventHandler();
-//    SampleController sampleController = new SampleController(gameEventHandler);
-//    gameEventHandler.addEventListener(sampleController);
-//    SampleView sampleView = new SampleView(gameEventHandler);
-//    gameEventHandler.addEventListener(sampleView);
-////    sampleView.start();
-//  }
-
 }

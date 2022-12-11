@@ -1,6 +1,6 @@
 package ooga.model.component;
 
-import java.awt.*;
+import java.awt.Point;
 
 public interface Dice {
   Point roll();
