@@ -32,6 +32,11 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
     ownerId = -1;
   }
 
+  public AbstractProperty(String id, int ownerId) {
+    super(id);
+    this.ownerId = ownerId;
+  }
+
   @Override
   public String getName() {
     return name;
