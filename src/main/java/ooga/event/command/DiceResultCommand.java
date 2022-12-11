@@ -1,15 +1,17 @@
 package ooga.event.command;
 
+import java.awt.*;
+
 public class DiceResultCommand implements Command {
 
-  private int[] myRoll;
+  private Point roll;
 
-  public DiceResultCommand (int roll1, int roll2) {
-    this.myRoll = new int[]{roll1, roll2};
+  public DiceResultCommand (Point roll) {
+    this.roll = roll;
   }
 
   @Override
   public Object getCommandArgs() {
-    return myRoll;
+    return this.roll;
   }
 }

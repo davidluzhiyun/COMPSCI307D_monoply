@@ -8,8 +8,9 @@ import java.util.Collection;
 public interface ControllerPlayer {
   int getPlayerId();
   int getCurrentPlaceIndex();
-  Boolean isInJail();
   int remainingJailTurns();
   Collection<Integer> getPropertyIndices();
   double getTotalMoney();
+  boolean hasNextDice();
+  int getDice();
 }

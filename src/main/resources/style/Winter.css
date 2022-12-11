@@ -17,7 +17,12 @@
   -fx-border-color: rgb(25,77,0);
   -fx-background-color: rgba(25,77,0, 0.2);
 }
-
+#EndTurnButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: rgb(25,77,0);
+  -fx-background-color: rgba(25,77,0, 0.2);
+}
 #BuyHouseButton {
   -fx-padding: 10;
   -fx-text-alignment: center;

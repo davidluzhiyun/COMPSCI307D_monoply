@@ -1,1 +1,34 @@
-{"places":[{"id":"121","owner":-1,"houseCount":0},{"id":"123","owner":-1,"houseCount":0}],"meta":{"playerCount":2,"currentPlayerId":1},"players":[{"id":0,"money":0.0,"jail":0,"currentPlaceIndex":0,"properties":[]},{"id":0,"money":0.0,"jail":0,"currentPlaceIndex":0,"properties":[]}]}
+{
+  "places": [
+    {
+      "id": "121",
+      "owner": -1,
+      "houseCount": 0
+    },
+    {
+      "id": "123",
+      "owner": -1,
+      "houseCount": 0
+    }
+  ],
+  "meta": {
+    "playerCount": 2,
+    "currentPlayerId": 1
+  },
+  "players": [
+    {
+      "id": 0,
+      "money": 0.0,
+      "jail": 0,
+      "currentPlaceIndex": 0,
+      "properties": []
+    },
+    {
+      "id": 0,
+      "money": 0.0,
+      "jail": 0,
+      "currentPlaceIndex": 0,
+      "properties": []
+    }
+  ]
+}

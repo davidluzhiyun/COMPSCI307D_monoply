@@ -1,6 +1,7 @@
 package ooga.view.pop_ups;
 
 import java.util.ResourceBundle;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -8,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import ooga.Main;
 import ooga.view.GameView;
 import ooga.view.StartView;
@@ -41,10 +43,14 @@ public class GamePiecePopUp extends ActionPopUp {
   public static final String GAME_PIECE_POP_UP_ID = "GamePiecePopUp";
   public static final String PREVIEW_TEXT = "PreviewText";
   private final Board myBoard;
+  private GamePiece myPiece;
 
   public GamePiecePopUp(int player, String style, Board board) {
     this.currentPlayer = player;
     this.myStage = new Stage();
+    myStage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+      close();
+    });
     this.popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
     this.myStyle = style;
     this.icon = new ImageView();
@@ -80,9 +86,24 @@ public class GamePiecePopUp extends ActionPopUp {
     myStage.show();
   }
 
+  /**
+   * Referenced the following link for help preventing users from being able to close this pop up
+   * without first selecting a piece
+   */
   @Override
   public void close() {
-    myStage.close();
+    if (myPiece != null) {
+      myStage.close();
+    } else {
+      myStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+        @Override
+        public void handle(WindowEvent event) {
+          event.consume();
+        }
+      });
+      NoGamePieceErrorPopUp error = new NoGamePieceErrorPopUp();
+      error.showMessage(myLanguage);
+    }
   }
 
   /**
@@ -108,9 +129,9 @@ public class GamePiecePopUp extends ActionPopUp {
    * Currently set within property file as the method for when the SelectButton is clicked.
    */
   public void saveChanges() {
-    GamePiece myPiece = new GamePiece(pieceKey, currentPlayer);
+    this.myPiece = new GamePiece(pieceKey, currentPlayer);
     myBoard.initializeGamePiece(myPiece, currentPlayer);
-    this.close();
+    close();
   }
 
 }

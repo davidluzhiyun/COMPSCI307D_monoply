@@ -1,11 +1,15 @@
 package ooga.model.place.property;
 
+import ooga.event.GameEventHandler;
+import ooga.model.GameState;
 import ooga.model.Player;
 import ooga.model.StationaryAction;
 import ooga.model.place.AbstractPlace;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+
+import static ooga.model.component.ConcretePlayerTurn.modelToken;
 
 /**
  * @author David Lu refactoring and integration
@@ -17,22 +21,15 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   private final String name;
   private final double purchasePrice;
   private final double mortgagePrice;
-  private final double rent;
-  private final double rentWithColorSet;
-  private final List<Double> rentWithHouses;
   private int ownerId;
-  
+  private Player owner;
+
   public AbstractProperty(String id) {
     super(id);
     name = (String) getConfig().get("name");
     purchasePrice = (double) getConfig().get("purchasePrice");
     mortgagePrice = (double) getConfig().get("mortgagePrice");
-    rent = (double) getConfig().get("rent");
-    rentWithColorSet = (double) getConfig().get("rentWithColorSet");
-    rentWithHouses = (List<Double>) getConfig().get("rentWithHouses");
     ownerId = -1;
-    addStationaryAction(StationaryAction.BUY_PROPERTY);
-    addStationaryAction(StationaryAction.AUCTION);
   }
 
   @Override
@@ -71,21 +68,13 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   }
 
   @Override
-  public void setOwner(int playerId) {
+  public void setOwner(int playerId, Player owner) {
     ownerId = playerId;
+    this.owner = owner;
   }
 
-  @Override
-  public List<Double> getRentWithProperties() {
-    return rentWithHouses;
-  }
-
-  protected double getRent() {
-    return rent;
-  }
-
-  protected double getRentWithColorSet() {
-    return rentWithColorSet;
+  protected Player getOwner() {
+    return owner;
   }
 
   @Override
@@ -95,18 +84,37 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   }
 
   /**
-   * @author David Lu added this method to override parent by adding new condition.
-   * The property need to be unimproved to be purchased
    * @param player the current player
    * @return see the place interface
+   * @author David Lu added this method to override parent by adding new condition.
+   * The property need to be unimproved to be purchased
    */
   @Override
-  public Collection<StationaryAction> getStationaryActions(Player player){
-    if (ownerId != -1){
-      return null;
-    }
-    else {
+  public Collection<StationaryAction> getStationaryActions(Player player) {
+    if (ownerId != -1) {
+      //if owned, no stationary actions related to places are available
+      return getCommonTurnBasedStationaryAction(player);
+    } else {
       return super.getStationaryActions(player);
+    }
+  }
+
+  @Override
+  public Collection<StationaryAction> getPlaceBasedStationaryActions(Player player) {
+    Collection<StationaryAction> placeBasedStationaryActions = new ArrayList<>();
+    placeBasedStationaryActions.add(StationaryAction.AUCTION);
+    if (player.getTotalMoney() >= getPurchasePrice())
+      placeBasedStationaryActions.add(StationaryAction.BUY_PROPERTY);
+    return placeBasedStationaryActions;
+  }
+
+  @Override
+  public void landingEffect(Player player) {
+    if (ownerId != -1) {//if owned
+      player.setMoney(player.getTotalMoney() - getMoney(player));
+      owner.setMoney(player.getTotalMoney() + getMoney(player));
+      GameEventHandler gameEventHandler = new GameEventHandler();
+      gameEventHandler.publish(modelToken + GameState.PAY_RENT);
     }
   }
 }

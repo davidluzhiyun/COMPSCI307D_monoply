@@ -46,7 +46,7 @@ public class GetPlaceInfoTest extends TestCase {
             }
 
             @Override
-            public double getMoney() {
+            public double getMoney(Player player) {
                 return 0;
             }
 
@@ -82,7 +82,7 @@ public class GetPlaceInfoTest extends TestCase {
             }
 
             @Override
-            public double getMoney() {
+            public double getMoney(Player player) {
                 return 0;
             }
 
@@ -111,7 +111,12 @@ public class GetPlaceInfoTest extends TestCase {
     public void testGetPlaceInfo() {
         listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_GET_PLACE_INFO.name());
         gameEventHandler.addEventListener(listener);
-        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_BOARD_SET_UP.name(), new BoardSetUpTest.TestCommand(new ModelOutput() {
+        GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new BoardSetUpTest.TestCommand(new ModelOutput() {
+            @Override
+            public GameState getGameState() {
+                return GameState.GAME_SET_UP;
+            }
+
             @Override
             public Point getDiceNum() {
                 return null;
@@ -135,6 +140,11 @@ public class GetPlaceInfoTest extends TestCase {
             @Override
             public Collection<StationaryAction> getStationaryAction() {
                 return null;
+            }
+
+            @Override
+            public int getQueryIndex() {
+                return -1;
             }
         }));
         gameEventHandler.publish(boardSetUp);

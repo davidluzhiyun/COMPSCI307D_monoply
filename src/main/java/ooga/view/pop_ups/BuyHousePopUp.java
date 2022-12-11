@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import ooga.Main;
 import ooga.view.View;
 import ooga.view.button.CustomizedButton;
@@ -27,6 +28,7 @@ public class BuyHousePopUp extends ActionPopUp {
   public static final String HOUSE_POP_UP_BUTTONS_KEY = "HousePopUpButtons";
   public static final String HOUSE_POP_UP_VBOX = "BuyHousePopUpVBox";
   private VBox root;
+  private int selectedProperty;
 
   public BuyHousePopUp(int player, String style, Board board) {
     this.currentPlayer = player;
@@ -34,12 +36,13 @@ public class BuyHousePopUp extends ActionPopUp {
     this.popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
     this.myStyle = style;
     this.myBoard = board;
+    this.selectedProperty = -1;
     this.idResources = ResourceBundle.getBundle(Main.ID_PROPERTIES);
   }
 
   @Override
   public void close() {
-    myStage.close();
+      myStage.close();
   }
 
   @Override
@@ -75,8 +78,12 @@ public class BuyHousePopUp extends ActionPopUp {
     myStage.show();
   }
 
+  /**
+   * Called when you press the purchase button (set in Buttons.properties file)
+   */
   public void buildHouse() {
-    myBoard.buildHouse(0);
+    myBoard.buildHouse(selectedProperty);
+    close();
   }
 
   /**
@@ -88,6 +95,6 @@ public class BuyHousePopUp extends ActionPopUp {
     Label priceText = new Label(String.format(myResources.getString("PriceText"), price));
     priceText.setWrapText(true);
     root.getChildren().addAll(priceText, makeButtons());
+    selectedProperty = price;
   }
-
 }

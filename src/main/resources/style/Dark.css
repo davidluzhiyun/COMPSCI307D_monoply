@@ -122,7 +122,13 @@
   -fx-text-fill: white;
   -fx-background-color: rgba(0,77,51, 0.2);
 }
-
+#EndTurnButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: white;
+  -fx-text-fill: white;
+  -fx-background-color: rgba(0,77,51, 0.2);
+}
 
 #GoToGameEditorButton {
   -fx-padding: 10;

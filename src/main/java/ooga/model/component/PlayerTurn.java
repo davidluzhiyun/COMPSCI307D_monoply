@@ -1,4 +1,4 @@
-package ooga.model.components;
+package ooga.model.component;
 
 import java.awt.Point;
 import ooga.model.place.Place;
@@ -10,13 +10,12 @@ public interface PlayerTurn {
    *
    * @return
    */
-  Point roll();
+  void roll();
   int getCurrentPlayerTurnId();
   /**
    * Current player ends turn and switch next player's turn.
    */
   void nextTurn();
-  Place getCurrentPlace();
   Point getDiceNum();
 
 }

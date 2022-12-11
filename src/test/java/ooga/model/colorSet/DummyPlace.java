@@ -24,12 +24,17 @@ public class DummyPlace implements Place {
   }
 
   @Override
-  public double getMoney() {
+  public double getMoney(Player player) {
     return 0;
   }
 
   @Override
   public Collection<StationaryAction> getStationaryActions(Player player) {
+    return null;
+  }
+
+  @Override
+  public Collection<StationaryAction> getPlaceBasedStationaryActions(Player player) {
     return null;
   }
 
@@ -45,12 +50,17 @@ public class DummyPlace implements Place {
   }
 
   @Override
-  public void setOwner(int playerId) throws IllegalStateException {
+  public void setOwner(int playerId, Player owner) throws IllegalStateException {
 
   }
 
   @Override
   public void setHouseCount(int count) throws IllegalStateException {
+
+  }
+
+  @Override
+  public void landingEffect(Player player) {
 
   }
 

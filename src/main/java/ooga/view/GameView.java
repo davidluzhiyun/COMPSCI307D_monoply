@@ -37,18 +37,22 @@ public class GameView extends View implements GameEventListener {
   public static final String GAME_BUTTONS_ID = "GameButtons";
   public static final String GAME_PIECE = "GamePiece";
   private Board myBoard;
+  // TODO: get this instead from controller
+  private int numPlayers;
 
-  public GameView(GameEventHandler gameEventHandler, String style, String language, Stage stage) {
-    this.myStyle = style;
+  public GameView(GameEventHandler gameEventHandler, String language, Stage stage) {
     this.myLanguage = language;
     this.myStage = stage;
     this.gameEventHandler = gameEventHandler;
+    //TODO: Change this
+    this.numPlayers = 4;
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + StartView.SCREEN);
   }
 
-  public Scene setUpScene(double width, double height) {
+  public Scene setUpScene(double width, double height, String style) {
     this.width = width;
     this.height = height;
+    this.myStyle = style;
     Rectangle background = new Rectangle(width, height);
     background.setId(StartView.BACKGROUND);
     BorderPane myBorderPane = new BorderPane(background);
@@ -59,9 +63,7 @@ public class GameView extends View implements GameEventListener {
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
     myStage.show();
-    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myBoard);
-    popUp.showMessage(myLanguage);
-
+    chooseGamePieces();
     return myScene;
   }
 
@@ -81,7 +83,7 @@ public class GameView extends View implements GameEventListener {
     myStyle = choiceResources.getString(
         String.format(StartView.STRING_INT_FORMATTER, StartView.STYLE, newValue));
     myStage.close();
-    setUpScene(width, height);
+    setUpScene(width, height, myStyle);
   }
 
   /**
@@ -91,13 +93,10 @@ public class GameView extends View implements GameEventListener {
    * class that allows for a new piece to be initialized on the Go button
    */
   public void chooseGamePieces() {
-    // make pop up to select number of players, then for each player, do that.
-//     for (int i = 0; i < numPlayers; i ++) {
-//       GamePiecePopUp pop = new GamePiecePopUp(i, myStyle, myLanguage);
-//       pop.showMessage(myLanguage);
-//       GamePiece piece = pop.getGamePiece();
-//       myBoard.addPiece(piece, i);
-//     }
+     for (int i = numPlayers; i > 0; i --) {
+       GamePiecePopUp pop = new GamePiecePopUp(i, myStyle, myBoard);
+       pop.showMessage(myLanguage);
+     }
   }
 
   /**
@@ -128,7 +127,7 @@ public class GameView extends View implements GameEventListener {
    */
   public void rollDice() {
     Command cmd = new RollDiceCommand();
-    GameEvent event = gameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE",
+    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE",
         cmd);
     gameEventHandler.publish(event);
     showDiceResult(new int[]{6, 5});
@@ -148,6 +147,8 @@ public class GameView extends View implements GameEventListener {
     BuyHousePopUp pop = new BuyHousePopUp(1, myStyle, myBoard);
     pop.showMessage(myLanguage);
   }
+
+  public void endTurn() {}
 
   @Override
   public void onGameEvent(GameEvent event) {

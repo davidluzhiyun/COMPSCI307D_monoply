@@ -17,6 +17,8 @@ public interface Place extends ControllerPlace{
    */
   Collection<StationaryAction> getStationaryActions(Player player);
 
+  Collection<StationaryAction> getPlaceBasedStationaryActions(Player player);
+
   /**
    * A method to update place actions for the current player
    *
@@ -32,7 +34,9 @@ public interface Place extends ControllerPlace{
    */
   double getPurchasePrice() throws IllegalStateException;
 
-  void setOwner(int playerId) throws IllegalStateException;
+  void setOwner(int playerId, Player owner) throws IllegalStateException;
 
   void setHouseCount(int count) throws IllegalStateException;
+
+  void landingEffect(Player player);
 }

@@ -3,67 +3,63 @@ package ooga.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
+
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
+
 import ooga.model.place.Place;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ConcretePlayer implements Player, ControllerPlayer {
+  private final int playerId;
   private double money;
-  private int playerId;
   private int currentPlaceIndex;
-  private boolean isInJail = false;
-  private int dicesLeft;
-  private int dicesTotal;
+  private boolean hasNextDice;
   private int remainingJailTurns;
+  private int dicesTotal;
   private Collection<Integer> propertyIndices;
   private Collection<Place> properties;
   private Map<Integer, Predicate<Collection<Place>>> colorSetCheckers;
+  private int diceResult;
+  private static final Logger LOG = LogManager.getLogger(GameModel.class);
 
   /**
    * Universal constructor for loading the game./
-   *
-   * @param money
-   * @param playerId
-   * @param currentPlaceIndex
-   * @param isInJail
-   * @param dicesLeft
-   * @param dicesTotal
-   * @param remainingJailTurns
-   * @param properties
    */
-  public ConcretePlayer(double money, int playerId, int currentPlaceIndex, boolean isInJail,
-                        int dicesLeft, int dicesTotal, int remainingJailTurns, Collection<Integer> properties) {
-    this.money = money;
+  public ConcretePlayer(int playerId, double money, int currentPlaceIndex, boolean hasNextDice, int remainingJailTurns, int dicesTotal, Collection<Integer> propertyIndices) {
     this.playerId = playerId;
+    this.money = money;
     this.currentPlaceIndex = currentPlaceIndex;
-    this.isInJail = isInJail;
-    this.dicesLeft = dicesLeft;
-    this.propertyIndices = properties;
+    this.remainingJailTurns = remainingJailTurns;
+    this.dicesTotal = dicesTotal;
+    this.hasNextDice = hasNextDice;
+    this.propertyIndices = propertyIndices;
   }
 
   public ConcretePlayer(int playerId) {
     this.currentPlaceIndex = 0;
     this.money = 0;
     this.playerId = playerId;
+    this.hasNextDice = false;
+    properties = new ArrayList<>();
     propertyIndices = new ArrayList<>();
   }
 
+  @Override
   public void newTurn() {
-    dicesLeft = 1;
+    hasNextDice = true;
     dicesTotal = 1;
     //TODO: when in jail
   }
 
-  @Override
-  public void setProperties(Collection<Integer> propertyIndices) {
-    this.propertyIndices = propertyIndices;
-  }
 
   @Override
   public void setMoney(double money) {
@@ -77,7 +73,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
 
   @Override
   public void setIndex(int destinationIndex) {
-
+    currentPlaceIndex = destinationIndex;
   }
 
   @Override
@@ -86,79 +82,114 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   }
 
   /**
+   * @param place  the place to check
+   * @param target the latter place
    * @author David Lu
    * Helper funtion to check if the place has at least a certain number of houses as another place
-   * @param place the place to check
-   * @param target the latter place
    */
-  private boolean checkHouseNum(Place place, Place target){
+  private boolean checkHouseNum(Place place, Place target) {
     try {
       int placeHouseNum = place.getHouseCount();
       return placeHouseNum >= target.getHouseCount();
-    }
-    catch (CannotBuildHouseException e){
+    } catch (CannotBuildHouseException e) {
       return false;
     }
   }
 
   /**
    * Check if player can build a house on a place
+   *
    * @param place a place to check
    * @return
    */
   @Override
   public boolean canBuildOn(Place place) {
     try {
-     int color = place.getColorSetId();
-     Predicate<Collection<Place>> checker = colorSetCheckers.get(color);
-     if (checker == null){
-       return false;
-     }
-     return checker.test(properties.stream().filter((Place p) -> checkHouseNum(p,place)).collect(
-         Collectors.toSet()));
-    }
-    catch (NoColorAttributeException e){
+      int color = place.getColorSetId();
+      Predicate<Collection<Place>> checker = colorSetCheckers.get(color);
+      if (checker == null) {
+        return false;
+      }
+      return checker.test(properties.stream().filter((Place p) -> checkHouseNum(p, place)).collect(
+          Collectors.toSet()));
+    } catch (NoColorAttributeException e) {
       // not something with a color
       return false;
-    }
-    catch (NullPointerException e){
-      throw new IllegalStateException("Input is null or checker unset",e);
+    } catch (NullPointerException e) {
+      throw new IllegalStateException("Input is null or checker unset", e);
     }
   }
 
+  @Override
+  public int getOwnedRailroadsCount() {
+    return 0;
+  }
 
-  public void decrementOneDiceLeft() {
-    dicesLeft--;
+  @Override
+  public void setOwnedRailroadsCount(int count) {
+
+  }
+
+  @Override
+  public void setDice(int result) {
+    diceResult = result;
+  }
+
+
+  /**
+   * @author David Lu
+   * Check if the player has monopoly over a color set
+   * @param colorId color id
+   * @return true if player has monopoly over color set of given id
+   */
+  @Override
+  public boolean checkMonopolyOver(int colorId) {
+    try {
+      Predicate<Collection<Place>> checker = colorSetCheckers.get(colorId);
+      if (checker == null){
+        return false;
+      }
+      return checker.test(properties);
+    }
+    catch (NullPointerException e){
+      throw new IllegalStateException("Checker unset",e);
+    }
   }
 
   public void addOneDiceRoll() {
-    dicesLeft++;
+    hasNextDice = true;
     dicesTotal++;
     if (dicesTotal == 4)
-      isInJail = true;
+      setJail(3);
   }
 
+  @Override
   public boolean hasNextDice() {
-    return dicesLeft > 0;
+    return hasNextDice;
   }
 
-  public boolean goJail() {
-    return isInJail;
+  @Override
+  public int getDice() {
+    return diceResult;
+  }
+
+  public void setProperties(Collection<Place> properties) {
+    this.properties = properties;
+  }
+
+  @Override
+  public void nextDice() {
+    hasNextDice = false;
   }
 
   @Override
   public int getPlayerId() {
-    return 0;
+    return playerId;
   }
 
   @Override
   public int getCurrentPlaceIndex() {
     return currentPlaceIndex;
-  }
-
-  @Override
-  public Boolean isInJail() {
-    return isInJail;
   }
 
   @Override
@@ -182,13 +213,9 @@ public class ConcretePlayer implements Player, ControllerPlayer {
       money -= property.getPurchasePrice();
       propertyIndices.add(propertyIndex);
       properties.add(property);
-      property.setOwner(playerId);
+      property.setOwner(playerId, this);
     } catch (IllegalStateException e) {
       throw new IllegalStateException();
     }
-  }
-  @Override
-  public void purchase(Place property) throws IllegalStateException{
-    purchase(property, currentPlaceIndex);
   }
 }

@@ -11,7 +11,7 @@ import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.view.GameView;
-import ooga.view.MainView;
+//import ooga.view.MainView;
 
 public class SceneManager implements GameEventListener {
 
@@ -77,12 +77,16 @@ public class SceneManager implements GameEventListener {
   }
 
   private void setGameView() {
-    GameView gameViewScene = new GameView(gameEventHandler, myStyle, myLanguage, primaryStage);
+    GameView gameViewScene = new GameView(gameEventHandler, myLanguage, primaryStage);
     currentScene = gameViewScene.setUpScene(primaryStage.getMaxWidth(),
-        primaryStage.getMaxHeight());
+        primaryStage.getMaxHeight(), myStyle);
     setPrimaryStageToCurrScene();
   }
 
+  /**
+   * TODO: refactor for sure.
+   * @param event
+   */
   @Override
   public void onGameEvent(GameEvent event) {
     String eventType = event.getGameEventType();

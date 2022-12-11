@@ -40,7 +40,7 @@ public class LoadBoardTest extends TestCase {
         parsedProperties.add(new ParsedProperty("Street", "Campus Drive", 0));
     }
 
-    public void testBoardSetUp() {
+    public void testLoadBoard() {
         listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_LOAD_BOARD.name());
         gameEventHandler.addEventListener(listener);
         GameEvent gameStart = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_CONTROLLER_LOAD_BOARD.name(), new TestCommand(new File("doc/plan/data/TestInitialBoard2.json")));
@@ -78,6 +78,9 @@ public class LoadBoardTest extends TestCase {
                 assertEquals(4, command.rows());
                 assertEquals(5, command.columns());
                 assertEquals(parsedProperties, command.places());
+                for(ParsedProperty place : command.places()) {
+                    System.out.println(place);
+                }
             }
         }
     }

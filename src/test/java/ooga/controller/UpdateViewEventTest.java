@@ -1,5 +1,4 @@
 package ooga.controller;
-
 import junit.framework.TestCase;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
@@ -10,6 +9,7 @@ import ooga.model.*;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
+import ooga.model.place.Place;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class UpdateViewEventTest extends TestCase {
             }
 
             @Override
-            public double getMoney() {
+            public double getMoney(Player player) {
                 return 0;
             }
 
@@ -91,7 +91,7 @@ public class UpdateViewEventTest extends TestCase {
             }
 
             @Override
-            public double getMoney() {
+            public double getMoney(Player player) {
                 return 0;
             }
 
@@ -123,6 +123,11 @@ public class UpdateViewEventTest extends TestCase {
         gameEventHandler.addEventListener(listener);
         GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {
             @Override
+            public GameState getGameState() {
+                return null;
+            }
+
+            @Override
             public Point getDiceNum() {
                 return diceRoll;
             }
@@ -145,6 +150,11 @@ public class UpdateViewEventTest extends TestCase {
             @Override
             public Collection<StationaryAction> getStationaryAction() {
                 return actions;
+            }
+
+            @Override
+            public int getQueryIndex() {
+                return -1;
             }
         }));
         gameEventHandler.publish(boardSetUp);
