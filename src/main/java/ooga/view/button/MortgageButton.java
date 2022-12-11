@@ -11,6 +11,5 @@ public class MortgageButton extends CustomizedButton {
     super(MORTGAGE_BUTTON_KEY, language);
     ResourceBundle id = ResourceBundle.getBundle(Main.ID_PROPERTIES);
     this.setId(id.getString(MORTGAGE_BUTTON_KEY));
-
   }
 }
