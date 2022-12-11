@@ -8,10 +8,17 @@ import ooga.model.place.Place;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 import static ooga.model.place.AbstractPlace.DEFAULT_RESOURCE_FOLDER;
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
@@ -27,6 +34,7 @@ public class GameLoader {
     this.gameData = map;
     this.myResources = resources;
     metadata = (Metadata) map.get("meta");
+    setUpMap();
   }
 
   public Metadata getMetadata() {
@@ -41,12 +49,15 @@ public class GameLoader {
       try {
         Map<String, ?> config = getConfig(placeId, new Gson());
         String type = (String) config.get("type");
-        Place newPlace = createPlace(type, placeId);
+        int ownerId = -1;
+        int houseCount = -1;
         if (singlePlaceData.owner() != null && singlePlaceData.owner() != -1) //if the place can be purchased and there is someone who purchased it
-//          newPlace.setOwner(singlePlaceData.owner());
-          // TODO: Load owner and ownerid
-          if (singlePlaceData.houseCount() != null) newPlace.setHouseCount(singlePlaceData.houseCount());
+          ownerId = singlePlaceData.owner();
+        // TODO: Load owner and ownerid
+        if (singlePlaceData.houseCount() != null)
+          houseCount = singlePlaceData.houseCount();
         //TODO: use constructor to create place instead of setters
+        Place newPlace = createPlace(type, placeId, ownerId, houseCount);
         places.add(newPlace);
       } catch (IOException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
         throw new RuntimeException(e);
@@ -92,16 +103,16 @@ public class GameLoader {
 
   /**
    * "protected" is for test purpose
-   *
    */
   private void setUpMap() {
-    switchMap = new HashMap<>();
-    Function6<String, String, Integer, Integer, Constructor<?>[], Place> funcStreet = (type1, id1, ownerId, houseCount, constructor) -> (Place) constructor[0].newInstance(id1, ownerId, houseCount);
-    Function6<String, String, Integer, Integer, Constructor<?>[], Place> funcRailroad = (type1, id1, ownerId, houseCount, constructor) -> (Place) constructor[0].newInstance(id1);
-    switchMap.put("Street", funcStreet);
-    switchMap.put("Railroad", funcRailroad);
+    Function6<String, String, Integer, Integer, Constructor<?>[], Place> funcStreet = (type1, id1, ownerId, houseCount, constructor) -> (Place) constructor[1].newInstance(id1, ownerId, houseCount);
+    Function6<String, String, Integer, Integer, Constructor<?>[], Place> funcRailroad = (type1, id1, ownerId, houseCount, constructor) -> (Place) constructor[1].newInstance(id1, ownerId);
+    Function6<String, String, Integer, Integer, Constructor<?>[], Place> funcUtility = (type1, id1, ownerId, houseCount, constructor) -> (Place) constructor[1].newInstance(id1, ownerId);
+    Function6<String, String, Integer, Integer, Constructor<?>[], Place> funcGo = (type1, id1, ownerId, houseCount, constructor) -> (Place) constructor[0].newInstance(id1);
+    switchMap = Map.of("Street", funcStreet, "Railroad", funcRailroad, "Utility", funcUtility, "Go", funcGo);
   }
-  protected Place createPlace(String type, String id) throws InvocationTargetException, InstantiationException, IllegalAccessException {
+
+  protected Place createPlace(String type, String id, int ownerId, int houseCount) throws InvocationTargetException, InstantiationException, IllegalAccessException {
     Place newPlace;
     Class<?> placeClass;
     try {
@@ -111,9 +122,8 @@ public class GameLoader {
       throw new IllegalStateException("classNotFound", e);
     }
     Constructor<?>[] makeNewPlace = placeClass.getConstructors();
-    newPlace = switchMap.get("type").apply(type, id, 1, 1, makeNewPlace);
     try {
-      newPlace = (Place) makeNewPlace[0].newInstance(id);
+      newPlace = switchMap.get("type").apply(type, id, ownerId, houseCount, makeNewPlace);
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
       LOG.warn(e);
       throw new RuntimeException(e);

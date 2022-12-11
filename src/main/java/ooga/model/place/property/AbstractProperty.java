@@ -86,7 +86,7 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   }
 
   @Override
-  public void updatePlaceActions(Player player) {
+  public void updateCurrentPlayerPlaceActions(Player player) {
     //Nothing for now
     return;
   }

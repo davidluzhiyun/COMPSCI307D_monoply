@@ -14,11 +14,11 @@ public class ConcreteRailroad extends AbstractProperty implements RailRoad{
   @Override
   public void setOwner(int playerId, Player owner) {
     super.setOwner(playerId, owner);
-    owner.setOwnedRailroadsCount(owner.getOwnedRailroadsCount() + 1);
+    owner.setOwnedRailroadsCount(owner.getOwnedRailroadCount() + 1);
   }
 
   @Override
   public double getMoney(Player player) {
-    return rentWithRailroads.get(getOwner().getOwnedRailroadsCount());
+    return rentWithRailroads.get(getOwner().getOwnedRailroadCount());
   }
 }

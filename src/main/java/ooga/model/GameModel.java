@@ -66,7 +66,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     this.gameState = gameState;
     Player currentPlayer = getCurrentPlayerHelper();
     for (Place place : places) {
-      place.updatePlaceActions(currentPlayer);
+      place.updateCurrentPlayerPlaceActions(currentPlayer);
     }
     ModelOutput gameData = this;
     Command cmd = new GameDataCommand(gameData);
@@ -116,6 +116,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     gameLoader.setUpPlayersPropertiesAndPropertyOwner(players, places);
     Metadata metaData = gameLoader.getMetadata();
     turn = new ConcretePlayerTurn(players, places, metaData.currentPlayerId());//TODO: set current player
+    publishGameData(GameState.LOAD_BOARD);
   }
 
   /**
@@ -154,7 +155,7 @@ public class GameModel implements GameEventListener, ModelOutput {
   }
 
   @Override
-  public int getCurrentPlayer() {
+  public int getCurrentPlayerId() {
     return turn.getCurrentPlayerTurnId();
   }
 
@@ -198,7 +199,7 @@ public class GameModel implements GameEventListener, ModelOutput {
       case "CONTROLLER_TO_MODEL_GAME_START" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         initializeGame((Map) cmd.getCommandArgs());
-//        publishGameData();
+        publishGameData(GameState.GAME_SET_UP);
       }
       case "CONTROLLER_TO_MODEL_ROLL_DICE" -> {
         Command cmd = event.getGameEventCommand().getCommand();

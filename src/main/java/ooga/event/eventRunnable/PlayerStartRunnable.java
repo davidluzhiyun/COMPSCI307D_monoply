@@ -17,7 +17,7 @@ public class PlayerStartRunnable implements EventGenerator{
 
     @Override
     public GameEvent processEvent() {
-        GetPlayerCommand playerStartCommand = new GetPlayerCommand(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayer()));
+        GetPlayerCommand playerStartCommand = new GetPlayerCommand(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayerId()));
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_PLAYER_START.name(), playerStartCommand);
     }
 }

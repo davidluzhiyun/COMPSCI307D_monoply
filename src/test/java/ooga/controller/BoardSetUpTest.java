@@ -65,7 +65,7 @@ public class BoardSetUpTest extends TestCase {
             }
 
             @Override
-            public int getCurrentPlayer() {
+            public int getCurrentPlayerId() {
                 return 0;
             }
 

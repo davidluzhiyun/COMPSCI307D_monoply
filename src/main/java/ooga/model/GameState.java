@@ -20,4 +20,5 @@ public enum GameState {
   MORTGAGE,
 
   GET_PLACE_ACTIONS,
+  LOAD_BOARD,
 }

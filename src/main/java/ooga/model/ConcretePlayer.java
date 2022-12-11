@@ -121,7 +121,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   }
 
   @Override
-  public int getOwnedRailroadsCount() {
+  public int getOwnedRailroadCount() {
     return 0;
   }
 

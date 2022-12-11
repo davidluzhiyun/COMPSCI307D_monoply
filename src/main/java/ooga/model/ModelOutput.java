@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.Collection;
 import java.util.List;
 import ooga.model.place.ControllerPlace;
-import ooga.model.place.Place;
 
 /**
  * The interface published to the controller
@@ -19,9 +18,9 @@ public interface ModelOutput {
   Point getDiceNum();
 
   /**
-   * Gets the id of the next player
+   * Gets the id of the current player
    */
-  int getCurrentPlayer();
+  int getCurrentPlayerId();
 
   /**
    * Information about all players, in a List, change to collection if order no longer needed
