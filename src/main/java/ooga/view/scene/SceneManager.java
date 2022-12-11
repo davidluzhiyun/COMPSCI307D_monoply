@@ -1,6 +1,7 @@
 package ooga.view.scene;
 
 import static ooga.event.GameEventType.VIEW_LAUNCH_GAME_SCREEN;
+import static ooga.event.GameEventType.VIEW_POST_ACTION_DRAW_BOARD;
 
 import java.util.ResourceBundle;
 import javafx.scene.Scene;
@@ -53,10 +54,12 @@ public class SceneManager implements GameEventListener {
   }
 
   private void setMonopolyGameEditorScene() {
-    MonopolyGameEditorScene monopolyGameEditorScene = new MonopolyGameEditorScene(primaryStage);
+    MonopolyGameEditorScene monopolyGameEditorScene = new MonopolyGameEditorScene(primaryStage,
+        gameEventHandler);
     currentScene = new Scene(monopolyGameEditorScene.getRootPane(), primaryStage.getMaxWidth(),
         primaryStage.getMaxHeight());
     setPrimaryStageToCurrScene();
+    gameEventHandler.publish(VIEW_POST_ACTION_DRAW_BOARD);
   }
 
   private void setGameSelectionScene() {
