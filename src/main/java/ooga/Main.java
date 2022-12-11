@@ -34,23 +34,6 @@ public class Main extends Application {
     GameEventHandler gameEventHandler = new GameEventHandler();
     Controller controller = new Controller(gameEventHandler);
     gameEventHandler.addEventListener(controller);
-    MainView mainView = new MainView(primaryStage, gameEventHandler);
-    mainView.start();
-//    StartView startView = new StartView(primaryStage, gameEventHandler);
+    StartView startView = new StartView(primaryStage, gameEventHandler);
   }
-
-  /**
-   * Start of the program.
-   * NOTE: I (Leila) commented this out for now just to allow the start screen to pop up.
-   */
-
-//  public static void main(String[] args) {
-//    GameEventHandler gameEventHandler = new GameEventHandler();
-//    SampleController sampleController = new SampleController(gameEventHandler);
-//    gameEventHandler.addEventListener(sampleController);
-//    SampleView sampleView = new SampleView(gameEventHandler);
-//    gameEventHandler.addEventListener(sampleView);
-////    sampleView.start();
-//  }
-
 }

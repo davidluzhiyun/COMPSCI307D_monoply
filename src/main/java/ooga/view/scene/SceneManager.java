@@ -73,7 +73,12 @@ public class SceneManager implements GameEventListener {
   }
 
   private void setBoardEditorScene() {
-    System.out.println("Nothing to see here yet");
+    MonopolyGameEditorScene monopolyGameEditorScene = new MonopolyGameEditorScene(primaryStage,
+        gameEventHandler);
+    currentScene = new Scene(monopolyGameEditorScene.getRootPane(), primaryStage.getMaxWidth(),
+        primaryStage.getMaxHeight());
+    setPrimaryStageToCurrScene();
+    gameEventHandler.publish(VIEW_POST_ACTION_DRAW_BOARD);
   }
 
   private void setGameView() {
@@ -85,6 +90,7 @@ public class SceneManager implements GameEventListener {
 
   /**
    * TODO: refactor for sure.
+   *
    * @param event
    */
   @Override
