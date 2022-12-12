@@ -28,18 +28,18 @@ public class BoardSetUpRunnable extends ParsingJsonRunnable implements EventGene
 
     @Override
     public GameEvent processEvent() {
-        InitBoardRecord startInfo = new InitBoardRecord(getParsedProperty(), this.boardInfo.getStationaryAction(), this.boardInfo.getPlayers(), this.boardInfo.getCurrentPlayer());
+        InitBoardRecord startInfo = new InitBoardRecord(getParsedProperty(this.boardInfo), this.boardInfo.getStationaryAction(), this.boardInfo.getPlayers(), this.boardInfo.getCurrentPlayer());
         BoardSetUpCommand setUp = new BoardSetUpCommand(startInfo);
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_START_GAME.name(), setUp);
     }
 
-    private List<ParsedProperty> getParsedProperty() {
+    public static List<ParsedProperty> getParsedProperty(ModelOutput boardInfo) {
         List<ParsedProperty> parsedProperties = new ArrayList<>();
-        for(ControllerPlace place : this.boardInfo.getBoard()) {
+        for(ControllerPlace place : boardInfo.getBoard()) {
             try {
-                parsedProperties.add(new ParsedProperty(getPlaceType(place), getPlaceName(place), place.getColorSetId()));
+                parsedProperties.add(new ParsedProperty(getId(place), getPlaceType(place), getPlaceName(place), place.getColorSetId(), getImage(place)));
             } catch (NoColorAttributeException e) {
-                parsedProperties.add(new ParsedProperty(getPlaceType(place), getPlaceName(place), -1));
+                parsedProperties.add(new ParsedProperty(getId(place), getPlaceType(place), getPlaceName(place), -1, getImage(place)));
             }
         }
         return parsedProperties;

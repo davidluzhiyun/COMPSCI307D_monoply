@@ -26,6 +26,8 @@ public class EventSelector {
         eventTypeMap.put(GameState.PAY_RENT.name(), PayRentRunnable::new);
         eventTypeMap.put(GameState.BUILD_HOUSE.name(), BuildHouseRunnable::new);
         eventTypeMap.put(GameState.COMMUNITY_CARD.name(), CardRunnable::new);
+        eventTypeMap.put(GameState.LOAD_BOARD.name(), LoadBoardRunnable::new);
+        eventTypeMap.put(GameState.LOAD_GAME_STATE.name(), LoadGameStateRunnable::new);
     }
 
     public EventGenerator selectEventRunnable(String eventName, Command command) {
