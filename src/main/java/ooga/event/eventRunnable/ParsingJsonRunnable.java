@@ -26,14 +26,18 @@ public class ParsingJsonRunnable implements EventGenerator{
 
     public static final String imageRegex = ".+\"image\": (.+).?";
 
-    public static final String idRegex = ".+\"id\": (\\d+).?";
+    public static final String upperTextRegex = ".+\"upperText\": \"(.+)\".?";
+
+    public static final String lowerTextRegex = ".+\"lowerText\": \"(.+)\".?";
+
+    public static final String idRegex = ".+\"id\": \"(.+)\".?";
 
     @Override
     public GameEvent processEvent() {
         return null;
     }
 
-    protected Map<String, LinkedTreeMap> parseJSON(File file) {
+    protected static Map<String, LinkedTreeMap> parseJSON(File file) {
         try (Reader reader = new FileReader(file)) {
             // Convert JSON File to Java Object
             return new Gson().fromJson(reader, Map.class);
@@ -91,13 +95,23 @@ public class ParsingJsonRunnable implements EventGenerator{
         return getString(fileName, typeRegex);
     }
 
-    protected static String getImage(ControllerPlace place) {
-        String fileName = PLACE_PATH + place.getPlaceId() + JSON_EXTENSION;
-        return getString(fileName, imageRegex);
-    }
+//    protected static String getImage(ControllerPlace place) {
+//        String fileName = PLACE_PATH + place.getPlaceId() + JSON_EXTENSION;
+//        return getString(fileName, imageRegex);
+//    }
 
     protected static String getId(ControllerPlace place) {
         String fileName = PLACE_PATH + place.getPlaceId() + JSON_EXTENSION;
         return getString(fileName, idRegex);
+    }
+
+    protected static String getLowerText(ControllerPlace place) {
+        String fileName = PLACE_PATH + place.getPlaceId() + JSON_EXTENSION;
+        return getString(fileName, lowerTextRegex);
+    }
+
+    protected static String getUpperText(ControllerPlace place) {
+        String fileName = PLACE_PATH + place.getPlaceId() + JSON_EXTENSION;
+        return getString(fileName, upperTextRegex);
     }
 }

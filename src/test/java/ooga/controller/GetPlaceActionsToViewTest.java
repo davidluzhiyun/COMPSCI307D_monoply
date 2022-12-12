@@ -97,10 +97,11 @@ public class GetPlaceActionsToViewTest extends TestCase {
       this.modelOutput = modelOutput;
     }
 
-    @Override
-    public Object getCommandArgs() {
-      return this.modelOutput;
-    }
+
+      @Override
+      public Object getCommandArgs() {
+          return this.modelOutput;
+      }
   }
 
   public class MockListener implements GameEventListener {

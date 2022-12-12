@@ -42,9 +42,9 @@ public class ControllerDummyPlace implements Place {
   }
 
   @Override
-  public void updateCurrentPlayerPlaceActions(Player player) {
-
-  }
+    public void updateCurrentPlayerPlaceActions(Player player) {
+        // do nothing
+    }
 
   @Override
   public double getPurchasePrice() throws IllegalStateException {

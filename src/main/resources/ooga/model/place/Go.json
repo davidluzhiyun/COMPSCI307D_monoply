@@ -1,5 +1,6 @@
 {
-  "id": 0,
+  "id": "Go",
   "type": "Go",
-  "name": "Go"
+  "name": "Go",
+  "upperText": "Go"
 }

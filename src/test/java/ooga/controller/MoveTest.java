@@ -128,14 +128,14 @@ public class MoveTest extends TestCase {
 
     private final ModelOutput boardInfo;
 
-    public TestCommand(ModelOutput info) {
-      this.boardInfo = info;
+    public TestCommand(ModelOutput boardInfo) {
+        this.boardInfo = boardInfo;
     }
 
-    @Override
-    public Object getCommandArgs() {
-      return this.boardInfo;
-    }
+      @Override
+      public Object getCommandArgs() {
+          return this.boardInfo;
+      }
   }
 
   public class MockListener implements GameEventListener {
