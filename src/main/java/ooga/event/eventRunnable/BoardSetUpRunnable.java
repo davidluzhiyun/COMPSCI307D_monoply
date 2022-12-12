@@ -1,7 +1,9 @@
 package ooga.event.eventRunnable;
 
+import ooga.controller.Controller;
 import ooga.controller.InitBoardRecord;
 import ooga.controller.ParsedProperty;
+import ooga.controller.RowsColsRecord;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventType;
@@ -29,7 +31,8 @@ public class BoardSetUpRunnable extends ParsingJsonRunnable implements EventGene
 
     @Override
     public GameEvent processEvent() {
-        InitBoardRecord startInfo = new InitBoardRecord(getParsedProperty(boardInfo), this.boardInfo.getStationaryAction(), this.boardInfo.getPlayers(), this.boardInfo.getCurrentPlayerId());
+        RowsColsRecord dimension = Controller.getDimension();
+        InitBoardRecord startInfo = new InitBoardRecord(dimension.rows(), dimension.cols(), getParsedProperty(boardInfo), this.boardInfo.getStationaryAction(), this.boardInfo.getPlayers(), this.boardInfo.getCurrentPlayerId());
         BoardSetUpCommand setUp = new BoardSetUpCommand(startInfo);
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_START_GAME.name(), setUp);
     }
