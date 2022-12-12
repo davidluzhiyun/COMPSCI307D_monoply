@@ -1,6 +1,8 @@
 package ooga.model;
 
 
+import static ooga.model.component.ConcretePlayerTurn.modelToken;
+
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -8,6 +10,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import ooga.event.GameEventHandler;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
 
@@ -19,6 +22,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ConcretePlayer implements Player, ControllerPlayer {
+
+  public static final int DEFAULT_JAIL_TURNS = 3;
+  public static final int MAX_ROWS_IN_A_ROW = 4;
   private final int playerId;
   private double money;
   private int currentPlaceIndex;
@@ -61,6 +67,9 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     hasNextDice = true;
     dicesTotal = 1;
     //TODO: when in jail
+    if (remainingJailTurns > 0){
+      remainingJailTurns -= 1;
+    }
   }
 
 
@@ -83,6 +92,8 @@ public class ConcretePlayer implements Player, ControllerPlayer {
       // if one wish to do a version without jail, use polymorphism
       assert jailIndex > 0;
       setIndex(jailIndex);
+      GameEventHandler gameEventHandler = new GameEventHandler();
+      gameEventHandler.publish(modelToken + GameState.TO_JAIL);
     }
     catch (AssertionError e){
       IllegalStateException ex = new IllegalStateException("Jail index must be larger than zero", e);
@@ -182,8 +193,9 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   public void addOneDiceRoll() {
     hasNextDice = true;
     dicesTotal++;
-    if (dicesTotal == 4)
-      setJail(3);
+    if (dicesTotal > MAX_ROWS_IN_A_ROW)
+      dicesTotal = 1;
+      setJail(DEFAULT_JAIL_TURNS);
   }
 
   @Override
@@ -260,4 +272,10 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     }
 
   }
+
+  @Override
+  public void getOutOfJail() {
+    remainingJailTurns = 0;
+  }
+
 }
