@@ -35,7 +35,7 @@ public class BoardSaveTest {
             }
 
             @Override
-            public int getCurrentPlayer() {
+            public int getCurrentPlayerId() {
                 return 1;
             }
 

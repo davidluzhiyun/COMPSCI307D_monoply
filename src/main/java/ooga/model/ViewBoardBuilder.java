@@ -77,7 +77,7 @@ public class ViewBoardBuilder implements ViewBoard{
 
     @Override
     public Collection<PlaceAction> getPlaceActions() {
-      place.updatePlaceActions(player);
+      place.updateCurrentPlayerPlaceActions(player);
       return place.getPlaceActions();
     }
   }

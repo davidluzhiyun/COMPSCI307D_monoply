@@ -21,13 +21,19 @@
       "money": 0.0,
       "jail": 0,
       "currentPlaceIndex": 0,
+      "dicesTotal": 0,
+      "hasNextDice": false,
+      "ownedRailroadCount": 0,
       "properties": []
     },
     {
-      "id": 0,
+      "id": 1,
       "money": 0.0,
       "jail": 0,
       "currentPlaceIndex": 0,
+      "dicesTotal": 1,
+      "hasNextDice": false,
+      "ownedRailroadCount": 0,
       "properties": []
     }
   ]

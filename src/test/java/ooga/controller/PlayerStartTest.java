@@ -52,7 +52,7 @@ public class PlayerStartTest extends TestCase {
             }
 
             @Override
-            public int getCurrentPlayer() {
+            public int getCurrentPlayerId() {
                 return 1;
             }
 

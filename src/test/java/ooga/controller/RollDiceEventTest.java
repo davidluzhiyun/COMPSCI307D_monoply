@@ -48,7 +48,7 @@ public class RollDiceEventTest extends TestCase {
             }
 
             @Override
-            public int getCurrentPlayer() {
+            public int getCurrentPlayerId() {
                 return 0;
             }
 
