@@ -2,11 +2,14 @@ package ooga.event.eventRunnable;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import ooga.controller.Controller;
+import ooga.controller.RowsColsRecord;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.event.command.GameStartCommand;
+import ooga.event.command.RowsColsCommand;
 
 import java.io.*;
 import java.util.Map;
@@ -22,6 +25,12 @@ public class GameStartRunnable extends ParsingJsonRunnable implements EventGener
 
     private Map<String, LinkedTreeMap> parsedJson;
 
+    private final String META = "meta";
+
+    private final String ROWS = "rows";
+
+    private final String COLS = "columns";
+
     /**
      * Represents the logic/functions that need to occur when Controller receives game start from view
      * @param arguments; should be the input config file
@@ -34,7 +43,17 @@ public class GameStartRunnable extends ParsingJsonRunnable implements EventGener
     public GameEvent processEvent() {
         this.parsedJson = parseJSON(this.file);
         GameStartCommand gameStart = new GameStartCommand(parsedJson);
+        returnRowsCols(this.parsedJson);
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name(), gameStart);
+    }
+
+    private void returnRowsCols(Map<String, LinkedTreeMap> parsedJson) {
+        Double r = (Double) parsedJson.get(META).get(ROWS);
+        int rows = r.intValue();
+        Double c = (Double) parsedJson.get(META).get(COLS);
+        int cols = c.intValue();
+        RowsColsCommand command = new RowsColsCommand(new RowsColsRecord(rows, cols));
+        Controller.getGameEventHandler().publish(GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_CONTROLLER_ROW_COL.name(), command));
     }
 
 }
