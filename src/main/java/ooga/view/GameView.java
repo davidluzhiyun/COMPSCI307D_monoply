@@ -11,6 +11,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import ooga.Main;
+import ooga.controller.InitBoardRecord;
 import ooga.controller.LoadBoardRecord;
 import ooga.controller.MoveRecord;
 import ooga.event.GameEvent;
@@ -49,17 +50,13 @@ public class GameView extends View implements GameEventListener {
   private MonopolyBoardBuilder monopolyBoardBuilder;
   private MonopolyBoardInteractor interactor;
   // TODO: get this instead from controller
-  private final int numPlayers;
+  private int numPlayers;
   private int currentPlayer;
 
   public GameView(GameEventHandler gameEventHandler, String language, Stage stage) {
     this.myLanguage = language;
     this.myStage = stage;
-    this.gameEventHandler = gameEventHandler;
-    //TODO: Change this to actually get the number of players
-    this.numPlayers = 4;
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + StartView.SCREEN);
-
     this.gameEventHandler = gameEventHandler;
     gameEventHandler.addEventListener(this);
   }
@@ -81,7 +78,6 @@ public class GameView extends View implements GameEventListener {
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
     myStage.show();
-    chooseGamePieces();
     return myScene;
   }
 
@@ -198,6 +194,12 @@ public class GameView extends View implements GameEventListener {
       case "CONTROLLER_TO_VIEW_MOVE" -> {
         MoveRecord cmd = (MoveRecord) event.getGameEventCommand().getCommand().getCommandArgs();
         monopolyBoardBuilder.movePlayer(cmd.placeIndex(), currentPlayer);
+      }
+      case "CONTROLLER_TO_VIEW_START_GAME" -> {
+        InitBoardRecord record = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+        this.currentPlayer = record.currentPlayerId();
+        this.numPlayers = record.players().size();
+        chooseGamePieces();
       }
     }
   }

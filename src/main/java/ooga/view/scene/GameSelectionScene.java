@@ -82,7 +82,7 @@ public class GameSelectionScene extends View {
    * eventually publish some event to the controller...
    */
   public void startNewGame() {
-    makeFileDialog(Main.CONFIG_FILES_DIRECTORY);
+    makeFileDialog(Main.CONFIG_FILES_DIRECTORY, "VIEW_TO_CONTROLLER_GAME_START");
   }
 
   /**
@@ -91,10 +91,10 @@ public class GameSelectionScene extends View {
    * also publish some event to the controller...
    */
   public void loadGame() {
-    makeFileDialog(Main.PAUSED_GAME_DIRECTORY);
+    makeFileDialog(Main.PAUSED_GAME_DIRECTORY, "VIEW_TO_CONTROLLER_LOAD_BOARD");
   }
 
-  private void makeFileDialog(String initialDirectory) {
+  private void makeFileDialog(String initialDirectory, String eventName) {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setInitialDirectory(new File(initialDirectory));
     fileChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(JSON_FILE_EXTENSION,
@@ -107,6 +107,8 @@ public class GameSelectionScene extends View {
       GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SCREEN",
           cmd);
       myGameEventHandler.publish(event);
+      GameEvent eventTwo = GameEventHandler.makeGameEventwithCommand(eventName, cmd);
+      myGameEventHandler.publish(eventTwo);
     }
   }
 
