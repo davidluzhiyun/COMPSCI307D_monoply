@@ -2,9 +2,11 @@ package ooga.view.scene;
 
 import java.io.File;
 import java.util.ResourceBundle;
+
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
@@ -15,6 +17,7 @@ import ooga.event.GameEventHandler;
 import ooga.event.command.Command;
 import ooga.event.command.GameEditorCommand;
 import ooga.event.command.GameStartViewCommand;
+import ooga.model.exception.BadDataException;
 import ooga.view.StartView;
 import ooga.view.View;
 import ooga.view.pop_ups.NoFileErrorPopUp;
@@ -82,7 +85,18 @@ public class GameSelectionScene extends View {
    * eventually publish some event to the controller...
    */
   public void startNewGame() {
-    makeFileDialog(Main.CONFIG_FILES_DIRECTORY, "VIEW_TO_CONTROLLER_GAME_START");
+    try {
+      makeFileDialog(Main.CONFIG_FILES_DIRECTORY, "VIEW_TO_CONTROLLER_GAME_START");
+    } catch (BadDataException e) {
+      showError(e.getMessage());
+    }
+  }
+
+  private void showError(String message) {
+    Alert alert = new Alert(Alert.AlertType.ERROR);
+    alert.setTitle("ERROR");
+    alert.setContentText(message);
+    alert.showAndWait();
   }
 
   /**
@@ -104,12 +118,15 @@ public class GameSelectionScene extends View {
       NoFileErrorPopUp pop = new NoFileErrorPopUp();
       pop.showMessage(myLanguage);
     } else {
+      // send config file to model
       Command cmd = new GameStartViewCommand(configFile);
+      GameEvent event2 = GameEventHandler.makeGameEventwithCommand(eventType, cmd);
+      myGameEventHandler.publish(event2);
+
+      // launching game screen
       GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SCREEN",
           cmd);
       myGameEventHandler.publish(event);
-      GameEvent event2 = GameEventHandler.makeGameEventwithCommand(eventType, cmd);
-      myGameEventHandler.publish(event2);
     }
   }
 
