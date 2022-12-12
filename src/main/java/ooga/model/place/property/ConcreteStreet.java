@@ -57,30 +57,29 @@ public class ConcreteStreet extends AbstractProperty implements Street {
   }
 
   /**
-   * @author David Lu
-   * Calculate the amount of money the player passing by need to pay
    * @param player
    * @return
+   * @author David Lu
+   * Calculate the amount of money the player passing by need to pay
    */
   @Override
   public double getMoney(Player player) {
     try {
-      if (isMortgaged() || getOwner() == null){
+      if (isMortgaged() || getOwner() == null) {
         return 0;
       }
-      if (getOwner().getPlayerId() == player.getPlayerId()){
+      if (getOwner().getPlayerId() == player.getPlayerId()) {
         return 0;
       }
-      if (!getOwner().checkMonopolyOver(colorId)){
+      if (!getOwner().checkMonopolyOver(colorId)) {
         return rent;
       }
-      if (housesBuilt == 0){
+      if (housesBuilt == 0) {
         return rentWithColorSet;
       }
       return rentWithHouses.get(housesBuilt - 1);
-    }
-    catch (NullPointerException e){
-      throw new IllegalStateException("Input can't be null",e);
+    } catch (NullPointerException e) {
+      throw new IllegalStateException("Input can't be null", e);
     }
   }
 
@@ -94,29 +93,15 @@ public class ConcreteStreet extends AbstractProperty implements Street {
     return housesBuilt;
   }
 
-  public void print() {
-    System.out.println(11111);
-  }
-
   @Override
   public void setHouseCount(int count) throws IllegalStateException {
     housesBuilt = count;
   }
 
   @Override
-  public void updatePlaceActions(Player player) {
-    Collection<PlaceAction> updatedPlaceActions = getPlaceActions();
-    Collection<PlaceAction> inherentPlaceActions = getInherentPlaceActions();
-    updatedPlaceActions.clear();
-    updatedPlaceActions.addAll(inherentPlaceActions);
-    if (player.canBuildOn(this) && housesBuilt <= MAX_HOUSE && (!isMortgaged())) {
-      updatedPlaceActions.add(PlaceAction.BUILD_HOUSE);
-      updatedPlaceActions.add(PlaceAction.MORTGAGE);
-    } else {
-      //In case build house or mortgage was put into inherentPlaceAction by teammates
-      updatedPlaceActions.remove(PlaceAction.BUILD_HOUSE);
-      updatedPlaceActions.remove(PlaceAction.MORTGAGE);
-      //TODO: other effects of mortgage
-    }
+  public void updateCurrentPlayerPlaceActions(Player player) {
+    super.updateCurrentPlayerPlaceActions(player);
+    if (player.canBuildOn(this))
+      getPlaceActions().add(PlaceAction.BUILD_HOUSE);
   }
 }

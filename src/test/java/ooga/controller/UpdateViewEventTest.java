@@ -133,7 +133,7 @@ public class UpdateViewEventTest extends TestCase {
             }
 
             @Override
-            public int getCurrentPlayer() {
+            public int getCurrentPlayerId() {
                 return 0;
             }
 

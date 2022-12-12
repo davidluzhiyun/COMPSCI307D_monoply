@@ -25,7 +25,7 @@ public interface Place extends ControllerPlace{
    * @param player
    *
    */
-  void updatePlaceActions(Player player);
+  void updateCurrentPlayerPlaceActions(Player player);
 
   /**
    * Get the price to purchase the property.
