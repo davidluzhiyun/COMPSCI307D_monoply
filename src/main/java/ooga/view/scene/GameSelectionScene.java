@@ -17,7 +17,7 @@ import ooga.event.command.GameEditorCommand;
 import ooga.event.command.GameStartViewCommand;
 import ooga.view.StartView;
 import ooga.view.View;
-import ooga.view.pop_ups.NoFileErrorPopUp;
+import ooga.view.pop_ups.errors.NoFileErrorPopUp;
 
 public class GameSelectionScene extends View {
 
@@ -101,8 +101,7 @@ public class GameSelectionScene extends View {
         DATA_FILE_JSON_EXTENSION));
     File configFile = fileChooser.showOpenDialog(myStage);
     if (configFile == null) {
-      NoFileErrorPopUp pop = new NoFileErrorPopUp();
-      pop.showMessage(myLanguage);
+      NoFileErrorPopUp pop = new NoFileErrorPopUp(myLanguage);
     } else {
       Command cmd = new GameStartViewCommand(configFile);
       GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SCREEN",

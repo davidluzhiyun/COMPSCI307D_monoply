@@ -19,6 +19,7 @@ import ooga.view.components.GamePiece;
 import ooga.view.components.MonopolyBoardBuilder;
 import ooga.view.drop_down.CustomizedDropDown;
 import ooga.view.drop_down.GamePieceDropDown;
+import ooga.view.pop_ups.errors.NoGamePieceErrorPopUp;
 
 /**
  * A pop-up that displays the current player and gives them the option to select their game piece.
@@ -100,8 +101,7 @@ public class GamePiecePopUp extends ActionPopUp {
           event.consume();
         }
       });
-      NoGamePieceErrorPopUp error = new NoGamePieceErrorPopUp();
-      error.showMessage(myLanguage);
+      NoGamePieceErrorPopUp error = new NoGamePieceErrorPopUp(myLanguage);
     }
   }
 

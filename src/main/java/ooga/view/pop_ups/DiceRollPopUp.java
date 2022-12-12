@@ -1,20 +1,21 @@
 package ooga.view.pop_ups;
 
 import java.util.ResourceBundle;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import ooga.Main;
 import ooga.Reflection;
 import ooga.view.GameView;
-import ooga.view.InteractiveObject;
 import ooga.view.StartView;
 import ooga.view.View;
 import ooga.view.button.DiceRollButton;
+import ooga.view.pop_ups.errors.NoRollErrorPopUp;
 
 /**
  * This pop up is a little different because it requires action to be taken. May want to consider
@@ -39,11 +40,15 @@ public class DiceRollPopUp extends ActionPopUp {
   private final ResourceBundle idResources;
   public static final String ROLL_TEXT = "RollText";
   public static final String DICE_ROLL_POP_UP_KEY = "DiceRollPopUp";
+  private boolean isRolled = false;
 
 
   public DiceRollPopUp(int player, String style) {
     this.currentPlayer = player;
     this.myStage = new Stage();
+    myStage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+      close();
+    });
     this.popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
     this.myHeight = Integer.parseInt(popUpResources.getString(HEIGHT));
     this.myWidth = Integer.parseInt(popUpResources.getString(WIDTH));
@@ -99,7 +104,24 @@ public class DiceRollPopUp extends ActionPopUp {
 
   @Override
   public void close() {
-    myStage.close();
+    if(isRolled) {myStage.close();}
+    else {
+      myStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+        @Override
+        public void handle(WindowEvent event) {
+          event.consume();
+        }
+      });
+      NoRollErrorPopUp pop = new NoRollErrorPopUp(myLanguage);
+    }
+  }
+
+  /**
+   * Users should not be able to close this pop up without first rolling the dice.
+   */
+  public void closeFromGame() {
+    this.isRolled = true;
+    close();
   }
 
 }

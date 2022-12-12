@@ -139,7 +139,7 @@ public class GameView extends View implements GameEventListener {
   }
 
   /**
-   * Will later need to take in current player (int) parameter -- or use instance variable
+   * Presents the user with a pop up to roll the dice.
    */
   private void startPlayerTurn(int player) {
     this.currentPlayer = player;
@@ -152,6 +152,8 @@ public class GameView extends View implements GameEventListener {
    * Set in property files to be called when the user clicks "Roll" within the RollDicePopUp
    */
   public void rollDice() {
+    myDicePopUp.closeFromGame();
+    myDicePopUp.close();
     Command cmd = new RollDiceCommand();
     GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_TO_MODEL_ROLL_DICE",
         cmd);

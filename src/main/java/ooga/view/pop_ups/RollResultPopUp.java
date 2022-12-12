@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 import ooga.Main;
 import ooga.view.View;
 
-public class RollResultPopUp extends InformationPopUp {
+public class RollResultPopUp implements PopUp {
 
   public static final String DICE_ROLL_MESSAGE = "DiceRollPopUp";
   public static final String DICE_ROLL_MESSAGE_HEADER = "DiceRollPopUpHeader";

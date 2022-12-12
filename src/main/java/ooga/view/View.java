@@ -19,7 +19,6 @@ public abstract class View {
 
   public void styleScene(Scene scene, String file) {
     String fileName = String.format("%s.css", file);
-    System.out.println(STYLESHEETS + fileName);
     scene.getStylesheets()
         .add(View.class.getResource(STYLESHEETS + fileName).toExternalForm());
   }
