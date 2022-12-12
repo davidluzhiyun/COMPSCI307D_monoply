@@ -36,24 +36,10 @@ public class MonopolyBoardBuilder implements Builder<Region> {
 
     MonopolyCardBuilder builder = new MonopolyCardBuilder(grid);
 
-//    Rectangle test = new Rectangle(30, 30);
-//    test.setFill(Color.GREY);
-//    grid.add(test, 2, 2);
     drawBottom(map, models, builder);
     drawLeft(map, models, builder);
     drawTop(map, models, builder);
     drawRight(map, models, builder);
-
-//    Pane colorCard = new Pane();
-//    colorCard.setMaxSize(60, 20);
-//    colorCard.setBorder(new Border(
-//        new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
-//            new BorderWidths(0, 0, 2, 0))));
-//    colorCard.setBackground(Background.fill(Color.BROWN));
-//    grid.add(colorCard, 2, 2);
-//    grid.getCellBounds(1, 2);
-
-//    Bounds boundsInScene = colorCard.localToScreen(colorCard.getBoundsInLocal());
   }
 
   private void drawBottom(HashMap<Integer, Location> map, List<MonopolyCardViewModel> models,
@@ -134,6 +120,7 @@ public class MonopolyBoardBuilder implements Builder<Region> {
 
   /**
    * Send command to model to tell them we need place actions for the given property.
+   *
    * @param index: the index of the place card the user has clicked on
    */
   private void dealWithMouseClick(int index) {
@@ -142,26 +129,33 @@ public class MonopolyBoardBuilder implements Builder<Region> {
         cmd);
     gameEventHandler.publish(event);
   }
+
   public void drawPostProcessing() {
     addCardsToGrid();
   }
 
   @Override
-  public Region build() {return board;}
+  public Region build() {
+    return board;
+  }
 
   /**
-   * Called by GamePiecePopUp whenever a new pop up is created. Places the piece at GO (well eventually it will)
-   * @param piece: the new piece that was created
+   * Called by GamePiecePopUp whenever a new pop up is created. Places the piece at GO (well
+   * eventually it will)
+   *
+   * @param piece:  the new piece that was created
    * @param player: not used right now, but probably a good idea to create some mapping
    */
   public void initializeGamePiece(GamePiece piece, int player) {
-    playerPieces.add(player-1, piece);
+    playerPieces.add(player - 1, piece);
     board.getChildren().add(piece);
     Bounds bound = getBoundsbyIndex(0);
     piece.placeObject(bound.getMinX(), bound.getMinY());
   }
+
   /**
    * Called by BuyHousePopUp if users decide to buy a house.
+   *
    * @param property: int, index of the property they selected
    */
   public void buildHouse(int property) {
@@ -173,11 +167,12 @@ public class MonopolyBoardBuilder implements Builder<Region> {
 
   /**
    * TODO: need to either have the piece know its current index, or get the result from model.
-   * @param newIdx index of the new property the player should move to
+   *
+   * @param newIdx         index of the new property the player should move to
    * @param currentPlayer: int of player whose piece needs to be moved
    */
   public void movePlayer(int newIdx, int currentPlayer) {
-    GamePiece piece = playerPieces.get(currentPlayer-1);
+    GamePiece piece = playerPieces.get(currentPlayer - 1);
     Bounds bound = getBoundsbyIndex(newIdx);
     piece.placeObject(bound.getMinX(), bound.getMinY());
   }

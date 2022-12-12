@@ -26,8 +26,11 @@ import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
 import ooga.model.colorSet.ConcreteColorSet;
 import ooga.model.component.ConcretePlayerTurn;
+import ooga.model.exception.BadDataException;
 import ooga.model.exception.MonopolyException;
+import ooga.model.gamearchive.GameConfig;
 import ooga.model.gamearchive.GameLoader;
+import ooga.model.gamearchive.InitialConfigLoader;
 import ooga.model.gamearchive.Metadata;
 import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
@@ -40,9 +43,9 @@ public class GameModel implements GameEventListener, ModelOutput {
   private ConcretePlayerTurn turn;
   private List<Player> players;
   private List<Place> places;
-  private GameEventHandler gameEventHandler;
+  private final GameEventHandler gameEventHandler;
   public static final String DEFAULT_RESOURCE_PACKAGE = "properties.";
-  private ResourceBundle modelResources;
+  private final ResourceBundle modelResources;
   private static final Logger LOG = LogManager.getLogger(GameModel.class);
   private GameState gameState;
   private int queryIndex;
@@ -75,9 +78,8 @@ public class GameModel implements GameEventListener, ModelOutput {
       place.updateCurrentPlayerPlaceActions(currentPlayer);
     }
     ModelOutput gameData = this;
-    Command cmd = new GameDataCommand(gameData);
     Command<ModelOutput> cmd1 = new ConcreteCommand<>(gameData);
-    GameEvent event = gameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_GAME_DATA.name(), cmd);
+    GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), cmd1);
     gameEventHandler.publish(event);
   }
 
@@ -95,29 +97,25 @@ public class GameModel implements GameEventListener, ModelOutput {
    * "protected" is for test purpose
    */
   protected void initializeGame(Map<String, LinkedTreeMap> map) {
-    places = new ArrayList<>();
-    int j = 0;
-//    int jailIndex = (int) (double) map.get("meta").get("jail");
-    while (map.containsKey(String.valueOf(j))) {
-      places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (String) map.get(String.valueOf(j)).get("id")));
-//      if (map.get(String.valueOf(j)).get("type").equals("jail"))
-//        if (jailIndex != j) //if the index of jail is inconsistent with what is in the metadata
-//          throw new MonopolyException("Bad data file");
-      j++;
-    }
-    Map<Integer, Predicate<Collection<Place>>> checkers = new ConcreteColorSet(places).outputCheckers();
-    players = new ArrayList<>();
-    for (int i = 0; i < (int) (double) map.get("meta").get("players"); i++) {
-      Player newPlayer = new ConcretePlayer(i);
-      newPlayer.setColorSetCheckers(checkers);
-      players.add(newPlayer);
-    }
+    InitialConfigLoader initialConfigLoader = new InitialConfigLoader(map, modelResources);
+    initialConfigLoader.check();
+
+    places = initialConfigLoader.getPlaces();
+    players = initialConfigLoader.getPlayers();
+    GameConfig gameConfig;
+//    try {
+//      gameConfig = initialConfigLoader.getGameConfig();
+//    }
+//    catch (BadDataException e){
+//      Command<MonopolyException> command = new ConcreteCommand<>(e);
+//      GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_VIEW_EXCEPTION.name(), command);
+//      LOG.warn(e);
+//      gameEventHandler.publish(event);
+//    }
+    gameConfig = initialConfigLoader.getGameConfig();
     turn = new ConcretePlayerTurn(players, places, 0);
   }
 
-  private void checkIsInitConfigValid(Map<String, LinkedTreeMap> map) {
-
-  }
 
   /**
    * "protected" is for test purpose
@@ -134,33 +132,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     publishGameData(GameState.LOAD_BOARD);
   }
 
-  /**
-   * "protected" is for test purpose
-   *
-   * @param type
-   */
-  protected Place createPlace(String type, String id) {
-    Place newPlace;
-    Class<?> placeClass;
-    System.out.println(type);
-    System.out.println(id);
-    try {
-      placeClass = Class.forName(PLACE_PACKAGE_NAME + modelResources.getString(type));
-    } catch (ClassNotFoundException e) {
-      LOG.warn(e);
-      throw new IllegalStateException("classNotFound", e);
-    }
-    Constructor<?>[] makeNewPlace = placeClass.getConstructors();
-    try {
-      newPlace = (Place) makeNewPlace[0].newInstance(id);
-    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-      LOG.warn(e);
-      throw new RuntimeException(e);
-    }
-    return newPlace;
-  }
   // beginning of ModelOutput methods
-
   @Override
   public GameState getGameState() {
     return gameState;
@@ -178,22 +150,19 @@ public class GameModel implements GameEventListener, ModelOutput {
 
   @Override
   public List<ControllerPlayer> getPlayers() {
-    List<ControllerPlayer> playersData = new ArrayList<>(players);
-    return playersData;
+    return new ArrayList<>(players);
   }
 
   @Override
   public List<ControllerPlace> getBoard() {
-    List<ControllerPlace> board = new ArrayList<>(places);
-    return board;
+    return new ArrayList<>(places);
   }
 
   @Override
   public Collection<StationaryAction> getStationaryAction() {
     Player currentPlayer = getCurrentPlayerHelper();
     Place currentPlace = places.get(currentPlayer.getCurrentPlaceIndex());
-    Collection<StationaryAction> stationaryActions = currentPlace.getStationaryActions(currentPlayer);
-    return stationaryActions;
+    return currentPlace.getStationaryActions(currentPlayer);
   }
 
   @Override
@@ -229,10 +198,10 @@ public class GameModel implements GameEventListener, ModelOutput {
     eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name(), this::startGame);
     eventTypeMap.put(GameEventType.VIEW_TO_MODEL_PURCHASE_PROPERTY.name(), this::purchaseProperty);
     eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_CHECK_PLACE_ACTION.name(), this::sendPlaceActions);
-//    eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_END_TURN.name(), e -> {
-//      endTurn();
-//      publishGameData(GameState.NEXT_PLAYER);
-//    });
+    eventTypeMap.put(GameEventType.VIEW_TO_MODEL_END_TURN.name(), e -> {
+      endTurn();
+      publishGameData(GameState.NEXT_PLAYER);
+    });
   }
 
   private void sendPlaceActions(GameEvent event) {
@@ -248,7 +217,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     publishGameData(GameState.BUY_PROPERTY);
   }
 
-  private void startGame(GameEvent event) {
+  private void startGame(GameEvent event) throws BadDataException {
     Command cmd = event.getGameEventCommand().getCommand();
     initializeGame((Map) cmd.getCommandArgs());
     publishGameData(GameState.GAME_SET_UP);

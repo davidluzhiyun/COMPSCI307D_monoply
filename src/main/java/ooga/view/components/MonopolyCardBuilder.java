@@ -21,8 +21,8 @@ import javafx.util.Builder;
 public class MonopolyCardBuilder implements Builder<Region> {
 
   private final double defaultFontSize = 13;
-  private final double MAX_TEXT_WIDTH = 300;
   private final Font defaultFont = Font.font(defaultFontSize);
+  private double MAX_TEXT_WIDTH;
   private MonopolyCardViewModel model;
   private GridPane grid;
   private int location;
@@ -38,13 +38,18 @@ public class MonopolyCardBuilder implements Builder<Region> {
 
   public void setLocation(int loc) {
     location = loc;
+    if (loc % 2 == 0) {
+      MAX_TEXT_WIDTH = model.getWidth();
+    } else {
+      MAX_TEXT_WIDTH = model.getHeight();
+    }
   }
 
   @Override
   public Region build() {
     StackPane card = new StackPane();
     styleCard(card);
-//    card.getChildren().addAll(createColor(), createTextLabel(), createPriceLabel(), createImage());
+
     if (model.getType().equals("Street")) {
       card.getChildren().addAll(createColor(), createTextLabel());
     }
@@ -97,6 +102,7 @@ public class MonopolyCardBuilder implements Builder<Region> {
     final TextField tf = new TextField(model.getName());
     Label city = new Label();
     city.setFont(defaultFont);
+
     city.textProperty().addListener((observable, oldValue, newValue) -> {
       //create temp Text object with the same text as the label
       //and measure its width using default label font size
@@ -111,7 +117,7 @@ public class MonopolyCardBuilder implements Builder<Region> {
       } else {
         //and if it isn't, calculate new font size,
         // so that label text width matches MAX_TEXT_WIDTH
-        double newFontSize = defaultFontSize * MAX_TEXT_WIDTH / textWidth - 1;
+        double newFontSize = defaultFontSize * MAX_TEXT_WIDTH / textWidth;
         city.setFont(Font.font(defaultFont.getFamily(), newFontSize));
       }
     });

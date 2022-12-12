@@ -29,11 +29,6 @@ class GameModelTest {
     modelResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Model");
   }
 
-  @Test
-  void testCreatePlaceStreet() {
-    Street street = (Street) model.createPlace("Street", "121");
-    assertEquals(100, street.getHousePrice());
-  }
 
   @Test
   void testInitializeGame() {
