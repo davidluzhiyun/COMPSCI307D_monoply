@@ -195,6 +195,8 @@ public class GameModel implements GameEventListener, ModelOutput {
 
   @Override
   public void onGameEvent(GameEvent event) {
+    System.out.println("in game model");
+    System.out.println(event);
     Pattern pattern = Pattern.compile("MODEL_TO_MODEL_(.+)");
     Matcher matcher = pattern.matcher(event.getGameEventType());
     if (matcher.find())

@@ -6,6 +6,7 @@ import ooga.controller.Controller;
 import ooga.controller.SampleController;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
+import ooga.model.GameModel;
 import ooga.view.MainView;
 import ooga.view.SampleView;
 import ooga.view.StartView;
@@ -32,8 +33,10 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     GameEventHandler gameEventHandler = new GameEventHandler();
+    StartView startView = new StartView(primaryStage, gameEventHandler);
+    GameModel model = new GameModel(gameEventHandler);
+    gameEventHandler.addEventListener(model);
     Controller controller = new Controller(gameEventHandler);
     gameEventHandler.addEventListener(controller);
-    StartView startView = new StartView(primaryStage, gameEventHandler);
   }
 }

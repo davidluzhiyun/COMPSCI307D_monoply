@@ -86,6 +86,7 @@ public class SceneManager implements GameEventListener {
     currentScene = gameViewScene.setUpScene(primaryStage.getMaxWidth(),
         primaryStage.getMaxHeight(), myStyle);
     setPrimaryStageToCurrScene();
+    gameEventHandler.publish(VIEW_POST_ACTION_DRAW_BOARD);
   }
 
   /**
