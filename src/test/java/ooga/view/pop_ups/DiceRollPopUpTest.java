@@ -34,7 +34,6 @@ class DiceRollPopUpTest extends DukeApplicationTest {
     german = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + "German");
     spanish = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + "Spanish");
     indonesian = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + "Indonesian");
-
   }
 
   @Test
@@ -42,5 +41,12 @@ class DiceRollPopUpTest extends DukeApplicationTest {
     String expected = String.format(english.getString("PlayerText"), player);
     Label playerText = lookup("#DicePopPlayerText").query();
     assertEquals(expected, playerText.getText());
+  }
+
+  @Test
+  void testEnglish() {
+    String expected = String.format(english.getString("RollDice"), player);
+    Label rollText = lookup("#DicePopRollText").query();
+    assertEquals(expected, rollText.getText());
   }
 }

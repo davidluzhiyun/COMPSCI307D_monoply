@@ -69,4 +69,19 @@ public interface Player extends ControllerPlayer {
    * @return true if player has monopoly over color set of given id
    */
   boolean checkMonopolyOver(int colorId);
+  /**
+   * @author David Lu
+   * Set the index of the jail the player should goto
+   */
+  void setJailIndex(int jailIndex);
+  /**
+   * @author David Lu
+   * Get the player out of jail for free;
+   */
+  void getOutOfJail();
+  /**
+   * @author David Lu
+   * Get the player out of jail for a fee;
+   */
+  void payOutOfJail();
 }
