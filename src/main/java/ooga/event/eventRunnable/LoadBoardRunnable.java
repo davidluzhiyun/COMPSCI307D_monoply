@@ -28,6 +28,8 @@ public class LoadBoardRunnable extends ParsingJsonRunnable implements EventGener
 
   private final String ID = "id";
 
+  private final String IMAGE = "image";
+
   public LoadBoardRunnable(Command arguments) {
     this.gameConfig = (File) arguments.getCommandArgs();
   }
@@ -55,8 +57,9 @@ public class LoadBoardRunnable extends ParsingJsonRunnable implements EventGener
         String type = (String) parsedJson.get(key).get(TYPE);
         Double id = (Double) parsedJson.get(key).get(ID);
         String name = getPlaceName(Integer.toString(id.intValue()));
+        String image = (String) parsedJson.get(key).get(IMAGE);
         int colorId = getColorId(Integer.toString(id.intValue()));
-        places.add(new ParsedProperty(type, name, colorId));
+        places.add(new ParsedProperty(Double.toString(id), type, name, colorId, image));
       }
     }
     return new LoadBoardRecord(rows, cols, places);
