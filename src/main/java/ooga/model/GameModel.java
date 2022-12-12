@@ -195,8 +195,9 @@ public class GameModel implements GameEventListener, ModelOutput {
       publishGameData(GameState.DICE_RESULT);
     });
     eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name(), this::startGame);
-    eventTypeMap.put(GameEventType.VIEW_TO_MODEL_PURCHASE_PROPERTY.name(), this::purchaseProperty);
     eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_CHECK_PLACE_ACTION.name(), this::sendPlaceActions);
+    eventTypeMap.put(GameEventType.VIEW_TO_MODEL_PURCHASE_PROPERTY.name(), this::purchaseProperty);
+    eventTypeMap.put(GameEventType.VIEW_TO_MODEL_GET_PLACE_ACTIONS.name(), this::sendPlaceActions);
     eventTypeMap.put(GameEventType.VIEW_TO_MODEL_ROLL_DICE.name(), e -> turn.roll());
     eventTypeMap.put(GameEventType.VIEW_TO_MODEL_END_TURN.name(), e -> {
       endTurn();
