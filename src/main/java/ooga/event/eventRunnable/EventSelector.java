@@ -18,10 +18,13 @@ public class EventSelector {
         eventTypeMap.put(GameEventType.VIEW_TO_CONTROLLER_LOAD_BOARD.name(), LoadBoardRunnable::new);
         eventTypeMap.put(GameState.GAME_SET_UP.name(), BoardSetUpRunnable::new);
         eventTypeMap.put(GameState.DICE_RESULT.name(), RollDiceRunnable::new);
-        eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_GET_PLACE_ACTIONS.name(), GetPlaceActionsRunnableToView::new);
+        eventTypeMap.put(GameState.GET_PLACE_ACTIONS.name(), GetPlaceActionsRunnableToView::new);
         eventTypeMap.put(GameState.NEXT_PLAYER.name(), PlayerStartRunnable::new);
         eventTypeMap.put(GameState.BUY_PROPERTY.name(), BuyPropertyRunnable::new);
         eventTypeMap.put(GameState.MORTGAGE.name(), MortgageRunnable::new);
+        eventTypeMap.put(GameState.MOVE.name(), MoveRunnable::new);
+        eventTypeMap.put(GameState.PAY_RENT.name(), PayRentRunnable::new);
+        eventTypeMap.put(GameState.BUILD_HOUSE.name(), BuildHouseRunnable::new);
     }
 
     public EventGenerator selectEventRunnable(String eventName, Command command) {
