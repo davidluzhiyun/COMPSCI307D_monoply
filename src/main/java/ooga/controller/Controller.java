@@ -5,6 +5,7 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
+import ooga.event.eventRunnable.BoardSetUpRunnable;
 import ooga.event.eventRunnable.EventGenerator;
 import ooga.event.eventRunnable.EventSelector;
 import ooga.model.GameState;
@@ -25,7 +26,7 @@ public class Controller implements GameEventListener {
 
     private EventSelector eventSelector;
 
-    private static List<ControllerPlace> places;
+    private static List<ParsedProperty> places;
 
     public Controller(GameEventHandler gameEventHandler) {
         this.gameEventHandler = gameEventHandler;
@@ -40,7 +41,7 @@ public class Controller implements GameEventListener {
             if (event.getGameEventType().equals(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name())) {
                 ModelOutput boardInfo = (ModelOutput) event.getGameEventCommand().getCommand().getCommandArgs();
                 if (boardInfo.getGameState().equals(GameState.GAME_SET_UP)) {
-                    this.places = boardInfo.getBoard();
+                    this.places = BoardSetUpRunnable.getParsedProperty(boardInfo);
                 }
             }
             EventGenerator eventGenerator = getEventRunnable(event.getGameEventType(), event.getGameEventCommand().getCommand());
@@ -49,7 +50,7 @@ public class Controller implements GameEventListener {
         }
     }
 
-    public static List<ControllerPlace> getControllerPlaces() {
+    public static List<ParsedProperty> getControllerPlaces() {
         return places;
     }
 
