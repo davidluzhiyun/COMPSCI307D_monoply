@@ -1,5 +1,6 @@
 package ooga.view.components;
 
+import java.util.List;
 import ooga.controller.InitBoardRecord;
 import ooga.controller.LoadBoardRecord;
 import ooga.controller.ParsedProperty;
@@ -13,22 +14,24 @@ public class MonopolyBoardInteractor {
   }
 
   public void initialize(LoadBoardRecord boardData) {
-    initializeCards(boardData);
-    initializeRowCol(boardData);
+    initializeCards(boardData.places());
+    initializeRowCol(boardData.rows(), boardData.columns());
   }
 
   public void initializeNewBoard(InitBoardRecord data) {
+    initializeCards(data.places());
+    initializeRowCol(data.rows(), data.cols());
   }
 
-  private void initializeRowCol(LoadBoardRecord boardData) {
-    model.setBoardRow(boardData.rows());
-    model.setBoardCol(boardData.columns());
+  private void initializeRowCol(int rows, int cols) {
+    model.setBoardRow(rows);
+    model.setBoardCol(cols);
     model.update();
   }
 
-  private void initializeCards(LoadBoardRecord boardData) {
+  private void initializeCards(List<ParsedProperty> places) {
     model.getCardModels().addAll(
-        boardData.places().stream().map(property -> propertyToCardMapper(property)).toList()
+        places.stream().map(property -> propertyToCardMapper(property)).toList()
     );
   }
 

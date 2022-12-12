@@ -120,7 +120,7 @@ public class GameView extends View implements GameEventListener {
    * Presents the GamePiecePopUp to each player to let them pick their piece.
    */
   public void chooseGamePieces() {
-    startPlayerTurn(this.currentPlayer+1);
+    startPlayerTurn(this.currentPlayer);
     for (int i = numPlayers; i > 0; i--) {
       GamePiecePopUp pop = new GamePiecePopUp(i, myStyle, monopolyBoardBuilder);
       pop.showMessage(myLanguage);
@@ -207,9 +207,11 @@ public class GameView extends View implements GameEventListener {
         monopolyBoardBuilder.movePlayer(cmd.placeIndex(), currentPlayer);
       }
       case "CONTROLLER_TO_VIEW_START_GAME" -> {
+        System.out.println("hello...");
         InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
-//        interactor.initializeNewBoard(command);
+        interactor.initializeNewBoard(command);
         this.currentPlayer = command.currentPlayerId();
+        System.out.println(currentPlayer);
         chooseGamePieces();
       }
     }
