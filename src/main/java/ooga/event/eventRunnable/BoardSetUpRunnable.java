@@ -11,13 +11,8 @@ import ooga.model.ModelOutput;
 import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
 
-import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Represents the logic/functions that need to occur when the Controller sends the board set up information to the view
@@ -35,7 +30,7 @@ public class BoardSetUpRunnable extends ParsingJsonRunnable implements EventGene
     public GameEvent processEvent() {
         InitBoardRecord startInfo = new InitBoardRecord(getParsedProperty(), this.boardInfo.getStationaryAction(), this.boardInfo.getPlayers(), this.boardInfo.getCurrentPlayer());
         BoardSetUpCommand setUp = new BoardSetUpCommand(startInfo);
-        return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_BOARD_SET_UP.name(), setUp);
+        return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_START_GAME.name(), setUp);
     }
 
     private List<ParsedProperty> getParsedProperty() {
