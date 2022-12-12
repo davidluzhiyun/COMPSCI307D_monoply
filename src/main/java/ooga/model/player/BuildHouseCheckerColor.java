@@ -11,11 +11,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class BuildHouseCheckerColor implements CanBuildOn {
-  private Player player;
-
-  public BuildHouseCheckerColor(Player player) {
-    this.player = player;
-  }
 
 
   /**
@@ -43,11 +38,11 @@ public class BuildHouseCheckerColor implements CanBuildOn {
   public boolean canBuildOn(Place place, Map<Integer, Predicate<Collection<Place>>> colorSetCheckers, Collection<Place> properties, int playerId) {
     try {
       int color = place.getColorSetId();
-      Predicate<Collection<Place>> checker = player.getColorSetCheckers().get(color);
+      Predicate<Collection<Place>> checker = colorSetCheckers.get(color);
       if (checker == null) {
         return false;
       }
-      return checker.test(player.getProperties().stream().filter((Place p) -> checkHouseNum(p, place)).collect(
+      return checker.test(properties.stream().filter((Place p) -> checkHouseNum(p, place)).collect(
           Collectors.toSet()));
     } catch (NoColorAttributeException e) {
       // not something with a color

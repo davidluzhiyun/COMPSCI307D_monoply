@@ -24,7 +24,7 @@ class InitialConfigLoaderTest {
   @BeforeAll
   static void setUpTest() {
     Reader reader;
-    File file = new File("." + "/src/main/resources/loaddata.json");
+    File file = new File("." + "/src/main/resources/ooga/model/place/InitialConfig.json");
     try {
       reader = new FileReader(file);
     } catch (FileNotFoundException e) {
