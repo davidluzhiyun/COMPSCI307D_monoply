@@ -54,12 +54,11 @@ public class LoadBoardRunnable extends ParsingJsonRunnable implements EventGener
         Double c = (Double) parsedJson.get(META).get(COLS);
         cols = c.intValue();
       } else {
-        String type = (String) parsedJson.get(key).get(TYPE);
-        Double id = (Double) parsedJson.get(key).get(ID);
-        String name = getPlaceName(Integer.toString(id.intValue()));
+        String type = (String) parsedJson.get(key).get(TYPE);String id = (String) parsedJson.get(key).get(ID);
+        String name = getPlaceName(id);
+        int colorId = getColorId(id);
         String image = (String) parsedJson.get(key).get(IMAGE);
-        int colorId = getColorId(Integer.toString(id.intValue()));
-        places.add(new ParsedProperty(Double.toString(id), type, name, colorId, image));
+        places.add(new ParsedProperty(id, type, name, colorId, image));
       }
     }
     return new LoadBoardRecord(rows, cols, places);

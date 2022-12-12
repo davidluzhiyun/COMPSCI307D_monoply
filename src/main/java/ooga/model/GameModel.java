@@ -97,12 +97,12 @@ public class GameModel implements GameEventListener, ModelOutput {
   protected void initializeGame(Map<String, LinkedTreeMap> map) {
     places = new ArrayList<>();
     int j = 0;
-    int jailIndex = (int) (double) map.get("meta").get("jail");
+//    int jailIndex = (int) (double) map.get("meta").get("jail");
     while (map.containsKey(String.valueOf(j))) {
       places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (String) map.get(String.valueOf(j)).get("id")));
-      if (map.get(String.valueOf(j)).get("type").equals("jail"))
-        if (jailIndex != j) //if the index of jail is inconsistent with what is in the metadata
-          throw new MonopolyException("Bad data file");
+//      if (map.get(String.valueOf(j)).get("type").equals("jail"))
+//        if (jailIndex != j) //if the index of jail is inconsistent with what is in the metadata
+//          throw new MonopolyException("Bad data file");
       j++;
     }
     Map<Integer, Predicate<Collection<Place>>> checkers = new ConcreteColorSet(places).outputCheckers();
@@ -142,6 +142,8 @@ public class GameModel implements GameEventListener, ModelOutput {
   protected Place createPlace(String type, String id) {
     Place newPlace;
     Class<?> placeClass;
+    System.out.println(type);
+    System.out.println(id);
     try {
       placeClass = Class.forName(PLACE_PACKAGE_NAME + modelResources.getString(type));
     } catch (ClassNotFoundException e) {
@@ -227,10 +229,10 @@ public class GameModel implements GameEventListener, ModelOutput {
     eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name(), this::startGame);
     eventTypeMap.put(GameEventType.VIEW_TO_MODEL_PURCHASE_PROPERTY.name(), this::purchaseProperty);
     eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_CHECK_PLACE_ACTION.name(), this::sendPlaceActions);
-    eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_END_TURN.name(), e -> {
-      endTurn();
-      publishGameData(GameState.NEXT_PLAYER);
-    });
+//    eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_END_TURN.name(), e -> {
+//      endTurn();
+//      publishGameData(GameState.NEXT_PLAYER);
+//    });
   }
 
   private void sendPlaceActions(GameEvent event) {

@@ -16,7 +16,7 @@ class GoTest {
 
   @BeforeAll
   static void setUpTest() {
-    go = new Go();
+    go = new Go("Go");
   }
 
   @Test

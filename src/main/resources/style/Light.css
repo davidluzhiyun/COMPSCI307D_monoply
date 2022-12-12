@@ -42,8 +42,8 @@
 #FileUploadButton {
   -fx-padding: 10;
   -fx-text-alignment: center;
-  -fx-border-color: white;
-  -fx-background-color: rgba(238,204,255, 0.2);
+  -fx-border-color: rgb(68,0,102);
+  -fx-background-color: rgba(238, 204, 255, 0.2);
 }
 
 #MainVBox {
@@ -132,4 +132,17 @@
   -fx-border-style:dashed;
   -fx-border-width: 10;
   -fx-background-color: rgba(230, 242,255, 0.2)
+}
+#SaveFileButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: rgb(68,0,102);
+  -fx-background-color: rgba(238, 204, 255, 0.2);
+}
+
+#EditDimensionsButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: rgb(68,0,102);
+  -fx-background-color: rgba(238, 204, 255, 0.2);
 }

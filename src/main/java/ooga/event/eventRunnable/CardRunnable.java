@@ -17,7 +17,7 @@ public class CardRunnable implements EventGenerator{
 
     @Override
     public GameEvent processEvent() {
-        PayTaxCommand command = new PayTaxCommand(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayer()));
+        PayTaxCommand command = new PayTaxCommand(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayerId()));
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_COMMUNITY_CARD.name(), command);
     }
 }
