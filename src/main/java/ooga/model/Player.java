@@ -76,7 +76,12 @@ public interface Player extends ControllerPlayer {
   void setJailIndex(int jailIndex);
   /**
    * @author David Lu
-   * Get the player out of jail
+   * Get the player out of jail for free;
    */
   void getOutOfJail();
+  /**
+   * @author David Lu
+   * Get the player out of jail for a fee;
+   */
+  void payOutOfJail();
 }

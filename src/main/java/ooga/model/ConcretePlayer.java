@@ -25,6 +25,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
 
   public static final int DEFAULT_JAIL_TURNS = 3;
   public static final int MAX_ROWS_IN_A_ROW = 4;
+  public static final int DEFAULT_FINE = 50;
   private final int playerId;
   private double money;
   private int currentPlaceIndex;
@@ -66,10 +67,10 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   public void newTurn() {
     hasNextDice = true;
     dicesTotal = 1;
-    //TODO: when in jail
     if (remainingJailTurns > 0){
       remainingJailTurns -= 1;
     }
+    // TODO:Death
   }
 
 
@@ -190,7 +191,16 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     }
   }
 
+  /**
+   * @author Luyao Wang
+   * @author David Lu (modifier)
+   * Handles special effect of rolling doubles
+   */
   public void addOneDiceRoll() {
+    if (remainingJailTurns > 0){
+      getOutOfJail();
+      return;
+    }
     hasNextDice = true;
     dicesTotal++;
     if (dicesTotal > MAX_ROWS_IN_A_ROW)
@@ -270,12 +280,19 @@ public class ConcretePlayer implements Player, ControllerPlayer {
       LOG.warn(ex);
       throw ex;
     }
-
   }
 
   @Override
   public void getOutOfJail() {
     remainingJailTurns = 0;
+    GameEventHandler gameEventHandler = new GameEventHandler();
+    gameEventHandler.publish(modelToken + GameState.OUT_OF_JAIL);
+  }
+
+  @Override
+  public void payOutOfJail() {
+    money -= DEFAULT_FINE;
+    getOutOfJail();
   }
 
 }

@@ -12,7 +12,9 @@ public enum GameState {
   COLLECT_SALARY,
   //The amount of money of the current player is updated
   TO_JAIL,
-  // The position of the player and the remaining jail turn is updated
+  // The position of the player and the fact that the player is now updated
+  OUT_OF_JAIL,
+  // The money the player has and
   GAME_SET_UP,
   NEXT_PLAYER,
   BUY_PROPERTY,
