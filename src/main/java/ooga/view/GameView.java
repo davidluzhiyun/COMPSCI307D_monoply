@@ -160,7 +160,7 @@ public class GameView extends View implements GameEventListener {
       }
       case "CONTROLLER_TO_VIEW_GET_PLACE_ACTIONS" -> {
         Command cmd = event.getGameEventCommand().getCommand();
-        AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd.getCommandArgs());
+        AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd.getCommandArgs(), myStyle);
         pop.showMessage(myLanguage);
       }
       // add case for CONTROLLER_TO_VIEW_GET_PLACE_ACTIONS -- make new AvailablePlaceActionsPopUp

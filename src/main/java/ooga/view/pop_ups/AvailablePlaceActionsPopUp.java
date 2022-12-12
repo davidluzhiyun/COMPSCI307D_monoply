@@ -31,6 +31,11 @@ public class AvailablePlaceActionsPopUp extends ActionPopUp{
       String className = popUpResources.getString(act.name());
       root.getChildren().add((CustomizedButton) makeInteractiveObject(className, myLanguage, this));
     }
+    Scene scene = new Scene(root, Integer.parseInt(popUpResources.getString(HEIGHT)),
+        Integer.parseInt(popUpResources.getString(WIDTH)));
+    myStage.setScene(scene);
+    popUpStyle(scene, myStyle);
+    myStage.show();
   }
 
   @Override
@@ -38,4 +43,7 @@ public class AvailablePlaceActionsPopUp extends ActionPopUp{
     this.myLanguage = language;
     createScene();
   }
+  private void makeMortgage() {}
+  private void viewInfo() {}
+  private void buyHouse() {}
 }
