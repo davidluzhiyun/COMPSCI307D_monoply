@@ -55,7 +55,7 @@ public class SceneManager implements GameEventListener {
 
   private void setMonopolyGameEditorScene() {
     MonopolyGameEditorScene monopolyGameEditorScene = new MonopolyGameEditorScene(primaryStage,
-        gameEventHandler, myLanguage);
+        gameEventHandler, myLanguage, myStyle);
     currentScene = new Scene(monopolyGameEditorScene.getRootPane(), primaryStage.getMaxWidth(),
         primaryStage.getMaxHeight());
     setPrimaryStageToCurrScene();
@@ -74,7 +74,7 @@ public class SceneManager implements GameEventListener {
 
   private void setBoardEditorScene() {
     MonopolyGameEditorScene monopolyGameEditorScene = new MonopolyGameEditorScene(primaryStage,
-        gameEventHandler, myLanguage);
+        gameEventHandler, myLanguage, myStyle);
     currentScene = new Scene(monopolyGameEditorScene.getRootPane(), primaryStage.getMaxWidth(),
         primaryStage.getMaxHeight());
     setPrimaryStageToCurrScene();
