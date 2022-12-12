@@ -79,7 +79,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     }
     ModelOutput gameData = this;
     Command<ModelOutput> cmd1 = new ConcreteCommand<>(gameData);
-    GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_GAME_DATA.name(), cmd1);
+    GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), cmd1);
     gameEventHandler.publish(event);
   }
 
@@ -98,25 +98,21 @@ public class GameModel implements GameEventListener, ModelOutput {
    */
   protected void initializeGame(Map<String, LinkedTreeMap> map) {
     InitialConfigLoader initialConfigLoader = new InitialConfigLoader(map, modelResources);
-    try {
-      initialConfigLoader.check();
-    } catch (MonopolyException e) {
-      Command<MonopolyException> command = new ConcreteCommand<>(e);
-      GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_VIEW_EXCEPTION.name(), command);
-      gameEventHandler.publish(event);
-    }
+    initialConfigLoader.check();
+
     places = initialConfigLoader.getPlaces();
     players = initialConfigLoader.getPlayers();
     GameConfig gameConfig;
-    try {
-      gameConfig = initialConfigLoader.getGameConfig();
-    }
-    catch (BadDataException e){
-      Command<MonopolyException> command = new ConcreteCommand<>(e);
-      GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_VIEW_EXCEPTION.name(), command);
-      LOG.warn(e);
-      gameEventHandler.publish(event);
-    }
+//    try {
+//      gameConfig = initialConfigLoader.getGameConfig();
+//    }
+//    catch (BadDataException e){
+//      Command<MonopolyException> command = new ConcreteCommand<>(e);
+//      GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_VIEW_EXCEPTION.name(), command);
+//      LOG.warn(e);
+//      gameEventHandler.publish(event);
+//    }
+    gameConfig = initialConfigLoader.getGameConfig();
     turn = new ConcretePlayerTurn(players, places, 0);
   }
 
@@ -221,7 +217,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     publishGameData(GameState.BUY_PROPERTY);
   }
 
-  private void startGame(GameEvent event) {
+  private void startGame(GameEvent event) throws BadDataException {
     Command cmd = event.getGameEventCommand().getCommand();
     initializeGame((Map) cmd.getCommandArgs());
     publishGameData(GameState.GAME_SET_UP);

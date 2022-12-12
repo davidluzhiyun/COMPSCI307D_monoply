@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "players": 4,
+    "rows": 3,
+    "columns": 3,
+    "jail": 3
+  },
+  "0": {
+    "id": "Go",
+    "type": "Go"
+  },
+  "1": {
+    "id": "Shanghai1",
+    "type": "Street"
+  },
+  "2": {
+    "id": "Shanghai1",
+    "type": "Street"
+  },
+  "3": {
+    "id": "New York1",
+    "type": "Go"
+  },
+  "4": {
+    "id": "New York1",
+    "type": "Street"
+  },
+  "5": {
+    "id": "New York1",
+    "type": "Street"
+  },
+  "6": {
+    "id": "New York1",
+    "type": "Street"
+  },
+  "7": {
+    "id": "New York1",
+    "type": "Street"
+  }
+}

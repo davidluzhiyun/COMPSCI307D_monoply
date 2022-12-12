@@ -28,7 +28,7 @@ public class EventSelector {
     eventTypeMap.put(GameEventType.VIEW_TO_CONTROLLER_GAME_START.name(), GameStartRunnable::new);
     eventTypeMap.put(GameEventType.VIEW_TO_CONTROLLER_GET_PLACE_INFO.name(), GetPlaceInfoRunnable::new);
     eventTypeMap.put(GameEventType.VIEW_TO_CONTROLLER_LOAD_BOARD.name(), LoadBoardRunnable::new);
-    eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_GAME_DATA.name(), c -> (eventTypeMap2.get(((ModelOutput) c.getCommandArgs()).getGameState().name()).apply(c)));
+    eventTypeMap.put(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), c -> (eventTypeMap2.get(((ModelOutput) c.getCommandArgs()).getGameState().name()).apply(c)));
   }
 
   public EventGenerator selectEventRunnable(String eventName, Command command) {

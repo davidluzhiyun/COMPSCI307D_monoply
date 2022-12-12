@@ -105,7 +105,7 @@ public class InitialConfigLoader {
    */
   private int getJailIndex() throws BadDataException {
     int j = 0;
-    int jailIndexMeta = (int) initialConfig.get("meta").getOrDefault("jail", -1);
+    int jailIndexMeta = (int) (double) initialConfig.get("meta").getOrDefault("jail", -1.0);
     int jailIndex = -1;
     while (initialConfig.containsKey(String.valueOf(j))) {
       if (initialConfig.get(String.valueOf(j)).get("type").equals("jail")) {
@@ -115,6 +115,7 @@ public class InitialConfigLoader {
       j++;
     }
     if (jailIndex != jailIndexMeta) {
+      System.out.println(1);
       throw new BadDataException("Bad data file");
     }
     return jailIndex;
