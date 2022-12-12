@@ -206,7 +206,7 @@ public class GameModel implements GameEventListener, ModelOutput {
         Command cmd = event.getGameEventCommand().getCommand();
         turn.roll();
       }
-      case "CONTROLLER_TO_MODEL_CHECK_PLACE_ACTION" -> {
+      case "VIEW_TO_MODEL_GET_PLACE_ACTIONS" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         int propertyIndex = (int) cmd.getCommandArgs();
         publishGameData(GameState.GET_PLACE_ACTIONS);

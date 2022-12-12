@@ -172,7 +172,7 @@ public class MonopolyBoardBuilder implements Builder<Region> {
   }
 
   /**
-   * TODO: need to either have the piece know its current index, or get the result from model.
+   * Moves a player to a different property.
    * @param newIdx index of the new property the player should move to
    * @param currentPlayer: int of player whose piece needs to be moved
    */

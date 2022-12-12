@@ -168,14 +168,7 @@ public class GameView extends View implements GameEventListener {
     RollResultPopUp pop = new RollResultPopUp(roll.x, roll.y);
     pop.showMessage(myLanguage);
   }
-
-  /**
-   * TODO: delete. this will be entirely different
-   */
-  public void buyHouse() {
-//    BuyHousePopUp pop = new BuyHousePopUp(1, myStyle, myBoard);
-//    pop.showMessage(myLanguage);
-  }
+  public void buyHouse(){}
 
   public void endTurn() {
   }
