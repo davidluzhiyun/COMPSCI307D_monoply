@@ -200,14 +200,12 @@ public class GameView extends View implements GameEventListener {
         AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd.getCommandArgs(), myStyle);
         pop.showMessage(myLanguage);
       }
-    }
-    if (event.getGameEventType().equals("CONTROLLER_TO_VIEW_LOAD_BOARD")) {
-      LoadBoardRecord command = (LoadBoardRecord) event.getGameEventCommand().getCommand()
-          .getCommandArgs();
-      interactor.initialize(command);
-    }
-    if (event.getGameEventType().equals("VIEW_POST_ACTION_DRAW_BOARD")) {
-      monopolyBoardBuilder.drawPostProcessing();
+      case "CONTROLLER_TO_VIEW_LOAD_BOARD" -> {
+        LoadBoardRecord command = (LoadBoardRecord) event.getGameEventCommand().getCommand()
+            .getCommandArgs();
+        interactor.initialize(command);
+      }
+      case "VIEW_POST_ACTION_DRAW_BOARD" -> monopolyBoardBuilder.drawPostProcessing();
     }
   }
 }
