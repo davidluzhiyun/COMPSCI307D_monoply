@@ -8,6 +8,7 @@ import ooga.event.GameEventType;
 import ooga.event.command.BoardSetUpCommand;
 import ooga.event.command.Command;
 import ooga.model.ModelOutput;
+import ooga.model.exception.MonopolyException;
 import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
 
@@ -38,7 +39,7 @@ public class BoardSetUpRunnable extends ParsingJsonRunnable implements EventGene
         for(ControllerPlace place : this.boardInfo.getBoard()) {
             try {
                 parsedProperties.add(new ParsedProperty(getPlaceType(place), getPlaceName(place), place.getColorSetId()));
-            } catch (NoColorAttributeException e) {
+            } catch (MonopolyException e) {
                 parsedProperties.add(new ParsedProperty(getPlaceType(place), getPlaceName(place), -1));
             }
         }
