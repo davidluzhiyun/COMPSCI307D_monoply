@@ -6,12 +6,14 @@ import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.Place;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class BuildHouseChecker implements CanBuildOn {
+public class BuildHouseCheckerColor implements CanBuildOn {
   private Player player;
-  public BuildHouseChecker(Player player) {
+
+  public BuildHouseCheckerColor(Player player) {
     this.player = player;
   }
 
@@ -31,9 +33,14 @@ public class BuildHouseChecker implements CanBuildOn {
     }
   }
 
-
+  /**
+   * Check if player can build a house on a place
+   *
+   * @param place a place to check
+   * @return
+   */
   @Override
-  public boolean canBuildOn(Place place) {
+  public boolean canBuildOn(Place place, Map<Integer, Predicate<Collection<Place>>> colorSetCheckers, Collection<Place> properties, int playerId) {
     try {
       int color = place.getColorSetId();
       Predicate<Collection<Place>> checker = player.getColorSetCheckers().get(color);

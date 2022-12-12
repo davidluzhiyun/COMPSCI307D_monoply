@@ -40,10 +40,9 @@ public class ControllerDummyPlace implements Place {
         return null;
     }
 
-
     @Override
-    public void updatePlaceActions(Player player) {
-        return;
+    public void updateCurrentPlayerPlaceActions(Player player) {
+
     }
 
     @Override

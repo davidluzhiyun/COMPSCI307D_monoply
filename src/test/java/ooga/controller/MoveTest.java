@@ -69,6 +69,11 @@ public class MoveTest extends TestCase {
             public int getDice() {
                 return 0;
             }
+
+            @Override
+            public int getOwnedRailroadCount() {
+                return 0;
+            }
         };
         players.add(player);
         actions.add(StationaryAction.ROLL_DICE);
@@ -90,8 +95,8 @@ public class MoveTest extends TestCase {
             }
 
             @Override
-            public int getCurrentPlayer() {
-                return player.getPlayerId();
+            public int getCurrentPlayerId() {
+                return 0;
             }
 
             @Override

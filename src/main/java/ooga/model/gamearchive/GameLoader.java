@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import ooga.model.ConcretePlayer;
 import ooga.model.Player;
 import ooga.model.place.Place;
+import ooga.model.player.BuildHouseCheckerNoColor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -81,7 +82,7 @@ public class GameLoader {
     List<PlayerSaver> playersData = (List<PlayerSaver>) gameData.get("players");
     for (PlayerSaver singlePlayersData : playersData) {
       Player newPlayer = new ConcretePlayer(singlePlayersData.id(), singlePlayersData.money(), singlePlayersData.currentPlaceIndex(), singlePlayersData.hasNextDice(), singlePlayersData.jail(),
-          singlePlayersData.dicesTotal(), singlePlayersData.properties());
+          singlePlayersData.dicesTotal(), singlePlayersData.properties(), new BuildHouseCheckerNoColor());
       players.add(newPlayer);
     }
     return players;

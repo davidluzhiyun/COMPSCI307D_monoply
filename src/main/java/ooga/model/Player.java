@@ -84,4 +84,6 @@ public interface Player extends ControllerPlayer {
    * Get the player out of jail for a fee;
    */
   void payOutOfJail();
+  Map<Integer, Predicate<Collection<Place>>> getColorSetCheckers();
+  Collection<Place> getProperties();
 }

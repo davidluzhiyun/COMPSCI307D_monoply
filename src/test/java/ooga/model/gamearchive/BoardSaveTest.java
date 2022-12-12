@@ -4,6 +4,7 @@ import ooga.model.*;
 import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
 import ooga.model.place.property.ConcreteStreet;
+import ooga.model.player.BuildHouseCheckerNoColor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ public class BoardSaveTest {
         Place place2 = new ConcreteStreet("123");
 //        place2.setOwner(1);
         //TODO:
-        Player player1 = new ConcretePlayer(0);
+        Player player1 = new ConcretePlayer(0, new BuildHouseCheckerNoColor());
         output = new ModelOutput() {
             @Override
             public GameState getGameState() {
@@ -41,7 +42,7 @@ public class BoardSaveTest {
 
             @Override
             public List<ControllerPlayer> getPlayers() {
-                return List.of(player1, new ConcretePlayer(1));
+                return List.of(player1, new ConcretePlayer(1, new BuildHouseCheckerNoColor()));
             }
             @Override
             public List<ControllerPlace> getBoard() {

@@ -3,6 +3,7 @@ package ooga.model;
 import ooga.model.place.Place;
 import ooga.model.place.property.ConcreteStreet;
 import ooga.model.place.property.Property;
+import ooga.model.player.BuildHouseCheckerNoColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ class PlayerTest {
 
   @BeforeEach
   void setUpTest() {
-    player = new ConcretePlayer(0);
+    player = new ConcretePlayer(0, new BuildHouseCheckerNoColor());
   }
 
   @Test
