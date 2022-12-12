@@ -61,7 +61,7 @@ public class GameView extends View implements GameEventListener {
     this.myLanguage = language;
     this.myStage = stage;
     this.gameEventHandler = gameEventHandler;
-    //TODO: Change this
+    //TODO: Change this to actually get the number of players
     this.numPlayers = 4;
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + StartView.SCREEN);
 
@@ -90,6 +90,9 @@ public class GameView extends View implements GameEventListener {
     return myScene;
   }
 
+  /**
+   * TODO: use the uploaded config file
+   */
   private void getInitBoardData() {
     String test = "ooga/model/place/InitialConfig.json";
     GameEvent gameStart = GameEventHandler.makeGameEventwithCommand(
@@ -117,22 +120,13 @@ public class GameView extends View implements GameEventListener {
     return box;
   }
 
-  public void changeStyle(Number newValue) {
-    ResourceBundle choiceResources = ResourceBundle.getBundle(
-        Main.DEFAULT_RESOURCE_PACKAGE + StartView.DROP_DOWN);
-    myStyle = choiceResources.getString(
-        String.format(StartView.STRING_INT_FORMATTER, StartView.STYLE, newValue));
-    myStage.close();
-    setUpScene(width, height, myStyle);
-  }
-
   /**
    * Presents the GamePiecePopUp to each player to let them pick their piece.
    */
   public void chooseGamePieces() {
     for (int i = numPlayers; i > 0; i--) {
-//      GamePiecePopUp pop = new GamePiecePopUp(i, myStyle, myBoard);
-//      pop.showMessage(myLanguage);
+      GamePiecePopUp pop = new GamePiecePopUp(i, myStyle, monopolyBoardBuilder);
+      pop.showMessage(myLanguage);
     }
   }
 
@@ -166,12 +160,10 @@ public class GameView extends View implements GameEventListener {
     GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_TO_MODEL_ROLL_DICE",
         cmd);
     gameEventHandler.publish(event);
-//    showDiceResult(new int[]{6, 5});
   }
 
   /**
-   * TODO: change this to actually get the dice result from the controller and show it.
-   * may need to change to display the separate rolls of each die... can also have images for each!
+   * Displays a pop up with the result of the dice roll.
    */
   private void showDiceResult(Point roll) {
     myDicePopUp.close();
@@ -179,6 +171,9 @@ public class GameView extends View implements GameEventListener {
     pop.showMessage(myLanguage);
   }
 
+  /**
+   * TODO: delete. this will be entirely different
+   */
   public void buyHouse() {
 //    BuyHousePopUp pop = new BuyHousePopUp(1, myStyle, myBoard);
 //    pop.showMessage(myLanguage);

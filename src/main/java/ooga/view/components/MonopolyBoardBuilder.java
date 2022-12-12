@@ -147,8 +147,13 @@ public class MonopolyBoardBuilder implements Builder<Region> {
   }
 
   @Override
-  public Region build() {
-    return board;
+  public Region build() {return board;}
+
+  public void initializeGamePiece(GamePiece piece, int player) {
+    board.getChildren().add(piece);
+    //TODO: change to give the location of go!!!
+    Bounds bound = getBoundsbyIndex(0);
+    piece.placeObject(bound.getMinX(), bound.getMinY());
   }
 
   public Bounds getBoundsbyIndex(int idx) {
