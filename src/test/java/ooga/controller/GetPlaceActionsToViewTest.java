@@ -61,7 +61,7 @@ public class GetPlaceActionsToViewTest extends TestCase {
             }
 
             @Override
-            public int getCurrentPlayer() {
+            public int getCurrentPlayerId() {
                 return 0;
             }
 
