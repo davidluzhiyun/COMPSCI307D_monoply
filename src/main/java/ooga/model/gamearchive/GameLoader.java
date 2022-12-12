@@ -33,7 +33,8 @@ public class GameLoader {
   public GameLoader(Map<String, Object> map, ResourceBundle resources) {
     this.gameData = map;
     this.myResources = resources;
-    metadata = (Metadata) map.get("meta");
+    Map<String, Double> meta = (Map<String, Double>) gameData.get("meta");
+    metadata = new Metadata(meta.get("playerCount").intValue(), meta.get("currentPlayerId").intValue());
     setUpMap();
   }
 
@@ -41,9 +42,9 @@ public class GameLoader {
     return metadata;
   }
 
-  public List<Place> loadPlaceData(Map<String, Object> map) {
+  public List<Place> loadPlaceData() {
     List<Place> places = new ArrayList<>();
-    List<PlaceSaver> placesData = (List<PlaceSaver>) map.get("places");
+    List<PlaceSaver> placesData = (List<PlaceSaver>) gameData.get("places");
     for (PlaceSaver singlePlaceData : placesData) {
       String placeId = singlePlaceData.id();
       try {
@@ -53,10 +54,8 @@ public class GameLoader {
         int houseCount = -1;
         if (singlePlaceData.owner() != null && singlePlaceData.owner() != -1) //if the place can be purchased and there is someone who purchased it
           ownerId = singlePlaceData.owner();
-        // TODO: Load owner and ownerid
         if (singlePlaceData.houseCount() != null)
           houseCount = singlePlaceData.houseCount();
-        //TODO: use constructor to create place instead of setters
         Place newPlace = createPlace(type, placeId, ownerId, houseCount);
         places.add(newPlace);
       } catch (IOException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
@@ -77,9 +76,9 @@ public class GameLoader {
     return config;
   }
 
-  public List<Player> loadPlayerData(Map<String, Object> map) {
+  public List<Player> loadPlayerData() {
     List<Player> players = new ArrayList<>();
-    List<PlayerSaver> playersData = (List<PlayerSaver>) map.get("players");
+    List<PlayerSaver> playersData = (List<PlayerSaver>) gameData.get("players");
     for (PlayerSaver singlePlayersData : playersData) {
       Player newPlayer = new ConcretePlayer(singlePlayersData.id(), singlePlayersData.money(), singlePlayersData.currentPlaceIndex(), singlePlayersData.hasNextDice(), singlePlayersData.jail(),
           singlePlayersData.dicesTotal(), singlePlayersData.properties());
@@ -123,7 +122,7 @@ public class GameLoader {
     }
     Constructor<?>[] makeNewPlace = placeClass.getConstructors();
     try {
-      newPlace = switchMap.get("type").apply(type, id, ownerId, houseCount, makeNewPlace);
+      newPlace = switchMap.get(type).apply(type, id, ownerId, houseCount, makeNewPlace);
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
       LOG.warn(e);
       throw new RuntimeException(e);

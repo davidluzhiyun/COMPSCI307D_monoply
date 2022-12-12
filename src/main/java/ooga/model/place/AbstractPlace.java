@@ -11,6 +11,7 @@ import ooga.model.PlaceAction;
 import ooga.model.Player;
 import ooga.model.StationaryAction;
 import ooga.model.exception.CannotBuildHouseException;
+import ooga.model.exception.MonopolyException;
 import ooga.model.exception.NoColorAttributeException;
 
 import java.io.File;
@@ -44,7 +45,7 @@ public abstract class AbstractPlace implements Place {
     inherentPlaceActions = List.of(PlaceAction.VIEW_INFO);
     placeActions = new ArrayList<>();
     Gson gson = new Gson();
-    Reader reader = null;
+    Reader reader;
     try {
       File file = new File("." + "/src/main/resources" + DEFAULT_RESOURCE_FOLDER + id + ".json");
       reader = new FileReader(file);
@@ -106,18 +107,18 @@ public abstract class AbstractPlace implements Place {
   }
 
   @Override
-  public double getPurchasePrice() throws IllegalStateException {
-    throw new IllegalStateException();
+  public double getPurchasePrice() throws MonopolyException {
+    throw new MonopolyException("cannotPurchaseException");
   }
 
   @Override
-  public void setOwner(int playerId, Player owner) throws IllegalStateException {
-    throw new IllegalStateException();
+  public void setOwner(int playerId, Player owner) throws MonopolyException {
+    throw new MonopolyException("cannotPurchaseException");
   }
 
   @Override
-  public void setHouseCount(int count) throws IllegalStateException {
-    throw new IllegalStateException();
+  public void setHouseCount(int count) throws MonopolyException {
+    throw new MonopolyException("cannotBuildHouseException");
   }
 
   /**
@@ -132,18 +133,18 @@ public abstract class AbstractPlace implements Place {
   }
 
   @Override
-  public int getHouseCount() throws CannotBuildHouseException {
-    throw new CannotBuildHouseException();
+  public int getHouseCount() throws MonopolyException {
+    throw new MonopolyException("cannotBuildHouseException");
   }
 
   @Override
-  public int getColorSetId() throws NoColorAttributeException {
-    throw new NoColorAttributeException();
+  public int getColorSetId() throws MonopolyException {
+    throw new MonopolyException("noColorAttributeException");
   }
 
   @Override
-  public int getOwnerId() throws IllegalStateException {
-    throw new IllegalStateException();
+  public int getOwnerId() throws MonopolyException {
+    throw new MonopolyException("cannotPurchaseException");
   }
 
   /**

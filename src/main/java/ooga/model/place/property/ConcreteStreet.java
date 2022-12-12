@@ -93,10 +93,6 @@ public class ConcreteStreet extends AbstractProperty implements Street {
     return housesBuilt;
   }
 
-  public void print() {
-    System.out.println(11111);
-  }
-
   @Override
   public void setHouseCount(int count) throws IllegalStateException {
     housesBuilt = count;
@@ -105,9 +101,7 @@ public class ConcreteStreet extends AbstractProperty implements Street {
   @Override
   public void updateCurrentPlayerPlaceActions(Player player) {
     super.updateCurrentPlayerPlaceActions(player);
-    if (getOwner() == player && !isMortgaged())
-      getPlaceActions().add(PlaceAction.MORTGAGE);
-//    if (player.canBuildOn(this))
-//      getPlaceActions().add(PlaceAction.BUILD_HOUSE);
+    if (player.canBuildOn(this))
+      getPlaceActions().add(PlaceAction.BUILD_HOUSE);
   }
 }

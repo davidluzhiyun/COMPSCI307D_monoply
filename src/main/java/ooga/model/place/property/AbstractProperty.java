@@ -2,6 +2,7 @@ package ooga.model.place.property;
 
 import ooga.event.GameEventHandler;
 import ooga.model.GameState;
+import ooga.model.PlaceAction;
 import ooga.model.Player;
 import ooga.model.StationaryAction;
 import ooga.model.place.AbstractPlace;
@@ -87,8 +88,9 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
 
   @Override
   public void updateCurrentPlayerPlaceActions(Player player) {
-    //Nothing for now
-    return;
+    super.updateCurrentPlayerPlaceActions(player);
+    if (getOwner() == player && !isMortgaged())
+      getPlaceActions().add(PlaceAction.MORTGAGE);
   }
 
   /**

@@ -2,7 +2,8 @@
   "meta": {
     "players": 4,
     "rows": 4,
-    "columns": 4
+    "columns": 4,
+    "jail": 10
   },
   "0": {
     "id": 0,
@@ -45,11 +46,15 @@
     "type": "Go"
   },
   "10": {
-    "id": 123,
-    "type": "Street"
+    "id": 300,
+    "type": "Jail"
   },
   "11": {
     "id": 123,
     "type": "Street"
+  },
+  "12": {
+    "id": 301,
+    "type": "GoToJail"
   }
 }

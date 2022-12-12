@@ -57,6 +57,4 @@ class ConcreteColorSetTest {
     assertFalse(checkers.get(1).test(null));
     assertFalse(checkers.get(2).test(properties));
   }
-
-
 }

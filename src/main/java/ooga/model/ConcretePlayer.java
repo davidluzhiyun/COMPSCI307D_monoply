@@ -29,7 +29,17 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private Collection<Place> properties;
   private Map<Integer, Predicate<Collection<Place>>> colorSetCheckers;
   private int diceResult;
-  private static final Logger LOG = LogManager.getLogger(GameModel.class);
+  private int ownedRailroadCount;
+//  private static final Logger LOG = LogManager.getLogger(GameModel.class);
+
+  public ConcretePlayer(int playerId) {
+    this.currentPlaceIndex = 0;
+    this.money = 0;
+    this.playerId = playerId;
+    this.hasNextDice = false;
+    properties = new ArrayList<>();
+    propertyIndices = new ArrayList<>();
+  }
 
   /**
    * Universal constructor for loading the game./
@@ -44,14 +54,6 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     this.propertyIndices = propertyIndices;
   }
 
-  public ConcretePlayer(int playerId) {
-    this.currentPlaceIndex = 0;
-    this.money = 0;
-    this.playerId = playerId;
-    this.hasNextDice = false;
-    properties = new ArrayList<>();
-    propertyIndices = new ArrayList<>();
-  }
 
   @Override
   public void newTurn() {
@@ -122,12 +124,12 @@ public class ConcretePlayer implements Player, ControllerPlayer {
 
   @Override
   public int getOwnedRailroadCount() {
-    return 0;
+    return ownedRailroadCount;
   }
 
   @Override
   public void setOwnedRailroadsCount(int count) {
-
+    ownedRailroadCount = count;
   }
 
   @Override

@@ -3,6 +3,7 @@ package ooga.model.gamearchive;
 import com.google.gson.Gson;
 import ooga.model.ControllerPlayer;
 import ooga.model.ModelOutput;
+import ooga.model.exception.MonopolyException;
 import ooga.model.place.ControllerPlace;
 
 import java.io.FileWriter;
@@ -45,13 +46,13 @@ public class GameSaver {
             Integer ownerId;
             try {ownerId = place.getOwnerId();
             }
-            catch (IllegalStateException e){
+            catch (MonopolyException e){
                 ownerId = null;
             }
             Integer houseCount;
             try {houseCount = place.getHouseCount();
             }
-            catch (IllegalStateException e){
+            catch (MonopolyException e){
                 houseCount = null;
             }
             PlaceSaver singlePlaceData = new PlaceSaver(place.getPlaceId(), ownerId, houseCount);
