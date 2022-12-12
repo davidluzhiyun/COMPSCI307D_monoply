@@ -2,19 +2,17 @@ package ooga.event.eventRunnable;
 
 import com.google.gson.internal.LinkedTreeMap;
 import ooga.controller.Controller;
+import ooga.controller.ParsedProperty;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.event.command.GameStartCommand;
-import ooga.model.place.ControllerPlace;
 
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
-
-import static ooga.event.eventRunnable.BoardSetUpRunnable.*;
 
 public class GetPlaceInfoRunnable extends ParsingJsonRunnable implements EventGenerator {
 
@@ -28,8 +26,8 @@ public class GetPlaceInfoRunnable extends ParsingJsonRunnable implements EventGe
 
     @Override
     public GameEvent processEvent() {
-        List<ControllerPlace> places = Controller.getControllerPlaces();
-        String fileName = PLACE_PATH + places.get(this.queriedPlaceIndex).getPlaceId() + JSON_EXTENSION;
+        List<ParsedProperty> places = Controller.getControllerPlaces();
+        String fileName = PLACE_PATH + places.get(this.queriedPlaceIndex).id() + JSON_EXTENSION;
         try {
             File file = getFileFromResource(fileName);
             this.parsedJson = parseJSON(file);

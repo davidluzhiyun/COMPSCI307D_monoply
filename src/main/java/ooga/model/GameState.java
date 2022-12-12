@@ -19,7 +19,7 @@ public enum GameState {
   LOAD_BOARD,
   BUILD_HOUSE,
 
-  BUILD_HOTEL,
-
   COMMUNITY_CARD,
+
+  LOAD_GAME_STATE,
 }
