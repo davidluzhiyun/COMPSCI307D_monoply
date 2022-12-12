@@ -29,7 +29,9 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private Collection<Place> properties;
   private Map<Integer, Predicate<Collection<Place>>> colorSetCheckers;
   private int diceResult;
+  private int ownedRailroadCount;
   private static final Logger LOG = LogManager.getLogger(GameModel.class);
+
   private int jailIndex;
 
   /**
@@ -142,13 +144,13 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   }
 
   @Override
-  public int getOwnedRailroadsCount() {
-    return 0;
+  public int getOwnedRailroadCount() {
+    return ownedRailroadCount;
   }
 
   @Override
   public void setOwnedRailroadsCount(int count) {
-
+    ownedRailroadCount = count;
   }
 
   @Override
