@@ -70,13 +70,6 @@ public class Controller implements GameEventListener {
     }
 
     private EventGenerator getEventRunnable(String eventName, Command command) {
-//        String eventSelector;
-//        if (eventName.equals(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name())) {
-//            ModelOutput modelOutput = (ModelOutput) command.getCommandArgs();
-//            eventSelector = modelOutput.getGameState().name();
-//        } else {
-//            eventSelector = eventName;
-//        }
         return this.eventSelector.selectEventRunnable(eventName, command);
     }
 }
