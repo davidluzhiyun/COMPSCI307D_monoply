@@ -21,7 +21,7 @@ public class MoveRunnable implements EventGenerator{
 
     @Override
     public GameEvent processEvent() {
-        MoveCommand command = new MoveCommand(new MoveRecord((List<StationaryAction>) this.boardInfo.getStationaryAction(), this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayer()).getCurrentPlaceIndex()));
+        MoveCommand command = new MoveCommand(new MoveRecord((List<StationaryAction>) this.boardInfo.getStationaryAction(), this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayerId()).getCurrentPlaceIndex()));
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_MOVE.name(), command);
     }
 }

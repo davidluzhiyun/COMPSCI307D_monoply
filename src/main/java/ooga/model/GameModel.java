@@ -26,6 +26,7 @@ import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
 import ooga.model.colorSet.ConcreteColorSet;
 import ooga.model.component.ConcretePlayerTurn;
+import ooga.model.exception.MonopolyException;
 import ooga.model.gamearchive.GameLoader;
 import ooga.model.gamearchive.Metadata;
 import ooga.model.place.ControllerPlace;
@@ -99,6 +100,9 @@ public class GameModel implements GameEventListener, ModelOutput {
     int jailIndex = (int) (double) map.get("meta").get("type");
     while (map.containsKey(String.valueOf(j))) {
       places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (String) map.get(String.valueOf(j)).get("id")));
+      if (map.get(String.valueOf(j)).get("type").equals("jail"))
+        if (jailIndex != j)
+          throw new MonopolyException("Bad data file");
       j++;
     }
     Map<Integer, Predicate<Collection<Place>>> checkers = new ConcreteColorSet(places).outputCheckers();
@@ -109,6 +113,10 @@ public class GameModel implements GameEventListener, ModelOutput {
       players.add(newPlayer);
     }
     turn = new ConcretePlayerTurn(players, places, 0);
+  }
+
+  private void checkIsInitConfigValid(Map<String, LinkedTreeMap> map) {
+
   }
 
   /**
