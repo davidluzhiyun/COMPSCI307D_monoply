@@ -204,6 +204,10 @@ public class GameView extends View implements GameEventListener {
         MoveRecord cmd = (MoveRecord) event.getGameEventCommand().getCommand().getCommandArgs();
         monopolyBoardBuilder.movePlayer(cmd.placeIndex(), currentPlayer);
       }
+      case "CONTROLLER_TO_VIEW_START_GAME" -> {
+//        InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+//        interactor.initialize(command);
+      }
     }
   }
 }
