@@ -1,36 +1,41 @@
 package ooga.view.components;
 
 import java.util.ResourceBundle;
+import javafx.scene.Node;
 import javafx.scene.layout.HBox;
+import ooga.Main;
 import ooga.Reflection;
 import ooga.view.InteractiveObject;
 import ooga.view.StartView;
 import ooga.view.View;
+import ooga.view.api.ChildView;
+import ooga.view.button.CustomizedButton;
+import ooga.view.scene.MonopolyGameEditorScene;
+import ooga.view.scene.SceneManager;
 
-public class MenuBar extends HBox {
+public class MenuBar extends View implements ChildView {
 
+  private String myLanguage;
+  private HBox buttonBar;
   public MenuBar(String language) {
-
+    ResourceBundle resources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SceneManager.USER_INTERFACE);
+    String[] buttons = resources.getString("MenuBarButtons").split(", ");
+    this.myLanguage = language;
+    makeButtons(buttons);
   }
-  private void makeButtons() {
-//    public InteractiveObject makeInteractiveObject(String name, String language, View view) {
-//      Reflection reflection = new Reflection();
-//      ResourceBundle resources = ResourceBundle.getBundle(View.BUTTON_PROPERTIES);
-//      String className = resources.getString(name);
-//      InteractiveObject object = (InteractiveObject) reflection.makeObject(className,
-//          new Class[]{String.class},
-//          new Object[]{language});
-//      String method = resources.getString(
-//          String.format(StartView.STRING_FORMATTER, name, StartView.METHOD));
-//      if (name.contains(StartView.DROP_DOWN)) {
-//        object.setAction(reflection.makeMethod(method, view.getClass(), new Class[]{Number.class}),
-//            view);
-//      } else {
-//        object.setAction(reflection.makeMethod(method, view.getClass(), null), view);
-//      }
-//      return object;
+  private void makeButtons(String[] buttons) {
+    this.buttonBar = new HBox();
+    for (String button : buttons) {
+      buttonBar.getChildren().add((CustomizedButton) makeInteractiveObject(button, myLanguage, this));
     }
-
   }
+  public void saveFile() {}
+  public void changeDimensions() {
+  }
+  public void fileHandler() {}
 
+  @Override
+  public Node getView() {
+    return buttonBar;
+  }
 }
