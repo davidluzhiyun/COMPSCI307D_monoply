@@ -96,12 +96,12 @@ public class GameModel implements GameEventListener, ModelOutput {
    */
   protected void initializeGame(Map<String, LinkedTreeMap> map) {
     places = new ArrayList<>();
-    int j = 1;
-    int jailIndex = (int) (double) map.get("meta").get("type");
+    int j = 0;
+    int jailIndex = (int) (double) map.get("meta").get("jail");
     while (map.containsKey(String.valueOf(j))) {
       places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (String) map.get(String.valueOf(j)).get("id")));
       if (map.get(String.valueOf(j)).get("type").equals("jail"))
-        if (jailIndex != j)
+        if (jailIndex != j) //if the index of jail is inconsistent with what is in the metadata
           throw new MonopolyException("Bad data file");
       j++;
     }
@@ -240,6 +240,11 @@ public class GameModel implements GameEventListener, ModelOutput {
       }
     }
     eventTypeMap.get(event.getGameEventType()).accept(event);
+    String patternToken = ".+_TO_MODEL_.+";
+    boolean isModelEvent = Pattern.matches(patternToken, event.getGameEventType());
+    if (isModelEvent) {
+      eventTypeMap.get(event.getGameEventType()).accept(event);
+    }
   }
 
   private void setUpOnEventMap() {
