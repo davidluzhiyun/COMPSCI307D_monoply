@@ -21,7 +21,5 @@ public enum GameState {
 
   COMMUNITY_CARD,
 
-  LOAD_BOARD,
-
   LOAD_GAME_STATE,
 }
