@@ -28,6 +28,7 @@ import ooga.model.colorSet.ConcreteColorSet;
 import ooga.model.component.ConcretePlayerTurn;
 import ooga.model.exception.MonopolyException;
 import ooga.model.gamearchive.GameLoader;
+import ooga.model.gamearchive.InitialConfigLoader;
 import ooga.model.gamearchive.Metadata;
 import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
@@ -95,6 +96,7 @@ public class GameModel implements GameEventListener, ModelOutput {
    * "protected" is for test purpose
    */
   protected void initializeGame(Map<String, LinkedTreeMap> map) {
+    InitialConfigLoader initialConfigLoader = new InitialConfigLoader(map);
     places = new ArrayList<>();
     int j = 0;
     int jailIndex = (int) (double) map.get("meta").get("jail");
@@ -115,9 +117,6 @@ public class GameModel implements GameEventListener, ModelOutput {
     turn = new ConcretePlayerTurn(players, places, 0);
   }
 
-  private void checkIsInitConfigValid(Map<String, LinkedTreeMap> map) {
-
-  }
 
   /**
    * "protected" is for test purpose
@@ -227,7 +226,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name(), this::startGame);
     eventTypeMap.put(GameEventType.VIEW_TO_MODEL_PURCHASE_PROPERTY.name(), this::purchaseProperty);
     eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_CHECK_PLACE_ACTION.name(), this::sendPlaceActions);
-    eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_END_TURN.name(), e -> {
+    eventTypeMap.put(GameEventType.VIEW_TO_MODEL_END_TURN.name(), e -> {
       endTurn();
       publishGameData(GameState.NEXT_PLAYER);
     });

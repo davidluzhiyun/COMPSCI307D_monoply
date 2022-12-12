@@ -46,14 +46,10 @@
     "type": "Go"
   },
   "10": {
-    "id": 300,
-    "type": "Jail"
-  },
-  "11": {
     "id": 123,
     "type": "Street"
   },
-  "12": {
+  "11": {
     "id": 301,
     "type": "GoToJail"
   }
