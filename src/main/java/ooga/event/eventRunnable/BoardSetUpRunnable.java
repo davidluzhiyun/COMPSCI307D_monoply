@@ -8,6 +8,7 @@ import ooga.event.GameEventType;
 import ooga.event.command.BoardSetUpCommand;
 import ooga.event.command.Command;
 import ooga.model.ModelOutput;
+import ooga.model.exception.MonopolyException;
 import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
 
@@ -28,18 +29,18 @@ public class BoardSetUpRunnable extends ParsingJsonRunnable implements EventGene
 
     @Override
     public GameEvent processEvent() {
-        InitBoardRecord startInfo = new InitBoardRecord(getParsedProperty(), this.boardInfo.getStationaryAction(), this.boardInfo.getPlayers(), this.boardInfo.getCurrentPlayerId());
+        InitBoardRecord startInfo = new InitBoardRecord(getParsedProperty(boardInfo), this.boardInfo.getStationaryAction(), this.boardInfo.getPlayers(), this.boardInfo.getCurrentPlayerId());
         BoardSetUpCommand setUp = new BoardSetUpCommand(startInfo);
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_START_GAME.name(), setUp);
     }
 
-    private List<ParsedProperty> getParsedProperty() {
+    public static List<ParsedProperty> getParsedProperty(ModelOutput boardInfo) {
         List<ParsedProperty> parsedProperties = new ArrayList<>();
-        for(ControllerPlace place : this.boardInfo.getBoard()) {
+        for(ControllerPlace place : boardInfo.getBoard()) {
             try {
-                parsedProperties.add(new ParsedProperty(getPlaceType(place), getPlaceName(place), place.getColorSetId()));
-            } catch (NoColorAttributeException e) {
-                parsedProperties.add(new ParsedProperty(getPlaceType(place), getPlaceName(place), -1));
+              parsedProperties.add(new ParsedProperty(getId(place), getPlaceType(place), getPlaceName(place), place.getColorSetId(), getImage(place)));
+            } catch (MonopolyException e) {
+              parsedProperties.add(new ParsedProperty(getId(place), getPlaceType(place), getPlaceName(place), -1, getImage(place)));
             }
         }
         return parsedProperties;

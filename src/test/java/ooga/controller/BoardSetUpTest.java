@@ -44,8 +44,8 @@ public class BoardSetUpTest extends TestCase {
         places.add(new DummyPlace("0"));
         places.add(new DummyPlace("121"));
         actions.add(StationaryAction.ROLL_DICE);
-        parsedProperties.add(new ParsedProperty("Go", "Go", 0));
-        parsedProperties.add(new ParsedProperty("Street", "Campus Drive", 0));
+        parsedProperties.add(new ParsedProperty("0", "Go", "Go", 0, "path/to/image1"));
+        parsedProperties.add(new ParsedProperty("121", "Street", "Campus Drive", 1, "path/to/image2"));
     }
 
     public void testBoardSetUp() {
