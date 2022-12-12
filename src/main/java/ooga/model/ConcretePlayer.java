@@ -77,7 +77,8 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   public void setJail(int jailTurns) {
     try {
       remainingJailTurns = jailTurns;
-      // jailIndex is 0 when it isn't properly
+      // jailIndex is 0 when it isn't properly initialized
+      // if one wish to do a version without jail, use polymorphism
       assert jailIndex > 0;
       setIndex(jailIndex);
     }
