@@ -33,7 +33,7 @@ public class RollDiceEventTest extends TestCase {
         gameEventHandler.addEventListener(controller);
     }
 
-    public void testRollDiceToModel() {
+    public void testRollDice() {
         listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_ROLL_DICE.name());
         gameEventHandler.addEventListener(listener);
         GameEvent rollDice = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {

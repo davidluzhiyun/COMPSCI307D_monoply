@@ -18,5 +18,8 @@ public enum GameState {
   GET_PLACE_ACTIONS,
   LOAD_BOARD,
   BUILD_HOUSE,
-  BUILD_HOTEL
+
+  BUILD_HOTEL,
+
+  COMMUNITY_CARD,
 }
