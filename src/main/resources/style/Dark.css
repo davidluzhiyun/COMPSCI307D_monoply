@@ -153,3 +153,17 @@
   -fx-base: black;
   -fx-padding: 20;
 }
+#SaveFileButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: white;
+  -fx-text-fill: white;
+  -fx-background-color: rgba(0,77,51, 0.2);
+}
+#EditDimensionsButton {
+  -fx-padding: 10;
+  -fx-text-alignment: center;
+  -fx-border-color: white;
+  -fx-text-fill: white;
+  -fx-background-color: rgba(0,77,51, 0.2);
+}
