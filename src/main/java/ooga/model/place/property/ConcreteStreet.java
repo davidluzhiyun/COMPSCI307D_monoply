@@ -39,8 +39,8 @@ public class ConcreteStreet extends AbstractProperty implements Street {
   }
 
   @Override
-  public int getHousePrice() {
-    return (int) housePrice;
+  public double getHousePrice() {
+    return housePrice;
   }
 
   @Override

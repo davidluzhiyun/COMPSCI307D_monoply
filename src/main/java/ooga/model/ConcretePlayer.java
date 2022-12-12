@@ -70,7 +70,6 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     if (remainingJailTurns > 0){
       remainingJailTurns -= 1;
     }
-    // TODO:Death
   }
 
 
@@ -282,18 +281,30 @@ public class ConcretePlayer implements Player, ControllerPlayer {
       throw ex;
     }
   }
-
+  /**
+   * @author David Lu
+   * Get the player out of jail for free;
+   */
   @Override
   public void getOutOfJail() {
     remainingJailTurns = 0;
     GameEventHandler gameEventHandler = new GameEventHandler();
     gameEventHandler.publish(modelToken + GameState.OUT_OF_JAIL);
   }
-
+  /**
+   * @author David Lu
+   * Get the player out of jail for a fee
+   */
   @Override
   public void payOutOfJail() {
     money -= DEFAULT_FINE;
     getOutOfJail();
   }
-
+  /**
+   * @author David Lu
+   * Backrupt the current player to another player or the bank
+   */
+  public void bankruptTo(Player player){
+    
+  }
 }
