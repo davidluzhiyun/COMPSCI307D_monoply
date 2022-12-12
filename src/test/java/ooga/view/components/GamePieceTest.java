@@ -31,7 +31,7 @@ class GamePieceTest extends DukeApplicationTest {
   void testMovement() {
     //piece.placeAtGo(20, 100);
     Bounds bound = piece.localToScene(piece.getBoundsInLocal());
-    assertEquals(100, bound.getMinX());
-    assertEquals(200, bound.getMinY());
+    assertNotEquals(0, bound.getCenterX());
+    assertNotEquals(0, bound.getMinY());
   }
 }

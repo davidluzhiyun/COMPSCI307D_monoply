@@ -4,22 +4,19 @@ import java.util.ResourceBundle;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import ooga.Main;
-import ooga.Reflection;
-import ooga.view.InteractiveObject;
-import ooga.view.StartView;
 import ooga.view.View;
 import ooga.view.api.ChildView;
 import ooga.view.button.CustomizedButton;
-import ooga.view.scene.MonopolyGameEditorScene;
 import ooga.view.scene.SceneManager;
 
 public class MenuBar extends View implements ChildView {
 
   private String myLanguage;
   private HBox buttonBar;
+  public static final String MENU_BAR_BUTTONS = "MenuBarButtons";
   public MenuBar(String language) {
     ResourceBundle resources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + SceneManager.USER_INTERFACE);
-    String[] buttons = resources.getString("MenuBarButtons").split(", ");
+    String[] buttons = resources.getString(MENU_BAR_BUTTONS).split(COMMA_REGEX);
     this.myLanguage = language;
     makeButtons(buttons);
   }
