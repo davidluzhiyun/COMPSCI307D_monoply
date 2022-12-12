@@ -46,8 +46,8 @@
     "type": "Go"
   },
   "10": {
-    "id": 300,
-    "type": "Jail"
+    "id": 301,
+    "type": "GoToJail"
   },
   "11": {
     "id": 123,
