@@ -26,6 +26,7 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
+import ooga.event.command.GetPlayerCommand;
 import ooga.event.command.RollDiceCommand;
 import ooga.model.GameState;
 import ooga.view.pop_ups.AvailablePlaceActionsPopUp;
@@ -176,12 +177,6 @@ public class GameView extends View implements GameEventListener {
     pop.showMessage(myLanguage);
   }
 
-  /**
-   * TODO: delete. this will be entirely different
-   */
-  public void buyHouse() {
-  }
-
   public void showPlaceActions(GameEvent event) {
     Command cmd = event.getGameEventCommand().getCommand();
     AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd.getCommandArgs(), myStyle);
@@ -195,10 +190,13 @@ public class GameView extends View implements GameEventListener {
   public void drawBoard(GameEvent event) {monopolyBoardBuilder.drawPostProcessing();}
 
   public void startGame(GameEvent event){
+    System.out.println("start game");
     InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
     interactor.initializeNewBoard(command);
     this.currentPlayer = command.currentPlayerId();
-    startPlayerTurn(event);
+    myDicePopUp = new DiceRollPopUp(currentPlayer+1, myStyle);
+    myDicePopUp.showMessage(myLanguage);
+    myDicePopUp.makeButtonActive(this);
     chooseGamePieces();
   }
   public void movePlayer(GameEvent event) {
@@ -209,12 +207,16 @@ public class GameView extends View implements GameEventListener {
   @Override
   public void onGameEvent(GameEvent event) {
     String patternToken = ".+_TO_VIEW_.+";
+    System.out.println("bitch i s2g.");
+    System.out.println(event.getGameEventType());
     boolean isViewEvent = Pattern.matches(patternToken, event.getGameEventType());
     String pattern = "VIEW_POST_ACTION_DRAW_BOARD";
-    if (isViewEvent | Pattern.matches(pattern, event.getGameEventType())) {
+    String pattern2 = "CONTROLLER_TO_VIEW_START_GAME";
+    if (isViewEvent | Pattern.matches(pattern, event.getGameEventType()) | Pattern.matches(pattern2, event.getGameEventType())) {
       Reflection reflect = new Reflection();
       ResourceBundle reflectResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + "GameViewReflection");
       String method = reflectResources.getString(event.getGameEventType());
+      System.out.println(method);
       try {
         reflect.makeMethod(method, this.getClass(), new Class[]{GameEvent.class}).invoke(this, event);
       } catch (IllegalAccessException | InvocationTargetException e) {
