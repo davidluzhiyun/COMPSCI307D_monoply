@@ -1,55 +1,39 @@
 {
   "meta": {
     "players": 4,
-    "rows": 4,
-    "columns": 4
+    "rows": 3,
+    "columns": 3
   },
   "0": {
-    "id": 0,
+    "id": "Go",
     "type": "Go"
   },
   "1": {
-    "id": 121,
+    "id": "Shanghai1",
     "type": "Street"
   },
   "2": {
-    "id": 121,
+    "id": "Shanghai1",
     "type": "Street"
   },
   "3": {
-    "id": 0,
+    "id": "New York1",
     "type": "Go"
   },
   "4": {
-    "id": 123,
+    "id": "New York1",
     "type": "Street"
   },
   "5": {
-    "id": 123,
+    "id": "New York1",
     "type": "Street"
   },
   "6": {
-    "id": 0,
-    "type": "Go"
+    "id": "New York1",
+    "type": "Street"
   },
   "7": {
-    "id": 125,
-    "type": "Street"
-  },
-  "8": {
-    "id": 125,
-    "type": "Street"
-  },
-  "9": {
-    "id": 0,
-    "type": "Go"
-  },
-  "10": {
-    "id": 123,
-    "type": "Street"
-  },
-  "11": {
-    "id": 123,
+    "id": "New York1",
     "type": "Street"
   }
 }

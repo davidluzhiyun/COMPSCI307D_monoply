@@ -7,17 +7,14 @@ import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.model.*;
-import ooga.model.exception.CannotBuildHouseException;
-import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
-public class PlayerStartTest extends TestCase {
+public class MoveTest extends TestCase {
 
     private GameEventHandler gameEventHandler;
 
@@ -25,7 +22,11 @@ public class PlayerStartTest extends TestCase {
 
     private MockListener listener;
 
-    List<ControllerPlayer> players = new ArrayList<>();
+    private ControllerPlayer player;
+
+    private List<StationaryAction> actions = new ArrayList<>();
+
+    private List<ControllerPlayer> players = new ArrayList<>();
 
     @Override
     public void setUp(){
@@ -33,17 +34,54 @@ public class PlayerStartTest extends TestCase {
         gameEventHandler = new GameEventHandler();
         controller = new Controller(gameEventHandler);
         gameEventHandler.addEventListener(controller);
-        players.add(new ConcretePlayer(0));
-        players.add(new ConcretePlayer(1));
+        player = new ControllerPlayer() {
+            @Override
+            public int getPlayerId() {
+                return 0;
+            }
+
+            @Override
+            public int getCurrentPlaceIndex() {
+                return 0;
+            }
+
+            @Override
+            public int remainingJailTurns() {
+                return 0;
+            }
+
+            @Override
+            public Collection<Integer> getPropertyIndices() {
+                return null;
+            }
+
+            @Override
+            public double getTotalMoney() {
+                return 0;
+            }
+
+            @Override
+            public boolean hasNextDice() {
+                return false;
+            }
+
+            @Override
+            public int getDice() {
+                return 0;
+            }
+        };
+        players.add(player);
+        actions.add(StationaryAction.ROLL_DICE);
+        actions.add(StationaryAction.BUY_PROPERTY);
     }
 
-    public void testPlayerStart() {
-        listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_PLAYER_START.name());
+    public void testMove() {
+        listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_MOVE.name());
         gameEventHandler.addEventListener(listener);
-        GameEvent playerStart = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {
+        GameEvent move = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {
             @Override
             public GameState getGameState() {
-                return GameState.NEXT_PLAYER;
+                return GameState.MOVE;
             }
 
             @Override
@@ -52,12 +90,12 @@ public class PlayerStartTest extends TestCase {
             }
 
             @Override
-            public int getCurrentPlayerId() {
-                return 1;
+            public int getCurrentPlayer() {
+                return player.getPlayerId();
             }
 
             @Override
-            public List<ControllerPlayer> getPlayers() {
+            public java.util.List<ControllerPlayer> getPlayers() {
                 return players;
             }
 
@@ -68,7 +106,7 @@ public class PlayerStartTest extends TestCase {
 
             @Override
             public Collection<StationaryAction> getStationaryAction() {
-                return null;
+                return actions;
             }
 
             @Override
@@ -76,11 +114,11 @@ public class PlayerStartTest extends TestCase {
                 return -1;
             }
         }));
-        gameEventHandler.publish(playerStart);
-        System.out.println("PlayerStart event published!");
+        gameEventHandler.publish(move);
+        System.out.println("Move event published!");
     }
 
-    public class TestCommand implements Command{
+    public class TestCommand implements Command {
 
         private final ModelOutput boardInfo;
 
@@ -105,9 +143,12 @@ public class PlayerStartTest extends TestCase {
             if (event.getGameEventType().equals(eventToTest)) {
                 System.out.println("Got game event:");
                 System.out.println(event.getGameEventType());
-                assertEquals(GameEventType.CONTROLLER_TO_VIEW_PLAYER_START.name(), event.getGameEventType());
-                assertEquals(players.get(1), event.getGameEventCommand().getCommand().getCommandArgs());
+                assertEquals(GameEventType.CONTROLLER_TO_VIEW_MOVE.name(), event.getGameEventType());
+                MoveRecord record = new MoveRecord(actions, player.getCurrentPlaceIndex());
+                assertEquals(record, event.getGameEventCommand().getCommand().getCommandArgs());
             }
         }
     }
+
+
 }

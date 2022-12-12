@@ -8,9 +8,7 @@ import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.model.*;
 import ooga.model.colorSet.DummyPlace;
-import ooga.model.colorSet.DummyStreet;
 import ooga.model.place.ControllerPlace;
-import ooga.model.place.Place;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -46,12 +44,12 @@ public class BoardSetUpTest extends TestCase {
         places.add(new DummyPlace("0"));
         places.add(new DummyPlace("121"));
         actions.add(StationaryAction.ROLL_DICE);
-        parsedProperties.add(new ParsedProperty("Go", "Go", 0));
-        parsedProperties.add(new ParsedProperty("Street", "Campus Drive", 0));
+        parsedProperties.add(new ParsedProperty("0", "Go", "Go", 0, "path/to/image1"));
+        parsedProperties.add(new ParsedProperty("121", "Street", "Campus Drive", 1, "path/to/image2"));
     }
 
     public void testBoardSetUp() {
-        listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_BOARD_SET_UP.name());
+        listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_START_GAME.name());
         gameEventHandler.addEventListener(listener);
         GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {
             @Override
@@ -65,7 +63,7 @@ public class BoardSetUpTest extends TestCase {
             }
 
             @Override
-            public int getCurrentPlayer() {
+            public int getCurrentPlayerId() {
                 return 0;
             }
 
@@ -118,7 +116,7 @@ public class BoardSetUpTest extends TestCase {
             if (event.getGameEventType().equals(eventToTest)) {
                 System.out.println("Got game event:");
                 System.out.println(event.getGameEventType());
-                assertEquals(GameEventType.CONTROLLER_TO_VIEW_BOARD_SET_UP.name(), event.getGameEventType());
+                assertEquals(GameEventType.CONTROLLER_TO_VIEW_START_GAME.name(), event.getGameEventType());
                 InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
                 assertEquals(0, command.currentPlayerId());
                 assertEquals(actions, command.stationaryActions());

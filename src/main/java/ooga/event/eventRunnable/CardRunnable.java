@@ -7,17 +7,17 @@ import ooga.event.command.Command;
 import ooga.event.command.PayTaxCommand;
 import ooga.model.ModelOutput;
 
-public class PayTaxRunnable implements EventGenerator{
+public class CardRunnable implements EventGenerator{
 
     private ModelOutput boardInfo;
 
-    public PayTaxRunnable(Command arguments) {
+    public CardRunnable(Command arguments) {
         this.boardInfo = (ModelOutput) arguments.getCommandArgs();
     }
 
     @Override
     public GameEvent processEvent() {
         PayTaxCommand command = new PayTaxCommand(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayerId()));
-        return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_PAY_TAX.name(), command);
+        return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_COMMUNITY_CARD.name(), command);
     }
 }

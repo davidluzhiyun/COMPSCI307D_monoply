@@ -8,16 +8,12 @@ import ooga.event.GameEventType;
 import ooga.event.command.BoardSetUpCommand;
 import ooga.event.command.Command;
 import ooga.model.ModelOutput;
+import ooga.model.exception.MonopolyException;
 import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
 
-import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Represents the logic/functions that need to occur when the Controller sends the board set up information to the view
@@ -33,18 +29,18 @@ public class BoardSetUpRunnable extends ParsingJsonRunnable implements EventGene
 
     @Override
     public GameEvent processEvent() {
-        InitBoardRecord startInfo = new InitBoardRecord(getParsedProperty(), this.boardInfo.getStationaryAction(), this.boardInfo.getPlayers(), this.boardInfo.getCurrentPlayer());
+        InitBoardRecord startInfo = new InitBoardRecord(getParsedProperty(boardInfo), this.boardInfo.getStationaryAction(), this.boardInfo.getPlayers(), this.boardInfo.getCurrentPlayerId());
         BoardSetUpCommand setUp = new BoardSetUpCommand(startInfo);
-        return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_BOARD_SET_UP.name(), setUp);
+        return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_START_GAME.name(), setUp);
     }
 
-    private List<ParsedProperty> getParsedProperty() {
+    public static List<ParsedProperty> getParsedProperty(ModelOutput boardInfo) {
         List<ParsedProperty> parsedProperties = new ArrayList<>();
-        for(ControllerPlace place : this.boardInfo.getBoard()) {
+        for(ControllerPlace place : boardInfo.getBoard()) {
             try {
-                parsedProperties.add(new ParsedProperty(getPlaceType(place), getPlaceName(place), place.getColorSetId()));
-            } catch (NoColorAttributeException e) {
-                parsedProperties.add(new ParsedProperty(getPlaceType(place), getPlaceName(place), -1));
+              parsedProperties.add(new ParsedProperty(getId(place), getPlaceType(place), getPlaceName(place), place.getColorSetId(), getImage(place)));
+            } catch (MonopolyException e) {
+              parsedProperties.add(new ParsedProperty(getId(place), getPlaceType(place), getPlaceName(place), -1, getImage(place)));
             }
         }
         return parsedProperties;

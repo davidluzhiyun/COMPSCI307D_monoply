@@ -24,6 +24,10 @@ public class ParsingJsonRunnable implements EventGenerator{
 
     public static final String colorRegex = ".+\"colorId\": (.+).?";
 
+    public static final String imageRegex = ".+\"image\": (.+).?";
+
+    public static final String idRegex = ".+\"id\": (\\d+).?";
+
     @Override
     public GameEvent processEvent() {
         return null;
@@ -57,12 +61,12 @@ public class ParsingJsonRunnable implements EventGenerator{
 
     }
 
-    protected String getPlaceName(ControllerPlace place) {
+    protected static String getPlaceName(ControllerPlace place) {
         String fileName = PLACE_PATH + place.getPlaceId() + JSON_EXTENSION;
         return getString(fileName, nameRegex);
     }
 
-    protected String getString(String fileName, String regex) {
+    protected static String getString(String fileName, String regex) {
         try {
             File file = getFileFromResource(fileName);
             BufferedReader fr = new BufferedReader(new FileReader(file));
@@ -82,8 +86,18 @@ public class ParsingJsonRunnable implements EventGenerator{
         return null;
     }
 
-    protected String getPlaceType(ControllerPlace place) {
+    protected static String getPlaceType(ControllerPlace place) {
         String fileName = PLACE_PATH + place.getPlaceId() + JSON_EXTENSION;
         return getString(fileName, typeRegex);
+    }
+
+    protected static String getImage(ControllerPlace place) {
+        String fileName = PLACE_PATH + place.getPlaceId() + JSON_EXTENSION;
+        return getString(fileName, imageRegex);
+    }
+
+    protected static String getId(ControllerPlace place) {
+        String fileName = PLACE_PATH + place.getPlaceId() + JSON_EXTENSION;
+        return getString(fileName, idRegex);
     }
 }
