@@ -11,6 +11,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import ooga.Main;
+import ooga.controller.InitBoardRecord;
 import ooga.controller.LoadBoardRecord;
 import ooga.controller.MoveRecord;
 import ooga.event.GameEvent;
@@ -119,6 +120,7 @@ public class GameView extends View implements GameEventListener {
    * Presents the GamePiecePopUp to each player to let them pick their piece.
    */
   public void chooseGamePieces() {
+    startPlayerTurn(this.currentPlayer+1);
     for (int i = numPlayers; i > 0; i--) {
       GamePiecePopUp pop = new GamePiecePopUp(i, myStyle, monopolyBoardBuilder);
       pop.showMessage(myLanguage);
@@ -135,15 +137,15 @@ public class GameView extends View implements GameEventListener {
 //    popUp.showMessage(myLanguage);
     RentPopUp pop = new RentPopUp(20);
     pop.showMessage(myLanguage);
-    startPlayerTurn(1);
   }
 
   /**
-   * Will later need to take in current player (int) parameter -- or use instance variable
+   * Takes in the current player index, must increment this for display of players 1-4 rather than
+   * 0-3. Displays pop up for user to roll the dice and start their turn.
    */
   private void startPlayerTurn(int player) {
-    this.currentPlayer = player;
-    myDicePopUp = new DiceRollPopUp(player, myStyle);
+    this.currentPlayer = player+1;
+    myDicePopUp = new DiceRollPopUp(player+1, myStyle);
     myDicePopUp.showMessage(myLanguage);
     myDicePopUp.makeButtonActive(this);
   }
@@ -205,8 +207,10 @@ public class GameView extends View implements GameEventListener {
         monopolyBoardBuilder.movePlayer(cmd.placeIndex(), currentPlayer);
       }
       case "CONTROLLER_TO_VIEW_START_GAME" -> {
-//        InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
-//        interactor.initialize(command);
+        InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+//        interactor.initializeNewBoard(command);
+        this.currentPlayer = command.currentPlayerId();
+        chooseGamePieces();
       }
     }
   }

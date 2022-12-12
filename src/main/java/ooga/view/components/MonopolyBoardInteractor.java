@@ -1,5 +1,6 @@
 package ooga.view.components;
 
+import ooga.controller.InitBoardRecord;
 import ooga.controller.LoadBoardRecord;
 import ooga.controller.ParsedProperty;
 
@@ -14,6 +15,9 @@ public class MonopolyBoardInteractor {
   public void initialize(LoadBoardRecord boardData) {
     initializeCards(boardData);
     initializeRowCol(boardData);
+  }
+
+  public void initializeNewBoard(InitBoardRecord data) {
   }
 
   private void initializeRowCol(LoadBoardRecord boardData) {
