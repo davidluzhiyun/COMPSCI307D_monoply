@@ -47,16 +47,16 @@ public class BoardSetUpTest extends TestCase {
         players.add(new ConcretePlayer(0));
         players.add(new ConcretePlayer(1));
         places.add(new DummyPlace("Go"));
-        places.add(new DummyPlace("121"));
+        places.add(new DummyPlace("New York1"));
         actions.add(StationaryAction.ROLL_DICE);
-        parsedProperties.add(new ParsedProperty("0", "Go", "Go", 0, "path/to/image1"));
-        parsedProperties.add(new ParsedProperty("121", "Street", "Campus Drive", 1, "path/to/image2"));
+        parsedProperties.add(new ParsedProperty("Go", "Go", "Go", 0, "path/to/image1", "Go", null, false));
+        parsedProperties.add(new ParsedProperty("New York1", "Street", "New York", 0, "path/to/image2", "test upper text", "test lower text", true));
     }
 
     public void testBoardSetUp() {
         listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_START_GAME.name());
         gameEventHandler.addEventListener(listener);
-        GameEvent gameStart = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_CONTROLLER_GAME_START.name(), new GameStartEventTest.TestCommand(new File("doc/plan/data/TestInitialBoard.json")));
+        GameEvent gameStart = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_CONTROLLER_GAME_START.name(), new GameStartEventTest.TestCommand(new File("doc/plan/data/TestInitialBoard2.json")));
         gameEventHandler.publish(gameStart);
         GameEvent boardSetUp = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {
             @Override
