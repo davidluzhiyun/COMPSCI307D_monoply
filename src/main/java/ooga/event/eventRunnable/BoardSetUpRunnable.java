@@ -28,7 +28,7 @@ public class BoardSetUpRunnable extends ParsingJsonRunnable implements EventGene
 
     @Override
     public GameEvent processEvent() {
-        InitBoardRecord startInfo = new InitBoardRecord(getParsedProperty(this.boardInfo), this.boardInfo.getStationaryAction(), this.boardInfo.getPlayers(), this.boardInfo.getCurrentPlayer());
+        InitBoardRecord startInfo = new InitBoardRecord(getParsedProperty(), this.boardInfo.getStationaryAction(), this.boardInfo.getPlayers(), this.boardInfo.getCurrentPlayerId());
         BoardSetUpCommand setUp = new BoardSetUpCommand(startInfo);
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_START_GAME.name(), setUp);
     }

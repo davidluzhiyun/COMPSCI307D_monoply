@@ -18,7 +18,7 @@ public class BuyPropertyRunnable implements EventGenerator{
 
     @Override
     public GameEvent processEvent() {
-        PlaceActionCommand command = new PlaceActionCommand(new PlaceActionRecord(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayer()), this.boardInfo.getQueryIndex()));
+        PlaceActionCommand command = new PlaceActionCommand(new PlaceActionRecord(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayerId()), this.boardInfo.getQueryIndex()));
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_BUY_PROPERTY.name(), command);
     }
 }
