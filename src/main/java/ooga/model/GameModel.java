@@ -201,6 +201,7 @@ public class GameModel implements GameEventListener, ModelOutput {
 
   //end of ModelOutput methods
 
+
   @Override
   public void onGameEvent(GameEvent event) {
     System.out.println("in game model");
@@ -212,34 +213,6 @@ public class GameModel implements GameEventListener, ModelOutput {
     //Inside model
 
     //TODO: Refactor the switch expression
-    switch (event.getGameEventType()) {
-      case "CONTROLLER_TO_MODEL_GAME_START" -> {
-        Command cmd = event.getGameEventCommand().getCommand();
-        initializeGame((Map) cmd.getCommandArgs());
-//        publishGameData();
-      }
-      case "VIEW_TO_MODEL_ROLL_DICE" -> {
-        Command cmd = event.getGameEventCommand().getCommand();
-        turn.roll();
-      }
-      case "VIEW_TO_MODEL_GET_PLACE_ACTIONS" -> {
-        Command cmd = event.getGameEventCommand().getCommand();
-        int propertyIndex = (int) cmd.getCommandArgs();
-        publishGameData(GameState.GET_PLACE_ACTIONS);
-      }
-      case "CONTROLLER_TO_MODEL_PURCHASE_PROPERTY" -> {
-        Command cmd = event.getGameEventCommand().getCommand();
-        int propertyIndex = (int) cmd.getCommandArgs();
-        buyProperty(propertyIndex);
-        publishGameData(GameState.BUY_PROPERTY);
-      }
-      case "CONTROLLER_TO_MODEL_END_TURN" -> {
-        Command cmd = event.getGameEventCommand().getCommand();
-        endTurn();
-        publishGameData(GameState.NEXT_PLAYER);
-      }
-    }
-    eventTypeMap.get(event.getGameEventType()).accept(event);
     String patternToken = ".+_TO_MODEL_.+";
     boolean isModelEvent = Pattern.matches(patternToken, event.getGameEventType());
     if (isModelEvent) {
