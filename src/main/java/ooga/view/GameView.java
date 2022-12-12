@@ -1,7 +1,6 @@
 package ooga.view;
 
 import java.awt.Point;
-import java.util.List;
 import java.io.File;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
@@ -19,17 +18,11 @@ import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.event.command.RollDiceCommand;
-import ooga.model.PlaceAction;
-import ooga.view.components.Board;
-import ooga.view.components.GamePiece;
 import ooga.view.pop_ups.AvailablePlaceActionsPopUp;
 import ooga.event.command.SelectBoardEditConfigCommand;
-import ooga.view.components.Board;
-import ooga.view.components.GamePiece;
 import ooga.view.components.MonopolyBoardBuilder;
 import ooga.view.components.MonopolyBoardInteractor;
 import ooga.view.components.MonopolyBoardViewModel;
-import ooga.view.pop_ups.BuyHousePopUp;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
 import ooga.view.pop_ups.RentPopUp;
@@ -55,7 +48,8 @@ public class GameView extends View implements GameEventListener {
   private MonopolyBoardBuilder monopolyBoardBuilder;
   private MonopolyBoardInteractor interactor;
   // TODO: get this instead from controller
-  private int numPlayers;
+  private final int numPlayers;
+  private int currentPlayer;
 
   public GameView(GameEventHandler gameEventHandler, String language, Stage stage) {
     this.myLanguage = language;
@@ -140,14 +134,15 @@ public class GameView extends View implements GameEventListener {
 //    popUp.showMessage(myLanguage);
     RentPopUp pop = new RentPopUp(20);
     pop.showMessage(myLanguage);
-    startPlayerTurn();
+    startPlayerTurn(1);
   }
 
   /**
    * Will later need to take in current player (int) parameter -- or use instance variable
    */
-  private void startPlayerTurn() {
-    myDicePopUp = new DiceRollPopUp(1, myStyle);
+  private void startPlayerTurn(int player) {
+    this.currentPlayer = player;
+    myDicePopUp = new DiceRollPopUp(player, myStyle);
     myDicePopUp.showMessage(myLanguage);
     myDicePopUp.makeButtonActive(this);
   }
@@ -156,10 +151,13 @@ public class GameView extends View implements GameEventListener {
    * Set in property files to be called when the user clicks "Roll" within the RollDicePopUp
    */
   public void rollDice() {
-    Command cmd = new RollDiceCommand();
-    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_TO_MODEL_ROLL_DICE",
-        cmd);
-    gameEventHandler.publish(event);
+//    Command cmd = new RollDiceCommand();
+//    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_TO_MODEL_ROLL_DICE",
+//        cmd);
+//    gameEventHandler.publish(event);
+    Point roll = new Point(1,3);
+    showDiceResult(roll);
+
   }
 
   /**
@@ -169,6 +167,7 @@ public class GameView extends View implements GameEventListener {
     myDicePopUp.close();
     RollResultPopUp pop = new RollResultPopUp(roll.x, roll.y);
     pop.showMessage(myLanguage);
+    monopolyBoardBuilder.movePlayer(roll.x+roll.y, currentPlayer);
   }
 
   /**
@@ -185,7 +184,10 @@ public class GameView extends View implements GameEventListener {
   @Override
   public void onGameEvent(GameEvent event) {
     switch (event.getGameEventType()) {
-      case "CONTROLLER_TO_VIEW_PLAYER_START" -> startPlayerTurn();
+      case "CONTROLLER_TO_VIEW_PLAYER_START" -> {
+        Command cmd = event.getGameEventCommand().getCommand();
+        startPlayerTurn((int) cmd.getCommandArgs());
+      }
       case "CONTROLLER_TO_VIEW_ROLL_DICE" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         showDiceResult((Point) cmd.getCommandArgs());

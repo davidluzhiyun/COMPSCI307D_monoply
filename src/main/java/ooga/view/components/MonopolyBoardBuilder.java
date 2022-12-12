@@ -1,5 +1,6 @@
 package ooga.view.components;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javafx.geometry.Bounds;
@@ -7,8 +8,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Builder;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
@@ -22,6 +21,7 @@ public class MonopolyBoardBuilder implements Builder<Region> {
   private MonopolyBoardViewModel model;
   private int currIdx;
   private GameEventHandler gameEventHandler;
+  private List<GamePiece> playerPieces = new ArrayList<GamePiece>();
 
   public MonopolyBoardBuilder(MonopolyBoardViewModel model, GameEventHandler gameEventHandler) {
     board = new AnchorPane();
@@ -149,10 +149,36 @@ public class MonopolyBoardBuilder implements Builder<Region> {
   @Override
   public Region build() {return board;}
 
+  /**
+   * Called by GamePiecePopUp whenever a new pop up is created. Places the piece at GO (well eventually it will)
+   * @param piece: the new piece that was created
+   * @param player: not used right now, but probably a good idea to create some mapping
+   */
   public void initializeGamePiece(GamePiece piece, int player) {
+    playerPieces.add(player-1, piece);
     board.getChildren().add(piece);
-    //TODO: change to give the location of go!!!
     Bounds bound = getBoundsbyIndex(0);
+    piece.placeObject(bound.getMinX(), bound.getMinY());
+  }
+  /**
+   * Called by BuyHousePopUp if users decide to buy a house.
+   * @param property: int, index of the property they selected
+   */
+  public void buildHouse(int property) {
+    House house = new House();
+    board.getChildren().add(house);
+    Bounds bound = getBoundsbyIndex(property);
+    house.placeObject(bound.getMinX(), bound.getMinY());
+  }
+
+  /**
+   * TODO: need to either have the piece know its current index, or get the result from model.
+   * @param numSpaces int result of the dice roll -- might need to be changed to be the new index
+   * @param currentPlayer: int of player whose piece needs to be moved
+   */
+  public void movePlayer(int numSpaces, int currentPlayer) {
+    GamePiece piece = playerPieces.get(currentPlayer-1);
+    Bounds bound = getBoundsbyIndex(numSpaces);
     piece.placeObject(bound.getMinX(), bound.getMinY());
   }
 
