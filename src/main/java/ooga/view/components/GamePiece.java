@@ -46,7 +46,7 @@ public class GamePiece extends ImageView implements BoardObject {
    * @param yLocation: int, y-coordinate of target location
    */
   @Override
-  public void placeObject(int xLocation, int yLocation) {
+  public void placeObject(double xLocation, double yLocation) {
     this.setOpacity(0);
     TranslateTransition transition = new TranslateTransition();
     double duration = Double.parseDouble(myResources.getString(MOVEMENT_DURATION_KEY));

@@ -27,7 +27,7 @@ public class House extends ImageView implements BoardObject {
   }
 
   @Override
-  public void placeObject(int xLocation, int yLocation) {
+  public void placeObject(double xLocation, double yLocation) {
     this.setOpacity(0);
     Translate translate = new Translate();
     translate.setX(xLocation);

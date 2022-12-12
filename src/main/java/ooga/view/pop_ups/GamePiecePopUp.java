@@ -7,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ooga.Main;
@@ -16,8 +15,8 @@ import ooga.view.StartView;
 import ooga.view.View;
 import ooga.view.button.CustomizedButton;
 import ooga.view.button.SelectButton;
-import ooga.view.components.Board;
 import ooga.view.components.GamePiece;
+import ooga.view.components.MonopolyBoardBuilder;
 import ooga.view.drop_down.CustomizedDropDown;
 import ooga.view.drop_down.GamePieceDropDown;
 
@@ -42,10 +41,10 @@ public class GamePiecePopUp extends ActionPopUp {
   public static final String ICON_HEIGHT_KEY = "IconHeight";
   public static final String GAME_PIECE_POP_UP_ID = "GamePiecePopUp";
   public static final String PREVIEW_TEXT = "PreviewText";
-  private final Board myBoard;
+  private final MonopolyBoardBuilder myBoard;
   private GamePiece myPiece;
 
-  public GamePiecePopUp(int player, String style, Board board) {
+  public GamePiecePopUp(int player, String style, MonopolyBoardBuilder board) {
     this.currentPlayer = player;
     this.myStage = new Stage();
     myStage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
