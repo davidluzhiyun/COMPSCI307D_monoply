@@ -1,20 +1,28 @@
 package ooga.view;
 
+import java.io.File;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import ooga.Main;
+import ooga.controller.LoadBoardRecord;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
+import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.event.command.RollDiceCommand;
+import ooga.event.command.SelectBoardEditConfigCommand;
 import ooga.view.components.Board;
 import ooga.view.components.GamePiece;
+import ooga.view.components.MonopolyBoardBuilder;
+import ooga.view.components.MonopolyBoardInteractor;
+import ooga.view.components.MonopolyBoardViewModel;
 import ooga.view.pop_ups.BuyHousePopUp;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
@@ -23,7 +31,7 @@ import ooga.view.pop_ups.RollResultPopUp;
 
 public class GameView extends View implements GameEventListener {
 
-  private final GameEventHandler gameEventHandler;
+  private GameEventHandler gameEventHandler;
   private final Stage myStage;
   private String myStyle;
   private final String myLanguage;
@@ -36,7 +44,10 @@ public class GameView extends View implements GameEventListener {
   public static final String GAME_OBJECTS_KEY = "GameObjects";
   public static final String GAME_BUTTONS_ID = "GameButtons";
   public static final String GAME_PIECE = "GamePiece";
-  private Board myBoard;
+  private MonopolyBoardViewModel model;
+  private Region myBoard;
+  private MonopolyBoardBuilder monopolyBoardBuilder;
+  private MonopolyBoardInteractor interactor;
   // TODO: get this instead from controller
   private int numPlayers;
 
@@ -47,6 +58,9 @@ public class GameView extends View implements GameEventListener {
     //TODO: Change this
     this.numPlayers = 4;
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + StartView.SCREEN);
+
+    this.gameEventHandler = gameEventHandler;
+    gameEventHandler.addEventListener(this);
   }
 
   public Scene setUpScene(double width, double height, String style) {
@@ -57,14 +71,34 @@ public class GameView extends View implements GameEventListener {
     background.setId(StartView.BACKGROUND);
     BorderPane myBorderPane = new BorderPane(background);
     myBorderPane.setTop(makeInteractiveObjects());
-    myBoard = new Board();
-    myBorderPane.setCenter(myBoard.getBoard());
+
+    // board setup
+    setupBoard();
+    myBorderPane.setCenter(myBoard);
+
     Scene myScene = new Scene(myBorderPane, width, height);
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
     myStage.show();
     chooseGamePieces();
     return myScene;
+  }
+
+  private void getInitBoardData() {
+    String test = "ooga/model/place/InitialConfig.json";
+    GameEvent gameStart = GameEventHandler.makeGameEventwithCommand(
+        GameEventType.VIEW_TO_CONTROLLER_LOAD_BOARD.name(),
+        new SelectBoardEditConfigCommand(
+            new File(this.getClass().getClassLoader().getResource(test).getFile())));
+    gameEventHandler.publish(gameStart);
+  }
+
+  private void setupBoard() {
+    model = new MonopolyBoardViewModel();
+    interactor = new MonopolyBoardInteractor(model);
+    getInitBoardData();
+    monopolyBoardBuilder = new MonopolyBoardBuilder(model);
+    myBoard = monopolyBoardBuilder.build();
   }
 
   private HBox makeInteractiveObjects() {
@@ -93,10 +127,10 @@ public class GameView extends View implements GameEventListener {
    * class that allows for a new piece to be initialized on the Go button
    */
   public void chooseGamePieces() {
-     for (int i = numPlayers; i > 0; i --) {
-       GamePiecePopUp pop = new GamePiecePopUp(i, myStyle, myBoard);
-       pop.showMessage(myLanguage);
-     }
+    for (int i = numPlayers; i > 0; i--) {
+//      GamePiecePopUp pop = new GamePiecePopUp(i, myStyle, myBoard);
+//      pop.showMessage(myLanguage);
+    }
   }
 
   /**
@@ -105,8 +139,8 @@ public class GameView extends View implements GameEventListener {
    * TODO: change this to actually implement the savegame feature.
    */
   public void saveGame() {
-    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myBoard);
-    popUp.showMessage(myLanguage);
+//    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myBoard);
+//    popUp.showMessage(myLanguage);
     RentPopUp pop = new RentPopUp(20);
     pop.showMessage(myLanguage);
     startPlayerTurn();
@@ -144,11 +178,12 @@ public class GameView extends View implements GameEventListener {
   }
 
   public void buyHouse() {
-    BuyHousePopUp pop = new BuyHousePopUp(1, myStyle, myBoard);
-    pop.showMessage(myLanguage);
+//    BuyHousePopUp pop = new BuyHousePopUp(1, myStyle, myBoard);
+//    pop.showMessage(myLanguage);
   }
 
-  public void endTurn() {}
+  public void endTurn() {
+  }
 
   @Override
   public void onGameEvent(GameEvent event) {
@@ -158,6 +193,14 @@ public class GameView extends View implements GameEventListener {
         Command cmd = event.getGameEventCommand().getCommand();
         showDiceResult((int[]) cmd.getCommandArgs());
       }
+    }
+    if (event.getGameEventType().equals("CONTROLLER_TO_VIEW_LOAD_BOARD")) {
+      LoadBoardRecord command = (LoadBoardRecord) event.getGameEventCommand().getCommand()
+          .getCommandArgs();
+      interactor.initialize(command);
+    }
+    if (event.getGameEventType().equals("VIEW_POST_ACTION_DRAW_BOARD")) {
+      monopolyBoardBuilder.drawPostProcessing();
     }
   }
 }
