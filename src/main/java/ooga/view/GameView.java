@@ -12,6 +12,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import ooga.Main;
 import ooga.controller.LoadBoardRecord;
+import ooga.controller.MoveRecord;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
@@ -151,13 +152,10 @@ public class GameView extends View implements GameEventListener {
    * Set in property files to be called when the user clicks "Roll" within the RollDicePopUp
    */
   public void rollDice() {
-//    Command cmd = new RollDiceCommand();
-//    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_TO_MODEL_ROLL_DICE",
-//        cmd);
-//    gameEventHandler.publish(event);
-    Point roll = new Point(1,3);
-    showDiceResult(roll);
-
+    Command cmd = new RollDiceCommand();
+    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_TO_MODEL_ROLL_DICE",
+        cmd);
+    gameEventHandler.publish(event);
   }
 
   /**
@@ -167,7 +165,6 @@ public class GameView extends View implements GameEventListener {
     myDicePopUp.close();
     RollResultPopUp pop = new RollResultPopUp(roll.x, roll.y);
     pop.showMessage(myLanguage);
-    monopolyBoardBuilder.movePlayer(roll.x+roll.y, currentPlayer);
   }
 
   /**
@@ -203,6 +200,10 @@ public class GameView extends View implements GameEventListener {
         interactor.initialize(command);
       }
       case "VIEW_POST_ACTION_DRAW_BOARD" -> monopolyBoardBuilder.drawPostProcessing();
+      case "CONTROLLER_TO_VIEW_MOVE" -> {
+        MoveRecord cmd = (MoveRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+        monopolyBoardBuilder.movePlayer(cmd.placeIndex(), currentPlayer);
+      }
     }
   }
 }

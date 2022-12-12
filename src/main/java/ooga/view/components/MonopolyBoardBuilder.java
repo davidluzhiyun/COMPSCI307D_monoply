@@ -173,12 +173,12 @@ public class MonopolyBoardBuilder implements Builder<Region> {
 
   /**
    * TODO: need to either have the piece know its current index, or get the result from model.
-   * @param numSpaces int result of the dice roll -- might need to be changed to be the new index
+   * @param newIdx index of the new property the player should move to
    * @param currentPlayer: int of player whose piece needs to be moved
    */
-  public void movePlayer(int numSpaces, int currentPlayer) {
+  public void movePlayer(int newIdx, int currentPlayer) {
     GamePiece piece = playerPieces.get(currentPlayer-1);
-    Bounds bound = getBoundsbyIndex(numSpaces);
+    Bounds bound = getBoundsbyIndex(newIdx);
     piece.placeObject(bound.getMinX(), bound.getMinY());
   }
 
