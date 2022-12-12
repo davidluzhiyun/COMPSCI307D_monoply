@@ -13,4 +13,5 @@ public interface ControllerPlayer {
   double getTotalMoney();
   boolean hasNextDice();
   int getDice();
+  int getOwnedRailroadCount();
 }

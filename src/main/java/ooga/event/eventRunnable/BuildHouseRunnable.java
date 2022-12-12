@@ -19,7 +19,7 @@ public class BuildHouseRunnable implements EventGenerator{
 
     @Override
     public GameEvent processEvent() {
-        BuildHouseCommand command = new BuildHouseCommand(new BuildHouseRecord(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayer()), this.boardInfo.getBoard().get(this.boardInfo.getQueryIndex()).getHouseCount()));
+        BuildHouseCommand command = new BuildHouseCommand(new BuildHouseRecord(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayerId()), this.boardInfo.getBoard().get(this.boardInfo.getQueryIndex()).getHouseCount()));
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_BUILD_HOUSE.name(), command);
     }
 }

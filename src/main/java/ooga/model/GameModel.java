@@ -3,14 +3,16 @@ package ooga.model;
 import java.awt.Point;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
 
 import com.google.gson.internal.LinkedTreeMap;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,10 +21,12 @@ import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
+import ooga.event.command.ConcreteCommand;
 import ooga.event.command.Command;
 import ooga.event.command.GameDataCommand;
 import ooga.model.colorSet.ConcreteColorSet;
 import ooga.model.component.ConcretePlayerTurn;
+import ooga.model.exception.MonopolyException;
 import ooga.model.gamearchive.GameLoader;
 import ooga.model.gamearchive.Metadata;
 import ooga.model.place.ControllerPlace;
@@ -42,10 +46,12 @@ public class GameModel implements GameEventListener, ModelOutput {
   private static final Logger LOG = LogManager.getLogger(GameModel.class);
   private GameState gameState;
   private int queryIndex;
+  private final Map<String, Consumer<GameEvent>> eventTypeMap = new HashMap<>();
 
   public GameModel(GameEventHandler gameEventHandler) {
     this.gameEventHandler = gameEventHandler;
     modelResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Model");
+    setUpOnEventMap();
   }
 
   protected ResourceBundle getResources() {
@@ -66,10 +72,11 @@ public class GameModel implements GameEventListener, ModelOutput {
     this.gameState = gameState;
     Player currentPlayer = getCurrentPlayerHelper();
     for (Place place : places) {
-      place.updatePlaceActions(currentPlayer);
+      place.updateCurrentPlayerPlaceActions(currentPlayer);
     }
     ModelOutput gameData = this;
     Command cmd = new GameDataCommand(gameData);
+    Command<ModelOutput> cmd1 = new ConcreteCommand<>(gameData);
     GameEvent event = gameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_GAME_DATA.name(), cmd);
     gameEventHandler.publish(event);
   }
@@ -89,19 +96,27 @@ public class GameModel implements GameEventListener, ModelOutput {
    */
   protected void initializeGame(Map<String, LinkedTreeMap> map) {
     places = new ArrayList<>();
-    int j = 1;
+    int j = 0;
+    int jailIndex = (int) (double) map.get("meta").get("jail");
     while (map.containsKey(String.valueOf(j))) {
       places.add(createPlace((String) map.get(String.valueOf(j)).get("type"), (String) map.get(String.valueOf(j)).get("id")));
+      if (map.get(String.valueOf(j)).get("type").equals("jail"))
+        if (jailIndex != j) //if the index of jail is inconsistent with what is in the metadata
+          throw new MonopolyException("Bad data file");
       j++;
     }
     Map<Integer, Predicate<Collection<Place>>> checkers = new ConcreteColorSet(places).outputCheckers();
     players = new ArrayList<>();
-    for (int i = 0; i < (int) (double) map.get("meta").get("players"); i++){
+    for (int i = 0; i < (int) (double) map.get("meta").get("players"); i++) {
       Player newPlayer = new ConcretePlayer(i);
       newPlayer.setColorSetCheckers(checkers);
       players.add(newPlayer);
     }
     turn = new ConcretePlayerTurn(players, places, 0);
+  }
+
+  private void checkIsInitConfigValid(Map<String, LinkedTreeMap> map) {
+
   }
 
   /**
@@ -111,11 +126,12 @@ public class GameModel implements GameEventListener, ModelOutput {
    */
   protected void loadGame(Map<String, Object> map) {
     GameLoader gameLoader = new GameLoader(map, modelResources);
-    places = gameLoader.loadPlaceData(map);
-    players = gameLoader.loadPlayerData(map);
+    places = gameLoader.loadPlaceData();
+    players = gameLoader.loadPlayerData();
     gameLoader.setUpPlayersPropertiesAndPropertyOwner(players, places);
     Metadata metaData = gameLoader.getMetadata();
     turn = new ConcretePlayerTurn(players, places, metaData.currentPlayerId());//TODO: set current player
+    publishGameData(GameState.LOAD_BOARD);
   }
 
   /**
@@ -154,7 +170,7 @@ public class GameModel implements GameEventListener, ModelOutput {
   }
 
   @Override
-  public int getCurrentPlayer() {
+  public int getCurrentPlayerId() {
     return turn.getCurrentPlayerTurnId();
   }
 
@@ -191,37 +207,48 @@ public class GameModel implements GameEventListener, ModelOutput {
     System.out.println(event);
     Pattern pattern = Pattern.compile("MODEL_TO_MODEL_(.+)");
     Matcher matcher = pattern.matcher(event.getGameEventType());
-    //Inside model
-    if(matcher.find())
+    if (matcher.find())
       publishGameData(GameState.valueOf(matcher.group(1)));
+    //Inside model
 
     //TODO: Refactor the switch expression
-    switch (event.getGameEventType()) {
-      case "CONTROLLER_TO_MODEL_GAME_START" -> {
-        Command cmd = event.getGameEventCommand().getCommand();
-        initializeGame((Map) cmd.getCommandArgs());
-//        publishGameData();
-      }
-      case "VIEW_TO_MODEL_ROLL_DICE" -> {
-        Command cmd = event.getGameEventCommand().getCommand();
-        turn.roll();
-      }
-      case "CONTROLLER_TO_MODEL_CHECK_PLACE_ACTION" -> {
-        Command cmd = event.getGameEventCommand().getCommand();
-        int propertyIndex = (int) cmd.getCommandArgs();
-        publishGameData(GameState.GET_PLACE_ACTIONS);
-      }
-      case "CONTROLLER_TO_MODEL_PURCHASE_PROPERTY" -> {
-        Command cmd = event.getGameEventCommand().getCommand();
-        int propertyIndex = (int) cmd.getCommandArgs();
-        buyProperty(propertyIndex);
-        publishGameData(GameState.BUY_PROPERTY);
-      }
-      case "CONTROLLER_TO_MODEL_END_TURN" -> {
-        Command cmd = event.getGameEventCommand().getCommand();
-        endTurn();
-        publishGameData(GameState.NEXT_PLAYER);
-      }
+    String patternToken = ".+_TO_MODEL_.+";
+    boolean isModelEvent = Pattern.matches(patternToken, event.getGameEventType());
+    if (isModelEvent) {
+      eventTypeMap.get(event.getGameEventType()).accept(event);
     }
+  }
+
+  private void setUpOnEventMap() {
+    eventTypeMap.put(GameEventType.CONTROLLER_TO_VIEW_ROLL_DICE.name(), e -> {
+      turn.roll();
+      publishGameData(GameState.DICE_RESULT);
+    });
+    eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name(), this::startGame);
+    eventTypeMap.put(GameEventType.VIEW_TO_MODEL_PURCHASE_PROPERTY.name(), this::purchaseProperty);
+    eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_CHECK_PLACE_ACTION.name(), this::sendPlaceActions);
+    eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_END_TURN.name(), e -> {
+      endTurn();
+      publishGameData(GameState.NEXT_PLAYER);
+    });
+  }
+
+  private void sendPlaceActions(GameEvent event) {
+    Command cmd = event.getGameEventCommand().getCommand();
+    queryIndex = (int) cmd.getCommandArgs();
+    publishGameData(GameState.GET_PLACE_ACTIONS);
+  }
+
+  private void purchaseProperty(GameEvent event) {
+    Command cmd = event.getGameEventCommand().getCommand();
+    int propertyIndex = (int) cmd.getCommandArgs();
+    buyProperty(propertyIndex);
+    publishGameData(GameState.BUY_PROPERTY);
+  }
+
+  private void startGame(GameEvent event) {
+    Command cmd = event.getGameEventCommand().getCommand();
+    initializeGame((Map) cmd.getCommandArgs());
+    publishGameData(GameState.GAME_SET_UP);
   }
 }
