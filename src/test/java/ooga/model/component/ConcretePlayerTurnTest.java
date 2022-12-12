@@ -1,5 +1,6 @@
 package ooga.model.component;
 
+import ooga.event.GameEventHandler;
 import ooga.model.ConcretePlayer;
 import ooga.model.Player;
 import ooga.model.place.Place;
@@ -34,7 +35,7 @@ class ConcretePlayerTurnTest {
     p2.purchase(utility, 4);
     p2.purchase(NewYork, 0);
     players = List.of(p1, p2, new ConcretePlayer(2), new ConcretePlayer(3));
-    turn = new ConcretePlayerTurn(players, places, 0);
+    turn = new ConcretePlayerTurn(players, places, 0, new GameEventHandler());
   }
 
   @Test

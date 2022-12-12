@@ -113,7 +113,7 @@ public class GameModel implements GameEventListener, ModelOutput {
 //      gameEventHandler.publish(event);
 //    }
     gameConfig = initialConfigLoader.getGameConfig();
-    turn = new ConcretePlayerTurn(players, places, 0);
+    turn = new ConcretePlayerTurn(players, places, 0, gameEventHandler);
   }
 
 
@@ -128,7 +128,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     players = gameLoader.loadPlayerData();
     gameLoader.setUpPlayersPropertiesAndPropertyOwner(players, places);
     Metadata metaData = gameLoader.getMetadata();
-    turn = new ConcretePlayerTurn(players, places, metaData.currentPlayerId());//TODO: set current player
+    turn = new ConcretePlayerTurn(players, places, metaData.currentPlayerId(), gameEventHandler);//TODO: set current player
     publishGameData(GameState.LOAD_BOARD);
   }
 
@@ -174,12 +174,11 @@ public class GameModel implements GameEventListener, ModelOutput {
 
   @Override
   public void onGameEvent(GameEvent event) {
-    System.out.println("in game model");
-    System.out.println(event);
-    Pattern pattern = Pattern.compile("MODEL_TO_MODEL_(.+)");
-    Matcher matcher = pattern.matcher(event.getGameEventType());
-    if (matcher.find())
-      publishGameData(GameState.valueOf(matcher.group(1)));
+    String pattern = "MODEL_TO_MODEL_(.+)";
+    Pattern p = Pattern.compile(pattern);
+    Matcher m = p.matcher(event.getGameEventType());
+    if(m.find())
+      publishGameData(GameState.valueOf(m.group(1)));
     //Inside model
 
     //TODO: Refactor the switch expression
@@ -198,6 +197,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name(), this::startGame);
     eventTypeMap.put(GameEventType.VIEW_TO_MODEL_PURCHASE_PROPERTY.name(), this::purchaseProperty);
     eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_CHECK_PLACE_ACTION.name(), this::sendPlaceActions);
+    eventTypeMap.put(GameEventType.VIEW_TO_MODEL_ROLL_DICE.name(), e -> turn.roll());
     eventTypeMap.put(GameEventType.VIEW_TO_MODEL_END_TURN.name(), e -> {
       endTurn();
       publishGameData(GameState.NEXT_PLAYER);
