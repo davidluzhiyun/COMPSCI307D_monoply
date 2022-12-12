@@ -8,9 +8,6 @@ public abstract class MonopolyScene {
 
   public MonopolyScene(Pane rootPane) {
     this.rootPane = rootPane;
-    initChildren();
-    setChildrenLocation();
-    addChildrenToRoot();
   }
 
   public Pane getRootPane() {

@@ -53,10 +53,10 @@ public class MonopolyGridBuilder implements Builder<Region> {
   }
 
   @Override
-  public Region build() {
+  public GridPane build() {
     grid = new GridPane();
     grid.setPrefSize(boardWidth, boardHeight);
-    grid.setGridLinesVisible(true);
+//    grid.setGridLinesVisible(true);
 
     grid.setBackground(
         new Background(new BackgroundFill(boardColor, CornerRadii.EMPTY, Insets.EMPTY))
@@ -68,18 +68,19 @@ public class MonopolyGridBuilder implements Builder<Region> {
 
     setBoardLogo();
 
-    return board;
+    return grid;
   }
 
   private void setBoardLogo() {
     StackPane p = new StackPane();
-    double middleLogoSize = grid.getPrefHeight() * CARD_SIZE_PERCENTAGE / 100;
+    double middleLogoSize =
+        grid.getPrefHeight() * CARD_SIZE_PERCENTAGE / 100 - 2; // adjust for border pixel size
 
     p.setPrefSize(middleLogoSize, middleLogoSize);
 
-//    p.setBorder(new Border(
-//        new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
-//            new BorderWidths(1, 1, 1, 1))));
+    p.setBorder(new Border(
+        new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
+            new BorderWidths(1, 1, 1, 1))));
 
     Rectangle rect = new Rectangle(middleLogoSize, middleLogoSize);
 
