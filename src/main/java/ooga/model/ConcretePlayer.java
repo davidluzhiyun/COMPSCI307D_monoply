@@ -30,6 +30,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private Map<Integer, Predicate<Collection<Place>>> colorSetCheckers;
   private int diceResult;
   private static final Logger LOG = LogManager.getLogger(GameModel.class);
+  private int jailIndex;
 
   /**
    * Universal constructor for loading the game./
@@ -66,14 +67,33 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     this.money = money;
   }
 
+  /**
+   * @author Luyao Wang
+   * @author David Lu
+   * Sents the player to Jail for certain amount of turns
+   * @param jailTurns
+   */
   @Override
   public void setJail(int jailTurns) {
-    remainingJailTurns = jailTurns;
+    try {
+      remainingJailTurns = jailTurns;
+      // jailIndex is 0 when it isn't properly
+      assert jailIndex > 0;
+      setIndex(jailIndex);
+    }
+    catch (AssertionError e){
+      IllegalStateException ex = new IllegalStateException("Jail index must be larger than zero", e);
+      LOG.warn(ex);
+      throw ex;
+    }
+
   }
 
   @Override
   public void setIndex(int destinationIndex) {
+
     currentPlaceIndex = destinationIndex;
+
   }
 
   @Override
@@ -217,5 +237,24 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     } catch (IllegalStateException e) {
       throw new IllegalStateException();
     }
+  }
+  /**
+   * @author David Lu
+   * Set the index of the jail the player should goto
+   */
+  @Override
+  public void setJailIndex(int jailIndex){
+    try {
+      this.jailIndex = jailIndex;
+      // 0 is reserved for go
+      assert jailIndex > 0;
+
+    }
+    catch (AssertionError e){
+      IllegalStateException ex = new IllegalStateException("Jail index must be larger than zero", e);
+      LOG.warn(ex);
+      throw ex;
+    }
+
   }
 }
