@@ -36,13 +36,10 @@ public class ControllerDummyPlace implements Place {
     return null;
   }
 
-  @Override
-  public Collection<StationaryAction> getPlaceBasedStationaryActions(Player player) {
-    return null;
-  }
-
-  @Override
-  public void updateCurrentPlayerPlaceActions(Player player) {
+    @Override
+    public void updateCurrentPlayerPlaceActions(Player player) {
+        // do nothing
+    }
 
   }
 
