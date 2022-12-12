@@ -33,8 +33,6 @@ public class Main extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     GameEventHandler gameEventHandler = new GameEventHandler();
-    Controller controller = new Controller(gameEventHandler);
-    gameEventHandler.addEventListener(controller);
     StartView startView = new StartView(primaryStage, gameEventHandler);
     GameModel model = new GameModel(gameEventHandler);
     gameEventHandler.addEventListener(model);

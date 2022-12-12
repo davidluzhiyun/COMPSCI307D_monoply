@@ -1,5 +1,6 @@
 package ooga.view;
 
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -13,8 +14,10 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.command.Command;
 import ooga.event.command.RollDiceCommand;
+import ooga.model.PlaceAction;
 import ooga.view.components.Board;
 import ooga.view.components.GamePiece;
+import ooga.view.pop_ups.AvailablePlaceActionsPopUp;
 import ooga.view.pop_ups.BuyHousePopUp;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
@@ -154,6 +157,11 @@ public class GameView extends View implements GameEventListener {
       case "CONTROLLER_TO_VIEW_ROLL_DICE" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         showDiceResult((int[]) cmd.getCommandArgs());
+      }
+      case "CONTROLLER_TO_VIEW_GET_PLACE_ACTIONS" -> {
+        Command cmd = event.getGameEventCommand().getCommand();
+        AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd.getCommandArgs());
+        pop.showMessage(myLanguage);
       }
       // add case for CONTROLLER_TO_VIEW_GET_PLACE_ACTIONS -- make new AvailablePlaceActionsPopUp
     }
