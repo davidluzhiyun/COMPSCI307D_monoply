@@ -25,13 +25,20 @@ class GamePieceTest extends DukeApplicationTest {
     stage.setScene(scene);
     stage.show();
     piece.placeObject(100, 200);
+    piece.rotateObject(90);
   }
 
   @Test
   void testMovement() {
     //piece.placeAtGo(20, 100);
     Bounds bound = piece.localToScene(piece.getBoundsInLocal());
-    assertEquals(100, bound.getMinX());
-    assertEquals(200, bound.getMinY());
+    assertEquals(100, piece.getTranslateX());
+    assertEquals(200, piece.getTranslateY());
+  }
+
+  @Test
+  void testRotate() {
+    double expected = 90.0;
+    assertEquals(expected, piece.getRotate());
   }
 }
