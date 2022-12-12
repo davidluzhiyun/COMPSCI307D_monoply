@@ -6,24 +6,27 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
-import ooga.model.ControllerPlayer;
-import ooga.model.GameState;
-import ooga.model.ModelOutput;
-import ooga.model.StationaryAction;
+import ooga.model.*;
 import ooga.model.place.ControllerPlace;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class RollDiceEventTest extends TestCase {
+public class MoveTest extends TestCase {
+
     private GameEventHandler gameEventHandler;
 
     private Controller controller;
 
     private MockListener listener;
 
-    private Point diceRoll = new Point(4, 5);
+    private ControllerPlayer player;
+
+    private List<StationaryAction> actions = new ArrayList<>();
+
+    private List<ControllerPlayer> players = new ArrayList<>();
 
     @Override
     public void setUp(){
@@ -31,30 +34,69 @@ public class RollDiceEventTest extends TestCase {
         gameEventHandler = new GameEventHandler();
         controller = new Controller(gameEventHandler);
         gameEventHandler.addEventListener(controller);
-    }
-
-    public void testRollDice() {
-        listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_ROLL_DICE.name());
-        gameEventHandler.addEventListener(listener);
-        GameEvent rollDice = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {
+        player = new ControllerPlayer() {
             @Override
-            public GameState getGameState() {
-                return GameState.DICE_RESULT;
-            }
-
-            @Override
-            public Point getDiceNum() {
-                return diceRoll;
-            }
-
-            @Override
-            public int getCurrentPlayer() {
+            public int getPlayerId() {
                 return 0;
             }
 
             @Override
-            public List<ControllerPlayer> getPlayers() {
+            public int getCurrentPlaceIndex() {
+                return 0;
+            }
+
+            @Override
+            public int remainingJailTurns() {
+                return 0;
+            }
+
+            @Override
+            public Collection<Integer> getPropertyIndices() {
                 return null;
+            }
+
+            @Override
+            public double getTotalMoney() {
+                return 0;
+            }
+
+            @Override
+            public boolean hasNextDice() {
+                return false;
+            }
+
+            @Override
+            public int getDice() {
+                return 0;
+            }
+        };
+        players.add(player);
+        actions.add(StationaryAction.ROLL_DICE);
+        actions.add(StationaryAction.BUY_PROPERTY);
+    }
+
+    public void testMove() {
+        listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_MOVE.name());
+        gameEventHandler.addEventListener(listener);
+        GameEvent move = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {
+            @Override
+            public GameState getGameState() {
+                return GameState.MOVE;
+            }
+
+            @Override
+            public Point getDiceNum() {
+                return null;
+            }
+
+            @Override
+            public int getCurrentPlayer() {
+                return player.getPlayerId();
+            }
+
+            @Override
+            public java.util.List<ControllerPlayer> getPlayers() {
+                return players;
             }
 
             @Override
@@ -64,7 +106,7 @@ public class RollDiceEventTest extends TestCase {
 
             @Override
             public Collection<StationaryAction> getStationaryAction() {
-                return null;
+                return actions;
             }
 
             @Override
@@ -72,8 +114,8 @@ public class RollDiceEventTest extends TestCase {
                 return -1;
             }
         }));
-        gameEventHandler.publish(rollDice);
-        System.out.println("RollDice event published!");
+        gameEventHandler.publish(move);
+        System.out.println("Move event published!");
     }
 
     public class TestCommand implements Command {
@@ -101,9 +143,12 @@ public class RollDiceEventTest extends TestCase {
             if (event.getGameEventType().equals(eventToTest)) {
                 System.out.println("Got game event:");
                 System.out.println(event.getGameEventType());
-                 assertEquals(GameEventType.CONTROLLER_TO_VIEW_ROLL_DICE.name(), event.getGameEventType());
-                 assertEquals(diceRoll, event.getGameEventCommand().getCommand().getCommandArgs());
+                assertEquals(GameEventType.CONTROLLER_TO_VIEW_MOVE.name(), event.getGameEventType());
+                MoveRecord record = new MoveRecord(actions, player.getCurrentPlaceIndex());
+                assertEquals(record, event.getGameEventCommand().getCommand().getCommandArgs());
             }
         }
     }
+
+
 }
