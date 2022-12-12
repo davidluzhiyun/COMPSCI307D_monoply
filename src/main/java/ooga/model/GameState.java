@@ -20,4 +20,8 @@ public enum GameState {
   MORTGAGE,
 
   GET_PLACE_ACTIONS,
+
+  BUILD_HOUSE,
+
+  BUILD_HOTEL,
 }
