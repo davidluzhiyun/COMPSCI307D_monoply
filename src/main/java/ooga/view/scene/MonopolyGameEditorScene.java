@@ -58,7 +58,7 @@ public class MonopolyGameEditorScene extends MonopolyScene implements ParentView
     model = new MonopolyBoardViewModel();
     interactor = new MonopolyBoardInteractor(model);
     getInitBoardData();
-    monopolyBoardBuilder = new MonopolyBoardBuilder(model);
+    monopolyBoardBuilder = new MonopolyBoardBuilder(model, gameEventHandler);
     monopolyBoard = monopolyBoardBuilder.build();
   }
 

@@ -202,7 +202,7 @@ public class GameModel implements GameEventListener, ModelOutput {
         initializeGame((Map) cmd.getCommandArgs());
 //        publishGameData();
       }
-      case "CONTROLLER_TO_MODEL_ROLL_DICE" -> {
+      case "VIEW_TO_MODEL_ROLL_DICE" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         turn.roll();
       }

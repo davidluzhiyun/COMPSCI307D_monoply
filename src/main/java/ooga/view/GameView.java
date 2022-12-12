@@ -1,5 +1,6 @@
 package ooga.view;
 
+import java.awt.Point;
 import java.util.List;
 import java.io.File;
 import java.util.ResourceBundle;
@@ -102,7 +103,7 @@ public class GameView extends View implements GameEventListener {
     model = new MonopolyBoardViewModel();
     interactor = new MonopolyBoardInteractor(model);
     getInitBoardData();
-    monopolyBoardBuilder = new MonopolyBoardBuilder(model);
+    monopolyBoardBuilder = new MonopolyBoardBuilder(model, gameEventHandler);
     myBoard = monopolyBoardBuilder.build();
   }
 
@@ -159,23 +160,22 @@ public class GameView extends View implements GameEventListener {
 
   /**
    * Set in property files to be called when the user clicks "Roll" within the RollDicePopUp
-   * TODO: change to communicate directly to model -- view_to_model
    */
   public void rollDice() {
     Command cmd = new RollDiceCommand();
-    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_TO_CONTROLLER_ROLL_DICE",
+    GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_TO_MODEL_ROLL_DICE",
         cmd);
     gameEventHandler.publish(event);
-    showDiceResult(new int[]{6, 5});
+//    showDiceResult(new int[]{6, 5});
   }
 
   /**
    * TODO: change this to actually get the dice result from the controller and show it.
    * may need to change to display the separate rolls of each die... can also have images for each!
    */
-  private void showDiceResult(int[] roll) {
+  private void showDiceResult(Point roll) {
     myDicePopUp.close();
-    RollResultPopUp pop = new RollResultPopUp(roll[0], roll[1]);
+    RollResultPopUp pop = new RollResultPopUp(roll.x, roll.y);
     pop.showMessage(myLanguage);
   }
 
@@ -193,14 +193,13 @@ public class GameView extends View implements GameEventListener {
       case "CONTROLLER_TO_VIEW_PLAYER_START" -> startPlayerTurn();
       case "CONTROLLER_TO_VIEW_ROLL_DICE" -> {
         Command cmd = event.getGameEventCommand().getCommand();
-        showDiceResult((int[]) cmd.getCommandArgs());
+        showDiceResult((Point) cmd.getCommandArgs());
       }
       case "CONTROLLER_TO_VIEW_GET_PLACE_ACTIONS" -> {
         Command cmd = event.getGameEventCommand().getCommand();
         AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd.getCommandArgs(), myStyle);
         pop.showMessage(myLanguage);
       }
-      // add case for CONTROLLER_TO_VIEW_GET_PLACE_ACTIONS -- make new AvailablePlaceActionsPopUp
     }
     if (event.getGameEventType().equals("CONTROLLER_TO_VIEW_LOAD_BOARD")) {
       LoadBoardRecord command = (LoadBoardRecord) event.getGameEventCommand().getCommand()
