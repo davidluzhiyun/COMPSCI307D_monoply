@@ -97,48 +97,11 @@ public class GetPlaceActionsToViewTest extends TestCase {
       this.modelOutput = modelOutput;
     }
 
-    public void testGetPlaceActions() {
-        listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_GET_PLACE_ACTIONS.name());
-        gameEventHandler.addEventListener(listener);
-        GameEvent getPlaceActions = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {
-            @Override
-            public GameState getGameState() {
-                return GameState.GET_PLACE_ACTIONS;
-            }
 
-            @Override
-            public Point getDiceNum() {
-                return null;
-            }
-
-            @Override
-            public int getCurrentPlayerId() {
-                return 0;
-            }
-
-            @Override
-            public List<ControllerPlayer> getPlayers() {
-                return null;
-            }
-
-            @Override
-            public List<ControllerPlace> getBoard() {
-                return places;
-            }
-
-            @Override
-            public Collection<StationaryAction> getStationaryAction() {
-                return null;
-            }
-
-            @Override
-            public int getQueryIndex() {
-                return 0;
-            }
-        }));
-        gameEventHandler.publish(getPlaceActions);
-        System.out.println("GetPlaceActions event published!");
-    }
+      @Override
+      public Object getCommandArgs() {
+          return this.modelOutput;
+      }
   }
 
   public class MockListener implements GameEventListener {

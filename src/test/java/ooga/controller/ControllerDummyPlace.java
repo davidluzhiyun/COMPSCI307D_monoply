@@ -36,12 +36,15 @@ public class ControllerDummyPlace implements Place {
     return null;
   }
 
-    @Override
+  @Override
+  public Collection<StationaryAction> getPlaceBasedStationaryActions(Player player) {
+    return null;
+  }
+
+  @Override
     public void updateCurrentPlayerPlaceActions(Player player) {
         // do nothing
     }
-
-  }
 
   @Override
   public double getPurchasePrice() throws IllegalStateException {

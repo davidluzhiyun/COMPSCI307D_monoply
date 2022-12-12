@@ -8,44 +8,44 @@
     "id": "Go",
     "type": "Go",
     "image": "gotojail.jpg",
-    "upperText": "Go To",
-    "lowerText": "Jail"
+    "corner": true
   },
   "1": {
     "id": "Shanghai1",
-    "type": "Street"
+    "type": "Street",
+    "corner": false
   },
   "2": {
     "id": "Go",
     "type": "Go",
     "image": "freeparking.jpg",
-    "upperText": "Go To",
-    "lowerText": "Jail"
+    "corner": false
   },
   "3": {
     "id": "Shanghai1",
-    "type": "Street"
+    "type": "Street",
+    "corner": false
   },
   "4": {
     "id": "Go",
     "type": "Go",
     "image": "chancered.png",
-    "upperText": "Go To",
-    "lowerText": "Jail"
+    "corner": false
   },
   "5": {
     "id": "New York1",
-    "type": "Street"
+    "type": "Street",
+    "corner": false
   },
   "6": {
     "id": "Go",
     "type": "Go",
     "image": "injail.jpg",
-    "upperText": "Go To",
-    "lowerText": "Jail"
+    "corner": true
   },
   "7": {
     "id": "New York1",
-    "type": "Street"
+    "type": "Street",
+    "corner": true
   }
 }
