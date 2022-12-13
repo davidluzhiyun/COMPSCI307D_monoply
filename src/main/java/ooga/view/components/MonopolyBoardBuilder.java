@@ -34,106 +34,55 @@ public class MonopolyBoardBuilder implements Builder<Region> {
     HashMap<Integer, Location> map = model.getIndexToLocationMap();
     List<MonopolyCardViewModel> models = model.getCardModels();
 
-    MonopolyCardBuilder builder = new MonopolyCardBuilder(grid);
+    MonopolyCardBuilder builder = new MonopolyCardBuilder();
 
-//    Rectangle test = new Rectangle(30, 30);
-//    test.setFill(Color.GREY);
-//    grid.add(test, 2, 2);
-    drawBottom(map, models, builder);
-    drawLeft(map, models, builder);
-    drawTop(map, models, builder);
-    drawRight(map, models, builder);
-
-//    Pane colorCard = new Pane();
-//    colorCard.setMaxSize(60, 20);
-//    colorCard.setBorder(new Border(
-//        new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
-//            new BorderWidths(0, 0, 2, 0))));
-//    colorCard.setBackground(Background.fill(Color.BROWN));
-//    grid.add(colorCard, 2, 2);
-//    grid.getCellBounds(1, 2);
-
-//    Bounds boundsInScene = colorCard.localToScreen(colorCard.getBoundsInLocal());
+    currIdx = 0;
+    // call draw 4 times bottom, left, top, right
+    draw(map, models, currIdx, model.getBoardCol() - 2, 0);
+    draw(map, models, currIdx + 1, model.getBoardCol() + model.getBoardRow() - 3, 1);
+    draw(map, models, currIdx + 1, model.getNumCards() - model.getBoardRow(), 2);
+    draw(map, models, currIdx + 1, model.getNumCards() - 1, 3);
   }
 
-  private void drawBottom(HashMap<Integer, Location> map, List<MonopolyCardViewModel> models,
-      MonopolyCardBuilder builder) {
-    for (int i = 0; i < model.getBoardCol() - 1; i++) {
+  private void draw(HashMap<Integer, Location> map, List<MonopolyCardViewModel> models,
+      int startIdx, int endIdx, int location) {
+    Pane card;
+
+    MonopolyCardBuilder builder = new MonopolyCardBuilder();
+    MonopolyImageCardBuilder imageCardBuilder = new MonopolyImageCardBuilder();
+
+    for (int i = startIdx; i <= endIdx; i++) {
       MonopolyCardViewModel model = models.get(i);
       Location loc = map.get(Integer.valueOf(i));
       Bounds bounds = grid.getCellBounds(loc.col(), loc.row());
       model.setWidth(bounds.getWidth());
       model.setHeight(bounds.getHeight());
-      builder.setModel(model); // get the type from here
-      builder.setLocation(0); // indicate bottom
-      Pane card = (Pane) builder.build();
-      int index = i;
-      card.setOnMouseClicked(e -> dealWithMouseClick(index));
+
+      // we need different cards based on different
+      if (model instanceof MonopolyImageCardViewModel) {
+        ((MonopolyImageCardViewModel) model).setRotation((location * 90) - 45);
+        // update the builder parameters
+        imageCardBuilder.setModel((MonopolyImageCardViewModel) model);
+        imageCardBuilder.setLocation(location); // indicate bottom
+        card = (Pane) imageCardBuilder.build();
+      } else {
+        builder.setModel(model); // get the type from here
+        builder.setLocation(location); // indicate bottom
+        card = (Pane) builder.build();
+      }
+
+      int idx = i; // has to be final
+      card.setOnMouseClicked(e -> dealWithMouseClick(idx));
+
+      // add card to the grid
       grid.add(card, loc.col(), loc.row());
       currIdx = i;
     }
-  }
-
-  private void drawLeft(HashMap<Integer, Location> map, List<MonopolyCardViewModel> models,
-      MonopolyCardBuilder builder) {
-    for (int i = currIdx + 1; i < model.getBoardCol() - 1 + model.getBoardRow() - 1; i++) {
-      MonopolyCardViewModel model = models.get(i);
-      Location loc = map.get(Integer.valueOf(i));
-      Bounds bounds = grid.getCellBounds(loc.col(), loc.row());
-      model.setWidth(bounds.getWidth());
-      model.setHeight(bounds.getHeight());
-      builder.setModel(model); // get the type from here
-      builder.setLocation(1); // indicate bottom
-      builder.setRotation(this.model.getRotationFromIdx(i));
-      Pane card = (Pane) builder.build();
-      int index = i;
-      card.setOnMouseClicked(e -> dealWithMouseClick(index));
-      grid.add(card, loc.col(), loc.row());
-      currIdx = i;
-    }
-
-  }
-
-  private void drawTop(HashMap<Integer, Location> map, List<MonopolyCardViewModel> models,
-      MonopolyCardBuilder builder) {
-    for (int i = currIdx + 1; i < model.getNumCards() - (model.getBoardRow() - 1) + 1; i++) {
-      MonopolyCardViewModel model = models.get(i);
-      Location loc = map.get(Integer.valueOf(i));
-      Bounds bounds = grid.getCellBounds(loc.col(), loc.row());
-      model.setWidth(bounds.getWidth());
-      model.setHeight(bounds.getHeight());
-      builder.setModel(model); // get the type from here
-      builder.setLocation(2); // indicate bottom
-      Pane card = (Pane) builder.build();
-      int index = i;
-      card.setOnMouseClicked(e -> dealWithMouseClick(index));
-      grid.add(card, loc.col(), loc.row());
-      currIdx = i;
-    }
-
-  }
-
-  private void drawRight(HashMap<Integer, Location> map, List<MonopolyCardViewModel> models,
-      MonopolyCardBuilder builder) {
-    for (int i = currIdx; i < model.getNumCards(); i++) {
-      MonopolyCardViewModel model = models.get(i);
-      Location loc = map.get(Integer.valueOf(i));
-      Bounds bounds = grid.getCellBounds(loc.col(), loc.row());
-      model.setWidth(bounds.getWidth());
-      model.setHeight(bounds.getHeight());
-      builder.setModel(model); // get the type from here
-      builder.setLocation(3); // indicate bottom
-      builder.setRotation(this.model.getRotationFromIdx(i));
-      Pane card = (Pane) builder.build();
-      int index = i;
-      card.setOnMouseClicked(e -> dealWithMouseClick(index));
-      grid.add(card, loc.col(), loc.row());
-    }
-
   }
 
   /**
    * Send command to model to tell them we need place actions for the given property.
+   *
    * @param index: the index of the place card the user has clicked on
    */
   private void dealWithMouseClick(int index) {
@@ -142,26 +91,33 @@ public class MonopolyBoardBuilder implements Builder<Region> {
         cmd);
     gameEventHandler.publish(event);
   }
+
   public void drawPostProcessing() {
     addCardsToGrid();
   }
 
   @Override
-  public Region build() {return board;}
+  public Region build() {
+    return board;
+  }
 
   /**
-   * Called by GamePiecePopUp whenever a new pop up is created. Places the piece at GO (well eventually it will)
-   * @param piece: the new piece that was created
+   * Called by GamePiecePopUp whenever a new pop up is created. Places the piece at GO (well
+   * eventually it will)
+   *
+   * @param piece:  the new piece that was created
    * @param player: not used right now, but probably a good idea to create some mapping
    */
   public void initializeGamePiece(GamePiece piece, int player) {
-    playerPieces.add(player-1, piece);
+    playerPieces.add(player - 1, piece);
     board.getChildren().add(piece);
     Bounds bound = getBoundsbyIndex(0);
     piece.placeObject(bound.getMinX(), bound.getMinY());
   }
+
   /**
    * Called by BuyHousePopUp if users decide to buy a house.
+   *
    * @param property: int, index of the property they selected
    */
   public void buildHouse(int property) {
@@ -174,10 +130,13 @@ public class MonopolyBoardBuilder implements Builder<Region> {
   /**
    * Moves a player to a different property.
    * @param newIdx index of the new property the player should move to
+   * TODO: need to either have the piece know its current index, or get the result from model.
+   *
+   * @param newIdx         index of the new property the player should move to
    * @param currentPlayer: int of player whose piece needs to be moved
    */
   public void movePlayer(int newIdx, int currentPlayer) {
-    GamePiece piece = playerPieces.get(currentPlayer-1);
+    GamePiece piece = playerPieces.get(currentPlayer - 1);
     Bounds bound = getBoundsbyIndex(newIdx);
     piece.placeObject(bound.getMinX(), bound.getMinY());
   }
@@ -185,6 +144,6 @@ public class MonopolyBoardBuilder implements Builder<Region> {
   public Bounds getBoundsbyIndex(int idx) {
     HashMap<Integer, Location> map = model.getIndexToLocationMap();
     Location loc = map.get(Integer.valueOf(idx));
-    return grid.getCellBounds(loc.row(), loc.col());
+    return grid.getCellBounds(loc.col(), loc.row());
   }
 }

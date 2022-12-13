@@ -37,12 +37,16 @@ public class ConcretePlayerTurn implements PlayerTurn {
     currentPlayer.nextDice();
     if (r1 == r2)
       currentPlayer.addOneDiceRoll();
-//    if (currentPlayer.goJail())
-//      currentPlayer.move(jail);
-    //TODO: roll triple doubles and go jail
-    currentPlayer.setDice(r1 + r2);
     gameEventHandler.publish(modelToken + GameState.DICE_RESULT);
-    go(r1 + r2);
+    if (currentPlayer.remainingJailTurns() == 1) {
+      currentPlayer.payOutOfJail();
+    }
+    if (currentPlayer.remainingJailTurns() == 0) {
+      go(r1 + r2);
+    }
+    else {
+      go(0);
+    }
   }
 
   /**

@@ -11,6 +11,10 @@ public enum GameState {
   //The amount of money of the current player is updated
   COLLECT_SALARY,
   //The amount of money of the current player is updated
+  TO_JAIL,
+  // The position of the player and the fact that the player is now updated
+  OUT_OF_JAIL,
+  // The money the player has and
   GAME_SET_UP,
   NEXT_PLAYER,
   BUY_PROPERTY,
@@ -19,7 +23,7 @@ public enum GameState {
   LOAD_BOARD,
   BUILD_HOUSE,
 
-  BUILD_HOTEL,
-
   COMMUNITY_CARD,
+
+  LOAD_GAME_STATE,
 }

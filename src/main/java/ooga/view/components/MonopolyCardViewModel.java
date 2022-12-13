@@ -25,6 +25,11 @@ public class MonopolyCardViewModel {
     this.color = color;
   }
 
+  public MonopolyCardViewModel(String type, String name) {
+    this.type = type;
+    this.name = name;
+  }
+
   public int getColor() {
     return color;
   }

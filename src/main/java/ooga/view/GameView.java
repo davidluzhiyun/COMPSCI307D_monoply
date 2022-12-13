@@ -200,6 +200,8 @@ public class GameView extends View implements GameEventListener {
         this.currentPlayer = record.currentPlayerId();
         this.numPlayers = record.players().size();
         chooseGamePieces();
+//        InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+//        interactor.initialize(command);
       }
     }
   }

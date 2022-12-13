@@ -1,60 +1,97 @@
 {
   "meta": {
     "players": 4,
-    "rows": 4,
-    "columns": 4,
-    "jail": 10
+    "rows": 5,
+    "columns": 5
   },
   "0": {
-    "id": 0,
-    "type": "Go"
+    "id": "Go",
+    "type": "Go",
+    "image": "go.png",
+    "corner": true
   },
   "1": {
-    "id": 121,
-    "type": "Street"
+    "id": "Shanghai1",
+    "type": "Street",
+    "corner": false
   },
   "2": {
-    "id": 121,
-    "type": "Street"
+    "id": "North Railroad",
+    "type": "Railroad",
+    "image": "railroad.png",
+    "corner": false
   },
   "3": {
-    "id": 0,
-    "type": "Go"
+    "id": "Shanghai1",
+    "type": "Street",
+    "corner": false
   },
   "4": {
-    "id": 123,
-    "type": "Street"
+    "id": "FreeParking",
+    "type": "FreeParking",
+    "image": "freeparking.png",
+    "corner": true
   },
   "5": {
-    "id": 123,
-    "type": "Street"
+    "id": "New York1",
+    "type": "Street",
+    "corner": false
   },
   "6": {
-    "id": 0,
-    "type": "Go"
+    "id": "North Railroad",
+    "type": "Railroad",
+    "image": "railroad.png",
+    "corner": false
   },
   "7": {
-    "id": 125,
-    "type": "Street"
+    "id": "New York1",
+    "type": "Street",
+    "corner": false
   },
   "8": {
-    "id": 125,
-    "type": "Street"
+    "id": "FreeParking",
+    "type": "FreeParking",
+    "image": "freeparking.png",
+    "corner": true
   },
   "9": {
-    "id": 0,
-    "type": "Go"
+    "id": "Shanghai1",
+    "type": "Street",
+    "corner": false
   },
   "10": {
     "id": 301,
-    "type": "GoToJail"
+    "type": "GoToJail",
+    "id": "North Railroad",
+    "type": "Railroad",
+    "image": "railroad.png",
+    "corner": false
   },
   "11": {
-    "id": 123,
-    "type": "Street"
+    "id": "Shanghai1",
+    "type": "Street",
+    "corner": false
   },
   "12": {
-    "id": 301,
-    "type": "GoToJail"
+    "id": "FreeParking",
+    "type": "FreeParking",
+    "image": "freeparking.png",
+    "corner": true
+  },
+  "13": {
+    "id": "New York1",
+    "type": "Street",
+    "corner": true
+  },
+  "14": {
+    "id": "North Railroad",
+    "type": "Railroad",
+    "image": "railroad.png",
+    "corner": false
+  },
+  "15": {
+    "id": "New York1",
+    "type": "Street",
+    "corner": false
   }
 }

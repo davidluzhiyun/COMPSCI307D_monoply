@@ -5,11 +5,15 @@
     "columns": 5
   },
   "0": {
-    "id": 0,
-    "type": "Go"
+    "id": "Go",
+    "type": "go",
+    "image": "path/to/image1",
+    "corner": false
   },
   "1": {
-    "id": 121,
-    "type": "Street"
+    "id": "New York1",
+    "type": "street",
+    "image": "path/to/image2",
+    "corner": true
   }
 }

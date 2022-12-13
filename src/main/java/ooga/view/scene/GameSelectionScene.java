@@ -2,9 +2,11 @@ package ooga.view.scene;
 
 import java.io.File;
 import java.util.ResourceBundle;
+
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
@@ -15,6 +17,7 @@ import ooga.event.GameEventHandler;
 import ooga.event.command.Command;
 import ooga.event.command.GameEditorCommand;
 import ooga.event.command.GameStartViewCommand;
+import ooga.model.exception.BadDataException;
 import ooga.view.StartView;
 import ooga.view.View;
 import ooga.view.pop_ups.errors.NoFileErrorPopUp;
@@ -83,6 +86,18 @@ public class GameSelectionScene extends View {
    */
   public void startNewGame() {
     makeFileDialog(Main.CONFIG_FILES_DIRECTORY, "VIEW_TO_CONTROLLER_GAME_START");
+    try {
+      makeFileDialog(Main.CONFIG_FILES_DIRECTORY, "VIEW_TO_CONTROLLER_GAME_START");
+    } catch (BadDataException e) {
+      showError(e.getMessage());
+    }
+  }
+
+  private void showError(String message) {
+    Alert alert = new Alert(Alert.AlertType.ERROR);
+    alert.setTitle("ERROR");
+    alert.setContentText(message);
+    alert.showAndWait();
   }
 
   /**
@@ -94,7 +109,7 @@ public class GameSelectionScene extends View {
     makeFileDialog(Main.PAUSED_GAME_DIRECTORY, "VIEW_TO_CONTROLLER_LOAD_BOARD");
   }
 
-  private void makeFileDialog(String initialDirectory, String eventName) {
+  private void makeFileDialog(String initialDirectory, String eventType) {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setInitialDirectory(new File(initialDirectory));
     fileChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(JSON_FILE_EXTENSION,
@@ -103,11 +118,16 @@ public class GameSelectionScene extends View {
     if (configFile == null) {
       NoFileErrorPopUp pop = new NoFileErrorPopUp(myLanguage);
     } else {
+      // send config file to model
       Command cmd = new GameStartViewCommand(configFile);
+      GameEvent event2 = GameEventHandler.makeGameEventwithCommand(eventType, cmd);
+      myGameEventHandler.publish(event2);
+
+      // launching game screen
       GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SCREEN",
           cmd);
       myGameEventHandler.publish(event);
-      GameEvent eventTwo = GameEventHandler.makeGameEventwithCommand(eventName, cmd);
+      GameEvent eventTwo = GameEventHandler.makeGameEventwithCommand(eventType, cmd);
       myGameEventHandler.publish(eventTwo);
     }
   }

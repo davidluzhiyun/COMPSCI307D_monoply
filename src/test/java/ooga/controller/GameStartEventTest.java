@@ -37,7 +37,7 @@ public class GameStartEventTest extends TestCase {
         System.out.println("GameStart event published!");
     }
 
-    public class TestCommand implements Command{
+    public static class TestCommand implements Command{
 
         private final File file;
 
@@ -64,14 +64,20 @@ public class GameStartEventTest extends TestCase {
                 System.out.println(event.getGameEventType());
                 assertEquals(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name(), event.getGameEventType());
                 Map<String, LinkedTreeMap> map = (Map<String, LinkedTreeMap>) event.getGameEventCommand().getCommand().getCommandArgs();
-                int i = 0;
+                int i = -1;
                 for (String key: map.keySet()) {
                     System.out.println(key);
-                    assertEquals(Integer.toString(i), key);
+                    // assertEquals(Integer.toString(i), key);
                     for (Object hashk: map.get(key).keySet()) {
-                        if (hashk.equals("id")) {
+                        if (hashk.equals("players")){
+                            assertEquals(4.0, map.get(key).get(hashk));
+                        } else if (hashk.equals("rows")){
+                            assertEquals(4.0, map.get(key).get(hashk));
+                        } else if (hashk.equals("columns")) {
+                            assertEquals(5.0, map.get(key).get(hashk));
+                        } else if (hashk.equals("id")) {
                             assertEquals(expectedIds[i], map.get(key).get(hashk));
-                        } else {
+                        } else if (hashk.equals("type")){
                             assertEquals(expectedTypes[i], map.get(key).get(hashk));
                         }
                         System.out.println(hashk);

@@ -7,11 +7,14 @@ import ooga.model.place.ControllerPlace;
 
 /**
  * The interface published to the controller
+ *
  * @author David Lu
  * @author Luyao Wang
  */
 public interface ModelOutput {
+
   GameState getGameState();
+
   /**
    * Publish the current number on the two dice
    */
@@ -28,8 +31,8 @@ public interface ModelOutput {
   List<ControllerPlayer> getPlayers();
 
   /**
-   * Information about the board, used for both initialization and update now
-   * (Place action is inside)
+   * Information about the board, used for both initialization and update now (Place action is
+   * inside)
    */
   List<ControllerPlace> getBoard();
 

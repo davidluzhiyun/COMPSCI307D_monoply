@@ -1,6 +1,8 @@
 package ooga.model;
 
 
+import static ooga.model.component.ConcretePlayerTurn.modelToken;
+
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -8,6 +10,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import ooga.event.GameEventHandler;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
 
@@ -19,6 +22,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ConcretePlayer implements Player, ControllerPlayer {
+
+  public static final int DEFAULT_JAIL_TURNS = 3;
+  public static final int MAX_ROWS_IN_A_ROW = 4;
+  public static final int DEFAULT_FINE = 50;
   private final int playerId;
   private double money;
   private int currentPlaceIndex;
@@ -30,16 +37,9 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private Map<Integer, Predicate<Collection<Place>>> colorSetCheckers;
   private int diceResult;
   private int ownedRailroadCount;
-//  private static final Logger LOG = LogManager.getLogger(GameModel.class);
+  private static final Logger LOG = LogManager.getLogger(GameModel.class);
 
-  public ConcretePlayer(int playerId) {
-    this.currentPlaceIndex = 0;
-    this.money = 0;
-    this.playerId = playerId;
-    this.hasNextDice = false;
-    properties = new ArrayList<>();
-    propertyIndices = new ArrayList<>();
-  }
+  private int jailIndex;
 
   /**
    * Universal constructor for loading the game./
@@ -54,12 +54,23 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     this.propertyIndices = propertyIndices;
   }
 
+  public ConcretePlayer(int playerId) {
+    this.currentPlaceIndex = 0;
+    this.money = 0;
+    this.playerId = playerId;
+    this.hasNextDice = false;
+    properties = new ArrayList<>();
+    propertyIndices = new ArrayList<>();
+  }
 
   @Override
   public void newTurn() {
     hasNextDice = true;
     dicesTotal = 1;
-    //TODO: when in jail
+    if (remainingJailTurns > 0){
+      remainingJailTurns -= 1;
+    }
+    // TODO:Death
   }
 
 
@@ -68,14 +79,36 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     this.money = money;
   }
 
+  /**
+   * @author Luyao Wang
+   * @author David Lu
+   * Sents the player to Jail for certain amount of turns
+   * @param jailTurns
+   */
   @Override
   public void setJail(int jailTurns) {
-    remainingJailTurns = jailTurns;
+    try {
+      remainingJailTurns = jailTurns;
+      // jailIndex is 0 when it isn't properly initialized
+      // if one wish to do a version without jail, use polymorphism
+      assert jailIndex > 0;
+      setIndex(jailIndex);
+      GameEventHandler gameEventHandler = new GameEventHandler();
+      gameEventHandler.publish(modelToken + GameState.TO_JAIL);
+    }
+    catch (AssertionError e){
+      IllegalStateException ex = new IllegalStateException("Jail index must be larger than zero", e);
+      LOG.warn(ex);
+      throw ex;
+    }
+
   }
 
   @Override
   public void setIndex(int destinationIndex) {
+
     currentPlaceIndex = destinationIndex;
+
   }
 
   @Override
@@ -158,11 +191,22 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     }
   }
 
+  /**
+   * @author Luyao Wang
+   * @author David Lu (modifier)
+   * Handles special effect of rolling doubles
+   */
   public void addOneDiceRoll() {
+    if (remainingJailTurns > 0){
+      getOutOfJail();
+      return;
+    }
     hasNextDice = true;
     dicesTotal++;
-    if (dicesTotal == 4)
-      setJail(3);
+    if (dicesTotal > MAX_ROWS_IN_A_ROW){
+      dicesTotal = 1;
+      setJail(DEFAULT_JAIL_TURNS);
+    }
   }
 
   @Override
@@ -220,4 +264,36 @@ public class ConcretePlayer implements Player, ControllerPlayer {
       throw new IllegalStateException();
     }
   }
+  /**
+   * @author David Lu
+   * Set the index of the jail the player should goto
+   */
+  @Override
+  public void setJailIndex(int jailIndex){
+    try {
+      this.jailIndex = jailIndex;
+      // 0 is reserved for go
+      assert jailIndex > 0;
+
+    }
+    catch (AssertionError e){
+      IllegalStateException ex = new IllegalStateException("Jail index must be larger than zero", e);
+      LOG.warn(ex);
+      throw ex;
+    }
+  }
+
+  @Override
+  public void getOutOfJail() {
+    remainingJailTurns = 0;
+    GameEventHandler gameEventHandler = new GameEventHandler();
+    gameEventHandler.publish(modelToken + GameState.OUT_OF_JAIL);
+  }
+
+  @Override
+  public void payOutOfJail() {
+    money -= DEFAULT_FINE;
+    getOutOfJail();
+  }
+
 }

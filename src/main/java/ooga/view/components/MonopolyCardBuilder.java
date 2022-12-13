@@ -21,15 +21,13 @@ import javafx.util.Builder;
 public class MonopolyCardBuilder implements Builder<Region> {
 
   private final double defaultFontSize = 13;
-  private final double MAX_TEXT_WIDTH = 300;
   private final Font defaultFont = Font.font(defaultFontSize);
+  private double MAX_TEXT_WIDTH;
   private MonopolyCardViewModel model;
-  private GridPane grid;
   private int location;
   private double rotation;
 
-  public MonopolyCardBuilder(GridPane grid) {
-    this.grid = grid;
+  public MonopolyCardBuilder() {
   }
 
   public void setModel(MonopolyCardViewModel model) {
@@ -38,16 +36,20 @@ public class MonopolyCardBuilder implements Builder<Region> {
 
   public void setLocation(int loc) {
     location = loc;
+    if (loc == 1) {
+      setRotation(90);
+    } else if (loc == 3) {
+      setRotation(270);
+    }
   }
 
   @Override
   public Region build() {
     StackPane card = new StackPane();
-    styleCard(card);
-//    card.getChildren().addAll(createColor(), createTextLabel(), createPriceLabel(), createImage());
     if (model.getType().equals("Street")) {
       card.getChildren().addAll(createColor(), createTextLabel());
     }
+    styleCard(card);
 
     return card;
   }
@@ -93,36 +95,21 @@ public class MonopolyCardBuilder implements Builder<Region> {
     return colorCard;
   }
 
+  private double getTextWidth() {
+    return (location % 2 == 0) ? model.getWidth() : model.getHeight();
+  }
+
   private Label createTextLabel() {
-    final TextField tf = new TextField(model.getName());
-    Label city = new Label();
-    city.setFont(defaultFont);
-    city.textProperty().addListener((observable, oldValue, newValue) -> {
-      //create temp Text object with the same text as the label
-      //and measure its width using default label font size
-      Text tmpText = new Text(newValue);
-      tmpText.setFont(defaultFont);
+    ResizableTextLabel label = new ResizableTextLabel(model.getName(), getTextWidth());
+    Label ret = label.build();
 
-      double textWidth = tmpText.getLayoutBounds().getWidth();
+    StackPane.setAlignment(ret, Pos.CENTER);
 
-      //check if text width is smaller than maximum width allowed
-      if (textWidth <= MAX_TEXT_WIDTH) {
-        city.setFont(defaultFont);
-      } else {
-        //and if it isn't, calculate new font size,
-        // so that label text width matches MAX_TEXT_WIDTH
-        double newFontSize = defaultFontSize * MAX_TEXT_WIDTH / textWidth - 1;
-        city.setFont(Font.font(defaultFont.getFamily(), newFontSize));
-      }
-    });
-    city.textProperty().bind(tf.textProperty());
-    StackPane.setAlignment(city, Pos.CENTER);
-
-    if (location == 1 || location == 3) {
-      city.setRotate(rotation);
+    if (location % 2 == 1) {
+      ret.setRotate(rotation);
     }
 
-    return city;
+    return ret;
   }
 
   private void setBorder(Pane pane, int t, int r, int b, int l) {
@@ -135,7 +122,7 @@ public class MonopolyCardBuilder implements Builder<Region> {
     return String.format("#%06X", (0xFFFFFF & color));
   }
 
-  public void setRotation(double angle) {
+  private void setRotation(double angle) {
     this.rotation = angle;
   }
 }

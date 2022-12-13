@@ -17,7 +17,6 @@ import util.DukeApplicationTest;
 
 class StartViewTest extends DukeApplicationTest {
 
-  private FileUploadButton myFileButton;
   private StartButton myStartButton;
 
   private LanguageDropDown myLanguageDropDown;
@@ -28,7 +27,6 @@ class StartViewTest extends DukeApplicationTest {
   public void start(Stage stage) throws Exception {
     myStart = new StartView(stage, new GameEventHandler());
     myStartButton = lookup("#StartButton").query();
-    myFileButton = lookup("#FileUploadButton").query();
     myLanguageDropDown = lookup("#LanguageChoice").query();
   }
 
@@ -54,30 +52,4 @@ class StartViewTest extends DukeApplicationTest {
     assertEquals(newLabel, expected);
   }
 
-  @Test
-  void testErrorEnglish() {
-    testErrorDialog("German", "Deutsch");
-  }
-  @Test
-  void testErrorSpanish() {
-    ResourceBundle resources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + "Spanish");
-    String esp = resources.getString("Spanish");
-    testErrorDialog("Spanish", esp);
-  }
-  @Test
-  void testErrorGerman() {
-    testErrorDialog("English", "English");
-  }
-
-  @Test
-  void testErrorIndonesian() {testErrorDialog("Indonesian", "Bahasa Indonesia");}
-
-  private void testErrorDialog(String language, String toSelect) {
-    runAsJFXAction(() -> select(myLanguageDropDown.getChoiceBox(), toSelect));
-    myStartButton = lookup("#StartButton").query();
-    runAsJFXAction(() -> clickOn(myStartButton));
-    ResourceBundle resources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + language);
-    String expected = resources.getString("NoFileError");
-    assertEquals(((Label)lookup(".dialog-pane .content").query()).getText(), expected);
-  }
 }

@@ -4,12 +4,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import javafx.stage.Stage;
 import ooga.event.GameEventHandler;
+import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
 
 class GameViewTest extends DukeApplicationTest {
   private GameView myView;
   @Override
   public void start(Stage stage) throws Exception {
-//    myView = new GameView(new GameEventHandler(), "Default", "English");
+    myView = new GameView(new GameEventHandler(), "English", new Stage());
+    myView.setUpScene(1280,800, "Light");
+  }
+
+  @Test
+  void hello() {
+    sleep(1000);
   }
 }
