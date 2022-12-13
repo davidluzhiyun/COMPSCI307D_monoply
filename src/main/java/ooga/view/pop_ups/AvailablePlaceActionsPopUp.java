@@ -5,6 +5,12 @@ import java.util.ResourceBundle;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ooga.controller.GetPlaceActionsRecord;
+import ooga.event.GameEvent;
+import ooga.event.GameEventHandler;
+import ooga.event.GameEventType;
+import ooga.event.command.Command;
+import ooga.event.command.RequestPropertyInfoCommand;
 import ooga.model.PlaceAction;
 import ooga.view.View;
 import ooga.view.button.CustomizedButton;
@@ -14,11 +20,15 @@ public class AvailablePlaceActionsPopUp extends ActionPopUp{
   private Stage myStage;
   private String myStyle;
   private String myLanguage;
+  private int propertyIndex;
+  private GameEventHandler handler;
 
-  public AvailablePlaceActionsPopUp(Object actions, String style) {
-    this.myActions = (List<PlaceAction>) actions;
+  public AvailablePlaceActionsPopUp(GetPlaceActionsRecord record, String style, GameEventHandler handler) {
+    this.myActions = record.actions();
     this.myStage = new Stage();
     this.myStyle = style;
+    this.propertyIndex = record.index();
+    this.handler = handler;
   }
   @Override
   public void close() {myStage.close();}
@@ -43,7 +53,17 @@ public class AvailablePlaceActionsPopUp extends ActionPopUp{
     this.myLanguage = language;
     createScene();
   }
-  private void makeMortgage() {}
-  private void viewInfo() {}
-  private void buyHouse() {}
+
+  /**
+   * Not implemented.
+   */
+  public void makeMortgage() {}
+  public void viewInfo() {
+    Command command = new RequestPropertyInfoCommand(propertyIndex);
+    GameEvent event = GameEventHandler.makeGameEventwithCommand(
+        GameEventType.VIEW_TO_CONTROLLER_GET_PLACE_INFO.name(), command);
+    handler.publish(event);
+    close();
+  }
+  public void buyHouse() {}
 }
