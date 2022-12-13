@@ -221,8 +221,8 @@ public class GameView extends View implements GameEventListener {
   }
   public void buyProperty(GameEvent event) {
     PlaceActionRecord command = (PlaceActionRecord) event.getGameEventCommand().getCommand().getCommandArgs();
-    BuyPropertyPopUp pop = new BuyPropertyPopUp(myStyle, (int) command.placeIndex(), gameEventHandler);
-    pop.showMessage(myLanguage);
+//    BuyPropertyPopUp pop = new BuyPropertyPopUp(myStyle, (int) command.placeIndex(), gameEventHandler);
+//    pop.showMessage(myLanguage);
   }
   public void viewPlaceInfo(GameEvent event) {
     PropertyInfoPopUp pop = new PropertyInfoPopUp(event);

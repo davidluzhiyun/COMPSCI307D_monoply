@@ -66,6 +66,7 @@ public class BuyPropertyPopUp extends ActionPopUp {
     myStage.show();
   }
   public void buyProperty() {
+    close();
     Command command = new BuyPropertyCommand(myProperty);
     GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_MODEL_PURCHASE_PROPERTY.name(), command);
     myEventHandler.publish(event);
