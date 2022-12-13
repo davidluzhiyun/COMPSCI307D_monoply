@@ -1,5 +1,6 @@
 package ooga.model.gamearchive;
 
+import ooga.event.GameEventHandler;
 import ooga.model.*;
 import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
@@ -20,7 +21,7 @@ public class BoardSaveTest {
 
     @BeforeAll
     static void TestModelOutput() {
-        Place place2 = new ConcreteStreet("123");
+        Place place2 = new ConcreteStreet("123", new GameEventHandler());
 //        place2.setOwner(1);
         //TODO:
         Player player1 = new ConcretePlayer(0, new BuildHouseCheckerNoColor());
@@ -46,7 +47,7 @@ public class BoardSaveTest {
             }
             @Override
             public List<ControllerPlace> getBoard() {
-                return List.of(new ConcreteStreet("121"),place2);
+                return List.of(new ConcreteStreet("121", new GameEventHandler()),place2);
             }
 
             @Override

@@ -40,13 +40,15 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private static final Logger LOG = LogManager.getLogger(GameModel.class);
   private int jailIndex;
   private CanBuildOn houseChecker;
+  private GameEventHandler gameEventHandler;
 
-  public ConcretePlayer(int playerId, CanBuildOn houseChecker) {
+  public ConcretePlayer(int playerId, GameEventHandler gameEventHandler, CanBuildOn houseChecker) {
     this.currentPlaceIndex = 0;
     this.money = 0;
     this.playerId = playerId;
     this.hasNextDice = false;
     this.houseChecker = houseChecker;
+    this.gameEventHandler = gameEventHandler;
     properties = new ArrayList<>();
     propertyIndices = new ArrayList<>();
   }
@@ -54,8 +56,9 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   /**
    * Universal constructor for loading the game./
    */
-  public ConcretePlayer(int playerId, double money, int currentPlaceIndex, boolean hasNextDice, int remainingJailTurns, int dicesTotal, Collection<Integer> propertyIndices, CanBuildOn houseChecker) {
+  public ConcretePlayer(int playerId, GameEventHandler gameEventHandler, double money, int currentPlaceIndex, boolean hasNextDice, int remainingJailTurns, int dicesTotal, Collection<Integer> propertyIndices, CanBuildOn houseChecker) {
     this.playerId = playerId;
+    this.gameEventHandler = gameEventHandler;
     this.money = money;
     this.currentPlaceIndex = currentPlaceIndex;
     this.remainingJailTurns = remainingJailTurns;
@@ -95,7 +98,6 @@ public class ConcretePlayer implements Player, ControllerPlayer {
       // if one wish to do a version without jail, use polymorphism
       assert jailIndex > 0;
       setIndex(jailIndex);
-      GameEventHandler gameEventHandler = new GameEventHandler();
       gameEventHandler.publish(modelToken + GameState.TO_JAIL);
     } catch (AssertionError e) {
       IllegalStateException ex = new IllegalStateException("Jail index must be larger than zero", e);
@@ -265,7 +267,6 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   @Override
   public void getOutOfJail() {
     remainingJailTurns = 0;
-    GameEventHandler gameEventHandler = new GameEventHandler();
     gameEventHandler.publish(modelToken + GameState.OUT_OF_JAIL);
   }
 

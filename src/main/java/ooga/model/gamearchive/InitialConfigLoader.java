@@ -32,10 +32,10 @@ public class InitialConfigLoader {
   private GameConfig gameConfig;
   private final String houseCheckerToken = "HouseBuildChecker";
 
-  public InitialConfigLoader(Map<String, LinkedTreeMap> initialConfig, ResourceBundle resources) {
+  public InitialConfigLoader(Map<String, LinkedTreeMap> initialConfig, ResourceBundle resources, GameEventHandler gameEventHandler) {
     this.initialConfig = initialConfig;
     this.myResources = resources;
-    this.gameEventHandler = new GameEventHandler();
+    this.gameEventHandler = gameEventHandler;
     gameConfig = new GameConfig(getJailIndex(), (Boolean) initialConfig.get("meta").getOrDefault("color", true), false);
     loadData();
   }
@@ -62,7 +62,7 @@ public class InitialConfigLoader {
     players = new ArrayList<>();
     Map<Integer, Predicate<Collection<Place>>> checkers = new ConcreteColorSet(places).outputCheckers();
     for (int i = 0; i < (int) (double) initialConfig.get("meta").get("players"); i++) {
-      Player newPlayer = new ConcretePlayer(i, createHouseBuildChecker(gameConfig.colorCheck()));
+      Player newPlayer = new ConcretePlayer(i, gameEventHandler, createHouseBuildChecker(gameConfig.colorCheck()));
       newPlayer.setColorSetCheckers(checkers);
       players.add(newPlayer);
     }
@@ -104,7 +104,7 @@ public class InitialConfigLoader {
     }
     Constructor<?>[] makeNewPlace = placeClass.getConstructors();
     try {
-      newPlace = (Place) makeNewPlace[0].newInstance(id);
+      newPlace = (Place) makeNewPlace[0].newInstance(id, gameEventHandler);
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
 //      LOG.warn(e);
       throw new RuntimeException(e);
