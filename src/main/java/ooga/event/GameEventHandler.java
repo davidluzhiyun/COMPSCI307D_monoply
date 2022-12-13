@@ -21,7 +21,7 @@ public class GameEventHandler {
   }
 
   public void publish(GameEvent e) {
-    System.out.println(e);
+//    System.out.println(e);
     subscribers.forEach(subscriber -> subscriber.onGameEvent(e));
   }
 

@@ -86,6 +86,9 @@ public class ConcretePlayerTurn implements PlayerTurn {
       Player owner = null;
       try {
         owner = players.get(currentPlace.getOwnerId());
+        if (owner.getPlayerId() == currentPlayerId){
+          owner = null;
+        }
       }
       catch (RuntimeException e){
        // do nothing
