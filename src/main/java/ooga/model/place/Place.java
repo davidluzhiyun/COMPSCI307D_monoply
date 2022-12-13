@@ -39,6 +39,15 @@ public interface Place extends ControllerPlace{
 
   void setHouseCount(int count) throws IllegalStateException;
 
+  /**
+   * Get the price it takes to build a house on the street.
+   *
+   * @return price it takes to build a house
+   * Normally throws exception for non street
+   * @throws IllegalStateException
+   */
+  double getHousePrice() throws IllegalStateException;
+
   void landingEffect(Player player);
   GameEventHandler getGameEventHandler();
 }

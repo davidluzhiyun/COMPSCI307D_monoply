@@ -61,6 +61,11 @@ public class DummyPlace implements Place {
   }
 
   @Override
+  public double getHousePrice() throws IllegalStateException {
+    return 0;
+  }
+
+  @Override
   public void landingEffect(Player player) {
 
   }
