@@ -1,15 +1,14 @@
 package ooga.model.place.Jail;
 
-import java.util.Collection;
+import ooga.event.GameEventHandler;
 import ooga.model.ConcretePlayer;
 import ooga.model.Player;
-import ooga.model.StationaryAction;
 import ooga.model.place.AbstractPlace;
 
 public class ConcreteGoToJail extends AbstractPlace implements GoToJail {
 
-  public ConcreteGoToJail(String id) {
-    super(id);
+  public ConcreteGoToJail(String id, GameEventHandler gameEventHandler) {
+    super(id, gameEventHandler);
   }
 
   /**
@@ -21,5 +20,4 @@ public class ConcreteGoToJail extends AbstractPlace implements GoToJail {
   public void landingEffect(Player player){
     player.setJail(ConcretePlayer.DEFAULT_JAIL_TURNS);
   }
-
 }

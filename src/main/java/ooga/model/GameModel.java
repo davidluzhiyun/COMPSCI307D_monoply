@@ -97,7 +97,7 @@ public class GameModel implements GameEventListener, ModelOutput {
    * "protected" is for test purpose
    */
   protected void initializeGame(Map<String, LinkedTreeMap> map) {
-    InitialConfigLoader initialConfigLoader = new InitialConfigLoader(map, modelResources);
+    InitialConfigLoader initialConfigLoader = new InitialConfigLoader(map, modelResources, gameEventHandler);
     initialConfigLoader.check();
 
     places = initialConfigLoader.getPlaces();
@@ -123,7 +123,7 @@ public class GameModel implements GameEventListener, ModelOutput {
    * @param map
    */
   protected void loadGame(Map<String, Object> map) {
-    GameLoader gameLoader = new GameLoader(map, modelResources);
+    GameLoader gameLoader = new GameLoader(map, modelResources, gameEventHandler);
     places = gameLoader.loadPlaceData();
     players = gameLoader.loadPlayerData();
     gameLoader.setUpPlayersPropertiesAndPropertyOwner(players, places);

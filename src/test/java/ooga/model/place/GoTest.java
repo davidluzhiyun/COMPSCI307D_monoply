@@ -1,5 +1,6 @@
 package ooga.model.place;
 
+import ooga.event.GameEventHandler;
 import ooga.model.StationaryAction;
 import ooga.model.place.property.ConcreteStreet;
 import ooga.model.place.property.Street;
@@ -16,7 +17,7 @@ class GoTest {
 
   @BeforeAll
   static void setUpTest() {
-    go = new Go("Go");
+    go = new Go("Go", new GameEventHandler());
   }
 
   @Test
