@@ -4,7 +4,7 @@
     "rows": 5,
     "columns": 5,
     "money": 1500,
-    "jail": true,
+    "jail": false,
     "color": true
   },
   "0": {
