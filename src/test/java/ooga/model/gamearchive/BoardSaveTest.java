@@ -24,7 +24,7 @@ public class BoardSaveTest {
         Place place2 = new ConcreteStreet("123", new GameEventHandler());
 //        place2.setOwner(1);
         //TODO:
-        Player player1 = new ConcretePlayer(0, new BuildHouseCheckerNoColor());
+        Player player1 = new ConcretePlayer(0, new GameEventHandler(), new BuildHouseCheckerNoColor());
         output = new ModelOutput() {
             @Override
             public GameState getGameState() {
@@ -43,7 +43,7 @@ public class BoardSaveTest {
 
             @Override
             public List<ControllerPlayer> getPlayers() {
-                return List.of(player1, new ConcretePlayer(1, new BuildHouseCheckerNoColor()));
+                return List.of(player1, new ConcretePlayer(1, new GameEventHandler(), new BuildHouseCheckerNoColor()));
             }
             @Override
             public List<ControllerPlace> getBoard() {

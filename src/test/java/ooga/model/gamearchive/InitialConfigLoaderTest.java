@@ -2,6 +2,7 @@ package ooga.model.gamearchive;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import ooga.event.GameEventHandler;
 import ooga.model.player.CanBuildOn;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ class InitialConfigLoaderTest {
       throw new RuntimeException(e);
     }
     modelResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Model");
-    loader = new InitialConfigLoader(new Gson().fromJson(reader, Map.class), modelResources);
+    loader = new InitialConfigLoader(new Gson().fromJson(reader, Map.class), modelResources, new GameEventHandler());
   }
 
   @Test
