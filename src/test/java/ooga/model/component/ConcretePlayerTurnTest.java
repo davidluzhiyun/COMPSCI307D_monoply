@@ -28,14 +28,14 @@ class ConcretePlayerTurnTest {
     utility = new ConcreteUtility("9", new GameEventHandler());
     NewYork = new ConcreteStreet("New York1", new GameEventHandler());
     places = List.of(NewYork, new ConcreteStreet("New York1", new GameEventHandler()), new ConcreteStreet("Shanghai1", new GameEventHandler()), new ConcreteStreet("Shanghai1", new GameEventHandler()), utility, new ConcreteRailroad("45", new GameEventHandler()), new ConcreteStreet("121", new GameEventHandler()), new ConcreteStreet("121", new GameEventHandler()));
-    p1 = new ConcretePlayer(0, new BuildHouseCheckerNoColor());
-    p2 = new ConcretePlayer(1, new BuildHouseCheckerNoColor());
+    p1 = new ConcretePlayer(0, new GameEventHandler(), new BuildHouseCheckerNoColor());
+    p2 = new ConcretePlayer(1, new GameEventHandler(), new BuildHouseCheckerNoColor());
     p1.setMoney(1500);
     p2.setMoney(1500);
 
     p2.purchase(utility, 4);
     p2.purchase(NewYork, 0);
-    players = List.of(p1, p2, new ConcretePlayer(2, new BuildHouseCheckerNoColor()), new ConcretePlayer(3, new BuildHouseCheckerNoColor()));
+    players = List.of(p1, p2, new ConcretePlayer(2, new GameEventHandler(), new BuildHouseCheckerNoColor()), new ConcretePlayer(3, new GameEventHandler(), new BuildHouseCheckerNoColor()));
     turn = new ConcretePlayerTurn(players, places, 0);
   }
 

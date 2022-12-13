@@ -17,7 +17,7 @@ class PlayerTest {
 
   @BeforeEach
   void setUpTest() {
-    player = new ConcretePlayer(0, new BuildHouseCheckerNoColor());
+    player = new ConcretePlayer(0, new GameEventHandler(), new BuildHouseCheckerNoColor());
   }
 
   @Test

@@ -2,6 +2,7 @@ package ooga.model.gamearchive;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import ooga.event.GameEventHandler;
 import ooga.model.place.Place;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ class GameLoaderTest {
     Map<String, Object> map = new Gson().fromJson(reader, mapType);
     System.out.println(map);
     modelResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Model");
-    loader = new GameLoader(map, modelResources);
+    loader = new GameLoader(map, modelResources, new GameEventHandler());
   }
 
   @Test
