@@ -126,4 +126,10 @@ public class StartView extends View {
     gameEventHandler.addEventListener(sceneManager);
     gameEventHandler.publish(event);
   }
+
+  /**
+   * Added solely for testing purposes.
+   * @return myStyle
+   */
+  public String getStyle() {return myStyle;}
 }

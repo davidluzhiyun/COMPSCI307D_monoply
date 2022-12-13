@@ -35,6 +35,10 @@ class ConcretePlayerTurnTest {
 
     p2.purchase(utility, 4);
     p2.purchase(NewYork, 0);
+
+    players = List.of(p1, p2, new ConcretePlayer(2), new ConcretePlayer(3));
+    turn = new ConcretePlayerTurn(players, places, 0, new GameEventHandler());
+    players = List.of(p1, p2, new ConcretePlayer(2, new BuildHouseCheckerNoColor()), new ConcretePlayer(3, new BuildHouseCheckerNoColor()));
     players = List.of(p1, p2, new ConcretePlayer(2, new GameEventHandler(), new BuildHouseCheckerNoColor()), new ConcretePlayer(3, new GameEventHandler(), new BuildHouseCheckerNoColor()));
     turn = new ConcretePlayerTurn(players, places, 0);
   }

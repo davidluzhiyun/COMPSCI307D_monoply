@@ -86,6 +86,7 @@ public class GameSelectionScene extends View {
    */
   public void startNewGame() {
     try {
+      System.out.println("START GAMEEEEEE");
       makeFileDialog(Main.CONFIG_FILES_DIRECTORY, "VIEW_TO_CONTROLLER_GAME_START");
     } catch (BadDataException e) {
       showError(e.getMessage());
@@ -119,14 +120,15 @@ public class GameSelectionScene extends View {
       pop.showMessage(myLanguage);
     } else {
       // send config file to model
+
       Command cmd = new GameStartViewCommand(configFile);
+      GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SCREEN",
+          cmd);
+      myGameEventHandler.publish(event);
       GameEvent event2 = GameEventHandler.makeGameEventwithCommand(eventType, cmd);
       myGameEventHandler.publish(event2);
 
       // launching game screen
-      GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_GAME_SCREEN",
-          cmd);
-      myGameEventHandler.publish(event);
     }
   }
 

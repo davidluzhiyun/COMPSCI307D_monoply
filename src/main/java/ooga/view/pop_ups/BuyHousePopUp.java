@@ -6,11 +6,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import ooga.Main;
 import ooga.view.View;
 import ooga.view.button.CustomizedButton;
-import ooga.view.components.Board;
 import ooga.view.drop_down.BuyHouseDropDown;
 import ooga.view.drop_down.CustomizedDropDown;
 
@@ -21,7 +19,6 @@ public class BuyHousePopUp extends ActionPopUp {
   private final ResourceBundle popUpResources;
   private final String myStyle;
   private final ResourceBundle idResources;
-  private Board myBoard;
   private String myLanguage;
   private ResourceBundle myResources;
   public static final String HOUSE_POP_UP_TEXT = "BuyHouseText";
@@ -30,12 +27,11 @@ public class BuyHousePopUp extends ActionPopUp {
   private VBox root;
   private int selectedProperty;
 
-  public BuyHousePopUp(int player, String style, Board board) {
+  public BuyHousePopUp(int player, String style) {
     this.currentPlayer = player;
     this.myStage = new Stage();
     this.popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
     this.myStyle = style;
-    this.myBoard = board;
     this.selectedProperty = -1;
     this.idResources = ResourceBundle.getBundle(Main.ID_PROPERTIES);
   }
@@ -82,7 +78,7 @@ public class BuyHousePopUp extends ActionPopUp {
    * Called when you press the purchase button (set in Buttons.properties file)
    */
   public void buildHouse() {
-    myBoard.buildHouse(selectedProperty);
+//    myBoard.buildHouse(selectedProperty);
     close();
   }
 

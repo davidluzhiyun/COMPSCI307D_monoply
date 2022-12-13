@@ -134,7 +134,7 @@ public class MonopolyBoardBuilder implements Builder<Region> {
    * @param currentPlayer: int of player whose piece needs to be moved
    */
   public void movePlayer(int newIdx, int currentPlayer) {
-    GamePiece piece = playerPieces.get(currentPlayer - 1);
+    GamePiece piece = playerPieces.get(currentPlayer);
     Bounds bound = getBoundsbyIndex(newIdx);
     piece.placeObject(bound.getMinX(), bound.getMinY());
   }
