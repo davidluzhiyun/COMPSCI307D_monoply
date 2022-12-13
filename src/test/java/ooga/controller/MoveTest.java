@@ -75,6 +75,11 @@ public class MoveTest extends TestCase {
       public int getOwnedRailroadCount() {
         return 0;
       }
+
+      @Override
+      public boolean isAlive() {
+        return false;
+      }
     };
     players.add(player);
     actions.add(StationaryAction.ROLL_DICE);

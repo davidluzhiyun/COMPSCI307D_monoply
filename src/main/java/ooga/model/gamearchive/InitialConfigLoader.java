@@ -84,14 +84,14 @@ public class InitialConfigLoader {
     try {
       placeClass = Class.forName(PLACE_PACKAGE_NAME + myResources.getString(type));
     } catch (ClassNotFoundException e) {
-//      LOG.warn(e);
+      LOG.warn(e);
       throw new IllegalStateException("classNotFound", e);
     }
     Constructor<?>[] makeNewPlace = placeClass.getConstructors();
     try {
       newPlace = (Place) makeNewPlace[0].newInstance(id, gameEventHandler);
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-//      LOG.warn(e);
+      LOG.warn(e);
       throw new RuntimeException(e);
     }
     return newPlace;
