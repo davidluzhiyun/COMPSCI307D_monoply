@@ -22,7 +22,7 @@ public class ParsingJsonRunnable implements EventGenerator{
 
     public static final String nameRegex = ".+\"name\": \"(.+)\".?";
 
-    public static final String colorRegex = ".+\"colorId\": (.+).?";
+    public static final String colorRegex = ".+\"colorId\": (\\d+).?";
 
     public static final String imageRegex = ".+\"image\": (.+).?";
 
