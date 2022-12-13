@@ -70,7 +70,7 @@ public class MonopolyImageCardBuilder implements Builder<Region> {
   }
 
   private Group createUpperLabel() {
-    ResizableTextLabel label = new ResizableTextLabel(model.getUpperText(), getTextWidth());
+    ResizableTextLabel label = new ResizableTextLabel(model.getUpperText(), getTextWidth() * 0.3);
     Label text = label.build();
     text.setRotate(model.getRotation());
 
@@ -96,7 +96,7 @@ public class MonopolyImageCardBuilder implements Builder<Region> {
   }
 
   private Group createBottomLabel() {
-    ResizableTextLabel label = new ResizableTextLabel(model.getBottomText(), getTextWidth());
+    ResizableTextLabel label = new ResizableTextLabel(model.getBottomText(), getTextWidth() * 0.3);
     Label text = label.build();
     text.setRotate(model.getRotation());
 

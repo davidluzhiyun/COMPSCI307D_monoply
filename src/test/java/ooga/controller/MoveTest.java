@@ -84,42 +84,42 @@ public class MoveTest extends TestCase {
     listener = new MockListener(GameEventType.CONTROLLER_TO_VIEW_MOVE.name());
     gameEventHandler.addEventListener(listener);
     GameEvent move = GameEventHandler.makeGameEventwithCommand(
-        GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {
-          @Override
-          public GameState getGameState() {
-            return GameState.MOVE;
-          }
+            GameEventType.MODEL_TO_CONTROLLER_UPDATE_DATA.name(), new TestCommand(new ModelOutput() {
+              @Override
+              public GameState getGameState() {
+                return GameState.MOVE;
+              }
 
-          @Override
-          public Point getDiceNum() {
-            return null;
-          }
+              @Override
+              public Point getDiceNum() {
+                return null;
+              }
 
-          @Override
-          public int getCurrentPlayerId() {
-            return 0;
-          }
+              @Override
+              public int getCurrentPlayerId() {
+                return 0;
+              }
 
-          @Override
-          public java.util.List<ControllerPlayer> getPlayers() {
-            return players;
-          }
+              @Override
+              public java.util.List<ControllerPlayer> getPlayers() {
+                return players;
+              }
 
-          @Override
-          public List<ControllerPlace> getBoard() {
-            return null;
-          }
+              @Override
+              public List<ControllerPlace> getBoard() {
+                return null;
+              }
 
-          @Override
-          public Collection<StationaryAction> getStationaryAction() {
-            return actions;
-          }
+              @Override
+              public Collection<StationaryAction> getStationaryAction() {
+                return actions;
+              }
 
-          @Override
-          public int getQueryIndex() {
-            return -1;
-          }
-        }));
+              @Override
+              public int getQueryIndex() {
+                return -1;
+              }
+            }));
     gameEventHandler.publish(move);
     System.out.println("Move event published!");
   }
@@ -129,14 +129,15 @@ public class MoveTest extends TestCase {
     private final ModelOutput boardInfo;
 
     public TestCommand(ModelOutput boardInfo) {
-        this.boardInfo = boardInfo;
+      this.boardInfo = boardInfo;
     }
 
-      @Override
-      public Object getCommandArgs() {
-          return this.boardInfo;
-      }
+    @Override
+    public Object getCommandArgs() {
+      return this.boardInfo;
+    }
   }
+
 
   public class MockListener implements GameEventListener {
 
@@ -157,6 +158,4 @@ public class MoveTest extends TestCase {
       }
     }
   }
-
-
 }

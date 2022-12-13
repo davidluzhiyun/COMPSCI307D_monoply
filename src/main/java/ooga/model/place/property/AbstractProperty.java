@@ -25,16 +25,16 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
   private int ownerId;
   private Player owner;
 
-  public AbstractProperty(String id) {
-    super(id);
+  public AbstractProperty(String id, GameEventHandler gameEventHandler) {
+    super(id, gameEventHandler);
     name = (String) getConfig().get("name");
     purchasePrice = (double) getConfig().get("purchasePrice");
     mortgagePrice = (double) getConfig().get("mortgagePrice");
     ownerId = -1;
   }
 
-  public AbstractProperty(String id, int ownerId) {
-    super(id);
+  public AbstractProperty(String id, int ownerId, GameEventHandler gameEventHandler) {
+    super(id, gameEventHandler);
     this.ownerId = ownerId;
     name = (String) getConfig().get("name");
     purchasePrice = (double) getConfig().get("purchasePrice");
@@ -123,8 +123,7 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
     if (ownerId != -1) {//if owned
       player.setMoney(player.getTotalMoney() - getMoney(player));
       owner.setMoney(player.getTotalMoney() + getMoney(player));
-      GameEventHandler gameEventHandler = new GameEventHandler();
-      gameEventHandler.publish(modelToken + GameState.PAY_RENT);
+      getGameEventHandler().publish(modelToken + GameState.PAY_RENT);
     }
   }
 }

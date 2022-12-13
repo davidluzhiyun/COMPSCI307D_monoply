@@ -41,7 +41,6 @@ public class MonopolyGameEditorScene extends MonopolyScene implements ParentView
             Main.class.getResource(String.format("/style/%s.css", style)).toString()));
     this.gameEventHandler = gameEventHandler;
     gameEventHandler.addEventListener(this);
-
     initChildren();
     setChildrenLocation();
     addChildrenToRoot();

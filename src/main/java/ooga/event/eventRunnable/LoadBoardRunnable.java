@@ -57,9 +57,9 @@ public class LoadBoardRunnable extends ParsingJsonRunnable implements EventGener
         String name = getPlaceName(id);
         int colorId = getColorId(id);
         String image = (String) parsedJson.get(key).get("image");
-        String upperText = (String) parsedJson.get(key).get("upperText");
-        System.out.println(upperText);
-        String lowerText = (String) parsedJson.get(key).get("lowerText");
+        String fileName = PLACE_PATH + id + JSON_EXTENSION;
+        String upperText = getString(fileName, upperTextRegex);
+        String lowerText = getString(fileName, lowerTextRegex);
         boolean isCorner = (boolean) parsedJson.get(key).get("corner");
         places.add(
             new ParsedProperty(id, type, name, colorId, image, upperText, lowerText, isCorner));

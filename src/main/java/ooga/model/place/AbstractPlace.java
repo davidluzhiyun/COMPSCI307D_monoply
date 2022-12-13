@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.beans.EventHandler;
 
+import ooga.event.GameEventHandler;
 import ooga.model.ConcretePlayer;
 import ooga.model.ControllerPlayer;
 import ooga.model.PlaceAction;
@@ -38,12 +39,14 @@ public abstract class AbstractPlace implements Place {
   public static final String DEFAULT_RESOURCE_FOLDER =
       "/" + PLACE_PACKAGE_NAME.replace(".", "/");
   private Map<String, ?> config;
+  private GameEventHandler gameEventHandler;
 
-  public AbstractPlace(String id) {
+  public AbstractPlace(String id, GameEventHandler gameEventHandler) {
     placeId = id;
     players = new ArrayList<>();
     inherentPlaceActions = List.of(PlaceAction.VIEW_INFO);
     placeActions = new ArrayList<>();
+    this.gameEventHandler = gameEventHandler;
     Gson gson = new Gson();
     Reader reader;
     try {
@@ -177,5 +180,10 @@ public abstract class AbstractPlace implements Place {
   @Override
   public void landingEffect(Player player) {
     EventHandler eventHandler;
+  }
+
+  @Override
+  public GameEventHandler getGameEventHandler() {
+    return null;
   }
 }

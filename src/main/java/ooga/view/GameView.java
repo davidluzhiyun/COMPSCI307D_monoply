@@ -2,7 +2,13 @@ package ooga.view;
 
 import java.awt.Point;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -11,6 +17,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import ooga.Main;
+import ooga.Reflection;
+import ooga.controller.InitBoardRecord;
 import ooga.controller.LoadBoardRecord;
 import ooga.controller.MoveRecord;
 import ooga.event.GameEvent;
@@ -18,7 +26,9 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
+import ooga.event.command.GetPlayerCommand;
 import ooga.event.command.RollDiceCommand;
+import ooga.model.GameState;
 import ooga.view.pop_ups.AvailablePlaceActionsPopUp;
 import ooga.event.command.SelectBoardEditConfigCommand;
 import ooga.view.components.MonopolyBoardBuilder;
@@ -36,11 +46,8 @@ public class GameView extends View implements GameEventListener {
   private String myStyle;
   private final String myLanguage;
   private DiceRollPopUp myDicePopUp;
-  private double width;
-  private double height;
   private final ResourceBundle myScreenResources;
-  public static final String GAME_WIDTH_KEY = "GameWidth";
-  public static final String GAME_HEIGHT_KEY = "GameHeight";
+  private final Map<String, Consumer<GameEvent>> eventTypeMap = new HashMap<>();
   public static final String GAME_OBJECTS_KEY = "GameObjects";
   public static final String GAME_BUTTONS_ID = "GameButtons";
   public static final String GAME_PIECE = "GamePiece";
@@ -65,8 +72,6 @@ public class GameView extends View implements GameEventListener {
   }
 
   public Scene setUpScene(double width, double height, String style) {
-    this.width = width;
-    this.height = height;
     this.myStyle = style;
     Rectangle background = new Rectangle(width, height);
     background.setId(StartView.BACKGROUND);
@@ -81,7 +86,6 @@ public class GameView extends View implements GameEventListener {
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
     myStage.show();
-    chooseGamePieces();
     return myScene;
   }
 
@@ -135,15 +139,18 @@ public class GameView extends View implements GameEventListener {
 //    popUp.showMessage(myLanguage);
     RentPopUp pop = new RentPopUp(20);
     pop.showMessage(myLanguage);
-    startPlayerTurn(1);
   }
+  public void endTurn() {}
 
   /**
-   * Will later need to take in current player (int) parameter -- or use instance variable
+   * Takes in the current player index, must increment this for display of players 1-4 rather than
+   * 0-3. Displays pop up for user to roll the dice and start their turn.
    */
-  private void startPlayerTurn(int player) {
-    this.currentPlayer = player;
-    myDicePopUp = new DiceRollPopUp(player, myStyle);
+  private void startPlayerTurn(GameEvent event) {
+    Command cmd = event.getGameEventCommand().getCommand();
+    int player = (int) cmd.getCommandArgs();
+    this.currentPlayer = player+1;
+    myDicePopUp = new DiceRollPopUp(player+1, myStyle);
     myDicePopUp.showMessage(myLanguage);
     myDicePopUp.makeButtonActive(this);
   }
@@ -161,52 +168,54 @@ public class GameView extends View implements GameEventListener {
   /**
    * Displays a pop up with the result of the dice roll.
    */
-  private void showDiceResult(Point roll) {
+  private void showDiceResult(GameEvent event) {
+    Command cmd = event.getGameEventCommand().getCommand();
+    Point roll = (Point) cmd.getCommandArgs();
     myDicePopUp.close();
     RollResultPopUp pop = new RollResultPopUp(roll.x, roll.y);
     pop.showMessage(myLanguage);
   }
 
-  /**
-   * TODO: delete. this will be entirely different
-   */
-  public void buyHouse() {
-//    BuyHousePopUp pop = new BuyHousePopUp(1, myStyle, myBoard);
-//    pop.showMessage(myLanguage);
+  public void showPlaceActions(GameEvent event) {
+    Command cmd = event.getGameEventCommand().getCommand();
+    AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd.getCommandArgs(), myStyle);
+    pop.showMessage(myLanguage);
   }
+  public void loadBoard(GameEvent event) {
+    LoadBoardRecord command = (LoadBoardRecord) event.getGameEventCommand().getCommand()
+            .getCommandArgs();
+    interactor.initialize(command);
+  }
+  public void drawBoard(GameEvent event) {monopolyBoardBuilder.drawPostProcessing();}
 
-  public void endTurn() {
+  public void startGame(GameEvent event){
+    InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+    interactor.initializeNewBoard(command);
+    this.currentPlayer = command.currentPlayerId();
+    myDicePopUp = new DiceRollPopUp(currentPlayer+1, myStyle);
+    myDicePopUp.showMessage(myLanguage);
+    myDicePopUp.makeButtonActive(this);
+    chooseGamePieces();
+  }
+  public void movePlayer(GameEvent event) {
+    MoveRecord cmd = (MoveRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+    System.out.println(cmd.placeIndex());
+    monopolyBoardBuilder.movePlayer(cmd.placeIndex(), currentPlayer);
   }
 
   @Override
   public void onGameEvent(GameEvent event) {
-    switch (event.getGameEventType()) {
-      case "CONTROLLER_TO_VIEW_PLAYER_START" -> {
-        Command cmd = event.getGameEventCommand().getCommand();
-        startPlayerTurn((int) cmd.getCommandArgs());
-      }
-      case "CONTROLLER_TO_VIEW_ROLL_DICE" -> {
-        Command cmd = event.getGameEventCommand().getCommand();
-        showDiceResult((Point) cmd.getCommandArgs());
-      }
-      case "CONTROLLER_TO_VIEW_GET_PLACE_ACTIONS" -> {
-        Command cmd = event.getGameEventCommand().getCommand();
-        AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd.getCommandArgs(), myStyle);
-        pop.showMessage(myLanguage);
-      }
-      case "CONTROLLER_TO_VIEW_LOAD_BOARD" -> {
-        LoadBoardRecord command = (LoadBoardRecord) event.getGameEventCommand().getCommand()
-            .getCommandArgs();
-        interactor.initialize(command);
-      }
-      case "VIEW_POST_ACTION_DRAW_BOARD" -> monopolyBoardBuilder.drawPostProcessing();
-      case "CONTROLLER_TO_VIEW_MOVE" -> {
-        MoveRecord cmd = (MoveRecord) event.getGameEventCommand().getCommand().getCommandArgs();
-        monopolyBoardBuilder.movePlayer(cmd.placeIndex(), currentPlayer);
-      }
-      case "CONTROLLER_TO_VIEW_START_GAME" -> {
-//        InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
-//        interactor.initialize(command);
+    String patternToken = ".+_TO_VIEW_.+";
+    boolean isViewEvent = Pattern.matches(patternToken, event.getGameEventType());
+    String pattern = GameEventType.VIEW_POST_ACTION_DRAW_BOARD.name();
+    if (isViewEvent | Pattern.matches(pattern, event.getGameEventType())) {
+      Reflection reflect = new Reflection();
+      ResourceBundle reflectResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + "GameViewReflection");
+      String method = reflectResources.getString(event.getGameEventType());
+      try {
+        reflect.makeMethod(method, this.getClass(), new Class[]{GameEvent.class}).invoke(this, event);
+      } catch (IllegalAccessException | InvocationTargetException e) {
+        throw new RuntimeException(e);
       }
     }
   }

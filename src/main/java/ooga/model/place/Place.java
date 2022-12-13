@@ -1,5 +1,6 @@
 package ooga.model.place;
 
+import ooga.event.GameEventHandler;
 import ooga.model.*;
 
 import java.util.Collection;
@@ -39,4 +40,5 @@ public interface Place extends ControllerPlace{
   void setHouseCount(int count) throws IllegalStateException;
 
   void landingEffect(Player player);
+  GameEventHandler getGameEventHandler();
 }
