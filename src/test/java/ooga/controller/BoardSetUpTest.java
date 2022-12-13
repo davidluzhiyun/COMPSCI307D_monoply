@@ -9,6 +9,7 @@ import ooga.event.command.Command;
 import ooga.model.*;
 import ooga.model.colorSet.DummyPlace;
 import ooga.model.place.ControllerPlace;
+import ooga.model.player.BuildHouseCheckerNoColor;
 
 import java.awt.*;
 import java.io.File;
@@ -44,8 +45,8 @@ public class BoardSetUpTest extends TestCase {
         gameEventHandler = new GameEventHandler();
         controller = new Controller(gameEventHandler);
         gameEventHandler.addEventListener(controller);
-        players.add(new ConcretePlayer(0));
-        players.add(new ConcretePlayer(1));
+        players.add(new ConcretePlayer(0, new GameEventHandler(), new BuildHouseCheckerNoColor()));
+        players.add(new ConcretePlayer(1, new GameEventHandler(), new BuildHouseCheckerNoColor()));
         places.add(new DummyPlace("Go"));
         places.add(new DummyPlace("New York1"));
         actions.add(StationaryAction.ROLL_DICE);

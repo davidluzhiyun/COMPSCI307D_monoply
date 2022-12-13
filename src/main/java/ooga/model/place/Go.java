@@ -9,8 +9,8 @@ import ooga.model.Player;
 
 public class Go extends AbstractPlace {
 
-  public Go(String id) {
-    super(id);
+  public Go(String id, GameEventHandler gameEventHandler) {
+    super(id, gameEventHandler);
 //    addStationaryAction(StationaryAction.ROLL_DICE);
   }
 
@@ -27,7 +27,6 @@ public class Go extends AbstractPlace {
   @Override
   public void landingEffect(Player player) {
     player.setMoney(player.getTotalMoney() + getMoney(player));
-    GameEventHandler gameEventHandler = new GameEventHandler();
-    gameEventHandler.publish("MODEL_TO_MODEL_COLLECT_SALARY");
+    getGameEventHandler().publish("MODEL_TO_MODEL_COLLECT_SALARY");
   }
 }
