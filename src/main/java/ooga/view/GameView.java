@@ -140,6 +140,7 @@ public class GameView extends View implements GameEventListener {
    * TODO: change this to actually implement the savegame feature.
    */
   public void saveGame() {
+    gameEventHandler.publish(GameEventType.VIEW_TO_MODEL_SAVE_GAME.name());
   }
   public void endTurn() {
     Command command = new EndTurnCommand();
