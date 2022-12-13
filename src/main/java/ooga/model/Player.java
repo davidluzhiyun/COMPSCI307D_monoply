@@ -89,4 +89,8 @@ public interface Player extends ControllerPlayer {
    * Get the player out of jail for a fee;
    */
   void payOutOfJail();
+  /**
+   * Check if the player is still alive
+   */
+  boolean isAlive();
 }

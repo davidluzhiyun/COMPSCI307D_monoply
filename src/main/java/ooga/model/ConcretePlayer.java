@@ -40,11 +40,12 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private static final Logger LOG = LogManager.getLogger(GameModel.class);
 
   private int jailIndex;
+  private boolean isAlive;
 
   /**
    * Universal constructor for loading the game./
    */
-  public ConcretePlayer(int playerId, double money, int currentPlaceIndex, boolean hasNextDice, int remainingJailTurns, int dicesTotal, Collection<Integer> propertyIndices) {
+  public ConcretePlayer(int playerId, double money, int currentPlaceIndex, boolean hasNextDice, int remainingJailTurns, int dicesTotal, Collection<Integer> propertyIndices, boolean isAlive) {
     this.playerId = playerId;
     this.money = money;
     this.currentPlaceIndex = currentPlaceIndex;
@@ -52,6 +53,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     this.dicesTotal = dicesTotal;
     this.hasNextDice = hasNextDice;
     this.propertyIndices = propertyIndices;
+    this.isAlive = isAlive;
   }
 
   public ConcretePlayer(int playerId) {
@@ -61,6 +63,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     this.hasNextDice = false;
     properties = new ArrayList<>();
     propertyIndices = new ArrayList<>();
+    this.isAlive = true;
   }
 
   @Override
@@ -317,6 +320,12 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     money -= DEFAULT_FINE;
     getOutOfJail();
   }
+
+  @Override
+  public boolean isAlive() {
+    return isAlive;
+  }
+
   /**
    * @author David Lu
    * Backrupt the current player to another player or the bank
@@ -345,5 +354,6 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     }
     GameEventHandler gameEventHandler = new GameEventHandler();
     gameEventHandler.publish(modelToken + GameState.BANKRUPT);
+    this.isAlive = false;
   }
 }
