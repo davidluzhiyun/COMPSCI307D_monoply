@@ -1,5 +1,6 @@
 package ooga.model.gamearchive;
 
+import ooga.model.player.AddOneDiceRoll;
 import ooga.model.player.AddOneDiceRollJail;
 import ooga.model.player.CanBuildOn;
 import ooga.model.player.Player;
@@ -18,8 +19,8 @@ public class ArchiveUtility {
   private static final String addOneDiceRollToken = "AddOneDiceRoll";
   private static final Logger LOG = LogManager.getLogger(InitialConfigLoader.class);
   private static ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Model");
-  public static  AddOneDiceRollJail createAddOneDiceRollJail(boolean goJailOrNot, Player player) {
-    AddOneDiceRollJail addOneDiceRollJail;
+  public static  AddOneDiceRoll createAddOneDiceRollJail(boolean goJailOrNot, Player player) {
+    AddOneDiceRoll addOneDiceRollJail;
     Class<?> addOneDiceRollJailClass;
     try {
       addOneDiceRollJailClass = Class.forName(PLAYER_PACKAGE_NAME + myResources.getString(addOneDiceRollToken + goJailOrNot));
@@ -29,7 +30,7 @@ public class ArchiveUtility {
     }
     Constructor<?>[] makeNewPlace = addOneDiceRollJailClass.getConstructors();
     try {
-      addOneDiceRollJail = (AddOneDiceRollJail) makeNewPlace[0].newInstance(player);
+      addOneDiceRollJail = (AddOneDiceRoll) makeNewPlace[0].newInstance(player);
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
       LOG.warn(e);
       throw new RuntimeException(e);

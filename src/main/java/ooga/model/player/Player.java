@@ -94,7 +94,7 @@ public interface Player extends ControllerPlayer {
   void setHasNextDice(boolean hasNextDice);
   void setDicesTotal(int dicesTotal);
   int getDicesTotal();
-  void setAddOneDiceRollJail(AddOneDiceRollJail addOneDiceRollJail);
+  void setAddOneDiceRollJail(AddOneDiceRoll addOneDiceRollJail);
   /**
    * @author David Lu
    * Backrupt the current player to another player or the bank
