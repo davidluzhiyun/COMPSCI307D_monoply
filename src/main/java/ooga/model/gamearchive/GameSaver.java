@@ -1,6 +1,7 @@
 package ooga.model.gamearchive;
 
 import com.google.gson.Gson;
+import ooga.model.exception.BadDataException;
 import ooga.model.player.ControllerPlayer;
 import ooga.model.ModelOutput;
 import ooga.model.exception.MonopolyException;

@@ -198,7 +198,7 @@ public class GameModel implements GameEventListener, ModelOutput {
       publishGameData(GameState.DICE_RESULT);
     });
     eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name(), this::startGame);
-    eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name(), e -> {
+    eventTypeMap.put(GameEventType.VIEW_TO_MODEL_SAVE_GAME.name(), e -> {
       try {
         gameSaver.saveToJson();
       } catch (IOException ex) {
