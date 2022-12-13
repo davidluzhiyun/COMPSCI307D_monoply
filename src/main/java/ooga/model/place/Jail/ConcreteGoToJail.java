@@ -1,8 +1,8 @@
 package ooga.model.place.Jail;
 
 import ooga.event.GameEventHandler;
-import ooga.model.ConcretePlayer;
-import ooga.model.Player;
+import ooga.model.player.ConcretePlayer;
+import ooga.model.player.Player;
 import ooga.model.place.AbstractPlace;
 
 public class ConcreteGoToJail extends AbstractPlace implements GoToJail {

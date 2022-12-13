@@ -7,11 +7,8 @@ import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.model.*;
-import ooga.model.colorSet.DummyPlace;
-import ooga.model.exception.CannotBuildHouseException;
-import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
-import ooga.model.place.Place;
+import ooga.model.player.ControllerPlayer;
 
 import java.awt.*;
 import java.util.ArrayList;

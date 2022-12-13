@@ -8,6 +8,8 @@ import ooga.model.*;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.Place;
+import ooga.model.player.ControllerPlayer;
+import ooga.model.player.Player;
 
 public class ControllerDummyPlace implements Place {
 

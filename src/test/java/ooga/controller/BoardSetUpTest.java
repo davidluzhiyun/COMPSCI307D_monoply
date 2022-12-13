@@ -10,6 +10,8 @@ import ooga.model.*;
 import ooga.model.colorSet.DummyPlace;
 import ooga.model.place.ControllerPlace;
 import ooga.model.player.BuildHouseCheckerNoColor;
+import ooga.model.player.ConcretePlayer;
+import ooga.model.player.ControllerPlayer;
 
 import java.awt.*;
 import java.io.File;

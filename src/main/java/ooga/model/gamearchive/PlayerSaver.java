@@ -10,5 +10,6 @@ public record PlayerSaver(int id,
                           int dicesTotal,
                           boolean hasNextDice,
                           int ownedRailroadCount,
-                          Collection<Integer> properties) {
+                          Collection<Integer> properties,
+                          boolean isAlive) {
 }

@@ -15,6 +15,7 @@ import ooga.Main;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.command.Command;
+import ooga.event.command.ConcreteCommand;
 import ooga.event.command.GameEditorCommand;
 import ooga.event.command.GameStartViewCommand;
 import ooga.model.exception.BadDataException;
@@ -136,10 +137,22 @@ public class GameSelectionScene extends View {
    * Set within property files to be the method invoked when users click the GoToEditorButton.
    */
   public void goToEditor() {
-    Command cmd = new GameEditorCommand();
+    File f = makeFileDialogForEditor();
+
+    Command cmd = new ConcreteCommand<File>(f);
     GameEvent event = GameEventHandler.makeGameEventwithCommand("VIEW_LAUNCH_BOARD_EDITOR",
         cmd);
     myGameEventHandler.publish(event);
+  }
+
+  private File makeFileDialogForEditor() {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setInitialDirectory(new File(Main.CONFIG_FILES_DIRECTORY));
+    fileChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(JSON_FILE_EXTENSION,
+        DATA_FILE_JSON_EXTENSION));
+    File configFile = fileChooser.showOpenDialog(myStage);
+
+    return configFile;
   }
 
 }

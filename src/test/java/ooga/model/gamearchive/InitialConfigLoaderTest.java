@@ -34,9 +34,4 @@ class InitialConfigLoaderTest {
     modelResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Model");
     loader = new InitialConfigLoader(new Gson().fromJson(reader, Map.class), modelResources, new GameEventHandler());
   }
-
-  @Test
-  void testCreateBuildHouseChecker() {
-    CanBuildOn canBuildOn = loader.createHouseBuildChecker(true);
-  }
 }
