@@ -63,7 +63,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
       // Passing the place multiple times gives the player salaries multiple times
     }
     int index = (currentPlayer.getCurrentPlaceIndex() + step) % places.size();
-    currentPlayer.setIndex(currentPlayer.getCurrentPlaceIndex() + index);
+    currentPlayer.setIndex(index);
     gameEventHandler.publish(modelToken + GameState.MOVE);
     if (passes > 0) {
       currentPlayer.setMoney(currentPlayer.getTotalMoney() + passes * (places.get(0).getMoney(currentPlayer)));
@@ -129,5 +129,12 @@ public class ConcretePlayerTurn implements PlayerTurn {
 //    }
 //    return new Point(diceNum);
     return diceNum;
+  }
+  /**
+   * For testing purpose, swaps the dice with a new one
+   * @author David Lu
+   */
+  void setDice(Dice testDice){
+    dice = testDice;
   }
 }
