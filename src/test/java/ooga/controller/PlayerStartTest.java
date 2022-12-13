@@ -10,6 +10,7 @@ import ooga.model.*;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
+import ooga.model.player.BuildHouseCheckerNoColor;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -33,8 +34,8 @@ public class PlayerStartTest extends TestCase {
         gameEventHandler = new GameEventHandler();
         controller = new Controller(gameEventHandler);
         gameEventHandler.addEventListener(controller);
-        players.add(new ConcretePlayer(0));
-        players.add(new ConcretePlayer(1));
+        players.add(new ConcretePlayer(0, new BuildHouseCheckerNoColor()));
+        players.add(new ConcretePlayer(1, new BuildHouseCheckerNoColor()));
     }
 
     public void testPlayerStart() {
