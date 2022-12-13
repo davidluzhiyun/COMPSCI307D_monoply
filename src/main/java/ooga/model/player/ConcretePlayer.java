@@ -74,7 +74,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     this.houseChecker = houseChecker;
   }
 
-  public ConcretePlayer(int playerId) {
+  public ConcretePlayer(int playerId, CanBuildOn houseChecker) {
     this.currentPlaceIndex = 0;
     this.money = 0;
     this.playerId = playerId;
@@ -82,6 +82,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     properties = new ArrayList<>();
     propertyIndices = new ArrayList<>();
     this.isAlive = true;
+    this.houseChecker = houseChecker;
   }
 
   @Override
