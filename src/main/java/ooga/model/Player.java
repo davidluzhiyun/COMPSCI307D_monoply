@@ -90,7 +90,6 @@ public interface Player extends ControllerPlayer {
    */
   void payOutOfJail();
   Map<Integer, Predicate<Collection<Place>>> getColorSetCheckers();
-  Collection<Place> getProperties();
   /**
    * Check if the player is still alive
    */

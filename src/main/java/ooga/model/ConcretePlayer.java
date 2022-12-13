@@ -146,6 +146,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     return colorSetCheckers;
   }
 
+
   @Override
   public int getOwnedRailroadCount() {
     return ownedRailroadCount;
