@@ -25,6 +25,8 @@ public class EventSelector {
     eventTypeMap2.put(GameState.PAY_RENT.name(), PayRentRunnable::new);
     eventTypeMap2.put(GameState.BUILD_HOUSE.name(), BuildHouseRunnable::new);
     eventTypeMap2.put(GameState.COMMUNITY_CARD.name(), CardRunnable::new);
+    eventTypeMap2.put(GameState.TO_JAIL.name(), ToJailRunnable::new);
+    eventTypeMap2.put(GameState.OUT_OF_JAIL.name(), OutOfJailRunnable::new);
     eventTypeMap.put(GameEventType.VIEW_TO_CONTROLLER_GAME_START.name(), GameStartRunnable::new);
     eventTypeMap.put(GameEventType.VIEW_TO_CONTROLLER_GET_PLACE_INFO.name(), GetPlaceInfoRunnable::new);
     eventTypeMap.put(GameEventType.VIEW_TO_CONTROLLER_LOAD_BOARD.name(), LoadBoardRunnable::new);
