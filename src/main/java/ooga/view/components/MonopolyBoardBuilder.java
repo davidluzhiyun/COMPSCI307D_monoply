@@ -55,12 +55,19 @@ public class MonopolyBoardBuilder implements Builder<Region> {
       MonopolyCardViewModel model = models.get(i);
       Location loc = map.get(Integer.valueOf(i));
       Bounds bounds = grid.getCellBounds(loc.col(), loc.row());
-      model.setWidth(bounds.getWidth());
-      model.setHeight(bounds.getHeight());
+      if (location % 2 == 1) {
+        model.setWidth(bounds.getHeight());
+        model.setHeight(bounds.getWidth());
+      } else {
+        model.setWidth(bounds.getWidth());
+        model.setHeight(bounds.getHeight());
+      }
 
       // we need different cards based on different
       if (model instanceof MonopolyImageCardViewModel) {
-        ((MonopolyImageCardViewModel) model).setRotation((location * 90) - 45);
+        if (((MonopolyImageCardViewModel) model).isCorner()) {
+          ((MonopolyImageCardViewModel) model).setRotation((location * 90) - 45);
+        }
         // update the builder parameters
         imageCardBuilder.setModel((MonopolyImageCardViewModel) model);
         imageCardBuilder.setLocation(location); // indicate bottom

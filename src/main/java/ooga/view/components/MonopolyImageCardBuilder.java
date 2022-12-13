@@ -1,6 +1,7 @@
 package ooga.view.components;
 
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,13 +41,12 @@ public class MonopolyImageCardBuilder implements Builder<Region> {
     } else {
       card.getChildren().addAll(createUpperLabel(), createImageView(), createBottomLabel());
     }
-    card.getChildren().forEach(child -> child.setRotate(model.getRotation()));
+//    card.getChildren().forEach(child -> child.setRotate(model.getRotation()));
     return card;
   }
 
   private void styleCard(StackPane card) {
-    card.setMaxSize(model.getWidth(), model.getHeight());
-    card.setMinSize(model.getWidth(), model.getHeight());
+    // we need to style the card based on location
     card.setBorder(new Border(
         new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,
             new BorderWidths(1, 1, 1, 1))));
@@ -69,9 +69,12 @@ public class MonopolyImageCardBuilder implements Builder<Region> {
     return location % 2 == 0;
   }
 
-  private Label createUpperLabel() {
+  private Group createUpperLabel() {
     ResizableTextLabel label = new ResizableTextLabel(model.getUpperText(), getTextWidth());
-    Label ret = label.build();
+    Label text = label.build();
+    text.setRotate(model.getRotation());
+
+    Group ret = new Group(text);
 
     // set the AnchorPane value from
     StackPane.setAlignment(ret, Pos.TOP_CENTER);
@@ -86,14 +89,18 @@ public class MonopolyImageCardBuilder implements Builder<Region> {
     iv.setPreserveRatio(true);
     iv.setFitWidth(model.getWidth() * 0.8);
     iv.setFitHeight(model.getHeight() * 0.5);
+    iv.setRotate(model.getRotation());
     StackPane.setAlignment(iv, Pos.CENTER);
 
     return iv;
   }
 
-  private Label createBottomLabel() {
+  private Group createBottomLabel() {
     ResizableTextLabel label = new ResizableTextLabel(model.getBottomText(), getTextWidth());
-    Label ret = label.build();
+    Label text = label.build();
+    text.setRotate(model.getRotation());
+
+    Group ret = new Group(text);
 
     // set the AnchorPane value from
     StackPane.setAlignment(ret, Pos.BOTTOM_CENTER);
@@ -102,5 +109,14 @@ public class MonopolyImageCardBuilder implements Builder<Region> {
 
   public void setLocation(int location) {
     this.location = location;
+    if (!model.isCorner()) {
+      if (location == 1) {
+        model.setRotation(90);
+      } else if (location == 2) {
+        model.setRotation(180);
+      } else if (location == 3) {
+        model.setRotation(270);
+      }
+    }
   }
 }

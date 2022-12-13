@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "players": 4,
+    "rows": 4,
+    "columns": 4
+  },
+  "0": {
+    "id": "Go",
+    "type": "Go",
+    "image": "go.png",
+    "corner": true
+  },
+  "1": {
+    "id": "Shanghai1",
+    "type": "Street",
+    "corner": false
+  },
+  "2": {
+    "id": "Shanghai1",
+    "type": "Street",
+    "corner": false
+  },
+  "3": {
+    "id": "FreeParking",
+    "type": "FreeParking",
+    "image": "freeparking.png",
+    "corner": true
+  },
+  "4": {
+    "id": "New York1",
+    "type": "Street",
+    "corner": false
+  },
+  "5": {
+    "id": "New York1",
+    "type": "Street",
+    "corner": false
+  },
+  "6": {
+    "id": "FreeParking",
+    "type": "FreeParking",
+    "image": "freeparking.png",
+    "corner": true
+  },
+  "7": {
+    "id": "Shanghai1",
+    "type": "Street",
+    "corner": false
+  },
+  "8": {
+    "id": "Shanghai1",
+    "type": "Street",
+    "corner": false
+  },
+  "9": {
+    "id": "FreeParking",
+    "type": "FreeParking",
+    "image": "freeparking.png",
+    "corner": true
+  },
+  "10": {
+    "id": "New York1",
+    "type": "Street",
+    "corner": false
+  },
+  "11": {
+    "id": "New York1",
+    "type": "Street",
+    "corner": false
+  }
+}
