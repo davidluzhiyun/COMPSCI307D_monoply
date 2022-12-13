@@ -66,7 +66,7 @@ public class GameSaver {
         List<ControllerPlayer> players = data.getPlayers();
         for (ControllerPlayer player : players) {
             PlayerSaver singlePlayerData = new PlayerSaver(player.getPlayerId(),player.getTotalMoney(), player.remainingJailTurns(),
-                player.getCurrentPlaceIndex(), player.getPlayerId(), player.hasNextDice(), player.getOwnedRailroadCount(), player.getPropertyIndices());
+                player.getCurrentPlaceIndex(), player.getPlayerId(), player.hasNextDice(), player.getOwnedRailroadCount(), player.getPropertyIndices(), player.isAlive());
              playerData.add(singlePlayerData);
         }
         return playerData;

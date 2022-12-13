@@ -31,6 +31,8 @@ public class GameLoader {
   private static final Logger LOG = LogManager.getLogger(GameLoader.class);
   private ResourceBundle myResources;
   private GameEventHandler gameEventHandler;
+  private List<Place> places;
+  private List<Player> players;
   private Map<String, Function6<String, String, Integer, Integer, Constructor<?>[], GameEventHandler, Place>> switchMap;
 
   public GameLoader(Map<String, Object> map, ResourceBundle resources, GameEventHandler gameEventHandler) {
@@ -46,8 +48,16 @@ public class GameLoader {
     return metadata;
   }
 
+  private List<Player> getPlayers() {
+    return players;
+  }
+
+  private List<Place> getPlaces() {
+    return places;
+  }
+
   public List<Place> loadPlaceData() {
-    List<Place> places = new ArrayList<>();
+    places = new ArrayList<>();
     List<PlaceSaver> placesData = (List<PlaceSaver>) gameData.get("places");
     for (PlaceSaver singlePlaceData : placesData) {
       String placeId = singlePlaceData.id();
@@ -85,7 +95,7 @@ public class GameLoader {
     List<PlayerSaver> playersData = (List<PlayerSaver>) gameData.get("players");
     for (PlayerSaver singlePlayersData : playersData) {
       Player newPlayer = new ConcretePlayer(singlePlayersData.id(), gameEventHandler, singlePlayersData.money(), singlePlayersData.currentPlaceIndex(), singlePlayersData.hasNextDice(), singlePlayersData.jail(),
-              singlePlayersData.dicesTotal(), singlePlayersData.properties(), new BuildHouseCheckerNoColor());
+              singlePlayersData.dicesTotal(), singlePlayersData.properties(), new BuildHouseCheckerNoColor(), singlePlayersData.isAlive());
       players.add(newPlayer);
     }
     return players;

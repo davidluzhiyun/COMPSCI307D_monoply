@@ -96,11 +96,6 @@ public interface Player extends ControllerPlayer {
   int getDicesTotal();
   void setAddOneDiceRollJail(AddOneDiceRollJail addOneDiceRollJail);
   /**
-   * Check if the player is still alive
-   */
-  boolean isAlive();
-
-  /**
    * @author David Lu
    * Backrupt the current player to another player or the bank
    * Assume null stands for the bank
