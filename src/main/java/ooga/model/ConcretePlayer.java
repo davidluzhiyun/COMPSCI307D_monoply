@@ -182,9 +182,10 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     }
     hasNextDice = true;
     dicesTotal++;
-    if (dicesTotal > MAX_ROWS_IN_A_ROW)
+    if (dicesTotal > MAX_ROWS_IN_A_ROW){
       dicesTotal = 1;
-    setJail(DEFAULT_JAIL_TURNS);
+      setJail(DEFAULT_JAIL_TURNS);
+    }
   }
 
   @Override

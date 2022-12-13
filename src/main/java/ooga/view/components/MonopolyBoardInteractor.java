@@ -29,6 +29,10 @@ public class MonopolyBoardInteractor {
   }
 
   private MonopolyCardViewModel propertyToCardMapper(ParsedProperty property) {
-    return new MonopolyCardViewModel(property.type(), property.name(), property.color());
+    if (property.type().equals("Street")) {
+      return new MonopolyCardViewModel(property.type(), property.name(), property.color());
+    } else {
+      return new MonopolyImageCardViewModel(property.type(), property.name(), property.image());
+    }
   }
 }

@@ -36,8 +36,8 @@ public class LoadBoardTest extends TestCase {
         gameEventHandler = new GameEventHandler();
         controller = new Controller(gameEventHandler);
         gameEventHandler.addEventListener(controller);
-        parsedProperties.add(new ParsedProperty("0", "Go", "Go", 0, "path/to/image1"));
-        parsedProperties.add(new ParsedProperty("121", "Street", "Campus Drive", 1, "path/to/image2"));
+        parsedProperties.add(new ParsedProperty("0", "Go", "Go", 0, "path/to/image1", "Go", null, false));
+        parsedProperties.add(new ParsedProperty("121", "Street", "Campus Drive", 1, "path/to/image2", "test upper text", "test lower text", true));
     }
 
     public void testLoadBoard() {
