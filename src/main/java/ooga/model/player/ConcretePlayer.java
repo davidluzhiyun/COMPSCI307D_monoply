@@ -13,6 +13,7 @@ import ooga.event.GameEventHandler;
 
 import ooga.model.GameModel;
 import ooga.model.GameState;
+import ooga.model.exception.MonopolyException;
 import ooga.model.place.Place;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
 
   public ConcretePlayer(int playerId, GameEventHandler gameEventHandler, CanBuildOn houseChecker) {
     this.currentPlaceIndex = 0;
-    this.money = 0;
+    this.money = 1000;
     this.playerId = playerId;
     this.hasNextDice = false;
     this.houseChecker = houseChecker;
@@ -152,7 +153,12 @@ public class ConcretePlayer implements Player, ControllerPlayer {
    */
   @Override
   public boolean canBuildOn(Place place) {
-    return houseChecker.canBuildOn(place, colorSetCheckers, properties, playerId);
+    try {
+    return houseChecker.canBuildOn(place, colorSetCheckers, properties, playerId);}
+    catch (MonopolyException e) {
+      LOG.warn(e);
+      return false;
+    }
   }
 
   public Map<Integer, Predicate<Collection<Place>>> getColorSetCheckers() {
