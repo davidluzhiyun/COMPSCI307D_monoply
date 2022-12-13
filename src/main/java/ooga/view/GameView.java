@@ -21,12 +21,14 @@ import ooga.Reflection;
 import ooga.controller.InitBoardRecord;
 import ooga.controller.LoadBoardRecord;
 import ooga.controller.MoveRecord;
+import ooga.controller.PlaceActionRecord;
 import ooga.controller.UpdateViewRecord;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
+import ooga.event.command.EndTurnCommand;
 import ooga.event.command.GetPlayerCommand;
 import ooga.event.command.RollDiceCommand;
 import ooga.model.GameState;
@@ -143,7 +145,11 @@ public class GameView extends View implements GameEventListener {
     RentPopUp pop = new RentPopUp(20);
     pop.showMessage(myLanguage);
   }
-  public void endTurn() {}
+  public void endTurn() {
+    Command command = new EndTurnCommand();
+    GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_MODEL_END_TURN.name(), command);
+    gameEventHandler.publish(event);
+  }
 
   /**
    * Takes in the current player index, must increment this for display of players 1-4 rather than
@@ -180,8 +186,8 @@ public class GameView extends View implements GameEventListener {
   }
 
   public void showPlaceActions(GameEvent event) {
-    Command cmd = event.getGameEventCommand().getCommand();
-    AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd.getCommandArgs(), myStyle);
+    PlaceActionRecord cmd = (PlaceActionRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+    AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd, myStyle, 1);
     pop.showMessage(myLanguage);
   }
   public void loadBoard(GameEvent event) {

@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ooga.event.command.Command;
 import ooga.model.PlaceAction;
 import ooga.view.View;
 import ooga.view.button.CustomizedButton;
@@ -15,7 +16,7 @@ public class AvailablePlaceActionsPopUp extends ActionPopUp{
   private String myStyle;
   private String myLanguage;
 
-  public AvailablePlaceActionsPopUp(Object actions, String style) {
+  public AvailablePlaceActionsPopUp(Object actions, String style, int propertyIndex) {
     this.myActions = (List<PlaceAction>) actions;
     this.myStage = new Stage();
     this.myStyle = style;
@@ -44,6 +45,8 @@ public class AvailablePlaceActionsPopUp extends ActionPopUp{
     createScene();
   }
   private void makeMortgage() {}
-  private void viewInfo() {}
+  private void viewInfo() {
+
+  }
   private void buyHouse() {}
 }
