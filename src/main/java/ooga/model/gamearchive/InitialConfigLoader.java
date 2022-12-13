@@ -31,12 +31,15 @@ public class InitialConfigLoader {
   private final GameEventHandler gameEventHandler;
   private GameConfig gameConfig;
   private static final Logger LOG = LogManager.getLogger(InitialConfigLoader.class);
+  public static double DEFAULT_STARTING_MONEY = 1500.0;
 
   public InitialConfigLoader(Map<String, LinkedTreeMap> initialConfig, ResourceBundle resources, GameEventHandler gameEventHandler) {
     this.initialConfig = initialConfig;
     this.myResources = resources;
     this.gameEventHandler = gameEventHandler;
-    gameConfig = new GameConfig(getJailIndex(), (Boolean) initialConfig.get("meta").getOrDefault("color", true), false);
+    LinkedTreeMap meta = initialConfig.get("meta");
+    gameConfig = new GameConfig(getJailIndex(), (double) meta.getOrDefault("money", DEFAULT_STARTING_MONEY),
+        (boolean) meta.getOrDefault("color", true), (boolean) meta.getOrDefault("jail", true));
     loadData();
   }
 

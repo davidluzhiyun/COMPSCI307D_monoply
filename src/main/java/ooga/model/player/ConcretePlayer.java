@@ -54,6 +54,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     this.gameEventHandler = gameEventHandler;
     properties = new ArrayList<>();
     propertyIndices = new ArrayList<>();
+    isAlive = true;
   }
 
   /**

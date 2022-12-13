@@ -2,7 +2,10 @@
   "meta": {
     "players": 2,
     "rows": 5,
-    "columns": 5
+    "columns": 5,
+    "money": 1500,
+    "jail": true,
+    "color": true
   },
   "0": {
     "id": "Go",

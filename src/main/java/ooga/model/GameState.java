@@ -27,4 +27,5 @@ public enum GameState {
 
   LOAD_GAME_STATE,
   BANKRUPT,
+  GAME_END
 }
