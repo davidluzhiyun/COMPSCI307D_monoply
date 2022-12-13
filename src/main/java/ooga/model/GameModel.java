@@ -177,15 +177,14 @@ public class GameModel implements GameEventListener, ModelOutput {
     String pattern = "MODEL_TO_MODEL_(.+)";
     Pattern p = Pattern.compile(pattern);
     Matcher m = p.matcher(event.getGameEventType());
-    if(m.find())
+    if (m.find())
       publishGameData(GameState.valueOf(m.group(1)));
-    //Inside model
-
-    //TODO: Refactor the switch expression
-    String patternToken = ".+_TO_MODEL_.+";
-    boolean isModelEvent = Pattern.matches(patternToken, event.getGameEventType());
-    if (isModelEvent) {
-      eventTypeMap.get(event.getGameEventType()).accept(event);
+    else {
+      String patternToken = ".+_TO_MODEL_.+";
+      boolean isModelEvent = Pattern.matches(patternToken, event.getGameEventType());
+      if (isModelEvent) {
+        eventTypeMap.get(event.getGameEventType()).accept(event);
+      }
     }
   }
 
