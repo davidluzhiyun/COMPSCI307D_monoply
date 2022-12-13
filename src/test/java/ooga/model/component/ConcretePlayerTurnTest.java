@@ -125,7 +125,7 @@ class ConcretePlayerTurnTest {
    * Testing the basic functionality of bankruptcy
    */
   @Test
-  void bankruptcy(){
+  void bankruptcy() {
     p1.setMoney(-1);
     turn.nextTurn();
     assert (!p1.isAlive());
