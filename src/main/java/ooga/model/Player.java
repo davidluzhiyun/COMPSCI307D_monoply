@@ -12,6 +12,11 @@ import java.util.Collection;
  * @author David Lu decided to extend from ViewPlayer
  */
 public interface Player extends ControllerPlayer {
+
+  void mergePropertyIndices(Collection<Integer> newIndices);
+
+  void mergeProperties(Collection<Place> newPlaces);
+
   void purchase(Place place, int propertyIndex) throws IllegalStateException;
   void addOneDiceRoll();
   /**
@@ -85,5 +90,15 @@ public interface Player extends ControllerPlayer {
    */
   void payOutOfJail();
   Map<Integer, Predicate<Collection<Place>>> getColorSetCheckers();
-  Collection<Place> getProperties();
+  /**
+   * Check if the player is still alive
+   */
+  boolean isAlive();
+
+  /**
+   * @author David Lu
+   * Backrupt the current player to another player or the bank
+   * Assume null stands for the bank
+   */
+  void bankruptTo(Player player);
 }
