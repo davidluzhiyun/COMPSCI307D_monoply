@@ -31,9 +31,10 @@ public class MonopolyGameEditorScene extends MonopolyScene implements ParentView
   private MonopolyBoardInteractor interactor;
   private String myLanguage;
   private MenuBar myMenu;
+  private File initConfig;
 
   public MonopolyGameEditorScene(Stage primaryStage, GameEventHandler gameEventHandler,
-      String language, String style) {
+      String language, String style, File initConfig) {
     super(new AnchorPane());
     this.myLanguage = language;
     rootPane.getStylesheets().add(
@@ -41,17 +42,18 @@ public class MonopolyGameEditorScene extends MonopolyScene implements ParentView
             Main.class.getResource(String.format("/style/%s.css", style)).toString()));
     this.gameEventHandler = gameEventHandler;
     gameEventHandler.addEventListener(this);
+
+    this.initConfig = initConfig;
+
     initChildren();
     setChildrenLocation();
     addChildrenToRoot();
   }
 
   private void getInitBoardData() {
-    String test = "ooga/model/place/InitialConfig.json";
     GameEvent gameStart = GameEventHandler.makeGameEventwithCommand(
         GameEventType.VIEW_TO_CONTROLLER_LOAD_BOARD.name(),
-        new SelectBoardEditConfigCommand(
-            new File(this.getClass().getClassLoader().getResource(test).getFile())));
+        new SelectBoardEditConfigCommand(initConfig));
     gameEventHandler.publish(gameStart);
   }
 
