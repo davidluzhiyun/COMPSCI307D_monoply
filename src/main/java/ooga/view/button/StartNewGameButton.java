@@ -10,6 +10,5 @@ public class StartNewGameButton extends CustomizedButton{
     super(START_NEW_GAME_BUTTON_KEY, language);
     ResourceBundle id = ResourceBundle.getBundle(Main.ID_PROPERTIES);
     this.setId(id.getString(START_NEW_GAME_BUTTON_KEY));
-
   }
 }

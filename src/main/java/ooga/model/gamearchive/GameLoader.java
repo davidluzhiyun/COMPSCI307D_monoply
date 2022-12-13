@@ -2,9 +2,11 @@ package ooga.model.gamearchive;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import ooga.event.GameEventHandler;
 import ooga.model.ConcretePlayer;
 import ooga.model.Player;
 import ooga.model.place.Place;
+import ooga.model.player.BuildHouseCheckerNoColor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,15 +26,17 @@ import static ooga.model.place.AbstractPlace.DEFAULT_RESOURCE_FOLDER;
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
 
 public class GameLoader {
-  Map<String, Object> gameData;
-  Metadata metadata;
+  private Map<String, Object> gameData;
+  private Metadata metadata;
   private static final Logger LOG = LogManager.getLogger(GameLoader.class);
-  ResourceBundle myResources;
-  Map<String, Function6<String, String, Integer, Integer, Constructor<?>[], Place>> switchMap;
+  private ResourceBundle myResources;
+  private GameEventHandler gameEventHandler;
+  private Map<String, Function6<String, String, Integer, Integer, Constructor<?>[], GameEventHandler, Place>> switchMap;
 
-  public GameLoader(Map<String, Object> map, ResourceBundle resources) {
+  public GameLoader(Map<String, Object> map, ResourceBundle resources, GameEventHandler gameEventHandler) {
     this.gameData = map;
     this.myResources = resources;
+    this.gameEventHandler = gameEventHandler;
     Map<String, Double> meta = (Map<String, Double>) gameData.get("meta");
     metadata = new Metadata(meta.get("playerCount").intValue(), meta.get("currentPlayerId").intValue());
     setUpMap();
@@ -80,8 +84,8 @@ public class GameLoader {
     List<Player> players = new ArrayList<>();
     List<PlayerSaver> playersData = (List<PlayerSaver>) gameData.get("players");
     for (PlayerSaver singlePlayersData : playersData) {
-      Player newPlayer = new ConcretePlayer(singlePlayersData.id(), singlePlayersData.money(), singlePlayersData.currentPlaceIndex(), singlePlayersData.hasNextDice(), singlePlayersData.jail(),
-          singlePlayersData.dicesTotal(), singlePlayersData.properties());
+      Player newPlayer = new ConcretePlayer(singlePlayersData.id(), gameEventHandler, singlePlayersData.money(), singlePlayersData.currentPlaceIndex(), singlePlayersData.hasNextDice(), singlePlayersData.jail(),
+              singlePlayersData.dicesTotal(), singlePlayersData.properties(), new BuildHouseCheckerNoColor());
       players.add(newPlayer);
     }
     return players;
@@ -104,11 +108,12 @@ public class GameLoader {
    * "protected" is for test purpose
    */
   private void setUpMap() {
-    Function6<String, String, Integer, Integer, Constructor<?>[], Place> funcStreet = (type1, id1, ownerId, houseCount, constructor) -> (Place) constructor[1].newInstance(id1, ownerId, houseCount);
-    Function6<String, String, Integer, Integer, Constructor<?>[], Place> funcRailroad = (type1, id1, ownerId, houseCount, constructor) -> (Place) constructor[1].newInstance(id1, ownerId);
-    Function6<String, String, Integer, Integer, Constructor<?>[], Place> funcUtility = (type1, id1, ownerId, houseCount, constructor) -> (Place) constructor[1].newInstance(id1, ownerId);
-    Function6<String, String, Integer, Integer, Constructor<?>[], Place> funcGo = (type1, id1, ownerId, houseCount, constructor) -> (Place) constructor[0].newInstance(id1);
-    switchMap = Map.of("Street", funcStreet, "Railroad", funcRailroad, "Utility", funcUtility, "Go", funcGo);
+    Function6<String, String, Integer, Integer, Constructor<?>[], GameEventHandler, Place> funcStreet = (type1, id1, ownerId, houseCount, constructor, handler) -> (Place) constructor[1].newInstance(id1, ownerId, houseCount, handler);
+    Function6<String, String, Integer, Integer, Constructor<?>[], GameEventHandler, Place> funcRailroad = (type1, id1, ownerId, houseCount, constructor, handler) -> (Place) constructor[1].newInstance(id1, ownerId, handler);
+    Function6<String, String, Integer, Integer, Constructor<?>[], GameEventHandler, Place> funcUtility = (type1, id1, ownerId, houseCount, constructor, handler) -> (Place) constructor[1].newInstance(id1, ownerId, handler);
+    Function6<String, String, Integer, Integer, Constructor<?>[], GameEventHandler, Place> funcGo = (type1, id1, ownerId, houseCount, constructor, handler) -> (Place) constructor[0].newInstance(id1, handler);
+    Function6<String, String, Integer, Integer, Constructor<?>[], GameEventHandler, Place> funcFreeParking = (type1, id1, ownerId, houseCount, constructor, handler) -> (Place) constructor[0].newInstance(id1, handler);
+    switchMap = Map.of("Street", funcStreet, "Railroad", funcRailroad, "Utility", funcUtility, "Go", funcGo, "FreeParking", funcFreeParking);
   }
 
   protected Place createPlace(String type, String id, int ownerId, int houseCount) throws InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -122,7 +127,7 @@ public class GameLoader {
     }
     Constructor<?>[] makeNewPlace = placeClass.getConstructors();
     try {
-      newPlace = switchMap.get(type).apply(type, id, ownerId, houseCount, makeNewPlace);
+      newPlace = switchMap.get(type).apply(type, id, ownerId, houseCount, makeNewPlace, gameEventHandler);
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
       LOG.warn(e);
       throw new RuntimeException(e);
@@ -131,7 +136,7 @@ public class GameLoader {
   }
 
   @FunctionalInterface
-  interface Function6<One, Two, Three, Four, Constructor, Five> {
-    Five apply(One one, Two two, Three three, Four four, Constructor constructor) throws InvocationTargetException, InstantiationException, IllegalAccessException;
+  interface Function6<One, Two, Three, Four, Constructor, GameEventHandler, Five> {
+    Five apply(One one, Two two, Three three, Four four, Constructor constructor, GameEventHandler handler) throws InvocationTargetException, InstantiationException, IllegalAccessException;
   }
 }

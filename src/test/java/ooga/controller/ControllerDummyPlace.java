@@ -3,6 +3,7 @@ package ooga.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ooga.event.GameEventHandler;
 import ooga.model.*;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
@@ -64,6 +65,11 @@ public class ControllerDummyPlace implements Place {
   @Override
   public void landingEffect(Player player) {
 
+  }
+
+  @Override
+  public GameEventHandler getGameEventHandler() {
+    return null;
   }
 
   @Override

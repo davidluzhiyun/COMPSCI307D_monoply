@@ -1,6 +1,7 @@
 package ooga.model.place.Jail;
 
 import java.util.Collection;
+import ooga.event.GameEventHandler;
 import ooga.model.PlaceAction;
 import ooga.model.Player;
 import ooga.model.StationaryAction;
@@ -10,7 +11,7 @@ import ooga.model.place.Place;
 public class ConcreteJail extends AbstractPlace implements Jail {
 
   public ConcreteJail(String id) {
-    super(id);
+    super(id, new GameEventHandler());
   }
   /**
    * Overrides parent to output the StationaryActions for players in jail and just parking

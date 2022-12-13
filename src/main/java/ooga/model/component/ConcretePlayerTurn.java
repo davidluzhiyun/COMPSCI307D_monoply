@@ -19,14 +19,14 @@ public class ConcretePlayerTurn implements PlayerTurn {
   public static final String modelToken = "MODEL_TO_MODEL_";
 
 
-  public ConcretePlayerTurn(List<Player> players, List<Place> places, int currentPlayerIndex) {
+  public ConcretePlayerTurn(List<Player> players, List<Place> places, int currentPlayerIndex, GameEventHandler gameEventHandler) {
     this.players = players;
     this.places = places;
     currentPlayer = players.get(currentPlayerIndex);
     currentPlayer.newTurn();
     currentPlace = this.places.get(currentPlayer.getCurrentPlaceIndex());
     dice = new ConcreteDice();
-    gameEventHandler = new GameEventHandler();
+    this.gameEventHandler = gameEventHandler;
   }
 
   @Override
@@ -43,8 +43,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
     }
     if (currentPlayer.remainingJailTurns() == 0) {
       go(r1 + r2);
-    }
-    else {
+    } else {
       go(0);
     }
   }
@@ -94,6 +93,7 @@ public class ConcretePlayerTurn implements PlayerTurn {
 
   /**
    * For test purpose
+   *
    * @return
    */
   protected Place getCurrentPlace() {

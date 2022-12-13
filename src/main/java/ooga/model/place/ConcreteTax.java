@@ -7,8 +7,8 @@ import ooga.model.Player;
 import static ooga.model.component.ConcretePlayerTurn.modelToken;
 
 public class ConcreteTax extends AbstractPlace{
-  public ConcreteTax(String id) {
-    super(id);
+  public ConcreteTax(String id, GameEventHandler gameEventHandler) {
+    super(id, gameEventHandler);
   }
 
   @Override
@@ -20,7 +20,6 @@ public class ConcreteTax extends AbstractPlace{
   @Override
   public void landingEffect(Player player) {
     player.setMoney(player.getTotalMoney() - getMoney(player));
-    GameEventHandler gameEventHandler = new GameEventHandler();
-    gameEventHandler.publish(modelToken + GameState.PAY_TAX);
+    getGameEventHandler().publish(modelToken + GameState.PAY_TAX);
   }
 }
