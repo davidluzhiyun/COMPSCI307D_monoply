@@ -1,5 +1,6 @@
 package ooga.event.eventRunnable;
 
+import ooga.controller.GetPlaceActionsRecord;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventType;
@@ -30,7 +31,8 @@ public class GetPlaceActionsRunnableToView implements EventGenerator{
     public GameEvent processEvent() {
         List<PlaceAction> placeActions = (List<PlaceAction>) this.boardInfo.getBoard().get(this.boardInfo.getQueryIndex()).getPlaceActions();
         Collections.sort(placeActions);
-        GetPlaceActionsToViewCommand commandToView = new GetPlaceActionsToViewCommand(placeActions);
+        GetPlaceActionsRecord record = new GetPlaceActionsRecord(placeActions, this.boardInfo.getQueryIndex());
+        GetPlaceActionsToViewCommand commandToView = new GetPlaceActionsToViewCommand(record);
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_GET_PLACE_ACTIONS.name(), commandToView);
     }
 }
