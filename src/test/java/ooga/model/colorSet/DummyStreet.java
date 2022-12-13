@@ -13,7 +13,7 @@ public class DummyStreet extends DummyPlace implements Street {
   }
 
   @Override
-  public int getHousePrice() {
+  public double getHousePrice() {
     return 0;
   }
 

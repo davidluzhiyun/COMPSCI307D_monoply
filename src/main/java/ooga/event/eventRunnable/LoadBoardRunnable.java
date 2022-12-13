@@ -61,7 +61,8 @@ public class LoadBoardRunnable extends ParsingJsonRunnable implements EventGener
         String upperText = getString(fileName, upperTextRegex);
         String lowerText = getString(fileName, lowerTextRegex);
         boolean isCorner = (boolean) parsedJson.get(key).get("corner");
-        places.add(new ParsedProperty(id, type, name, colorId, image, upperText, lowerText, isCorner));
+        places.add(
+            new ParsedProperty(id, type, name, colorId, image, upperText, lowerText, isCorner));
       }
     }
     return new LoadBoardRecord(rows, cols, places);
