@@ -49,13 +49,6 @@ public class SceneManager implements GameEventListener {
     primaryStage.show();
   }
 
-  private void setMonopolyGamePlayScene() {
-    MonopolyGamePlayScene monopolyScene = new MonopolyGamePlayScene(primaryStage);
-    currentScene = new Scene(monopolyScene, primaryStage.getMaxWidth(),
-        primaryStage.getMaxHeight());
-    setPrimaryStageToCurrScene();
-  }
-
   private void setGameSelectionScene() {
     GameSelectionScene gameSelectionScene = new GameSelectionScene(myLanguage, primaryStage,
         gameEventHandler);
