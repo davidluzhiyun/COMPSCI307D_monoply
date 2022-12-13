@@ -105,6 +105,10 @@ public class ConcretePlayerTurn implements PlayerTurn {
         break;
       }
     }
+    if(!currentPlayer.isAlive()){
+      gameEventHandler.publish(modelToken+GameState.GAME_END);
+      return;
+    }
     currentPlayer.newTurn();
     currentPlace = places.get(currentPlayer.getCurrentPlaceIndex());
   }
