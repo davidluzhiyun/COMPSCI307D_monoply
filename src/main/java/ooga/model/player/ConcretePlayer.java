@@ -43,7 +43,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private boolean isAlive;
   private CanBuildOn houseChecker;
   private GameEventHandler gameEventHandler;
-  private AddOneDiceRollJail addOneDiceRollJail;
+  private AddOneDiceRoll addOneDiceRollJail;
 
   public ConcretePlayer(int playerId, GameEventHandler gameEventHandler, CanBuildOn houseChecker) {
     this.currentPlaceIndex = 0;
@@ -84,7 +84,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   }
 
   @Override
-  public void setAddOneDiceRollJail(AddOneDiceRollJail addOneDiceRollJail) {
+  public void setAddOneDiceRollJail(AddOneDiceRoll addOneDiceRollJail) {
     this.addOneDiceRollJail = addOneDiceRollJail;
   }
 
