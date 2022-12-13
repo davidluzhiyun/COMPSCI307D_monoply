@@ -59,7 +59,7 @@ the json files.
 ## Significant differences from Original Plan
 * A couple model APIs have changed to reduce redundancy and for easier game communication/implementation
 * The controller needs to store several variables in order to properly load, start, and run games
-
+* For the most part, the view is sending its events to the model directly versus to the controller which sends the corresponding event to the model.
 
 ## New Features HowTo
 How to add more features:
