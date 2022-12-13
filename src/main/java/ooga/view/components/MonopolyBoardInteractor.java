@@ -33,7 +33,7 @@ public class MonopolyBoardInteractor {
       return new MonopolyCardViewModel(property.type(), property.name(), property.color());
     } else {
       return new MonopolyImageCardViewModel(property.type(), property.name(), property.image(),
-          property.upperText(), property.lowerText());
+          property.upperText(), property.lowerText(), property.corner());
     }
   }
 }
