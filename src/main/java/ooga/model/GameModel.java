@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import com.google.gson.internal.LinkedTreeMap;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -16,6 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import java.util.stream.Collectors;
+
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
@@ -24,10 +26,7 @@ import ooga.event.command.ConcreteCommand;
 import ooga.event.command.Command;
 import ooga.model.component.ConcretePlayerTurn;
 import ooga.model.exception.BadDataException;
-import ooga.model.gamearchive.GameConfig;
-import ooga.model.gamearchive.GameLoader;
-import ooga.model.gamearchive.InitialConfigLoader;
-import ooga.model.gamearchive.Metadata;
+import ooga.model.gamearchive.*;
 import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
 import ooga.model.player.ControllerPlayer;
@@ -47,11 +46,13 @@ public class GameModel implements GameEventListener, ModelOutput {
   private int queryIndex;
   private final Map<String, Consumer<GameEvent>> eventTypeMap = new HashMap<>();
   private GameConfig gameConfig;
+  private GameSaver gameSaver;
 
   public GameModel(GameEventHandler gameEventHandler) {
     this.gameEventHandler = gameEventHandler;
     modelResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Model");
     setUpOnEventMap();
+    gameSaver = new GameSaver(this);
   }
 
   protected ResourceBundle getResources() {
@@ -125,7 +126,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     players = gameLoader.getPlayers();
     gameLoader.setUpPlayersPropertiesAndPropertyOwner(players, places);
     Metadata metaData = gameLoader.getMetadata();
-    turn = new ConcretePlayerTurn(players, places, metaData.currentPlayerId(), gameEventHandler);//TODO: set current player
+    turn = new ConcretePlayerTurn(players, places, metaData.currentPlayerId(), gameEventHandler);
     publishGameData(GameState.LOAD_BOARD);
   }
 
@@ -182,8 +183,7 @@ public class GameModel implements GameEventListener, ModelOutput {
         queryIndex = (int) event.getGameEventCommand().getCommand().getCommandArgs();
       }
       publishGameData(currrentGameState);
-    }
-    else {
+    } else {
       String patternToken = ".+_TO_MODEL_.+";
       boolean isModelEvent = Pattern.matches(patternToken, event.getGameEventType());
       if (isModelEvent) {
@@ -198,6 +198,13 @@ public class GameModel implements GameEventListener, ModelOutput {
       publishGameData(GameState.DICE_RESULT);
     });
     eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_GAME_START.name(), this::startGame);
+    eventTypeMap.put(GameEventType.VIEW_TO_MODEL_SAVE_GAME.name(), e -> {
+      try {
+        gameSaver.saveToJson();
+      } catch (IOException ex) {
+        throw new RuntimeException(ex);
+      }
+    });
     eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_CHECK_PLACE_ACTION.name(), this::sendPlaceActions);
     eventTypeMap.put(GameEventType.VIEW_TO_MODEL_PURCHASE_PROPERTY.name(), this::purchaseProperty);
     eventTypeMap.put(GameEventType.VIEW_TO_MODEL_GET_PLACE_ACTIONS.name(), this::sendPlaceActions);

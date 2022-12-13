@@ -84,27 +84,4 @@ public class BoardSetUpRunnable extends ParsingJsonRunnable implements EventGene
     }
     return false;
   }
-
-//  private static String getUpperText(ControllerPlace place) {
-//    for (String key : parsedJson.keySet()) {
-//      if (parsedJson.get(key).get("id") != null && parsedJson.get(key).get("id")
-//          .equals(place.getPlaceId())) {
-//        return (String) parsedJson.get(key).get("upperText");
-//      }
-//    }
-//    return null;
-//  }
-
-  /** Prints out the file read for testing purposes **/
-//    private static void printFile(File file) {
-//
-//        List<String> lines;
-//        try {
-//            lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
-//            lines.forEach(System.out::println);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
 }

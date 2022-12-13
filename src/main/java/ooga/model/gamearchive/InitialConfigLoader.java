@@ -115,7 +115,6 @@ public class InitialConfigLoader {
       j++;
     }
     if (jailIndex != jailIndexMeta) {
-      System.out.println(1);
       throw new BadDataException("Bad data file");
     }
     return jailIndex;
