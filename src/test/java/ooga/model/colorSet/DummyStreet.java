@@ -1,6 +1,6 @@
 package ooga.model.colorSet;
 
-import ooga.model.Player;
+import ooga.model.player.Player;
 import ooga.model.place.property.Street;
 
 import java.util.List;

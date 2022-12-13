@@ -11,6 +11,8 @@ import ooga.model.*;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
+import ooga.model.player.ControllerPlayer;
+import ooga.model.player.Player;
 
 import java.awt.*;
 import java.util.ArrayList;

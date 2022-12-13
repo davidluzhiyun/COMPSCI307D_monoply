@@ -2,6 +2,7 @@ package ooga.model.place;
 
 import ooga.event.GameEventHandler;
 import ooga.model.*;
+import ooga.model.player.Player;
 
 import java.util.Collection;
 

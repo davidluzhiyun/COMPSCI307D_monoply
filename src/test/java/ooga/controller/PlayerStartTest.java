@@ -7,15 +7,14 @@ import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.model.*;
-import ooga.model.exception.CannotBuildHouseException;
-import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.ControllerPlace;
 import ooga.model.player.BuildHouseCheckerNoColor;
+import ooga.model.player.ConcretePlayer;
+import ooga.model.player.ControllerPlayer;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class PlayerStartTest extends TestCase {

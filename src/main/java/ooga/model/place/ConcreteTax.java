@@ -2,7 +2,7 @@ package ooga.model.place;
 
 import ooga.event.GameEventHandler;
 import ooga.model.GameState;
-import ooga.model.Player;
+import ooga.model.player.Player;
 
 import static ooga.model.component.ConcretePlayerTurn.modelToken;
 

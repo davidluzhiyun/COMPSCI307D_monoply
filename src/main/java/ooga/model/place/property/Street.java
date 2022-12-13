@@ -1,7 +1,5 @@
 package ooga.model.place.property;
 
-import ooga.model.Player;
-
 import java.util.List;
 
 public interface Street extends Property {

@@ -1,18 +1,14 @@
 package ooga.model.gamearchive;
 
 import com.google.gson.internal.LinkedTreeMap;
-import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
-import ooga.event.GameEventType;
-import ooga.event.command.Command;
-import ooga.event.command.ConcreteCommand;
-import ooga.model.ConcretePlayer;
-import ooga.model.Player;
+import ooga.model.player.AddOneDiceRollJail;
+import ooga.model.player.ConcretePlayer;
+import ooga.model.player.Player;
 import ooga.model.colorSet.ConcreteColorSet;
 import ooga.model.exception.BadDataException;
 import ooga.model.exception.MonopolyException;
 import ooga.model.place.Place;
-import ooga.model.player.BuildHouseCheckerNoColor;
 import ooga.model.player.CanBuildOn;
 
 import java.lang.reflect.Constructor;
@@ -31,6 +27,7 @@ public class InitialConfigLoader {
   private final GameEventHandler gameEventHandler;
   private GameConfig gameConfig;
   private final String houseCheckerToken = "HouseBuildChecker";
+  private final String addOneDiceRollToken = "AddOneDiceRoll";
 
   public InitialConfigLoader(Map<String, LinkedTreeMap> initialConfig, ResourceBundle resources, GameEventHandler gameEventHandler) {
     this.initialConfig = initialConfig;
@@ -64,6 +61,7 @@ public class InitialConfigLoader {
     for (int i = 0; i < (int) (double) initialConfig.get("meta").get("players"); i++) {
       Player newPlayer = new ConcretePlayer(i, gameEventHandler, createHouseBuildChecker(gameConfig.colorCheck()));
       newPlayer.setColorSetCheckers(checkers);
+      newPlayer.setAddOneDiceRollJail(createAddOneDiceRollJail(gameConfig.ifGoJail(), newPlayer));
       players.add(newPlayer);
     }
   }
@@ -85,6 +83,25 @@ public class InitialConfigLoader {
       throw new RuntimeException(e);
     }
     return checker;
+  }
+
+  protected AddOneDiceRollJail createAddOneDiceRollJail(boolean goJailOrNot, Player player) {
+    AddOneDiceRollJail addOneDiceRollJail;
+    Class<?> addOneDiceRollJailClass;
+    try {
+      addOneDiceRollJailClass = Class.forName(PLAYER_PACKAGE_NAME + myResources.getString(addOneDiceRollToken + goJailOrNot));
+    } catch (ClassNotFoundException e) {
+//      LOG.warn(e);
+      throw new IllegalStateException("classNotFound", e);
+    }
+    Constructor<?>[] makeNewPlace = addOneDiceRollJailClass.getConstructors();
+    try {
+      addOneDiceRollJail = (AddOneDiceRollJail) makeNewPlace[0].newInstance(player);
+    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+//      LOG.warn(e);
+      throw new RuntimeException(e);
+    }
+    return addOneDiceRollJail;
   }
 
   public void check() throws MonopolyException {

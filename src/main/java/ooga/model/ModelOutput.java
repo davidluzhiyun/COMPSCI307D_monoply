@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.Collection;
 import java.util.List;
 import ooga.model.place.ControllerPlace;
+import ooga.model.player.ControllerPlayer;
 
 /**
  * The interface published to the controller

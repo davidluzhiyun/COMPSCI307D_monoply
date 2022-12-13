@@ -1,6 +1,6 @@
 package ooga.model.place.property;
 
-import ooga.model.Player;
+import ooga.model.player.Player;
 
 public interface Utility extends Property{
   /**

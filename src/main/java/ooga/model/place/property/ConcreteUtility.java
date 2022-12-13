@@ -1,9 +1,7 @@
 package ooga.model.place.property;
 
 import ooga.event.GameEventHandler;
-import ooga.model.Player;
-
-import java.util.List;
+import ooga.model.player.Player;
 
 public class ConcreteUtility extends AbstractProperty implements Utility {
   public final double rent;

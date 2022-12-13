@@ -1,10 +1,9 @@
 package ooga.model.place;
 
 import java.util.Collection;
-import ooga.model.ControllerPlayer;
+import ooga.model.player.ControllerPlayer;
 import ooga.model.PlaceAction;
-import ooga.model.Player;
-import ooga.model.StationaryAction;
+import ooga.model.player.Player;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
 

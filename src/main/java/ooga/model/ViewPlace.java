@@ -1,5 +1,7 @@
 package ooga.model;
 
+import ooga.model.player.ControllerPlayer;
+
 import java.util.Collection;
 
 /**

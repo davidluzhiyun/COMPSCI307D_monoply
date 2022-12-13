@@ -1,8 +1,6 @@
 package ooga.model;
 
 import java.awt.Point;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -13,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,21 +20,18 @@ import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.ConcreteCommand;
 import ooga.event.command.Command;
-import ooga.event.command.GameDataCommand;
-import ooga.model.colorSet.ConcreteColorSet;
 import ooga.model.component.ConcretePlayerTurn;
 import ooga.model.exception.BadDataException;
-import ooga.model.exception.MonopolyException;
 import ooga.model.gamearchive.GameConfig;
 import ooga.model.gamearchive.GameLoader;
 import ooga.model.gamearchive.InitialConfigLoader;
 import ooga.model.gamearchive.Metadata;
 import ooga.model.place.ControllerPlace;
 import ooga.model.place.Place;
+import ooga.model.player.ControllerPlayer;
+import ooga.model.player.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
 
 public class GameModel implements GameEventListener, ModelOutput {
   private ConcretePlayerTurn turn;

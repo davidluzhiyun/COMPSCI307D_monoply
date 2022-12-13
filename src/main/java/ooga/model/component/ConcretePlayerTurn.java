@@ -2,7 +2,7 @@ package ooga.model.component;
 
 import ooga.event.GameEventHandler;
 import ooga.model.GameState;
-import ooga.model.Player;
+import ooga.model.player.Player;
 import ooga.model.place.Place;
 
 import java.awt.*;

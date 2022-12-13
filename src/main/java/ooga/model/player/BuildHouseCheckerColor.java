@@ -1,6 +1,5 @@
 package ooga.model.player;
 
-import ooga.model.Player;
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.NoColorAttributeException;
 import ooga.model.place.Place;

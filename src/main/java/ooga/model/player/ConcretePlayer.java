@@ -1,4 +1,4 @@
-package ooga.model;
+package ooga.model.player;
 
 
 import static ooga.model.component.ConcretePlayerTurn.modelToken;
@@ -11,13 +11,13 @@ import java.util.function.Predicate;
 
 import ooga.event.GameEventHandler;
 
+import ooga.model.GameModel;
+import ooga.model.GameState;
 import ooga.model.place.Place;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ooga.model.player.BuildHouseCheckerColor;
-import ooga.model.player.CanBuildOn;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,6 +41,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private int jailIndex;
   private CanBuildOn houseChecker;
   private GameEventHandler gameEventHandler;
+  private AddOneDiceRollJail addOneDiceRollJail;
 
   public ConcretePlayer(int playerId, GameEventHandler gameEventHandler, CanBuildOn houseChecker) {
     this.currentPlaceIndex = 0;
@@ -56,7 +57,8 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   /**
    * Universal constructor for loading the game./
    */
-  public ConcretePlayer(int playerId, GameEventHandler gameEventHandler, double money, int currentPlaceIndex, boolean hasNextDice, int remainingJailTurns, int dicesTotal, Collection<Integer> propertyIndices, CanBuildOn houseChecker) {
+  public ConcretePlayer(int playerId, GameEventHandler gameEventHandler, double money, int currentPlaceIndex, boolean hasNextDice, int remainingJailTurns,
+                        int dicesTotal, Collection<Integer> propertyIndices, CanBuildOn houseChecker) {
     this.playerId = playerId;
     this.gameEventHandler = gameEventHandler;
     this.money = money;
@@ -66,6 +68,11 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     this.hasNextDice = hasNextDice;
     this.propertyIndices = propertyIndices;
     this.houseChecker = houseChecker;
+  }
+
+  @Override
+  public void setAddOneDiceRollJail(AddOneDiceRollJail addOneDiceRollJail) {
+    this.addOneDiceRollJail = addOneDiceRollJail;
   }
 
   @Override
@@ -152,6 +159,22 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     return properties;
   }
 
+  @Override
+  public void setHasNextDice(boolean hasNextDice) {
+    this.hasNextDice = hasNextDice;
+  }
+
+  @Override
+  public void setDicesTotal(int dicesTotal) {
+    this.dicesTotal = dicesTotal;
+    ;
+  }
+
+  @Override
+  public int getDicesTotal() {
+    return dicesTotal;
+  }
+
 
   /**
    * @param colorId color id
@@ -178,16 +201,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
    * Handles special effect of rolling doubles
    */
   public void addOneDiceRoll() {
-    if (remainingJailTurns > 0) {
-      getOutOfJail();
-      return;
-    }
-    hasNextDice = true;
-    dicesTotal++;
-    if (dicesTotal > MAX_ROWS_IN_A_ROW){
-      dicesTotal = 1;
-      setJail(DEFAULT_JAIL_TURNS);
-    }
+    addOneDiceRollJail.addOneDiceRRoll();
   }
 
   @Override

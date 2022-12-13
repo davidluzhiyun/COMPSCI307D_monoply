@@ -8,6 +8,7 @@ import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.model.*;
 import ooga.model.place.ControllerPlace;
+import ooga.model.player.ControllerPlayer;
 
 import java.awt.*;
 import java.util.ArrayList;

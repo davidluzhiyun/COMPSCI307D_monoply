@@ -7,10 +7,6 @@ import ooga.event.command.Command;
 import ooga.event.command.GetPlaceActionsToViewCommand;
 import ooga.model.ModelOutput;
 import ooga.model.PlaceAction;
-import ooga.model.Player;
-import ooga.model.ControllerPlayer;
-import ooga.model.place.ControllerPlace;
-import ooga.model.place.Place;
 
 import java.util.Collections;
 import java.util.List;
