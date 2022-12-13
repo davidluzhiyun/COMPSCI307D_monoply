@@ -18,6 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import ooga.Main;
 import ooga.Reflection;
+import ooga.controller.GetPlaceActionsRecord;
 import ooga.controller.InitBoardRecord;
 import ooga.controller.LoadBoardRecord;
 import ooga.controller.MoveRecord;
@@ -32,6 +33,7 @@ import ooga.event.command.EndTurnCommand;
 import ooga.event.command.GetPlayerCommand;
 import ooga.event.command.RollDiceCommand;
 import ooga.model.GameState;
+import ooga.model.StationaryAction;
 import ooga.view.pop_ups.AvailablePlaceActionsPopUp;
 import ooga.event.command.SelectBoardEditConfigCommand;
 import ooga.view.components.MonopolyBoardBuilder;
@@ -186,8 +188,8 @@ public class GameView extends View implements GameEventListener {
   }
 
   public void showPlaceActions(GameEvent event) {
-    PlaceActionRecord cmd = (PlaceActionRecord) event.getGameEventCommand().getCommand().getCommandArgs();
-    AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd, myStyle, 1);
+    GetPlaceActionsRecord cmd = (GetPlaceActionsRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+    AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd, myStyle, gameEventHandler);
     pop.showMessage(myLanguage);
   }
   public void loadBoard(GameEvent event) {
@@ -210,12 +212,21 @@ public class GameView extends View implements GameEventListener {
     MoveRecord cmd = (MoveRecord) event.getGameEventCommand().getCommand().getCommandArgs();
     System.out.println(cmd.placeIndex());
     monopolyBoardBuilder.movePlayer(cmd.placeIndex(), currentPlayer);
+    System.out.println(cmd.actions());
+    if(cmd.actions().contains(StationaryAction.BUY_PROPERTY)) {
+      BuyPropertyPopUp pop = new BuyPropertyPopUp(myStyle, cmd.placeIndex(), gameEventHandler);
+      pop.showMessage(myLanguage);
+    }
+    // use this to generate correct pop up
   }
 
   public void buyProperty(GameEvent event) {
     UpdateViewRecord command = (UpdateViewRecord) event.getGameEventCommand().getCommand().getCommandArgs();
     BuyPropertyPopUp pop = new BuyPropertyPopUp(myStyle, (int) command.placeIndex(), gameEventHandler);
     pop.showMessage(myLanguage);
+  }
+  public void viewPlaceInfo(GameEvent event) {
+
   }
   @Override
   public void onGameEvent(GameEvent event) {
