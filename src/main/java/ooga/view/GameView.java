@@ -21,6 +21,7 @@ import ooga.Reflection;
 import ooga.controller.InitBoardRecord;
 import ooga.controller.LoadBoardRecord;
 import ooga.controller.MoveRecord;
+import ooga.controller.UpdateViewRecord;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
@@ -34,6 +35,8 @@ import ooga.event.command.SelectBoardEditConfigCommand;
 import ooga.view.components.MonopolyBoardBuilder;
 import ooga.view.components.MonopolyBoardInteractor;
 import ooga.view.components.MonopolyBoardViewModel;
+import ooga.view.pop_ups.BuyHousePopUp;
+import ooga.view.pop_ups.BuyPropertyPopUp;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
 import ooga.view.pop_ups.RentPopUp;
@@ -203,6 +206,11 @@ public class GameView extends View implements GameEventListener {
     monopolyBoardBuilder.movePlayer(cmd.placeIndex(), currentPlayer);
   }
 
+  public void buyProperty(GameEvent event) {
+    UpdateViewRecord command = (UpdateViewRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+    BuyPropertyPopUp pop = new BuyPropertyPopUp(myStyle, (int) command.placeIndex(), gameEventHandler);
+    pop.showMessage(myLanguage);
+  }
   @Override
   public void onGameEvent(GameEvent event) {
     String patternToken = ".+_TO_VIEW_.+";

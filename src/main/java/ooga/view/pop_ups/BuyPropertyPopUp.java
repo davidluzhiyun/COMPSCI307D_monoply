@@ -8,6 +8,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ooga.Main;
+import ooga.event.GameEvent;
+import ooga.event.GameEventHandler;
+import ooga.event.GameEventType;
+import ooga.event.command.BuyPropertyCommand;
+import ooga.event.command.Command;
 import ooga.view.View;
 import ooga.view.button.CustomizedButton;
 import ooga.view.drop_down.CustomizedDropDown;
@@ -19,11 +24,15 @@ public class BuyPropertyPopUp extends ActionPopUp {
   private ResourceBundle idResources;
   private String myLanguage;
   private ResourceBundle myResources;
+  private int myProperty;
+  private GameEventHandler myEventHandler;
 
-  public BuyPropertyPopUp(String style) {
+  public BuyPropertyPopUp(String style, int propertyIndex, GameEventHandler handler) {
     this.myStage = new Stage();
     this.popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
     this.myStyle = style;
+    this.myProperty = propertyIndex;
+    this.myEventHandler = handler;
     this.idResources = ResourceBundle.getBundle(Main.ID_PROPERTIES);
   }
 
@@ -58,6 +67,8 @@ public class BuyPropertyPopUp extends ActionPopUp {
     myStage.show();
   }
   public void buyProperty() {
-    System.out.println("HELLO");
+    Command command = new BuyPropertyCommand(myProperty);
+    GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_MODEL_BUY_PROPERTY.name(), command);
+    myEventHandler.publish(event);
   }
 }
