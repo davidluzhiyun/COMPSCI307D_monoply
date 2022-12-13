@@ -1,6 +1,5 @@
 package ooga.view;
 
-import com.google.gson.internal.LinkedTreeMap;
 import java.awt.Point;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -24,7 +23,6 @@ import ooga.controller.LoadBoardRecord;
 import ooga.controller.MoveRecord;
 import ooga.controller.PayRentRecord;
 import ooga.controller.PlaceActionRecord;
-import ooga.controller.UpdateViewRecord;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
@@ -32,9 +30,10 @@ import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.event.command.EndTurnCommand;
 import ooga.event.command.RollDiceCommand;
-//import ooga.model.ControllerPlayer;
 import ooga.model.StationaryAction;
 import ooga.model.player.ControllerPlayer;
+import ooga.model.player.Player;
+import ooga.view.components.PlayerHUD;
 import ooga.view.pop_ups.AvailablePlaceActionsPopUp;
 import ooga.event.command.SelectBoardEditConfigCommand;
 import ooga.view.components.MonopolyBoardBuilder;
@@ -63,15 +62,15 @@ public class GameView extends View implements GameEventListener {
   private Region myBoard;
   private MonopolyBoardBuilder monopolyBoardBuilder;
   private MonopolyBoardInteractor interactor;
-  // TODO: get this instead from controller
   private int numPlayers;
   private int currentPlayer;
+  private PlayerHUD myHUD;
+  private BorderPane myBorderPane;
 
   public GameView(GameEventHandler gameEventHandler, String language, Stage stage) {
     this.myLanguage = language;
     this.myStage = stage;
     this.gameEventHandler = gameEventHandler;
-    //TODO: Change this to actually get the number of players
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + StartView.SCREEN);
 
     this.gameEventHandler = gameEventHandler;
@@ -82,9 +81,8 @@ public class GameView extends View implements GameEventListener {
     this.myStyle = style;
     Rectangle background = new Rectangle(width, height);
     background.setId(StartView.BACKGROUND);
-    BorderPane myBorderPane = new BorderPane(background);
+    this.myBorderPane = new BorderPane(background);
     myBorderPane.setTop(makeInteractiveObjects());
-
     // board setup
     setupBoard();
     myBorderPane.setCenter(myBoard);
@@ -199,6 +197,8 @@ public class GameView extends View implements GameEventListener {
     InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
     interactor.initializeNewBoard(command);
     this.currentPlayer = command.currentPlayerId();
+    myHUD = new PlayerHUD(myLanguage, command.players().get(currentPlayer));
+    myBorderPane.setRight(myHUD);
     this.numPlayers = command.players().size();
     myDicePopUp = new DiceRollPopUp(currentPlayer+1, myStyle);
     myDicePopUp.showMessage(myLanguage);
@@ -218,15 +218,20 @@ public class GameView extends View implements GameEventListener {
     PayRentRecord record = (PayRentRecord) event.getGameEventCommand().getCommand().getCommandArgs();
     RentPopUp pop = new RentPopUp(record.owner().getPlayerId());
     pop.showMessage(myLanguage);
+    updateHUD(record.player());
   }
   public void buyProperty(GameEvent event) {
     PlaceActionRecord command = (PlaceActionRecord) event.getGameEventCommand().getCommand().getCommandArgs();
-//    BuyPropertyPopUp pop = new BuyPropertyPopUp(myStyle, (int) command.placeIndex(), gameEventHandler);
-//    pop.showMessage(myLanguage);
+    updateHUD(command.player());
   }
   public void viewPlaceInfo(GameEvent event) {
     PropertyInfoPopUp pop = new PropertyInfoPopUp(event);
     pop.showMessage(myLanguage);
+  }
+  private void updateHUD(ControllerPlayer player){
+    myHUD = new PlayerHUD(myLanguage, player);
+    myBorderPane.getChildren().remove(myHUD);
+    myBorderPane.setRight(myHUD);
   }
   @Override
   public void onGameEvent(GameEvent event) {

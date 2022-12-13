@@ -17,10 +17,6 @@ public class PropertyInfoPopUp extends InformationPopUp {
   private Map<String, LinkedTreeMap> map;
   public PropertyInfoPopUp(GameEvent event) {
     this.map = (Map<String, LinkedTreeMap>) event.getGameEventCommand().getCommand().getCommandArgs();
-    for (String key : map.keySet()) {
-      System.out.println(key);
-      System.out.println(map.get(key));
-    }
   }
 
   @Override
@@ -30,11 +26,8 @@ public class PropertyInfoPopUp extends InformationPopUp {
       Label txt = new Label(String.format("%s: %s", key.toUpperCase(), map.get(key)));
       text.getChildren().add(txt);
     }
-//    ResourceBundle resources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + language);
     Alert alert = new Alert(AlertType.INFORMATION);
     alert.setGraphic(text);
-//    alert.setTitle(resources.getString(RENT_MESSAGE_TITLE));
-//    alert.setHeaderText(resources.getString(RENT_MESSAGE_HEADER));
     alert.showAndWait();
   }
 }
