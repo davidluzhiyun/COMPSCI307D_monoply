@@ -158,6 +158,10 @@ public class GameView extends View implements GameEventListener {
     myDicePopUp = new DiceRollPopUp(currentPlayer+1, myStyle);
     myDicePopUp.showMessage(myLanguage);
     myDicePopUp.makeButtonActive(this);
+    updateHUD(player);
+  }
+  public void justUpdateHUD(GameEvent event) {
+    updateHUD((ControllerPlayer) event.getGameEventCommand().getCommand().getCommandArgs());
   }
 
   /**
