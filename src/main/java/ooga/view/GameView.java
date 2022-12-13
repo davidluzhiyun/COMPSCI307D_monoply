@@ -1,5 +1,6 @@
 package ooga.view;
 
+import com.google.gson.internal.LinkedTreeMap;
 import java.awt.Point;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -30,8 +31,9 @@ import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.event.command.EndTurnCommand;
 import ooga.event.command.RollDiceCommand;
-import ooga.model.ControllerPlayer;
+//import ooga.model.ControllerPlayer;
 import ooga.model.StationaryAction;
+import ooga.model.player.ControllerPlayer;
 import ooga.view.pop_ups.AvailablePlaceActionsPopUp;
 import ooga.event.command.SelectBoardEditConfigCommand;
 import ooga.view.components.MonopolyBoardBuilder;
@@ -40,6 +42,7 @@ import ooga.view.components.MonopolyBoardViewModel;
 import ooga.view.pop_ups.BuyPropertyPopUp;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
+import ooga.view.pop_ups.PropertyInfoPopUp;
 import ooga.view.pop_ups.RollResultPopUp;
 
 public class GameView extends View implements GameEventListener {
@@ -217,6 +220,8 @@ public class GameView extends View implements GameEventListener {
     pop.showMessage(myLanguage);
   }
   public void viewPlaceInfo(GameEvent event) {
+    PropertyInfoPopUp pop = new PropertyInfoPopUp(event);
+    pop.showMessage(myLanguage);
 
   }
   @Override
