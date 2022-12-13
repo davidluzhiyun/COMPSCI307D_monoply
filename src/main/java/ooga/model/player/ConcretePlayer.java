@@ -106,8 +106,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   /**
    * @param jailTurns
    * @author Luyao Wang
-   * @author David Lu
-   * Sents the player to Jail for certain amount of turns
+   * @author David Lu Sents the player to Jail for certain amount of turns
    */
   @Override
   public void setJail(int jailTurns) {
@@ -137,8 +136,12 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   }
 
   /**
+<<<<<<< HEAD:src/main/java/ooga/model/player/ConcretePlayer.java
    * Check if player can build a house on a place
    * originally by
+=======
+   * Check if player can build a house on a place originally by
+>>>>>>> master:src/main/java/ooga/model/ConcretePlayer.java
    *
    * @param place a place to check
    * @return
@@ -194,8 +197,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   /**
    * @param colorId color id
    * @return true if player has monopoly over color set of given id
-   * @author David Lu
-   * Check if the player has monopoly over a color set
+   * @author David Lu Check if the player has monopoly over a color set
    */
   @Override
   public boolean checkMonopolyOver(int colorId) {
@@ -212,8 +214,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
 
   /**
    * @author Luyao Wang
-   * @author David Lu (modifier)
-   * Handles special effect of rolling doubles
+   * @author David Lu (modifier) Handles special effect of rolling doubles
    */
   public void addOneDiceRoll() {
     addOneDiceRollJail.addOneDiceRRoll();
@@ -296,8 +297,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   }
 
   /**
-   * @author David Lu
-   * Set the index of the jail the player should goto
+   * @author David Lu Set the index of the jail the player should goto
    */
   @Override
   public void setJailIndex(int jailIndex) {
@@ -314,8 +314,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   }
 
   /**
-   * @author David Lu
-   * Get the player out of jail for free;
+   * @author David Lu Get the player out of jail for free;
    */
   @Override
   public void getOutOfJail() {
@@ -324,8 +323,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   }
 
   /**
-   * @author David Lu
-   * Get the player out of jail for a fee
+   * @author David Lu Get the player out of jail for a fee
    */
   @Override
   public void payOutOfJail() {
@@ -339,9 +337,8 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   }
 
   /**
-   * @author David Lu
-   * Backrupt the current player to another player or the bank
-   * Assume null stands for the bank
+   * @author David Lu Backrupt the current player to another player or the bank Assume null stands
+   * for the bank
    */
   @Override
   public void bankruptTo(Player player) {

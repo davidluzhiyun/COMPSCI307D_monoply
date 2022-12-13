@@ -3,6 +3,7 @@ package ooga.view.scene;
 import static ooga.event.GameEventType.VIEW_LAUNCH_GAME_SCREEN;
 import static ooga.event.GameEventType.VIEW_POST_ACTION_DRAW_BOARD;
 
+import java.io.File;
 import java.util.ResourceBundle;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -10,6 +11,8 @@ import ooga.Main;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
+import ooga.event.command.Command;
+import ooga.event.command.ConcreteCommand;
 import ooga.view.GameView;
 //import ooga.view.MainView;
 
@@ -53,15 +56,6 @@ public class SceneManager implements GameEventListener {
     setPrimaryStageToCurrScene();
   }
 
-  private void setMonopolyGameEditorScene() {
-    MonopolyGameEditorScene monopolyGameEditorScene = new MonopolyGameEditorScene(primaryStage,
-        gameEventHandler, myLanguage, myStyle);
-    currentScene = new Scene(monopolyGameEditorScene.getRootPane(), primaryStage.getMaxWidth(),
-        primaryStage.getMaxHeight());
-    setPrimaryStageToCurrScene();
-    gameEventHandler.publish(VIEW_POST_ACTION_DRAW_BOARD);
-  }
-
   private void setGameSelectionScene() {
     GameSelectionScene gameSelectionScene = new GameSelectionScene(myLanguage, primaryStage,
         gameEventHandler);
@@ -72,9 +66,9 @@ public class SceneManager implements GameEventListener {
     gameSelectionScene.placeButtons(primaryStage.getMaxWidth(), primaryStage.getMaxHeight());
   }
 
-  private void setBoardEditorScene() {
+  private void setBoardEditorScene(File initConfig) {
     MonopolyGameEditorScene monopolyGameEditorScene = new MonopolyGameEditorScene(primaryStage,
-        gameEventHandler, myLanguage, myStyle);
+        gameEventHandler, myLanguage, myStyle, initConfig);
     currentScene = new Scene(monopolyGameEditorScene.getRootPane(), primaryStage.getMaxWidth(),
         primaryStage.getMaxHeight());
     setPrimaryStageToCurrScene();
@@ -104,10 +98,8 @@ public class SceneManager implements GameEventListener {
       setGameSelectionScene();
     }
     if (event.getGameEventType().equals("VIEW_LAUNCH_BOARD_EDITOR")) {
-      setBoardEditorScene();
-    }
-    if (eventType.equals("VIEW_LAUNCH_GAME_EDITOR_SCREEN")) {
-      setMonopolyGameEditorScene();
+      Command cmd = event.getGameEventCommand().getCommand();
+      setBoardEditorScene((File) cmd.getCommandArgs());
     }
   }
 
