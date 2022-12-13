@@ -86,7 +86,6 @@ public class GameView extends View implements GameEventListener {
     styleScene(myScene, myStyle);
     myStage.setScene(myScene);
     myStage.show();
-    chooseGamePieces();
     return myScene;
   }
 
@@ -190,7 +189,6 @@ public class GameView extends View implements GameEventListener {
   public void drawBoard(GameEvent event) {monopolyBoardBuilder.drawPostProcessing();}
 
   public void startGame(GameEvent event){
-    System.out.println("start game");
     InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
     interactor.initializeNewBoard(command);
     this.currentPlayer = command.currentPlayerId();
@@ -201,63 +199,24 @@ public class GameView extends View implements GameEventListener {
   }
   public void movePlayer(GameEvent event) {
     MoveRecord cmd = (MoveRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+    System.out.println(cmd.placeIndex());
     monopolyBoardBuilder.movePlayer(cmd.placeIndex(), currentPlayer);
   }
 
   @Override
   public void onGameEvent(GameEvent event) {
     String patternToken = ".+_TO_VIEW_.+";
-    System.out.println("bitch i s2g.");
-    System.out.println(event.getGameEventType());
     boolean isViewEvent = Pattern.matches(patternToken, event.getGameEventType());
-    String pattern = "VIEW_POST_ACTION_DRAW_BOARD";
-    String pattern2 = "CONTROLLER_TO_VIEW_START_GAME";
-    if (isViewEvent | Pattern.matches(pattern, event.getGameEventType()) | Pattern.matches(pattern2, event.getGameEventType())) {
+    String pattern = GameEventType.VIEW_POST_ACTION_DRAW_BOARD.name();
+    if (isViewEvent | Pattern.matches(pattern, event.getGameEventType())) {
       Reflection reflect = new Reflection();
       ResourceBundle reflectResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + "GameViewReflection");
       String method = reflectResources.getString(event.getGameEventType());
-      System.out.println(method);
       try {
         reflect.makeMethod(method, this.getClass(), new Class[]{GameEvent.class}).invoke(this, event);
       } catch (IllegalAccessException | InvocationTargetException e) {
         throw new RuntimeException(e);
       }
     }
-
-    // create the method
-//    switch (event.getGameEventType()) {
-//      case "CONTROLLER_TO_VIEW_PLAYER_START" -> {
-//        Command cmd = event.getGameEventCommand().getCommand();
-//        startPlayerTurn((int) cmd.getCommandArgs());
-//      }
-//      case "CONTROLLER_TO_VIEW_ROLL_DICE" -> {
-//        Command cmd = event.getGameEventCommand().getCommand();
-//        showDiceResult((Point) cmd.getCommandArgs());
-//      }
-//      case "CONTROLLER_TO_VIEW_GET_PLACE_ACTIONS" -> {
-//        Command cmd = event.getGameEventCommand().getCommand();
-//        AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd.getCommandArgs(), myStyle);
-//        pop.showMessage(myLanguage);
-//      }
-//      case "CONTROLLER_TO_VIEW_LOAD_BOARD" -> {
-//        LoadBoardRecord command = (LoadBoardRecord) event.getGameEventCommand().getCommand()
-//            .getCommandArgs();
-//        interactor.initialize(command);
-//      }
-//      case "VIEW_POST_ACTION_DRAW_BOARD" -> monopolyBoardBuilder.drawPostProcessing();
-//      case "CONTROLLER_TO_VIEW_MOVE" -> {
-//        MoveRecord cmd = (MoveRecord) event.getGameEventCommand().getCommand().getCommandArgs();
-//        monopolyBoardBuilder.movePlayer(cmd.placeIndex(), currentPlayer);
-//      }
-//      case "CONTROLLER_TO_VIEW_START_GAME" -> {
-//        System.out.println("hello...");
-//        InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
-//        interactor.initializeNewBoard(command);
-//        this.currentPlayer = command.currentPlayerId();
-//        System.out.println(currentPlayer);
-//        chooseGamePieces();
-//      }
-
   }
-
 }
