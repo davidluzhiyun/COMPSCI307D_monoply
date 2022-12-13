@@ -1,7 +1,7 @@
 package ooga.controller;
 
-import ooga.model.ControllerPlayer;
 import ooga.model.place.ControllerPlace;
+import ooga.model.player.ControllerPlayer;
 
 import java.util.List;
 
