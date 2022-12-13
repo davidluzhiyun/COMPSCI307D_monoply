@@ -13,6 +13,7 @@ import ooga.model.GameState;
 import ooga.model.ModelOutput;
 import ooga.model.place.ControllerPlace;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -24,6 +25,8 @@ public class Controller implements GameEventListener {
     private static RowsColsRecord dimension;
 
     private static GameEventHandler gameEventHandler;
+
+    private static File configFile;
 
     private HashMap<String, Runnable> eventMap;
 
@@ -49,6 +52,8 @@ public class Controller implements GameEventListener {
                     if (boardInfo.getGameState().equals(GameState.GAME_SET_UP)) {
                         this.places = BoardSetUpRunnable.getParsedProperty(boardInfo);
                     }
+                } else if (event.getGameEventType().equals(GameEventType.VIEW_TO_CONTROLLER_GAME_START.name())) {
+                    configFile = (File) event.getGameEventCommand().getCommand().getCommandArgs();
                 }
                 EventGenerator eventGenerator = getEventRunnable(event.getGameEventType(), event.getGameEventCommand().getCommand());
                 GameEvent toPublish = eventGenerator.processEvent();
@@ -67,6 +72,10 @@ public class Controller implements GameEventListener {
 
     public static RowsColsRecord getDimension() {
         return dimension;
+    }
+
+    public static File getConfigFile() {
+        return configFile;
     }
 
     private EventGenerator getEventRunnable(String eventName, Command command) {

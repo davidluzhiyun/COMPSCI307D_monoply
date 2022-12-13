@@ -27,17 +27,17 @@ class MonopolyImageCardBuilderTest extends DukeApplicationTest {
 
   @Override
   public void start(Stage stage) throws InterruptedException {
-    model = new MonopolyImageCardViewModel(100, 300);
-    model.setUpperText("hosung");
-    model.setImageString("railroad.png");
-    model.setRotation(0.0);
-    model.setBottomText("kim");
-    MonopolyImageCardBuilder builder = new MonopolyImageCardBuilder(model);
-    this.card = (Pane) builder.build();
-    Group root = new Group(card);
-    Scene scene = new Scene(root, 1080, 720);
-    stage.setScene(scene);
-    stage.show();
+//    model = new MonopolyImageCardViewModel(100, 300);
+//    model.setUpperText("hosung");
+//    model.setImageString("railroad.png");
+//    model.setRotation(0.0);
+//    model.setBottomText("kim");
+//    MonopolyImageCardBuilder builder = new MonopolyImageCardBuilder(model);
+//    this.card = (Pane) builder.build();
+//    Group root = new Group(card);
+//    Scene scene = new Scene(root, 1080, 720);
+//    stage.setScene(scene);
+//    stage.show();
   }
 
   @Test

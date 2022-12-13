@@ -46,7 +46,6 @@ public class ControllerDummyPlace implements Place {
         // do nothing
     }
 
-
   @Override
   public double getPurchasePrice() throws IllegalStateException {
     return 0;
