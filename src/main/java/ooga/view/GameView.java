@@ -1,5 +1,6 @@
 package ooga.view;
 
+import com.google.gson.internal.LinkedTreeMap;
 import java.awt.Point;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -7,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -18,25 +18,31 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import ooga.Main;
 import ooga.Reflection;
+import ooga.controller.GetPlaceActionsRecord;
 import ooga.controller.InitBoardRecord;
 import ooga.controller.LoadBoardRecord;
 import ooga.controller.MoveRecord;
+import ooga.controller.PlaceActionRecord;
+import ooga.controller.UpdateViewRecord;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
-import ooga.event.command.GetPlayerCommand;
+import ooga.event.command.EndTurnCommand;
 import ooga.event.command.RollDiceCommand;
-import ooga.model.GameState;
+//import ooga.model.ControllerPlayer;
+import ooga.model.StationaryAction;
+import ooga.model.player.ControllerPlayer;
 import ooga.view.pop_ups.AvailablePlaceActionsPopUp;
 import ooga.event.command.SelectBoardEditConfigCommand;
 import ooga.view.components.MonopolyBoardBuilder;
 import ooga.view.components.MonopolyBoardInteractor;
 import ooga.view.components.MonopolyBoardViewModel;
+import ooga.view.pop_ups.BuyPropertyPopUp;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
-import ooga.view.pop_ups.RentPopUp;
+import ooga.view.pop_ups.PropertyInfoPopUp;
 import ooga.view.pop_ups.RollResultPopUp;
 
 public class GameView extends View implements GameEventListener {
@@ -56,7 +62,7 @@ public class GameView extends View implements GameEventListener {
   private MonopolyBoardBuilder monopolyBoardBuilder;
   private MonopolyBoardInteractor interactor;
   // TODO: get this instead from controller
-  private final int numPlayers;
+  private int numPlayers;
   private int currentPlayer;
 
   public GameView(GameEventHandler gameEventHandler, String language, Stage stage) {
@@ -64,7 +70,6 @@ public class GameView extends View implements GameEventListener {
     this.myStage = stage;
     this.gameEventHandler = gameEventHandler;
     //TODO: Change this to actually get the number of players
-    this.numPlayers = 4;
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + StartView.SCREEN);
 
     this.gameEventHandler = gameEventHandler;
@@ -135,12 +140,12 @@ public class GameView extends View implements GameEventListener {
    * TODO: change this to actually implement the savegame feature.
    */
   public void saveGame() {
-//    GamePiecePopUp popUp = new GamePiecePopUp(1, myStyle, myBoard);
-//    popUp.showMessage(myLanguage);
-    RentPopUp pop = new RentPopUp(20);
-    pop.showMessage(myLanguage);
   }
-  public void endTurn() {}
+  public void endTurn() {
+    Command command = new EndTurnCommand();
+    GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_MODEL_END_TURN.name(), command);
+    gameEventHandler.publish(event);
+  }
 
   /**
    * Takes in the current player index, must increment this for display of players 1-4 rather than
@@ -148,9 +153,9 @@ public class GameView extends View implements GameEventListener {
    */
   private void startPlayerTurn(GameEvent event) {
     Command cmd = event.getGameEventCommand().getCommand();
-    int player = (int) cmd.getCommandArgs();
-    this.currentPlayer = player+1;
-    myDicePopUp = new DiceRollPopUp(player+1, myStyle);
+    ControllerPlayer player = (ControllerPlayer) cmd.getCommandArgs();
+    this.currentPlayer = player.getPlayerId();
+    myDicePopUp = new DiceRollPopUp(currentPlayer+1, myStyle);
     myDicePopUp.showMessage(myLanguage);
     myDicePopUp.makeButtonActive(this);
   }
@@ -177,8 +182,8 @@ public class GameView extends View implements GameEventListener {
   }
 
   public void showPlaceActions(GameEvent event) {
-    Command cmd = event.getGameEventCommand().getCommand();
-    AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd.getCommandArgs(), myStyle);
+    GetPlaceActionsRecord cmd = (GetPlaceActionsRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+    AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd, myStyle, gameEventHandler);
     pop.showMessage(myLanguage);
   }
   public void loadBoard(GameEvent event) {
@@ -192,6 +197,7 @@ public class GameView extends View implements GameEventListener {
     InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
     interactor.initializeNewBoard(command);
     this.currentPlayer = command.currentPlayerId();
+    this.numPlayers = command.players().size();
     myDicePopUp = new DiceRollPopUp(currentPlayer+1, myStyle);
     myDicePopUp.showMessage(myLanguage);
     myDicePopUp.makeButtonActive(this);
@@ -201,8 +207,23 @@ public class GameView extends View implements GameEventListener {
     MoveRecord cmd = (MoveRecord) event.getGameEventCommand().getCommand().getCommandArgs();
     System.out.println(cmd.placeIndex());
     monopolyBoardBuilder.movePlayer(cmd.placeIndex(), currentPlayer);
+    System.out.println(cmd.actions());
+    if(cmd.actions().contains(StationaryAction.BUY_PROPERTY)) {
+      BuyPropertyPopUp pop = new BuyPropertyPopUp(myStyle, cmd.placeIndex(), gameEventHandler);
+      pop.showMessage(myLanguage);
+    }
   }
 
+  public void buyProperty(GameEvent event) {
+    PlaceActionRecord command = (PlaceActionRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+    BuyPropertyPopUp pop = new BuyPropertyPopUp(myStyle, (int) command.placeIndex(), gameEventHandler);
+    pop.showMessage(myLanguage);
+  }
+  public void viewPlaceInfo(GameEvent event) {
+    PropertyInfoPopUp pop = new PropertyInfoPopUp(event);
+    pop.showMessage(myLanguage);
+
+  }
   @Override
   public void onGameEvent(GameEvent event) {
     String patternToken = ".+_TO_VIEW_.+";
