@@ -1,17 +1,20 @@
 package ooga.view.components;
 
-public class MonopolyImageCardViewModel {
+public class MonopolyImageCardViewModel extends MonopolyCardViewModel {
 
-  private double width;
-  private double height;
   private double rotation;
-  private String upperText;
-  private String bottomText;
+  private String upperText = "UpperText";
+  private String bottomText = "BottomText";
   private String imageString;
+  private boolean isCorner = true;
 
-  public MonopolyImageCardViewModel(double width, double height) {
-    this.width = width;
-    this.height = height;
+  public MonopolyImageCardViewModel(String type, String name, String image, String upperText,
+      String lowerText, boolean corner) {
+    super(type, name);
+    this.imageString = image;
+    this.upperText = upperText;
+    this.bottomText = lowerText;
+    this.isCorner = corner;
   }
 
   public String getImageString() {
@@ -20,23 +23,6 @@ public class MonopolyImageCardViewModel {
 
   public void setImageString(String imageString) {
     this.imageString = imageString;
-  }
-
-
-  public double getWidth() {
-    return width;
-  }
-
-  public void setWidth(double width) {
-    this.width = width;
-  }
-
-  public double getHeight() {
-    return height;
-  }
-
-  public void setHeight(double height) {
-    this.height = height;
   }
 
   public double getRotation() {
@@ -61,5 +47,13 @@ public class MonopolyImageCardViewModel {
 
   public void setBottomText(String bottomText) {
     this.bottomText = bottomText;
+  }
+
+  public boolean isCorner() {
+    return isCorner;
+  }
+
+  public void setCorner(boolean corner) {
+    isCorner = corner;
   }
 }

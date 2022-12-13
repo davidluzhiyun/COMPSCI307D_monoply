@@ -1,6 +1,7 @@
 package ooga.view.components;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -8,9 +9,8 @@ import javafx.scene.text.Text;
 public class ResizableTextLabel {
 
   private final double defaultFontSize = 13;
-  private final double MAX_TEXT_WIDTH = 300;
   private final Font defaultFont = Font.font(defaultFontSize);
-
+  private double MAX_TEXT_WIDTH = 50;
   private final Label label;
   private String text;
 
@@ -19,7 +19,15 @@ public class ResizableTextLabel {
     this.text = text;
   }
 
+  public ResizableTextLabel(String text, double width) {
+    label = new Label();
+    label.setTextOverrun(OverrunStyle.CLIP);
+    this.text = text;
+    this.MAX_TEXT_WIDTH = width;
+  }
+
   public Label build() {
+    label.setText(text);
     final TextField tf = new TextField(text);
     label.setFont(defaultFont);
     label.textProperty().addListener((observable, oldValue, newValue) -> {

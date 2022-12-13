@@ -1,13 +1,13 @@
 {
   "meta": {
     "players": 4,
-    "rows": 3,
-    "columns": 3
+    "rows": 5,
+    "columns": 5
   },
   "0": {
     "id": "Go",
     "type": "Go",
-    "image": "gotojail.jpg",
+    "image": "go.png",
     "corner": true
   },
   "1": {
@@ -16,9 +16,9 @@
     "corner": false
   },
   "2": {
-    "id": "Go",
-    "type": "Go",
-    "image": "freeparking.jpg",
+    "id": "North Railroad",
+    "type": "Railroad",
+    "image": "railroad.png",
     "corner": false
   },
   "3": {
@@ -27,10 +27,10 @@
     "corner": false
   },
   "4": {
-    "id": "Go",
-    "type": "Go",
-    "image": "chancered.png",
-    "corner": false
+    "id": "FreeParking",
+    "type": "FreeParking",
+    "image": "freeparking.png",
+    "corner": true
   },
   "5": {
     "id": "New York1",
@@ -38,14 +38,58 @@
     "corner": false
   },
   "6": {
-    "id": "Go",
-    "type": "Go",
-    "image": "injail.jpg",
-    "corner": true
+    "id": "North Railroad",
+    "type": "Railroad",
+    "image": "railroad.png",
+    "corner": false
   },
   "7": {
     "id": "New York1",
     "type": "Street",
+    "corner": false
+  },
+  "8": {
+    "id": "FreeParking",
+    "type": "FreeParking",
+    "image": "freeparking.png",
     "corner": true
+  },
+  "9": {
+    "id": "Shanghai1",
+    "type": "Street",
+    "corner": false
+  },
+  "10": {
+    "id": "North Railroad",
+    "type": "Railroad",
+    "image": "railroad.png",
+    "corner": false
+  },
+  "11": {
+    "id": "Shanghai1",
+    "type": "Street",
+    "corner": false
+  },
+  "12": {
+    "id": "FreeParking",
+    "type": "FreeParking",
+    "image": "freeparking.png",
+    "corner": true
+  },
+  "13": {
+    "id": "New York1",
+    "type": "Street",
+    "corner": true
+  },
+  "14": {
+    "id": "North Railroad",
+    "type": "Railroad",
+    "image": "railroad.png",
+    "corner": false
+  },
+  "15": {
+    "id": "New York1",
+    "type": "Street",
+    "corner": false
   }
 }
