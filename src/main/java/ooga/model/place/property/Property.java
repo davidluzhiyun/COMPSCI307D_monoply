@@ -1,9 +1,7 @@
 package ooga.model.place.property;
 
-import ooga.model.Player;
+import ooga.model.player.Player;
 import ooga.model.place.Place;
-
-import java.util.List;
 
 /**
  * This interface is a shared interface of properties, including railroad, street, and utility.

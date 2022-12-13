@@ -1,4 +1,4 @@
-package ooga.model;
+package ooga.model.player;
 
 import java.util.Map;
 import java.util.function.Predicate;
@@ -33,7 +33,7 @@ public interface Player extends ControllerPlayer {
    * This method is meant for load the game from .json file.
    * Player's money is not changed by set the properties.
    * You should use void purchase(Place place, int propertyIndex) for purchasing properties in the game.
-   * @param propertyIndices
+   * @param properties
    */
   void setProperties(Collection<Place> properties);
 
@@ -90,11 +90,11 @@ public interface Player extends ControllerPlayer {
    */
   void payOutOfJail();
   Map<Integer, Predicate<Collection<Place>>> getColorSetCheckers();
-  /**
-   * Check if the player is still alive
-   */
-  boolean isAlive();
-
+  Collection<Place> getProperties();
+  void setHasNextDice(boolean hasNextDice);
+  void setDicesTotal(int dicesTotal);
+  int getDicesTotal();
+  void setAddOneDiceRollJail(AddOneDiceRoll addOneDiceRollJail);
   /**
    * @author David Lu
    * Backrupt the current player to another player or the bank

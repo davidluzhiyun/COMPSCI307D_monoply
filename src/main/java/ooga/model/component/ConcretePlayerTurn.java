@@ -2,7 +2,7 @@ package ooga.model.component;
 
 import ooga.event.GameEventHandler;
 import ooga.model.GameState;
-import ooga.model.Player;
+import ooga.model.player.Player;
 import ooga.model.place.Place;
 
 import java.awt.*;
@@ -104,6 +104,10 @@ public class ConcretePlayerTurn implements PlayerTurn {
       if (currentPlayer.isAlive()){
         break;
       }
+    }
+    if(!currentPlayer.isAlive()){
+      gameEventHandler.publish(modelToken+GameState.GAME_END);
+      return;
     }
     currentPlayer.newTurn();
     currentPlace = places.get(currentPlayer.getCurrentPlaceIndex());

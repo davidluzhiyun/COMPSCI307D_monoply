@@ -1,14 +1,10 @@
 package ooga.event.eventRunnable;
 
-import ooga.controller.UpdateViewRecord;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
 import ooga.event.command.DiceResultCommand;
-import ooga.event.command.UpdateViewCommand;
-import ooga.model.ControllerPlayer;
-import ooga.model.GameState;
 import ooga.model.ModelOutput;
 
 /**

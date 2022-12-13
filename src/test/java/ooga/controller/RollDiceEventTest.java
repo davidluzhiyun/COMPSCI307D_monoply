@@ -6,7 +6,7 @@ import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
 import ooga.event.GameEventType;
 import ooga.event.command.Command;
-import ooga.model.ControllerPlayer;
+import ooga.model.player.ControllerPlayer;
 import ooga.model.GameState;
 import ooga.model.ModelOutput;
 import ooga.model.StationaryAction;

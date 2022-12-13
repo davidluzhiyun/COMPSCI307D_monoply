@@ -1,4 +1,4 @@
-package ooga.model;
+package ooga.model.player;
 
 import java.util.Collection;
 
@@ -14,4 +14,8 @@ public interface ControllerPlayer {
   boolean hasNextDice();
   int getDice();
   int getOwnedRailroadCount();
+  /**
+   * Check if the player is still alive
+   */
+  boolean isAlive();
 }

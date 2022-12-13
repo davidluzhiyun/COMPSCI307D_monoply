@@ -2,11 +2,9 @@ package ooga.model.place.Jail;
 
 import java.util.Collection;
 import ooga.event.GameEventHandler;
-import ooga.model.PlaceAction;
-import ooga.model.Player;
+import ooga.model.player.Player;
 import ooga.model.StationaryAction;
 import ooga.model.place.AbstractPlace;
-import ooga.model.place.Place;
 
 public class ConcreteJail extends AbstractPlace implements Jail {
 

@@ -1,4 +1,4 @@
-package ooga.model;
+package ooga.model.player;
 
 
 import static ooga.model.component.ConcretePlayerTurn.modelToken;
@@ -11,6 +11,8 @@ import java.util.function.Predicate;
 
 import ooga.event.GameEventHandler;
 
+import ooga.model.GameModel;
+import ooga.model.GameState;
 import ooga.model.place.Place;
 
 import java.util.ArrayList;
@@ -36,11 +38,12 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private Map<Integer, Predicate<Collection<Place>>> colorSetCheckers;
   private int diceResult;
   private int ownedRailroadCount;
-  private static final Logger LOG = LogManager.getLogger(GameModel.class);
+  private static final Logger LOG = LogManager.getLogger(ConcretePlayer.class);
   private int jailIndex;
   private boolean isAlive;
   private CanBuildOn houseChecker;
   private GameEventHandler gameEventHandler;
+  private AddOneDiceRoll addOneDiceRollJail;
 
   public ConcretePlayer(int playerId, GameEventHandler gameEventHandler, CanBuildOn houseChecker) {
     this.currentPlaceIndex = 0;
@@ -51,14 +54,14 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     this.gameEventHandler = gameEventHandler;
     properties = new ArrayList<>();
     propertyIndices = new ArrayList<>();
+    isAlive = true;
   }
 
   /**
    * Universal constructor for loading the game./
    */
-  public ConcretePlayer(int playerId, GameEventHandler gameEventHandler, double money,
-      int currentPlaceIndex, boolean hasNextDice, int remainingJailTurns, int dicesTotal,
-      Collection<Integer> propertyIndices, CanBuildOn houseChecker) {
+  public ConcretePlayer(int playerId, GameEventHandler gameEventHandler, double money, int currentPlaceIndex, boolean hasNextDice, int remainingJailTurns,
+                        int dicesTotal, Collection<Integer> propertyIndices, CanBuildOn houseChecker, boolean isAlive) {
     this.playerId = playerId;
     this.gameEventHandler = gameEventHandler;
     this.money = money;
@@ -71,7 +74,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     this.houseChecker = houseChecker;
   }
 
-  public ConcretePlayer(int playerId) {
+  public ConcretePlayer(int playerId, CanBuildOn houseChecker) {
     this.currentPlaceIndex = 0;
     this.money = 0;
     this.playerId = playerId;
@@ -79,6 +82,12 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     properties = new ArrayList<>();
     propertyIndices = new ArrayList<>();
     this.isAlive = true;
+    this.houseChecker = houseChecker;
+  }
+
+  @Override
+  public void setAddOneDiceRollJail(AddOneDiceRoll addOneDiceRollJail) {
+    this.addOneDiceRollJail = addOneDiceRollJail;
   }
 
   @Override
@@ -111,8 +120,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
       setIndex(jailIndex);
       gameEventHandler.publish(modelToken + GameState.TO_JAIL);
     } catch (AssertionError e) {
-      IllegalStateException ex = new IllegalStateException("Jail index must be larger than zero",
-          e);
+      IllegalStateException ex = new IllegalStateException("Jail index must be larger than zero", e);
       LOG.warn(ex);
       throw ex;
     }
@@ -130,7 +138,12 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   }
 
   /**
+<<<<<<< HEAD:src/main/java/ooga/model/player/ConcretePlayer.java
+   * Check if player can build a house on a place
+   * originally by
+=======
    * Check if player can build a house on a place originally by
+>>>>>>> master:src/main/java/ooga/model/ConcretePlayer.java
    *
    * @param place a place to check
    * @return
@@ -162,6 +175,26 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     diceResult = result;
   }
 
+  public Collection<Place> getProperties() {
+    return properties;
+  }
+
+  @Override
+  public void setHasNextDice(boolean hasNextDice) {
+    this.hasNextDice = hasNextDice;
+  }
+
+  @Override
+  public void setDicesTotal(int dicesTotal) {
+    this.dicesTotal = dicesTotal;
+    ;
+  }
+
+  @Override
+  public int getDicesTotal() {
+    return dicesTotal;
+  }
+
 
   /**
    * @param colorId color id
@@ -186,16 +219,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
    * @author David Lu (modifier) Handles special effect of rolling doubles
    */
   public void addOneDiceRoll() {
-    if (remainingJailTurns > 0) {
-      getOutOfJail();
-      return;
-    }
-    hasNextDice = true;
-    dicesTotal++;
-    if (dicesTotal > MAX_ROWS_IN_A_ROW) {
-      dicesTotal = 1;
-      setJail(DEFAULT_JAIL_TURNS);
-    }
+    addOneDiceRollJail.addOneDiceRRoll();
   }
 
   @Override
@@ -285,8 +309,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
       assert jailIndex > 0;
 
     } catch (AssertionError e) {
-      IllegalStateException ex = new IllegalStateException("Jail index must be larger than zero",
-          e);
+      IllegalStateException ex = new IllegalStateException("Jail index must be larger than zero", e);
       LOG.warn(ex);
       throw ex;
     }
@@ -325,9 +348,8 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     for (Place place : properties) {
       try {
         // Change ownership if possibles
-        if (player != null) {
+        if (player != null)
           place.setOwner(player.getPlayerId(), player);
-        }
         // For non-Streets, following steps won't do anything
         revenue += place.getHousePrice() * place.getHouseCount() / 2;
         place.setHouseCount(0);

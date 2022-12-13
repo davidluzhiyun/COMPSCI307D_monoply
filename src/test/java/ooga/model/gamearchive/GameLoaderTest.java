@@ -36,7 +36,8 @@ class GameLoaderTest {
     Map<String, Object> map = new Gson().fromJson(reader, mapType);
     System.out.println(map);
     modelResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Model");
-    loader = new GameLoader(map, modelResources, new GameEventHandler());
+    GameConfig gameConfig = new GameConfig(10, true, true);
+    loader = new GameLoader(map, modelResources, new GameEventHandler(), gameConfig);
   }
 
   @Test

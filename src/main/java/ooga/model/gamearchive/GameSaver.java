@@ -1,7 +1,7 @@
 package ooga.model.gamearchive;
 
 import com.google.gson.Gson;
-import ooga.model.ControllerPlayer;
+import ooga.model.player.ControllerPlayer;
 import ooga.model.ModelOutput;
 import ooga.model.exception.MonopolyException;
 import ooga.model.place.ControllerPlace;
@@ -66,7 +66,7 @@ public class GameSaver {
         List<ControllerPlayer> players = data.getPlayers();
         for (ControllerPlayer player : players) {
             PlayerSaver singlePlayerData = new PlayerSaver(player.getPlayerId(),player.getTotalMoney(), player.remainingJailTurns(),
-                player.getCurrentPlaceIndex(), player.getPlayerId(), player.hasNextDice(), player.getOwnedRailroadCount(), player.getPropertyIndices());
+                player.getCurrentPlaceIndex(), player.getPlayerId(), player.hasNextDice(), player.getOwnedRailroadCount(), player.getPropertyIndices(), player.isAlive());
              playerData.add(singlePlayerData);
         }
         return playerData;

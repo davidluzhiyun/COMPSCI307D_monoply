@@ -2,10 +2,8 @@ package ooga.model.place;
 
 
 import ooga.event.GameEventHandler;
-import ooga.model.PlaceAction;
 
-import java.util.Collection;
-import ooga.model.Player;
+import ooga.model.player.Player;
 
 public class Go extends AbstractPlace {
 

@@ -1,25 +1,25 @@
 package ooga.model.gamearchive;
 
 import com.google.gson.internal.LinkedTreeMap;
-import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
-import ooga.event.GameEventType;
-import ooga.event.command.Command;
-import ooga.event.command.ConcreteCommand;
-import ooga.model.ConcretePlayer;
-import ooga.model.Player;
+import ooga.model.player.AddOneDiceRollJail;
+import ooga.model.player.ConcretePlayer;
+import ooga.model.player.Player;
 import ooga.model.colorSet.ConcreteColorSet;
 import ooga.model.exception.BadDataException;
 import ooga.model.exception.MonopolyException;
 import ooga.model.place.Place;
-import ooga.model.player.BuildHouseCheckerNoColor;
 import ooga.model.player.CanBuildOn;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.function.Predicate;
 
+import static ooga.model.gamearchive.ArchiveUtility.createAddOneDiceRollJail;
+import static ooga.model.gamearchive.ArchiveUtility.createHouseBuildChecker;
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
 import static ooga.model.player.CanBuildOn.PLAYER_PACKAGE_NAME;
 
@@ -30,13 +30,16 @@ public class InitialConfigLoader {
   private List<Player> players;
   private final GameEventHandler gameEventHandler;
   private GameConfig gameConfig;
-  private final String houseCheckerToken = "HouseBuildChecker";
+  private static final Logger LOG = LogManager.getLogger(InitialConfigLoader.class);
+  public static double DEFAULT_STARTING_MONEY = 1500.0;
 
   public InitialConfigLoader(Map<String, LinkedTreeMap> initialConfig, ResourceBundle resources, GameEventHandler gameEventHandler) {
     this.initialConfig = initialConfig;
     this.myResources = resources;
     this.gameEventHandler = gameEventHandler;
-    gameConfig = new GameConfig(getJailIndex(), (Boolean) initialConfig.get("meta").getOrDefault("color", true), false);
+    LinkedTreeMap meta = initialConfig.get("meta");
+    gameConfig = new GameConfig(getJailIndex(), (double) meta.getOrDefault("money", DEFAULT_STARTING_MONEY),
+        (boolean) meta.getOrDefault("color", true), (boolean) meta.getOrDefault("jail", true));
     loadData();
   }
 
@@ -64,27 +67,9 @@ public class InitialConfigLoader {
     for (int i = 0; i < (int) (double) initialConfig.get("meta").get("players"); i++) {
       Player newPlayer = new ConcretePlayer(i, gameEventHandler, createHouseBuildChecker(gameConfig.colorCheck()));
       newPlayer.setColorSetCheckers(checkers);
+      newPlayer.setAddOneDiceRollJail(createAddOneDiceRollJail(gameConfig.ifGoJail(), newPlayer));
       players.add(newPlayer);
     }
-  }
-
-  protected CanBuildOn createHouseBuildChecker(boolean checkColorOrNot) {
-    CanBuildOn checker;
-    Class<?> checkerClass;
-    try {
-      checkerClass = Class.forName(PLAYER_PACKAGE_NAME + myResources.getString(houseCheckerToken + checkColorOrNot));
-    } catch (ClassNotFoundException e) {
-//      LOG.warn(e);
-      throw new IllegalStateException("classNotFound", e);
-    }
-    Constructor<?>[] makeNewPlace = checkerClass.getConstructors();
-    try {
-      checker = (CanBuildOn) makeNewPlace[0].newInstance();
-    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-//      LOG.warn(e);
-      throw new RuntimeException(e);
-    }
-    return checker;
   }
 
   public void check() throws MonopolyException {
