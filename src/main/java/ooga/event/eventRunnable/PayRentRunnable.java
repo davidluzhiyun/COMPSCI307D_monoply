@@ -18,7 +18,8 @@ public class PayRentRunnable implements EventGenerator{
 
     @Override
     public GameEvent processEvent() {
-        PayRentCommand command = new PayRentCommand(new PayRentRecord(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayerId()), this.boardInfo.getPlayers().get(this.boardInfo.getBoard().get(this.boardInfo.getQueryIndex()).getOwnerId())));
+        PayRentCommand command = new PayRentCommand(new PayRentRecord(this.boardInfo.getPlayers().get(this.boardInfo.getCurrentPlayerId()),
+            this.boardInfo.getPlayers().get(boardInfo.getQueryIndex())));
         return GameEventHandler.makeGameEventwithCommand(GameEventType.CONTROLLER_TO_VIEW_PAY_RENT.name(), command);
     }
 }

@@ -176,8 +176,13 @@ public class GameModel implements GameEventListener, ModelOutput {
     String pattern = "MODEL_TO_MODEL_(.+)";
     Pattern p = Pattern.compile(pattern);
     Matcher m = p.matcher(event.getGameEventType());
-    if (m.find())
-      publishGameData(GameState.valueOf(m.group(1)));
+    if (m.find()) {
+      GameState currrentGameState = GameState.valueOf(m.group(1));
+      if (currrentGameState == GameState.PAY_RENT) {
+        queryIndex = (int) event.getGameEventCommand().getCommand().getCommandArgs();
+      }
+      publishGameData(currrentGameState);
+    }
     else {
       String patternToken = ".+_TO_MODEL_.+";
       boolean isModelEvent = Pattern.matches(patternToken, event.getGameEventType());
