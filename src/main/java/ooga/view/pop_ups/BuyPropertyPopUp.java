@@ -41,12 +41,11 @@ public class BuyPropertyPopUp extends ActionPopUp {
 
   @Override
   public void createScene() {
-    String property = "New York";
-    Label buyText = new Label(String.format(myResources.getString("BuyPropertyText"), property));
+    Label buyText = new Label(String.format(myResources.getString("BuyPropertyText")));
+    buyText.setWrapText(true);
     VBox root = new VBox(buyText, makeButtons());
     Scene scene = new Scene(root, Integer.parseInt(popUpResources.getString(HEIGHT)),
         Integer.parseInt(popUpResources.getString(WIDTH)));
-
     popUpStyle(scene, myStyle);
     myStage.setScene(scene);
   }
@@ -68,7 +67,7 @@ public class BuyPropertyPopUp extends ActionPopUp {
   }
   public void buyProperty() {
     Command command = new BuyPropertyCommand(myProperty);
-    GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_MODEL_BUY_PROPERTY.name(), command);
+    GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_MODEL_PURCHASE_PROPERTY.name(), command);
     myEventHandler.publish(event);
   }
 }
