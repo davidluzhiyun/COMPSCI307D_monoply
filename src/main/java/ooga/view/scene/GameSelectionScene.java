@@ -16,7 +16,6 @@ import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.command.Command;
 import ooga.event.command.ConcreteCommand;
-import ooga.event.command.GameEditorCommand;
 import ooga.event.command.GameStartViewCommand;
 import ooga.model.exception.BadDataException;
 import ooga.view.StartView;
@@ -87,7 +86,6 @@ public class GameSelectionScene extends View {
    */
   public void startNewGame() {
     try {
-      System.out.println("START GAMEEEEEE");
       makeFileDialog(Main.CONFIG_FILES_DIRECTORY, "VIEW_TO_CONTROLLER_GAME_START");
     } catch (BadDataException e) {
       showError(e.getMessage());

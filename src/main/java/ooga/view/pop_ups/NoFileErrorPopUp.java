@@ -13,7 +13,8 @@ public class NoFileErrorPopUp extends InformationPopUp {
   @Override
   public void showMessage(String language) {
     ResourceBundle resources = ResourceBundle.getBundle(Main.DEFAULT_LANGUAGE_PACKAGE + language);
-    Alert alert = new Alert(Alert.AlertType.ERROR, String.format(resources.getString(NO_FILE_ERROR)));
+    Alert alert = new Alert(Alert.AlertType.ERROR,
+        String.format(resources.getString(NO_FILE_ERROR)));
     alert.setTitle(resources.getString(NO_FILE_ERROR_TITLE));
     alert.setHeaderText(resources.getString(NO_FILE_ERROR_HEADER));
     alert.showAndWait();
