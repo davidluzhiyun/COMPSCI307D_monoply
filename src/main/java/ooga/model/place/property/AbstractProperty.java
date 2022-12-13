@@ -1,7 +1,12 @@
 package ooga.model.place.property;
 
+import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
+import ooga.event.GameEventType;
+import ooga.event.command.Command;
+import ooga.event.command.ConcreteCommand;
 import ooga.model.GameState;
+import ooga.model.ModelOutput;
 import ooga.model.PlaceAction;
 import ooga.model.player.Player;
 import ooga.model.StationaryAction;
@@ -123,7 +128,9 @@ public abstract class AbstractProperty extends AbstractPlace implements Property
     if (ownerId != -1) {//if owned
       player.setMoney(player.getTotalMoney() - getMoney(player));
       owner.setMoney(player.getTotalMoney() + getMoney(player));
-      getGameEventHandler().publish(modelToken + GameState.PAY_RENT);
+      Command<Integer> cmd1 = new ConcreteCommand<>(ownerId);
+      GameEvent event = GameEventHandler.makeGameEventwithCommand(modelToken + GameState.PAY_RENT, cmd1);
+      getGameEventHandler().publish(event);
     }
   }
 }
