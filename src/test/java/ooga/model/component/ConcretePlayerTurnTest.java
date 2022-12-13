@@ -67,4 +67,13 @@ class ConcretePlayerTurnTest {
     }
     System.out.println(places.get(0).getPlaceActions());
   }
+
+  /**
+   * Testing the functionality of rolling doubles with a dice I can
+   * @author David Lu
+   */
+  @Test
+  void rollingDoubles(){
+
+  }
 }
