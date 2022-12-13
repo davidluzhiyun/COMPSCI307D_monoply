@@ -22,6 +22,7 @@ import ooga.controller.GetPlaceActionsRecord;
 import ooga.controller.InitBoardRecord;
 import ooga.controller.LoadBoardRecord;
 import ooga.controller.MoveRecord;
+import ooga.controller.PayRentRecord;
 import ooga.controller.PlaceActionRecord;
 import ooga.controller.UpdateViewRecord;
 import ooga.event.GameEvent;
@@ -43,6 +44,7 @@ import ooga.view.pop_ups.BuyPropertyPopUp;
 import ooga.view.pop_ups.DiceRollPopUp;
 import ooga.view.pop_ups.GamePiecePopUp;
 import ooga.view.pop_ups.PropertyInfoPopUp;
+import ooga.view.pop_ups.RentPopUp;
 import ooga.view.pop_ups.RollResultPopUp;
 
 public class GameView extends View implements GameEventListener {
@@ -205,15 +207,18 @@ public class GameView extends View implements GameEventListener {
   }
   public void movePlayer(GameEvent event) {
     MoveRecord cmd = (MoveRecord) event.getGameEventCommand().getCommand().getCommandArgs();
-    System.out.println(cmd.placeIndex());
     monopolyBoardBuilder.movePlayer(cmd.placeIndex(), currentPlayer);
-    System.out.println(cmd.actions());
     if(cmd.actions().contains(StationaryAction.BUY_PROPERTY)) {
       BuyPropertyPopUp pop = new BuyPropertyPopUp(myStyle, cmd.placeIndex(), gameEventHandler);
       pop.showMessage(myLanguage);
     }
   }
 
+  public void payRent(GameEvent event) {
+    PayRentRecord record = (PayRentRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+    RentPopUp pop = new RentPopUp(record.owner().getPlayerId());
+    pop.showMessage(myLanguage);
+  }
   public void buyProperty(GameEvent event) {
     PlaceActionRecord command = (PlaceActionRecord) event.getGameEventCommand().getCommand().getCommandArgs();
     BuyPropertyPopUp pop = new BuyPropertyPopUp(myStyle, (int) command.placeIndex(), gameEventHandler);
@@ -222,7 +227,6 @@ public class GameView extends View implements GameEventListener {
   public void viewPlaceInfo(GameEvent event) {
     PropertyInfoPopUp pop = new PropertyInfoPopUp(event);
     pop.showMessage(myLanguage);
-
   }
   @Override
   public void onGameEvent(GameEvent event) {
