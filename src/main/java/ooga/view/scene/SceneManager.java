@@ -53,15 +53,6 @@ public class SceneManager implements GameEventListener {
     setPrimaryStageToCurrScene();
   }
 
-  private void setMonopolyGameEditorScene() {
-    MonopolyGameEditorScene monopolyGameEditorScene = new MonopolyGameEditorScene(primaryStage,
-        gameEventHandler, myLanguage, myStyle);
-    currentScene = new Scene(monopolyGameEditorScene.getRootPane(), primaryStage.getMaxWidth(),
-        primaryStage.getMaxHeight());
-    setPrimaryStageToCurrScene();
-    gameEventHandler.publish(VIEW_POST_ACTION_DRAW_BOARD);
-  }
-
   private void setGameSelectionScene() {
     GameSelectionScene gameSelectionScene = new GameSelectionScene(myLanguage, primaryStage,
         gameEventHandler);
@@ -105,9 +96,6 @@ public class SceneManager implements GameEventListener {
     }
     if (event.getGameEventType().equals("VIEW_LAUNCH_BOARD_EDITOR")) {
       setBoardEditorScene();
-    }
-    if (eventType.equals("VIEW_LAUNCH_GAME_EDITOR_SCREEN")) {
-      setMonopolyGameEditorScene();
     }
   }
 

@@ -56,7 +56,9 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   /**
    * Universal constructor for loading the game./
    */
-  public ConcretePlayer(int playerId,GameEventHandler gameEventHandler, double money, int currentPlaceIndex, boolean hasNextDice, int remainingJailTurns, int dicesTotal, Collection<Integer> propertyIndices,CanBuildOn houseChecker, boolean isAlive) {
+  public ConcretePlayer(int playerId, GameEventHandler gameEventHandler, double money,
+      int currentPlaceIndex, boolean hasNextDice, int remainingJailTurns, int dicesTotal,
+      Collection<Integer> propertyIndices, CanBuildOn houseChecker) {
     this.playerId = playerId;
     this.gameEventHandler = gameEventHandler;
     this.money = money;
@@ -83,7 +85,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   public void newTurn() {
     hasNextDice = true;
     dicesTotal = 1;
-    if (remainingJailTurns > 0){
+    if (remainingJailTurns > 0) {
       remainingJailTurns -= 1;
     }
   }
@@ -97,8 +99,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   /**
    * @param jailTurns
    * @author Luyao Wang
-   * @author David Lu
-   * Sents the player to Jail for certain amount of turns
+   * @author David Lu Sents the player to Jail for certain amount of turns
    */
   @Override
   public void setJail(int jailTurns) {
@@ -109,9 +110,9 @@ public class ConcretePlayer implements Player, ControllerPlayer {
       assert jailIndex > 0;
       setIndex(jailIndex);
       gameEventHandler.publish(modelToken + GameState.TO_JAIL);
-    }
-    catch (AssertionError e){
-      IllegalStateException ex = new IllegalStateException("Jail index must be larger than zero", e);
+    } catch (AssertionError e) {
+      IllegalStateException ex = new IllegalStateException("Jail index must be larger than zero",
+          e);
       LOG.warn(ex);
       throw ex;
     }
@@ -129,11 +130,11 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   }
 
   /**
-   * Check if player can build a house on a place
-   * originally by
-   * @author David Lu
+   * Check if player can build a house on a place originally by
+   *
    * @param place a place to check
    * @return
+   * @author David Lu
    * @author Luyao Wang
    */
   @Override
@@ -165,36 +166,33 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   /**
    * @param colorId color id
    * @return true if player has monopoly over color set of given id
-   * @author David Lu
-   * Check if the player has monopoly over a color set
+   * @author David Lu Check if the player has monopoly over a color set
    */
   @Override
   public boolean checkMonopolyOver(int colorId) {
     try {
       Predicate<Collection<Place>> checker = colorSetCheckers.get(colorId);
-      if (checker == null){
+      if (checker == null) {
         return false;
       }
       return checker.test(properties);
-    }
-    catch (NullPointerException e){
-      throw new IllegalStateException("Checker unset",e);
+    } catch (NullPointerException e) {
+      throw new IllegalStateException("Checker unset", e);
     }
   }
 
   /**
    * @author Luyao Wang
-   * @author David Lu (modifier)
-   * Handles special effect of rolling doubles
+   * @author David Lu (modifier) Handles special effect of rolling doubles
    */
   public void addOneDiceRoll() {
-    if (remainingJailTurns > 0){
+    if (remainingJailTurns > 0) {
       getOutOfJail();
       return;
     }
     hasNextDice = true;
     dicesTotal++;
-    if (dicesTotal > MAX_ROWS_IN_A_ROW){
+    if (dicesTotal > MAX_ROWS_IN_A_ROW) {
       dicesTotal = 1;
       setJail(DEFAULT_JAIL_TURNS);
     }
@@ -241,18 +239,21 @@ public class ConcretePlayer implements Player, ControllerPlayer {
 
   /**
    * Add another collection of indices to propertyIndices
+   *
    * @param newIndices new ones to add
    */
   @Override
-  public void mergePropertyIndices(Collection<Integer> newIndices){
+  public void mergePropertyIndices(Collection<Integer> newIndices) {
     propertyIndices.addAll(newIndices);
   }
+
   /**
    * Add another collection of places to properties
+   *
    * @param newPlaces new ones to add
    */
   @Override
-  public void mergeProperties(Collection<Place> newPlaces){
+  public void mergeProperties(Collection<Place> newPlaces) {
     properties.addAll(newPlaces);
   }
 
@@ -274,35 +275,34 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   }
 
   /**
-   * @author David Lu
-   * Set the index of the jail the player should goto
+   * @author David Lu Set the index of the jail the player should goto
    */
   @Override
-  public void setJailIndex(int jailIndex){
+  public void setJailIndex(int jailIndex) {
     try {
       this.jailIndex = jailIndex;
       // 0 is reserved for go
       assert jailIndex > 0;
 
-    }
-    catch (AssertionError e){
-      IllegalStateException ex = new IllegalStateException("Jail index must be larger than zero", e);
+    } catch (AssertionError e) {
+      IllegalStateException ex = new IllegalStateException("Jail index must be larger than zero",
+          e);
       LOG.warn(ex);
       throw ex;
     }
   }
+
   /**
-   * @author David Lu
-   * Get the player out of jail for free;
+   * @author David Lu Get the player out of jail for free;
    */
   @Override
   public void getOutOfJail() {
     remainingJailTurns = 0;
     gameEventHandler.publish(modelToken + GameState.OUT_OF_JAIL);
   }
+
   /**
-   * @author David Lu
-   * Get the player out of jail for a fee
+   * @author David Lu Get the player out of jail for a fee
    */
   @Override
   public void payOutOfJail() {
@@ -316,28 +316,28 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   }
 
   /**
-   * @author David Lu
-   * Backrupt the current player to another player or the bank
-   * Assume null stands for the bank
+   * @author David Lu Backrupt the current player to another player or the bank Assume null stands
+   * for the bank
    */
   @Override
-  public void bankruptTo(Player player){
+  public void bankruptTo(Player player) {
     double revenue = 0;
-    for (Place place: properties){
+    for (Place place : properties) {
       try {
         // Change ownership if possibles
-        if (player != null)
-          place.setOwner(player.getPlayerId(),player);
+        if (player != null) {
+          place.setOwner(player.getPlayerId(), player);
+        }
         // For non-Streets, following steps won't do anything
         revenue += place.getHousePrice() * place.getHouseCount() / 2;
         place.setHouseCount(0);
-      }catch (RuntimeException e){
+      } catch (RuntimeException e) {
         // do nothing
       }
       // TODO: un-mortgage if bankruptTo bank
     }
-    revenue += Math.max(money,0);
-    if (player != null){
+    revenue += Math.max(money, 0);
+    if (player != null) {
       player.setMoney(player.getTotalMoney() + revenue);
       player.mergeProperties(properties);
       player.mergePropertyIndices(propertyIndices);
