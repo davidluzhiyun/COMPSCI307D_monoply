@@ -186,6 +186,6 @@ public abstract class AbstractPlace implements Place {
 
   @Override
   public GameEventHandler getGameEventHandler() {
-    return null;
+    return gameEventHandler;
   }
 }
