@@ -18,6 +18,7 @@ import ooga.model.place.Place;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ooga.model.player.CanBuildOn;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,6 +40,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private int ownedRailroadCount;
   private static final Logger LOG = LogManager.getLogger(GameModel.class);
   private int jailIndex;
+  private boolean isAlive;
   private CanBuildOn houseChecker;
   private GameEventHandler gameEventHandler;
   private AddOneDiceRollJail addOneDiceRollJail;
@@ -58,7 +60,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
    * Universal constructor for loading the game./
    */
   public ConcretePlayer(int playerId, GameEventHandler gameEventHandler, double money, int currentPlaceIndex, boolean hasNextDice, int remainingJailTurns,
-                        int dicesTotal, Collection<Integer> propertyIndices, CanBuildOn houseChecker) {
+                        int dicesTotal, Collection<Integer> propertyIndices, CanBuildOn houseChecker, boolean isAlive) {
     this.playerId = playerId;
     this.gameEventHandler = gameEventHandler;
     this.money = money;
@@ -67,7 +69,18 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     this.dicesTotal = dicesTotal;
     this.hasNextDice = hasNextDice;
     this.propertyIndices = propertyIndices;
+    this.isAlive = isAlive;
     this.houseChecker = houseChecker;
+  }
+
+  public ConcretePlayer(int playerId) {
+    this.currentPlaceIndex = 0;
+    this.money = 0;
+    this.playerId = playerId;
+    this.hasNextDice = false;
+    properties = new ArrayList<>();
+    propertyIndices = new ArrayList<>();
+    this.isAlive = true;
   }
 
   @Override
@@ -82,7 +95,6 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     if (remainingJailTurns > 0) {
       remainingJailTurns -= 1;
     }
-    // TODO:Death
   }
 
 
@@ -126,9 +138,11 @@ public class ConcretePlayer implements Player, ControllerPlayer {
 
   /**
    * Check if player can build a house on a place
+   * originally by
    *
    * @param place a place to check
    * @return
+   * @author David Lu
    * @author Luyao Wang
    */
   @Override
@@ -139,6 +153,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   public Map<Integer, Predicate<Collection<Place>>> getColorSetCheckers() {
     return colorSetCheckers;
   }
+
 
   @Override
   public int getOwnedRailroadCount() {
@@ -243,6 +258,26 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     return new HashSet<>(propertyIndices);
   }
 
+  /**
+   * Add another collection of indices to propertyIndices
+   *
+   * @param newIndices new ones to add
+   */
+  @Override
+  public void mergePropertyIndices(Collection<Integer> newIndices) {
+    propertyIndices.addAll(newIndices);
+  }
+
+  /**
+   * Add another collection of places to properties
+   *
+   * @param newPlaces new ones to add
+   */
+  @Override
+  public void mergeProperties(Collection<Place> newPlaces) {
+    properties.addAll(newPlaces);
+  }
+
   @Override
   public double getTotalMoney() {
     return money;
@@ -278,16 +313,59 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     }
   }
 
+  /**
+   * @author David Lu
+   * Get the player out of jail for free;
+   */
   @Override
   public void getOutOfJail() {
     remainingJailTurns = 0;
     gameEventHandler.publish(modelToken + GameState.OUT_OF_JAIL);
   }
 
+  /**
+   * @author David Lu
+   * Get the player out of jail for a fee
+   */
   @Override
   public void payOutOfJail() {
     money -= DEFAULT_FINE;
     getOutOfJail();
   }
 
+  @Override
+  public boolean isAlive() {
+    return isAlive;
+  }
+
+  /**
+   * @author David Lu
+   * Backrupt the current player to another player or the bank
+   * Assume null stands for the bank
+   */
+  @Override
+  public void bankruptTo(Player player) {
+    double revenue = 0;
+    for (Place place : properties) {
+      try {
+        // Change ownership if possibles
+        if (player != null)
+          place.setOwner(player.getPlayerId(), player);
+        // For non-Streets, following steps won't do anything
+        revenue += place.getHousePrice() * place.getHouseCount() / 2;
+        place.setHouseCount(0);
+      } catch (RuntimeException e) {
+        // do nothing
+      }
+      // TODO: un-mortgage if bankruptTo bank
+    }
+    revenue += Math.max(money, 0);
+    if (player != null) {
+      player.setMoney(player.getTotalMoney() + revenue);
+      player.mergeProperties(properties);
+      player.mergePropertyIndices(propertyIndices);
+    }
+    gameEventHandler.publish(modelToken + GameState.BANKRUPT);
+    this.isAlive = false;
+  }
 }

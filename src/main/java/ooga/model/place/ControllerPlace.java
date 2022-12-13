@@ -20,7 +20,10 @@ public interface ControllerPlace {
    * Get a collection of all the players that are currently on the place (not necessarily possess that place).
    *
    * @return
+   * @deprecated No longer needed. This was never used since Players each know their positions.
+   * It is also detrimental to the design if we actually update this every time a player moves
    */
+  @Deprecated
   Collection<ControllerPlayer> getPlayers();
 
   double getMoney(Player player);

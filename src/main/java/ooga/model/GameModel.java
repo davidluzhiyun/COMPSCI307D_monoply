@@ -6,6 +6,7 @@ import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import java.util.stream.Collectors;
 import ooga.event.GameEvent;
 import ooga.event.GameEventHandler;
 import ooga.event.GameEventListener;
@@ -144,7 +146,9 @@ public class GameModel implements GameEventListener, ModelOutput {
 
   @Override
   public List<ControllerPlayer> getPlayers() {
-    return new ArrayList<>(players);
+    List<ControllerPlayer> result = players.stream().filter(Player::isAlive)
+        .sorted(Comparator.comparing(Player::getPlayerId)).collect(Collectors.toList());
+    return result;
   }
 
   @Override

@@ -137,6 +137,10 @@ public abstract class AbstractPlace implements Place {
   public int getHouseCount() throws MonopolyException {
     throw new MonopolyException("cannotBuildHouseException");
   }
+  @Override
+  public double getHousePrice() throws MonopolyException {
+    throw new MonopolyException("cannotBuildHouseException");
+  }
 
   @Override
   public int getColorSetId() throws MonopolyException {
