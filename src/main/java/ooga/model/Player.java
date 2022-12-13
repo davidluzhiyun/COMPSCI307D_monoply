@@ -12,6 +12,11 @@ import java.util.Collection;
  * @author David Lu decided to extend from ViewPlayer
  */
 public interface Player extends ControllerPlayer {
+
+  void mergePropertyIndices(Collection<Integer> newIndices);
+
+  void mergeProperties(Collection<Place> newPlaces);
+
   void purchase(Place place, int propertyIndex) throws IllegalStateException;
   void addOneDiceRoll();
   /**

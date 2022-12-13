@@ -247,6 +247,23 @@ public class ConcretePlayer implements Player, ControllerPlayer {
     return new HashSet<>(propertyIndices);
   }
 
+  /**
+   * Add another collection of indices to propertyIndices
+   * @param newIndices new ones to add
+   */
+  @Override
+  public void mergePropertyIndices(Collection<Integer> newIndices){
+    propertyIndices.addAll(newIndices);
+  }
+  /**
+   * Add another collection of places to properties
+   * @param newPlaces new ones to add
+   */
+  @Override
+  public void mergeProperties(Collection<Place> newPlaces){
+    properties.addAll(newPlaces);
+  }
+
   @Override
   public double getTotalMoney() {
     return money;
@@ -303,8 +320,30 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   /**
    * @author David Lu
    * Backrupt the current player to another player or the bank
+   * Assume null stands for the bank
    */
   public void bankruptTo(Player player){
-    
+    double revenue = 0;
+    for (Place place: properties){
+      try {
+        // Change ownership if possibles
+        if (player != null)
+          place.setOwner(player.getPlayerId(),player);
+        // For non-Streets, following steps won't do anything
+        revenue += place.getHousePrice() * place.getHouseCount() / 2;
+        place.setHouseCount(0);
+      }catch (RuntimeException e){
+        // do nothing
+      }
+      // TODO: un-mortgage if bankruptTo bank
+    }
+    revenue += Math.max(money,0);
+    if (player != null){
+      player.setMoney(player.getTotalMoney() + revenue);
+      player.mergeProperties(properties);
+      player.mergePropertyIndices(propertyIndices);
+    }
+    GameEventHandler gameEventHandler = new GameEventHandler();
+    gameEventHandler.publish(modelToken + GameState.BANKRUPT);
   }
 }
