@@ -18,12 +18,16 @@ public class MonopolyCardViewModel {
   private String name;
   private DoubleProperty width = new SimpleDoubleProperty(0);
   private DoubleProperty height = new SimpleDoubleProperty(0);
-  private Double rotation;
 
   public MonopolyCardViewModel(String type, String name, int color) {
     this.type = type;
     this.name = name;
     this.color = color;
+  }
+
+  public MonopolyCardViewModel(String type, String name) {
+    this.type = type;
+    this.name = name;
   }
 
   public int getColor() {

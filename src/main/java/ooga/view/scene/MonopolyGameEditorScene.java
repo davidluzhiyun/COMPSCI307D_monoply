@@ -32,11 +32,13 @@ public class MonopolyGameEditorScene extends MonopolyScene implements ParentView
   private String myLanguage;
   private MenuBar myMenu;
 
-  public MonopolyGameEditorScene(Stage primaryStage, GameEventHandler gameEventHandler, String language, String style) {
+  public MonopolyGameEditorScene(Stage primaryStage, GameEventHandler gameEventHandler,
+      String language, String style) {
     super(new AnchorPane());
     this.myLanguage = language;
     rootPane.getStylesheets().add(
-        Objects.requireNonNull(Main.class.getResource(String.format("/style/%s.css", style)).toString()));
+        Objects.requireNonNull(
+            Main.class.getResource(String.format("/style/%s.css", style)).toString()));
     this.gameEventHandler = gameEventHandler;
     gameEventHandler.addEventListener(this);
     initChildren();
@@ -64,7 +66,6 @@ public class MonopolyGameEditorScene extends MonopolyScene implements ParentView
     getInitBoardData();
     monopolyBoardBuilder = new MonopolyBoardBuilder(model, gameEventHandler);
     monopolyBoard = monopolyBoardBuilder.build();
-    monopolyBoard.setId("Board");
     this.myMenu = new MenuBar(myLanguage);
   }
 

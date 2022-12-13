@@ -14,5 +14,7 @@
     550
   ],
   "houseCost": 100,
-  "colorId": 16711680
+  "colorId": 16711680,
+  "upperText": "test upper text",
+  "lowerText": "test lower text"
 }
