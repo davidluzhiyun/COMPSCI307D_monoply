@@ -46,6 +46,7 @@ public class GameModel implements GameEventListener, ModelOutput {
   private GameState gameState;
   private int queryIndex;
   private final Map<String, Consumer<GameEvent>> eventTypeMap = new HashMap<>();
+  private GameConfig gameConfig;
 
   public GameModel(GameEventHandler gameEventHandler) {
     this.gameEventHandler = gameEventHandler;
@@ -98,7 +99,7 @@ public class GameModel implements GameEventListener, ModelOutput {
 
     places = initialConfigLoader.getPlaces();
     players = initialConfigLoader.getPlayers();
-    GameConfig gameConfig;
+
 //    try {
 //      gameConfig = initialConfigLoader.getGameConfig();
 //    }
@@ -119,9 +120,9 @@ public class GameModel implements GameEventListener, ModelOutput {
    * @param map
    */
   protected void loadGame(Map<String, Object> map) {
-    GameLoader gameLoader = new GameLoader(map, modelResources, gameEventHandler);
-    places = gameLoader.loadPlaceData();
-    players = gameLoader.loadPlayerData();
+    GameLoader gameLoader = new GameLoader(map, modelResources, gameEventHandler, gameConfig);
+    places = gameLoader.getPlaces();
+    players = gameLoader.getPlayers();
     gameLoader.setUpPlayersPropertiesAndPropertyOwner(players, places);
     Metadata metaData = gameLoader.getMetadata();
     turn = new ConcretePlayerTurn(players, places, metaData.currentPlayerId(), gameEventHandler);//TODO: set current player

@@ -38,7 +38,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
   private Map<Integer, Predicate<Collection<Place>>> colorSetCheckers;
   private int diceResult;
   private int ownedRailroadCount;
-  private static final Logger LOG = LogManager.getLogger(GameModel.class);
+  private static final Logger LOG = LogManager.getLogger(ConcretePlayer.class);
   private int jailIndex;
   private boolean isAlive;
   private CanBuildOn houseChecker;
