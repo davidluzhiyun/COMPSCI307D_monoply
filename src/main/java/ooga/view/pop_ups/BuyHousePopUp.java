@@ -38,7 +38,7 @@ public class BuyHousePopUp extends ActionPopUp {
 
   @Override
   public void close() {
-      myStage.close();
+    myStage.close();
   }
 
   @Override
@@ -84,6 +84,7 @@ public class BuyHousePopUp extends ActionPopUp {
 
   /**
    * TODO: also need to actually get the amount that this will cost the player.
+   *
    * @param newValue
    */
   public void previewPrice(Number newValue) {

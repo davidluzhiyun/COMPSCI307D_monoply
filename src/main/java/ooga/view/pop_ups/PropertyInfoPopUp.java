@@ -2,21 +2,22 @@ package ooga.view.pop_ups;
 
 import com.google.gson.internal.LinkedTreeMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import ooga.Main;
 import ooga.event.GameEvent;
 
 /**
  * Should appear when users click on a property on the board.
  */
 public class PropertyInfoPopUp extends InformationPopUp {
+
   private Map<String, LinkedTreeMap> map;
+
   public PropertyInfoPopUp(GameEvent event) {
-    this.map = (Map<String, LinkedTreeMap>) event.getGameEventCommand().getCommand().getCommandArgs();
+    this.map = (Map<String, LinkedTreeMap>) event.getGameEventCommand().getCommand()
+        .getCommandArgs();
   }
 
   @Override

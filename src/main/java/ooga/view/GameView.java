@@ -142,9 +142,11 @@ public class GameView extends View implements GameEventListener {
   public void saveGame() {
     gameEventHandler.publish(GameEventType.VIEW_TO_MODEL_SAVE_GAME.name());
   }
+
   public void endTurn() {
     Command command = new EndTurnCommand();
-    GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_MODEL_END_TURN.name(), command);
+    GameEvent event = GameEventHandler.makeGameEventwithCommand(
+        GameEventType.VIEW_TO_MODEL_END_TURN.name(), command);
     gameEventHandler.publish(event);
   }
 
@@ -156,7 +158,7 @@ public class GameView extends View implements GameEventListener {
     Command cmd = event.getGameEventCommand().getCommand();
     ControllerPlayer player = (ControllerPlayer) cmd.getCommandArgs();
     this.currentPlayer = player.getPlayerId();
-    myDicePopUp = new DiceRollPopUp(currentPlayer+1, myStyle);
+    myDicePopUp = new DiceRollPopUp(currentPlayer + 1, myStyle);
     myDicePopUp.showMessage(myLanguage);
     myDicePopUp.makeButtonActive(this);
     updateHUD(player);
@@ -187,57 +189,70 @@ public class GameView extends View implements GameEventListener {
   }
 
   public void showPlaceActions(GameEvent event) {
-    GetPlaceActionsRecord cmd = (GetPlaceActionsRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+    GetPlaceActionsRecord cmd = (GetPlaceActionsRecord) event.getGameEventCommand().getCommand()
+        .getCommandArgs();
     AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd, myStyle, gameEventHandler);
     pop.showMessage(myLanguage);
   }
+
   public void loadBoard(GameEvent event) {
     LoadBoardRecord command = (LoadBoardRecord) event.getGameEventCommand().getCommand()
-            .getCommandArgs();
+        .getCommandArgs();
     interactor.initialize(command);
   }
-  public void drawBoard(GameEvent event) {monopolyBoardBuilder.drawPostProcessing();}
 
-  public void startGame(GameEvent event){
-    InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+  public void drawBoard(GameEvent event) {
+    monopolyBoardBuilder.drawPostProcessing();
+  }
+
+  public void startGame(GameEvent event) {
+    InitBoardRecord command = (InitBoardRecord) event.getGameEventCommand().getCommand()
+        .getCommandArgs();
     interactor.initializeNewBoard(command);
     this.currentPlayer = command.currentPlayerId();
     myHUD = new PlayerHUD(myLanguage, command.players().get(currentPlayer));
     myBorderPane.setRight(myHUD);
     this.numPlayers = command.players().size();
-    myDicePopUp = new DiceRollPopUp(currentPlayer+1, myStyle);
+    myDicePopUp = new DiceRollPopUp(currentPlayer + 1, myStyle);
     myDicePopUp.showMessage(myLanguage);
     myDicePopUp.makeButtonActive(this);
     chooseGamePieces();
   }
+
   public void movePlayer(GameEvent event) {
     MoveRecord cmd = (MoveRecord) event.getGameEventCommand().getCommand().getCommandArgs();
     monopolyBoardBuilder.movePlayer(cmd.placeIndex(), currentPlayer);
-    if(cmd.actions().contains(StationaryAction.BUY_PROPERTY)) {
+    if (cmd.actions().contains(StationaryAction.BUY_PROPERTY)) {
       BuyPropertyPopUp pop = new BuyPropertyPopUp(myStyle, cmd.placeIndex(), gameEventHandler);
       pop.showMessage(myLanguage);
     }
   }
 
   public void payRent(GameEvent event) {
-    PayRentRecord record = (PayRentRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+    PayRentRecord record = (PayRentRecord) event.getGameEventCommand().getCommand()
+        .getCommandArgs();
     RentPopUp pop = new RentPopUp(record.owner().getPlayerId());
     pop.showMessage(myLanguage);
     updateHUD(record.player());
   }
+
   public void buyProperty(GameEvent event) {
-    PlaceActionRecord command = (PlaceActionRecord) event.getGameEventCommand().getCommand().getCommandArgs();
+    PlaceActionRecord command = (PlaceActionRecord) event.getGameEventCommand().getCommand()
+        .getCommandArgs();
     updateHUD(command.player());
   }
+
   public void viewPlaceInfo(GameEvent event) {
     PropertyInfoPopUp pop = new PropertyInfoPopUp(event);
     pop.showMessage(myLanguage);
   }
-  private void updateHUD(ControllerPlayer player){
+
+  private void updateHUD(ControllerPlayer player) {
     myHUD = new PlayerHUD(myLanguage, player);
     myBorderPane.getChildren().remove(myHUD);
     myBorderPane.setRight(myHUD);
   }
+
   @Override
   public void onGameEvent(GameEvent event) {
     String patternToken = ".+_TO_VIEW_.+";
@@ -245,10 +260,12 @@ public class GameView extends View implements GameEventListener {
     String pattern = GameEventType.VIEW_POST_ACTION_DRAW_BOARD.name();
     if (isViewEvent | Pattern.matches(pattern, event.getGameEventType())) {
       Reflection reflect = new Reflection();
-      ResourceBundle reflectResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + "GameViewReflection");
+      ResourceBundle reflectResources = ResourceBundle.getBundle(
+          Main.DEFAULT_RESOURCE_PACKAGE + "GameViewReflection");
       String method = reflectResources.getString(event.getGameEventType());
       try {
-        reflect.makeMethod(method, this.getClass(), new Class[]{GameEvent.class}).invoke(this, event);
+        reflect.makeMethod(method, this.getClass(), new Class[]{GameEvent.class})
+            .invoke(this, event);
       } catch (IllegalAccessException | InvocationTargetException e) {
         throw new RuntimeException(e);
       }

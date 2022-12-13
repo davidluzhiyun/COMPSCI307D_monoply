@@ -15,7 +15,8 @@ import ooga.model.PlaceAction;
 import ooga.view.View;
 import ooga.view.button.CustomizedButton;
 
-public class AvailablePlaceActionsPopUp extends ActionPopUp{
+public class AvailablePlaceActionsPopUp extends ActionPopUp {
+
   private List<PlaceAction> myActions;
   private Stage myStage;
   private String myStyle;
@@ -23,15 +24,19 @@ public class AvailablePlaceActionsPopUp extends ActionPopUp{
   private int propertyIndex;
   private GameEventHandler handler;
 
-  public AvailablePlaceActionsPopUp(GetPlaceActionsRecord record, String style, GameEventHandler handler) {
+  public AvailablePlaceActionsPopUp(GetPlaceActionsRecord record, String style,
+      GameEventHandler handler) {
     this.myActions = record.actions();
     this.myStage = new Stage();
     this.myStyle = style;
     this.propertyIndex = record.index();
     this.handler = handler;
   }
+
   @Override
-  public void close() {myStage.close();}
+  public void close() {
+    myStage.close();
+  }
 
   @Override
   public void createScene() {
@@ -57,7 +62,9 @@ public class AvailablePlaceActionsPopUp extends ActionPopUp{
   /**
    * Not implemented.
    */
-  public void makeMortgage() {}
+  public void makeMortgage() {
+  }
+
   public void viewInfo() {
     Command command = new RequestPropertyInfoCommand(propertyIndex);
     GameEvent event = GameEventHandler.makeGameEventwithCommand(
@@ -65,5 +72,7 @@ public class AvailablePlaceActionsPopUp extends ActionPopUp{
     handler.publish(event);
     close();
   }
-  public void buyHouse() {}
+
+  public void buyHouse() {
+  }
 }

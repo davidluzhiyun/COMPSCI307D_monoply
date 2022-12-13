@@ -18,6 +18,7 @@ import ooga.view.button.CustomizedButton;
 import ooga.view.drop_down.CustomizedDropDown;
 
 public class BuyPropertyPopUp extends ActionPopUp {
+
   private Stage myStage;
   private String myStyle;
   private ResourceBundle popUpResources;
@@ -37,7 +38,9 @@ public class BuyPropertyPopUp extends ActionPopUp {
   }
 
   @Override
-  public void close() {myStage.close();}
+  public void close() {
+    myStage.close();
+  }
 
   @Override
   public void createScene() {
@@ -49,11 +52,13 @@ public class BuyPropertyPopUp extends ActionPopUp {
     popUpStyle(scene, myStyle);
     myStage.setScene(scene);
   }
+
   private HBox makeButtons() {
     String[] buttons = popUpResources.getString("BuyPropertyButtons").split(COMMA_REGEX);
     HBox buttonBar = new HBox();
-    for (String button: buttons) {
-      buttonBar.getChildren().add((CustomizedButton) makeInteractiveObject(button, myLanguage, this));
+    for (String button : buttons) {
+      buttonBar.getChildren()
+          .add((CustomizedButton) makeInteractiveObject(button, myLanguage, this));
     }
     return buttonBar;
   }
@@ -65,10 +70,12 @@ public class BuyPropertyPopUp extends ActionPopUp {
     createScene();
     myStage.show();
   }
+
   public void buyProperty() {
     close();
     Command command = new BuyPropertyCommand(myProperty);
-    GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.VIEW_TO_MODEL_PURCHASE_PROPERTY.name(), command);
+    GameEvent event = GameEventHandler.makeGameEventwithCommand(
+        GameEventType.VIEW_TO_MODEL_PURCHASE_PROPERTY.name(), command);
     myEventHandler.publish(event);
   }
 }

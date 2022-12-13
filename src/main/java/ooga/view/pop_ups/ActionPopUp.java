@@ -1,15 +1,6 @@
 package ooga.view.pop_ups;
 
-import java.util.ResourceBundle;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import ooga.Main;
-import ooga.Reflection;
-import ooga.view.GameView;
-import ooga.view.InteractiveObject;
-import ooga.view.StartView;
 import ooga.view.View;
 
 public abstract class ActionPopUp extends View implements PopUp {
