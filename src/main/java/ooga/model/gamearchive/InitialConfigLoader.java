@@ -79,8 +79,6 @@ public class InitialConfigLoader {
   protected Place createPlace(String type, String id) {
     Place newPlace;
     Class<?> placeClass;
-    System.out.println(type);
-    System.out.println(id);
     try {
       placeClass = Class.forName(PLACE_PACKAGE_NAME + myResources.getString(type));
     } catch (ClassNotFoundException e) {

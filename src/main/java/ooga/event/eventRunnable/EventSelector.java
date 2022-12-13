@@ -36,7 +36,6 @@ public class EventSelector {
 
   public EventGenerator selectEventRunnable(String eventName, Command command) {
     Function<Command, ? extends EventGenerator> event = findEventType(eventName);
-//    System.out.println(eventName);
     return event.apply(command);
   }
 

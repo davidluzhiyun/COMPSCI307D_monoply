@@ -24,6 +24,5 @@ public class SampleController implements GameEventListener {
 
   private void gameStart(Command cmd){
     SampleViewData d = (SampleViewData) cmd.getCommandArgs();
-    System.out.println(d.getData());
   }
 }
