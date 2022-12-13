@@ -8,9 +8,13 @@ public class MonopolyImageCardViewModel extends MonopolyCardViewModel {
   private String imageString;
   private boolean isCorner = true;
 
-  public MonopolyImageCardViewModel(String type, String name, String image) {
+  public MonopolyImageCardViewModel(String type, String name, String image, String upperText,
+      String lowerText, boolean corner) {
     super(type, name);
     this.imageString = image;
+    this.upperText = upperText;
+    this.bottomText = lowerText;
+    this.isCorner = corner;
   }
 
   public String getImageString() {

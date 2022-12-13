@@ -142,6 +142,6 @@ public class MonopolyBoardBuilder implements Builder<Region> {
   public Bounds getBoundsbyIndex(int idx) {
     HashMap<Integer, Location> map = model.getIndexToLocationMap();
     Location loc = map.get(Integer.valueOf(idx));
-    return grid.getCellBounds(loc.row(), loc.col());
+    return grid.getCellBounds(loc.col(), loc.row());
   }
 }
