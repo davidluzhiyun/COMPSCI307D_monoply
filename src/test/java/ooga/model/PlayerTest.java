@@ -5,6 +5,7 @@ import ooga.model.place.Place;
 import ooga.model.place.property.ConcreteStreet;
 import ooga.model.place.property.Property;
 import ooga.model.player.BuildHouseCheckerNoColor;
+import ooga.model.player.ConcretePlayer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

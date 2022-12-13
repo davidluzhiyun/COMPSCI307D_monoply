@@ -1,7 +1,7 @@
 package ooga.model.place.property;
 
 import ooga.event.GameEventHandler;
-import ooga.model.Player;
+import ooga.model.player.Player;
 
 import java.util.List;
 

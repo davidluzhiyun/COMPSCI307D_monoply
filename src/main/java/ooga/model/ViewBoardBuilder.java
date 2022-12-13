@@ -8,6 +8,8 @@ import java.util.List;
 
 import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.place.Place;
+import ooga.model.player.ControllerPlayer;
+import ooga.model.player.Player;
 
 /**
  * Builds a ViewPlace from list of Place, a player(likely the current player) and a PlayerTurn

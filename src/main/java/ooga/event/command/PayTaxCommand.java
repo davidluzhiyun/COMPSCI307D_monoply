@@ -1,6 +1,6 @@
 package ooga.event.command;
 
-import ooga.model.ControllerPlayer;
+import ooga.model.player.ControllerPlayer;
 
 public class PayTaxCommand implements Command{
 

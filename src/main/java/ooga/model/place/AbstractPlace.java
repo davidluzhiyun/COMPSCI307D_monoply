@@ -6,14 +6,12 @@ import com.google.gson.reflect.TypeToken;
 import java.beans.EventHandler;
 
 import ooga.event.GameEventHandler;
-import ooga.model.ConcretePlayer;
-import ooga.model.ControllerPlayer;
+import ooga.model.player.ConcretePlayer;
+import ooga.model.player.ControllerPlayer;
 import ooga.model.PlaceAction;
-import ooga.model.Player;
+import ooga.model.player.Player;
 import ooga.model.StationaryAction;
-import ooga.model.exception.CannotBuildHouseException;
 import ooga.model.exception.MonopolyException;
-import ooga.model.exception.NoColorAttributeException;
 
 import java.io.File;
 import java.io.FileReader;

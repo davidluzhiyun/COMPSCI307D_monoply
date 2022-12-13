@@ -1,8 +1,8 @@
 package ooga.model.component;
 
 import ooga.event.GameEventHandler;
-import ooga.model.ConcretePlayer;
-import ooga.model.Player;
+import ooga.model.player.ConcretePlayer;
+import ooga.model.player.Player;
 import ooga.model.place.Place;
 import ooga.model.place.property.ConcreteRailroad;
 import ooga.model.place.property.ConcreteStreet;

@@ -1,13 +1,10 @@
 package ooga.model.place.property;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import ooga.event.GameEventHandler;
 import ooga.model.PlaceAction;
-import ooga.model.Player;
-import ooga.model.exception.CannotBuildHouseException;
+import ooga.model.player.Player;
 
 public class ConcreteStreet extends AbstractProperty implements Street {
   private final int colorId;

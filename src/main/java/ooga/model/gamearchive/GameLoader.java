@@ -3,10 +3,9 @@ package ooga.model.gamearchive;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import ooga.event.GameEventHandler;
-import ooga.model.ConcretePlayer;
-import ooga.model.Player;
+import ooga.model.colorSet.ConcreteColorSet;
+import ooga.model.player.*;
 import ooga.model.place.Place;
-import ooga.model.player.BuildHouseCheckerNoColor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,12 +17,17 @@ import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
+import static ooga.model.gamearchive.ArchiveUtility.createAddOneDiceRollJail;
+import static ooga.model.gamearchive.ArchiveUtility.createHouseBuildChecker;
 import static ooga.model.place.AbstractPlace.DEFAULT_RESOURCE_FOLDER;
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
+import static ooga.model.player.CanBuildOn.PLAYER_PACKAGE_NAME;
 
 public class GameLoader {
   private Map<String, Object> gameData;
@@ -31,23 +35,37 @@ public class GameLoader {
   private static final Logger LOG = LogManager.getLogger(GameLoader.class);
   private ResourceBundle myResources;
   private GameEventHandler gameEventHandler;
+  private List<Place> places;
+  private List<Player> players;
   private Map<String, Function6<String, String, Integer, Integer, Constructor<?>[], GameEventHandler, Place>> switchMap;
+  private final GameConfig gameConfig;
 
-  public GameLoader(Map<String, Object> map, ResourceBundle resources, GameEventHandler gameEventHandler) {
+  public GameLoader(Map<String, Object> map, ResourceBundle resources, GameEventHandler gameEventHandler, GameConfig gameConfig) {
     this.gameData = map;
     this.myResources = resources;
     this.gameEventHandler = gameEventHandler;
     Map<String, Double> meta = (Map<String, Double>) gameData.get("meta");
     metadata = new Metadata(meta.get("playerCount").intValue(), meta.get("currentPlayerId").intValue());
+    this.gameConfig = gameConfig;
     setUpMap();
+    loadPlaceData();
+    loadPlayerData();
   }
 
   public Metadata getMetadata() {
     return metadata;
   }
 
-  public List<Place> loadPlaceData() {
-    List<Place> places = new ArrayList<>();
+  public List<Player> getPlayers() {
+    return players;
+  }
+
+  public List<Place> getPlaces() {
+    return places;
+  }
+
+  private void loadPlaceData() {
+    places = new ArrayList<>();
     List<PlaceSaver> placesData = (List<PlaceSaver>) gameData.get("places");
     for (PlaceSaver singlePlaceData : placesData) {
       String placeId = singlePlaceData.id();
@@ -66,7 +84,6 @@ public class GameLoader {
         throw new RuntimeException(e);
       }
     }
-    return places;
   }
 
   private static Map<String, ?> getConfig(String placeId, Gson gson) throws FileNotFoundException {
@@ -80,15 +97,17 @@ public class GameLoader {
     return config;
   }
 
-  public List<Player> loadPlayerData() {
-    List<Player> players = new ArrayList<>();
+  private void loadPlayerData() {
+    players = new ArrayList<>();
     List<PlayerSaver> playersData = (List<PlayerSaver>) gameData.get("players");
+    Map<Integer, Predicate<Collection<Place>>> checkers = new ConcreteColorSet(places).outputCheckers();
     for (PlayerSaver singlePlayersData : playersData) {
       Player newPlayer = new ConcretePlayer(singlePlayersData.id(), gameEventHandler, singlePlayersData.money(), singlePlayersData.currentPlaceIndex(), singlePlayersData.hasNextDice(), singlePlayersData.jail(),
-              singlePlayersData.dicesTotal(), singlePlayersData.properties(), new BuildHouseCheckerNoColor());
+          singlePlayersData.dicesTotal(), singlePlayersData.properties(), createHouseBuildChecker(gameConfig.colorCheck()), singlePlayersData.isAlive());
+      newPlayer.setColorSetCheckers(checkers);
+      newPlayer.setAddOneDiceRollJail(createAddOneDiceRollJail(gameConfig.ifGoJail(), newPlayer));
       players.add(newPlayer);
     }
-    return players;
   }
 
   public void setUpPlayersPropertiesAndPropertyOwner(List<Player> players, List<Place> places) {

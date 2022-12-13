@@ -3,7 +3,7 @@ package ooga.model.place.property;
 import ooga.event.GameEventHandler;
 import ooga.model.GameState;
 import ooga.model.PlaceAction;
-import ooga.model.Player;
+import ooga.model.player.Player;
 import ooga.model.StationaryAction;
 import ooga.model.place.AbstractPlace;
 
