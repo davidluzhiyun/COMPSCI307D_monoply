@@ -31,11 +31,13 @@ public class MonopolyGameEditorScene extends MonopolyScene implements ParentView
   private MonopolyBoardInteractor interactor;
   private String myLanguage;
   private MenuBar myMenu;
-  private File initConfig;
+  private File config;
+  private Stage primaryStage;
 
   public MonopolyGameEditorScene(Stage primaryStage, GameEventHandler gameEventHandler,
       String language, String style, File initConfig) {
     super(new AnchorPane());
+    this.primaryStage = primaryStage;
     this.myLanguage = language;
     rootPane.getStylesheets().add(
         Objects.requireNonNull(
@@ -43,8 +45,7 @@ public class MonopolyGameEditorScene extends MonopolyScene implements ParentView
     this.gameEventHandler = gameEventHandler;
     gameEventHandler.addEventListener(this);
 
-    this.initConfig = initConfig;
-
+    this.config = initConfig;
     initChildren();
     setChildrenLocation();
     addChildrenToRoot();
@@ -53,7 +54,7 @@ public class MonopolyGameEditorScene extends MonopolyScene implements ParentView
   private void getInitBoardData() {
     GameEvent gameStart = GameEventHandler.makeGameEventwithCommand(
         GameEventType.VIEW_TO_CONTROLLER_LOAD_BOARD.name(),
-        new SelectBoardEditConfigCommand(initConfig));
+        new SelectBoardEditConfigCommand(config));
     gameEventHandler.publish(gameStart);
   }
 
@@ -63,12 +64,12 @@ public class MonopolyGameEditorScene extends MonopolyScene implements ParentView
   }
 
   public void initChildren() {
-    model = new MonopolyBoardViewModel();
-    interactor = new MonopolyBoardInteractor(model);
+    this.model = new MonopolyBoardViewModel();
+    this.interactor = new MonopolyBoardInteractor(model);
     getInitBoardData();
-    monopolyBoardBuilder = new MonopolyBoardBuilder(model, gameEventHandler);
-    monopolyBoard = monopolyBoardBuilder.build();
-    this.myMenu = new MenuBar(myLanguage);
+    this.monopolyBoardBuilder = new MonopolyBoardBuilder(model, gameEventHandler);
+    this.monopolyBoard = monopolyBoardBuilder.build();
+    this.myMenu = new MenuBar(myLanguage, primaryStage, gameEventHandler, this);
   }
 
   public void setChildrenLocation() {
