@@ -82,6 +82,16 @@ public class ConcretePlayerTurn implements PlayerTurn {
   @Override
   public void nextTurn() {
     int currentPlayerId = currentPlayer.getPlayerId();
+    if (currentPlayer.getTotalMoney() < 0){
+      Player owner = null;
+      try {
+        owner = players.get(currentPlace.getOwnerId());
+      }
+      catch (RuntimeException e){
+       // do nothing
+      }
+      currentPlayer.bankruptTo(owner);
+    }
     int id = currentPlayerId + 1;
     while (id != currentPlayerId ){
       if (id < players.size()) {

@@ -16,7 +16,6 @@ import ooga.model.place.Place;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ooga.model.player.BuildHouseCheckerColor;
 import ooga.model.player.CanBuildOn;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -321,6 +320,7 @@ public class ConcretePlayer implements Player, ControllerPlayer {
    * Backrupt the current player to another player or the bank
    * Assume null stands for the bank
    */
+  @Override
   public void bankruptTo(Player player){
     double revenue = 0;
     for (Place place: properties){
@@ -342,7 +342,6 @@ public class ConcretePlayer implements Player, ControllerPlayer {
       player.mergeProperties(properties);
       player.mergePropertyIndices(propertyIndices);
     }
-    GameEventHandler gameEventHandler = new GameEventHandler();
     gameEventHandler.publish(modelToken + GameState.BANKRUPT);
     this.isAlive = false;
   }
