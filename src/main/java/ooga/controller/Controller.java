@@ -52,7 +52,7 @@ public class Controller implements GameEventListener {
                     if (boardInfo.getGameState().equals(GameState.GAME_SET_UP)) {
                         this.places = BoardSetUpRunnable.getParsedProperty(boardInfo);
                     }
-                } else if (event.getGameEventType().equals(GameEventType.VIEW_TO_CONTROLLER_GAME_START.name())) {
+                } else if (event.getGameEventType().equals(GameEventType.VIEW_TO_CONTROLLER_GAME_START.name()) || event.getGameEventType().equals(GameEventType.VIEW_TO_CONTROLLER_LOAD_GAME.name())) {
                     configFile = (File) event.getGameEventCommand().getCommand().getCommandArgs();
                 }
                 EventGenerator eventGenerator = getEventRunnable(event.getGameEventType(), event.getGameEventCommand().getCommand());

@@ -42,6 +42,8 @@ public class LoadBoardRunnable extends ParsingJsonRunnable implements EventGener
 
   private LoadBoardRecord makeRecord() {
     Map<String, LinkedTreeMap> parsedJson = parseJSON(this.gameConfig);
+    if (parsedJson.containsKey("initConfig"))
+      parsedJson = parsedJson.get("initConfig");
     int rows = 0;
     int cols = 0;
     List<ParsedProperty> places = new ArrayList<>();

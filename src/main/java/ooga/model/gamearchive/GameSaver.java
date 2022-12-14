@@ -1,6 +1,7 @@
 package ooga.model.gamearchive;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import ooga.model.exception.BadDataException;
 import ooga.model.player.ControllerPlayer;
 import ooga.model.ModelOutput;
@@ -17,14 +18,17 @@ import java.util.Map;
 
 public class GameSaver {
     private ModelOutput data;
-    Map<String, Object> loadData = new HashMap<>();
+    private Map<String, Object> loadData = new HashMap<>();
+    private Map<String, LinkedTreeMap> initConfigJsonMap;
 
-    public GameSaver(ModelOutput modelOutput) {
+    public GameSaver(ModelOutput modelOutput, Map<String, LinkedTreeMap> initConfigJsonMap) {
         this.data = modelOutput;
+        this.initConfigJsonMap = initConfigJsonMap;
     }
 
     public void saveToJson() throws IOException {
         Metadata meta = new Metadata(data.getPlayers().size(), data.getCurrentPlayerId());
+        loadData.put("initConfig", initConfigJsonMap);
         loadData.put("meta", meta);
         loadData.put("places", buildPlaces());
         loadData.put("players", buildPlayers());

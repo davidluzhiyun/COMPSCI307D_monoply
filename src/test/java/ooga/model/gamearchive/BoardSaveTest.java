@@ -1,5 +1,7 @@
 package ooga.model.gamearchive;
 
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import ooga.event.GameEventHandler;
 import ooga.model.*;
 import ooga.model.place.ControllerPlace;
@@ -13,17 +15,22 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
-import java.io.IOException;
+import java.io.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
+import static ooga.model.place.AbstractPlace.DEFAULT_RESOURCE_FOLDER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BoardSaveTest {
     static ModelOutput output;
+    static Map<String, LinkedTreeMap> initConfigJsonMap;
 
     @BeforeAll
     static void TestModelOutput() {
+        File file = new File("." + "/src/main/resources" + DEFAULT_RESOURCE_FOLDER + "InitialConfig" + ".json");
+        initConfigJsonMap = parseJSON(file);
         Place place2 = new ConcreteStreet("123", new GameEventHandler());
 //        place2.setOwner(1);
         //TODO:
@@ -65,9 +72,21 @@ public class BoardSaveTest {
         };
     }
 
+    private static Map<String, LinkedTreeMap> parseJSON(File file) {
+        try (Reader reader = new FileReader(file)) {
+            // Convert JSON File to Java Object
+            return new Gson().fromJson(reader, Map.class);
+        } catch (FileNotFoundException e) {
+            System.out.println("Config file not found1");
+        } catch (IOException e) {
+            System.out.println("IOException thrown1");
+        }
+        return null;
+    }
+
     @Test
     void testPlayerCount() throws IOException {
-        GameSaver boardSave = new GameSaver(output);
+        GameSaver boardSave = new GameSaver(output, initConfigJsonMap);
         boardSave.saveToJson();
         Metadata meta = (Metadata) boardSave.getJsonMap().get("meta");
         assertEquals(2, meta.playerCount());
@@ -75,7 +94,7 @@ public class BoardSaveTest {
 
     @Test
     void testCurrentPlayer() throws IOException {
-        GameSaver boardSave = new GameSaver(output);
+        GameSaver boardSave = new GameSaver(output, initConfigJsonMap);
         boardSave.saveToJson();
         Metadata meta = (Metadata) boardSave.getJsonMap().get("meta");
         assertEquals(1, meta.currentPlayerId());
@@ -83,7 +102,7 @@ public class BoardSaveTest {
 
     @Test
     void testPlaceId() throws IOException {
-        GameSaver boardSave = new GameSaver(output);
+        GameSaver boardSave = new GameSaver(output, initConfigJsonMap);
         boardSave.saveToJson();
         List<PlaceSaver> places = (List<PlaceSaver>) boardSave.getJsonMap().get("places");
         assertEquals("121", places.get(0).id());
@@ -91,7 +110,7 @@ public class BoardSaveTest {
 
     @Test
     void testOwnerNoOwner() throws IOException {
-        GameSaver boardSave = new GameSaver(output);
+        GameSaver boardSave = new GameSaver(output, initConfigJsonMap);
         boardSave.saveToJson();
         List<PlaceSaver> places = (List<PlaceSaver>) boardSave.getJsonMap().get("places");
         assertEquals(-1, places.get(0).owner());
@@ -99,7 +118,7 @@ public class BoardSaveTest {
 
     @Test
     void testOwner() throws IOException {
-        GameSaver boardSave = new GameSaver(output);
+        GameSaver boardSave = new GameSaver(output, initConfigJsonMap);
         boardSave.saveToJson();
         List<PlaceSaver> places = (List<PlaceSaver>) boardSave.getJsonMap().get("places");
         assertEquals(1, places.get(1).owner());
@@ -107,7 +126,7 @@ public class BoardSaveTest {
 
     @Test
     void testPlayer() throws IOException {
-        GameSaver boardSave = new GameSaver(output);
+        GameSaver boardSave = new GameSaver(output, initConfigJsonMap);
         boardSave.saveToJson();
         List<PlayerSaver> players = (List<PlayerSaver>) boardSave.getJsonMap().get("players");
         assertEquals(1, players.get(1).id());

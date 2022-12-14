@@ -66,11 +66,13 @@ public class GameView extends View implements GameEventListener {
   private int currentPlayer;
   private PlayerHUD myHUD;
   private BorderPane myBorderPane;
+  private File file;
 
-  public GameView(GameEventHandler gameEventHandler, String language, Stage stage) {
+  public GameView(GameEventHandler gameEventHandler, String language, Stage stage, File file) {
     this.myLanguage = language;
     this.myStage = stage;
     this.gameEventHandler = gameEventHandler;
+    this.file = file;
     myScreenResources = ResourceBundle.getBundle(Main.DEFAULT_RESOURCE_PACKAGE + StartView.SCREEN);
 
     this.gameEventHandler = gameEventHandler;
@@ -98,11 +100,10 @@ public class GameView extends View implements GameEventListener {
    * TODO: use the uploaded config file
    */
   private void getInitBoardData() {
-    String test = "ooga/model/place/InitialConfig.json";
     GameEvent gameStart = GameEventHandler.makeGameEventwithCommand(
         GameEventType.VIEW_TO_CONTROLLER_LOAD_BOARD.name(),
         new SelectBoardEditConfigCommand(
-            new File(this.getClass().getClassLoader().getResource(test).getFile())));
+            file));
     gameEventHandler.publish(gameStart);
   }
 

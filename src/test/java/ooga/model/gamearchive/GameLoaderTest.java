@@ -25,7 +25,7 @@ class GameLoaderTest {
   @BeforeAll
   static void setUp() {
     Reader reader;
-    File file = new File("." + "/src/main/resources/loaddata.json");
+    File file = new File("." + "/data/paused_games/loaddata.json");
     try {
       reader = new FileReader(file);
     } catch (FileNotFoundException e) {

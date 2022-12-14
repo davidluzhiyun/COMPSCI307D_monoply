@@ -13,7 +13,7 @@ class ConcreteStreetTest {
 
   @BeforeAll
   static void setUpTest() {
-    street = new ConcreteStreet("121", new GameEventHandler());
+    street = new ConcreteStreet("Shanghai1", new GameEventHandler());
   }
 
   @Test

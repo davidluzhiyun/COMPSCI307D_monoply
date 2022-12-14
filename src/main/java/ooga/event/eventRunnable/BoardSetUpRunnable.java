@@ -50,6 +50,8 @@ public class BoardSetUpRunnable extends ParsingJsonRunnable implements EventGene
   public static List<ParsedProperty> getParsedProperty(ModelOutput boardInfo) {
     List<ParsedProperty> parsedProperties = new ArrayList<>();
     parsedJson = parseJSON(Controller.getConfigFile());
+    if (parsedJson.containsKey("initConfig"))
+      parsedJson = parsedJson.get("initConfig");
     for (ControllerPlace place : boardInfo.getBoard()) {
       try {
         parsedProperties.add(

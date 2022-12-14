@@ -1,1 +1,227 @@
-{"places":[{"id":"Go"},{"id":"Shanghai1","owner":-1,"houseCount":0},{"id":"North Railroad","owner":-1},{"id":"Shanghai1","owner":-1,"houseCount":0},{"id":"FreeParking"},{"id":"New York1","owner":-1,"houseCount":0},{"id":"North Railroad","owner":-1},{"id":"New York1","owner":0,"houseCount":0},{"id":"FreeParking"},{"id":"Shanghai1","owner":-1,"houseCount":0},{"id":"North Railroad","owner":-1},{"id":"Shanghai1","owner":-1,"houseCount":0},{"id":"FreeParking"},{"id":"New York1","owner":-1,"houseCount":0},{"id":"North Railroad","owner":-1},{"id":"New York1","owner":-1,"houseCount":0}],"meta":{"playerCount":4,"currentPlayerId":0},"players":[{"id":0,"money":900.0,"jail":0,"currentPlaceIndex":7,"dicesTotal":0,"hasNextDice":false,"ownedRailroadCount":0,"properties":[7],"isAlive":true},{"id":1,"money":1000.0,"jail":0,"currentPlaceIndex":0,"dicesTotal":1,"hasNextDice":false,"ownedRailroadCount":0,"properties":[],"isAlive":true},{"id":2,"money":1000.0,"jail":0,"currentPlaceIndex":0,"dicesTotal":2,"hasNextDice":false,"ownedRailroadCount":0,"properties":[],"isAlive":true},{"id":3,"money":1000.0,"jail":0,"currentPlaceIndex":0,"dicesTotal":3,"hasNextDice":false,"ownedRailroadCount":0,"properties":[],"isAlive":true}]}
+{
+  "places": [
+    {
+      "id": "Go"
+    },
+    {
+      "id": "Shanghai1",
+      "owner": -1,
+      "houseCount": 0
+    },
+    {
+      "id": "North Railroad",
+      "owner": -1
+    },
+    {
+      "id": "Shanghai1",
+      "owner": -1,
+      "houseCount": 0
+    },
+    {
+      "id": "FreeParking"
+    },
+    {
+      "id": "New York1",
+      "owner": -1,
+      "houseCount": 0
+    },
+    {
+      "id": "North Railroad",
+      "owner": 1
+    },
+    {
+      "id": "New York1",
+      "owner": 2,
+      "houseCount": 0
+    },
+    {
+      "id": "FreeParking"
+    },
+    {
+      "id": "Shanghai1",
+      "owner": -1,
+      "houseCount": 0
+    },
+    {
+      "id": "North Railroad",
+      "owner": 0
+    },
+    {
+      "id": "Shanghai1",
+      "owner": -1,
+      "houseCount": 0
+    },
+    {
+      "id": "FreeParking"
+    },
+    {
+      "id": "New York1",
+      "owner": -1,
+      "houseCount": 0
+    },
+    {
+      "id": "North Railroad",
+      "owner": -1
+    },
+    {
+      "id": "New York1",
+      "owner": 1,
+      "houseCount": 0
+    }
+  ],
+  "meta": {
+    "playerCount": 4,
+    "currentPlayerId": 1
+  },
+  "players": [
+    {
+      "id": 0,
+      "money": 1000.0,
+      "jail": 0,
+      "currentPlaceIndex": 4,
+      "dicesTotal": 0,
+      "hasNextDice": false,
+      "ownedRailroadCount": 1,
+      "properties": [
+        10
+      ],
+      "isAlive": true
+    },
+    {
+      "id": 1,
+      "money": 700.0,
+      "jail": 0,
+      "currentPlaceIndex": 15,
+      "dicesTotal": 1,
+      "hasNextDice": false,
+      "ownedRailroadCount": 1,
+      "properties": [
+        6,
+        15
+      ],
+      "isAlive": true
+    },
+    {
+      "id": 2,
+      "money": 900.0,
+      "jail": 0,
+      "currentPlaceIndex": 7,
+      "dicesTotal": 2,
+      "hasNextDice": false,
+      "ownedRailroadCount": 0,
+      "properties": [
+        7
+      ],
+      "isAlive": true
+    },
+    {
+      "id": 3,
+      "money": 1000.0,
+      "jail": 0,
+      "currentPlaceIndex": 4,
+      "dicesTotal": 3,
+      "hasNextDice": true,
+      "ownedRailroadCount": 0,
+      "properties": [],
+      "isAlive": true
+    }
+  ],
+  "initConfig": {
+    "meta": {
+      "players": 4.0,
+      "rows": 5.0,
+      "columns": 5.0,
+      "money": 1500.0,
+      "jail": false,
+      "color": true
+    },
+    "0": {
+      "id": "Go",
+      "type": "Go",
+      "image": "go.png",
+      "corner": true
+    },
+    "1": {
+      "id": "Shanghai1",
+      "type": "Street",
+      "corner": false
+    },
+    "2": {
+      "id": "North Railroad",
+      "type": "Railroad",
+      "image": "railroad.png",
+      "corner": false
+    },
+    "3": {
+      "id": "Shanghai1",
+      "type": "Street",
+      "corner": false
+    },
+    "4": {
+      "id": "FreeParking",
+      "type": "FreeParking",
+      "image": "freeparking.png",
+      "corner": true
+    },
+    "5": {
+      "id": "New York1",
+      "type": "Street",
+      "corner": false
+    },
+    "6": {
+      "id": "North Railroad",
+      "type": "Railroad",
+      "image": "railroad.png",
+      "corner": false
+    },
+    "7": {
+      "id": "New York1",
+      "type": "Street",
+      "corner": false
+    },
+    "8": {
+      "id": "FreeParking",
+      "type": "FreeParking",
+      "image": "freeparking.png",
+      "corner": true
+    },
+    "9": {
+      "id": "Shanghai1",
+      "type": "Street",
+      "corner": false
+    },
+    "10": {
+      "id": "North Railroad",
+      "type": "Railroad",
+      "image": "railroad.png",
+      "corner": false
+    },
+    "11": {
+      "id": "Shanghai1",
+      "type": "Street",
+      "corner": false
+    },
+    "12": {
+      "id": "FreeParking",
+      "type": "FreeParking",
+      "image": "freeparking.png",
+      "corner": true
+    },
+    "13": {
+      "id": "New York1",
+      "type": "Street",
+      "corner": true
+    },
+    "14": {
+      "id": "North Railroad",
+      "type": "Railroad",
+      "image": "railroad.png",
+      "corner": false
+    },
+    "15": {
+      "id": "New York1",
+      "type": "Street",
+      "corner": false
+    }
+  }
+}

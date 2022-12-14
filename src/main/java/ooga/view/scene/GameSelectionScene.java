@@ -105,7 +105,7 @@ public class GameSelectionScene extends View {
    * also publish some event to the controller...
    */
   public void loadGame() {
-    makeFileDialog(Main.PAUSED_GAME_DIRECTORY, "VIEW_TO_CONTROLLER_LOAD_BOARD");
+    makeFileDialog(Main.PAUSED_GAME_DIRECTORY, "VIEW_TO_CONTROLLER_LOAD_GAME");
   }
 
   private void makeFileDialog(String initialDirectory, String eventType) {
