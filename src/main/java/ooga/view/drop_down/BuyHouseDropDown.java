@@ -1,13 +1,11 @@
 package ooga.view.drop_down;
 
-import java.awt.Choice;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ChoiceBox;
 import ooga.Main;
 import ooga.view.StartView;
 import ooga.view.View;
-import ooga.view.button.CustomizedButton;
 
 public class BuyHouseDropDown extends CustomizedDropDown {
 

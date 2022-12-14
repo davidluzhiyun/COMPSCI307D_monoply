@@ -1,6 +1,7 @@
 package ooga.model.gamearchive;
 
 import com.google.gson.Gson;
+import ooga.model.exception.BadDataException;
 import ooga.model.player.ControllerPlayer;
 import ooga.model.ModelOutput;
 import ooga.model.exception.MonopolyException;
@@ -23,7 +24,7 @@ public class GameSaver {
     }
 
     public void saveToJson() throws IOException {
-        Metadata meta = new Metadata(data.getPlayers().size(), data.getCurrentPlayerId());//TODO: tell if a player has the chance to roll dice
+        Metadata meta = new Metadata(data.getPlayers().size(), data.getCurrentPlayerId());
         loadData.put("meta", meta);
         loadData.put("places", buildPlaces());
         loadData.put("players", buildPlayers());
@@ -32,7 +33,7 @@ public class GameSaver {
     }
 
     private void writeDataFile() throws IOException {
-        String filePath = "./src/main/resources/loaddata.json";
+        String filePath = "./data/paused_games/loaddata.json";
         Writer writer = new FileWriter(filePath);
         // convert map to JSON File
         new Gson().toJson(loadData, writer);

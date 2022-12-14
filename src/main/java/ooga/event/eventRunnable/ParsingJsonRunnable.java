@@ -80,7 +80,6 @@ public class ParsingJsonRunnable implements EventGenerator{
                 Matcher matcher = pattern.matcher(line);
                 if (matcher.matches()) {
                     String type = matcher.group(1);
-//                    System.out.println(type);
                     return type;
                 }
             }

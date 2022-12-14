@@ -83,7 +83,6 @@ public class Board {
       GridPane.setRowIndex(card, row);
       GridPane.setColumnIndex(card, col);
       Bounds boundsInScene = card.localToScene(card.getBoundsInLocal());
-      System.out.println(boundsInScene);
 //      GridPane.setMargin(card, new Insets(1.0, 0, 0, 0));
       board.getChildren().add(card);
     }
@@ -119,7 +118,6 @@ public class Board {
       tmpText.setFont(defaultFont);
 
       double textWidth = tmpText.getLayoutBounds().getWidth();
-      System.out.println(textWidth);
 
       //check if text width is smaller than maximum width allowed
       if (textWidth <= MAX_TEXT_WIDTH) {
@@ -128,7 +126,6 @@ public class Board {
         //and if it isn't, calculate new font size,
         // so that label text width matches MAX_TEXT_WIDTH
         double newFontSize = defaultFontSize * MAX_TEXT_WIDTH / textWidth - 1;
-        System.out.println(newFontSize);
         city.setFont(Font.font(defaultFont.getFamily(), newFontSize));
       }
 
@@ -200,8 +197,10 @@ public class Board {
   }
 
   /**
-   * Called by GamePiecePopUp whenever a new pop up is created. Places the piece at GO (well eventually it will)
-   * @param piece: the new piece that was created
+   * Called by GamePiecePopUp whenever a new pop up is created. Places the piece at GO (well
+   * eventually it will)
+   *
+   * @param piece:  the new piece that was created
    * @param player: not used right now, but probably a good idea to create some mapping
    */
   public void initializeGamePiece(GamePiece piece, int player) {
@@ -213,6 +212,7 @@ public class Board {
   /**
    * Called by BuyHousePopUp if users decide to buy a house.
    * TODO: figure out how to get the coordinates of the property in order to place the house there
+   *
    * @param property: int, index of the property they selected
    */
   public void buildHouse(int property) {

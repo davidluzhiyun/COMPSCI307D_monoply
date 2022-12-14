@@ -1,10 +1,8 @@
 package ooga.view.scene;
 
-import java.awt.Menu;
 import java.io.File;
 import java.util.Objects;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import ooga.Main;

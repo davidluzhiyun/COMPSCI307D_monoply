@@ -1,0 +1,122 @@
+{
+  "places": [
+    {
+      "id": "Go"
+    },
+    {
+      "id": "Shanghai1",
+      "owner": -1,
+      "houseCount": 0
+    },
+    {
+      "id": "North Railroad",
+      "owner": -1
+    },
+    {
+      "id": "Shanghai1",
+      "owner": -1,
+      "houseCount": 0
+    },
+    {
+      "id": "FreeParking"
+    },
+    {
+      "id": "New York1",
+      "owner": -1,
+      "houseCount": 0
+    },
+    {
+      "id": "North Railroad",
+      "owner": -1
+    },
+    {
+      "id": "New York1",
+      "owner": -1,
+      "houseCount": 0
+    },
+    {
+      "id": "FreeParking"
+    },
+    {
+      "id": "Shanghai1",
+      "owner": -1,
+      "houseCount": 0
+    },
+    {
+      "id": "North Railroad",
+      "owner": -1
+    },
+    {
+      "id": "Shanghai1",
+      "owner": -1,
+      "houseCount": 0
+    },
+    {
+      "id": "FreeParking"
+    },
+    {
+      "id": "New York1",
+      "owner": -1,
+      "houseCount": 0
+    },
+    {
+      "id": "North Railroad",
+      "owner": -1
+    },
+    {
+      "id": "New York1",
+      "owner": -1,
+      "houseCount": 0
+    }
+  ],
+  "meta": {
+    "playerCount": 4,
+    "currentPlayerId": 0
+  },
+  "players": [
+    {
+      "id": 0,
+      "money": 1000.0,
+      "jail": 0,
+      "currentPlaceIndex": 4,
+      "dicesTotal": 0,
+      "hasNextDice": true,
+      "ownedRailroadCount": 0,
+      "properties": [],
+      "isAlive": true
+    },
+    {
+      "id": 1,
+      "money": 1000.0,
+      "jail": 0,
+      "currentPlaceIndex": 0,
+      "dicesTotal": 1,
+      "hasNextDice": false,
+      "ownedRailroadCount": 0,
+      "properties": [],
+      "isAlive": true
+    },
+    {
+      "id": 2,
+      "money": 1000.0,
+      "jail": 0,
+      "currentPlaceIndex": 0,
+      "dicesTotal": 2,
+      "hasNextDice": false,
+      "ownedRailroadCount": 0,
+      "properties": [],
+      "isAlive": true
+    },
+    {
+      "id": 3,
+      "money": 1000.0,
+      "jail": 0,
+      "currentPlaceIndex": 0,
+      "dicesTotal": 3,
+      "hasNextDice": false,
+      "ownedRailroadCount": 0,
+      "properties": [],
+      "isAlive": true
+    }
+  ]
+}
