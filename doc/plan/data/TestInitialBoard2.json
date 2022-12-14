@@ -14,6 +14,8 @@
     "id": "New York1",
     "type": "street",
     "image": "path/to/image2",
-    "corner": true
+    "corner": true,
+    "test upper text": "test upper text",
+    "test lower text": "test lower text"
   }
 }
