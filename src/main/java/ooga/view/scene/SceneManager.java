@@ -68,8 +68,8 @@ public class SceneManager implements GameEventListener {
     gameEventHandler.publish(VIEW_POST_ACTION_DRAW_BOARD);
   }
 
-  private void setGameView() {
-    GameView gameViewScene = new GameView(gameEventHandler, myLanguage, primaryStage);
+  private void setGameView(File file) {
+    GameView gameViewScene = new GameView(gameEventHandler, myLanguage, primaryStage, file);
     currentScene = gameViewScene.setUpScene(primaryStage.getMaxWidth(),
         primaryStage.getMaxHeight(), myStyle);
     setPrimaryStageToCurrScene();
@@ -85,7 +85,7 @@ public class SceneManager implements GameEventListener {
   public void onGameEvent(GameEvent event) {
     String eventType = event.getGameEventType();
     if (event.getGameEventType().equals("VIEW_LAUNCH_GAME_SCREEN")) {
-      setGameView();
+      setGameView((File) event.getGameEventCommand().getCommand().getCommandArgs());
     }
     if (event.getGameEventType().equals("VIEW_LAUNCH_GAME_SELECTION_SCREEN")) {
       setGameSelectionScene();

@@ -52,7 +52,6 @@ public class GameModel implements GameEventListener, ModelOutput {
     this.gameEventHandler = gameEventHandler;
     modelResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Model");
     setUpOnEventMap();
-    gameSaver = new GameSaver(this);
   }
 
   protected ResourceBundle getResources() {
@@ -94,23 +93,15 @@ public class GameModel implements GameEventListener, ModelOutput {
    * Initialize the game using data from controller
    * "protected" is for test purpose
    */
-  protected void initializeGame(Map<String, LinkedTreeMap> map) {
-    InitialConfigLoader initialConfigLoader = new InitialConfigLoader(map, modelResources, gameEventHandler);
+  protected void initializeGame(Map<String, LinkedTreeMap> initConfigJsonMap) {
+    InitialConfigLoader initialConfigLoader = new InitialConfigLoader(initConfigJsonMap, modelResources, gameEventHandler);
     initialConfigLoader.check();
 
     places = initialConfigLoader.getPlaces();
     players = initialConfigLoader.getPlayers();
 
-//    try {
-//      gameConfig = initialConfigLoader.getGameConfig();
-//    }
-//    catch (BadDataException e){
-//      Command<MonopolyException> command = new ConcreteCommand<>(e);
-//      GameEvent event = GameEventHandler.makeGameEventwithCommand(GameEventType.MODEL_TO_VIEW_EXCEPTION.name(), command);
-//      LOG.warn(e);
-//      gameEventHandler.publish(event);
-//    }
     gameConfig = initialConfigLoader.getGameConfig();
+    gameSaver = new GameSaver(this, initConfigJsonMap);
     turn = new ConcretePlayerTurn(players, places, 0, gameEventHandler);
   }
 
@@ -127,7 +118,7 @@ public class GameModel implements GameEventListener, ModelOutput {
     gameLoader.setUpPlayersPropertiesAndPropertyOwner(players, places);
     Metadata metaData = gameLoader.getMetadata();
     turn = new ConcretePlayerTurn(players, places, metaData.currentPlayerId(), gameEventHandler);
-    publishGameData(GameState.LOAD_BOARD);
+    publishGameData(GameState.GAME_SET_UP);
   }
 
   // beginning of ModelOutput methods
@@ -205,6 +196,7 @@ public class GameModel implements GameEventListener, ModelOutput {
         throw new RuntimeException(ex);
       }
     });
+    eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_LOAD_GAME.name(), e -> loadGame((Map<String, Object>) e.getGameEventCommand().getCommand().getCommandArgs()));
     eventTypeMap.put(GameEventType.CONTROLLER_TO_MODEL_CHECK_PLACE_ACTION.name(), this::sendPlaceActions);
     eventTypeMap.put(GameEventType.VIEW_TO_MODEL_PURCHASE_PROPERTY.name(), this::purchaseProperty);
     eventTypeMap.put(GameEventType.VIEW_TO_MODEL_GET_PLACE_ACTIONS.name(), this::sendPlaceActions);

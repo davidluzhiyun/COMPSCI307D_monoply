@@ -66,18 +66,18 @@ public class GameLoader {
 
   private void loadPlaceData() {
     places = new ArrayList<>();
-    List<PlaceSaver> placesData = (List<PlaceSaver>) gameData.get("places");
-    for (PlaceSaver singlePlaceData : placesData) {
-      String placeId = singlePlaceData.id();
+    List<Map<String, Object>> placesData = (List<Map<String, Object>>) gameData.get("places");
+    for (Map<String, Object> singlePlaceData : placesData) {
+      String placeId = (String) singlePlaceData.get("id");
       try {
         Map<String, ?> config = getConfig(placeId, new Gson());
         String type = (String) config.get("type");
         int ownerId = -1;
         int houseCount = -1;
-        if (singlePlaceData.owner() != null && singlePlaceData.owner() != -1) //if the place can be purchased and there is someone who purchased it
-          ownerId = singlePlaceData.owner();
-        if (singlePlaceData.houseCount() != null)
-          houseCount = singlePlaceData.houseCount();
+        if (singlePlaceData.get("owner") != null && (int) (double) singlePlaceData.get("owner") != -1) //if the place can be purchased and there is someone who purchased it
+          ownerId = (int) (double) singlePlaceData.get("owner");
+        if (singlePlaceData.get("houseCount") != null)
+          houseCount = (int) (double) singlePlaceData.get("houseCount");
         Place newPlace = createPlace(type, placeId, ownerId, houseCount);
         places.add(newPlace);
       } catch (IOException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
@@ -99,13 +99,17 @@ public class GameLoader {
 
   private void loadPlayerData() {
     players = new ArrayList<>();
-    List<PlayerSaver> playersData = (List<PlayerSaver>) gameData.get("players");
+    List<Map<String, Object>> playersData = (List<Map<String, Object>>) gameData.get("players");
     Map<Integer, Predicate<Collection<Place>>> checkers = new ConcreteColorSet(places).outputCheckers();
-    for (PlayerSaver singlePlayersData : playersData) {
-      Player newPlayer = new ConcretePlayer(singlePlayersData.id(), gameEventHandler, singlePlayersData.money(), singlePlayersData.currentPlaceIndex(), singlePlayersData.hasNextDice(), singlePlayersData.jail(),
-          singlePlayersData.dicesTotal(), singlePlayersData.properties(), createHouseBuildChecker(gameConfig.colorCheck()), singlePlayersData.isAlive());
+    for (Map<String, Object> singlePlayersData : playersData) {
+      Collection<Integer> properties = new ArrayList<>();
+      for (Double singlePropertyIndex: (Collection<Double>) singlePlayersData.get("properties")){
+        properties.add(singlePropertyIndex.intValue());
+      }
+      Player newPlayer = new ConcretePlayer((int) (double) singlePlayersData.get("id"), gameEventHandler, (double) singlePlayersData.get("money"), (int) (double) singlePlayersData.get("currentPlaceIndex"), (boolean) singlePlayersData.get("hasNextDice"), (int) (double) singlePlayersData.get("jail"),
+          (int) (double) singlePlayersData.get("dicesTotal"), properties, createHouseBuildChecker(true), (boolean) singlePlayersData.get("isAlive"));
       newPlayer.setColorSetCheckers(checkers);
-      newPlayer.setAddOneDiceRollJail(createAddOneDiceRollJail(gameConfig.ifGoJail(), newPlayer));
+      newPlayer.setAddOneDiceRollJail(createAddOneDiceRollJail(true, newPlayer));
       players.add(newPlayer);
     }
   }
@@ -114,7 +118,7 @@ public class GameLoader {
     int i = 0;
     for (Player player : players) {
       List<Place> ownedProperties = new ArrayList<>();
-      for (int propertyIndex : player.getPropertyIndices()) {
+      for (Integer propertyIndex : player.getPropertyIndices()) {
         ownedProperties.add(places.get(propertyIndex));
         places.get(propertyIndex).setOwner(i, player);
       }
