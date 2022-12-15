@@ -31,29 +31,32 @@ import static ooga.model.player.CanBuildOn.PLAYER_PACKAGE_NAME;
 
 public class GameLoader {
   private Map<String, Object> gameData;
-  private Metadata metadata;
+  private Map<String, Object> initialConfig;
+  private Metadata metaData;
+  private GameConfig gameConfig;
   private static final Logger LOG = LogManager.getLogger(GameLoader.class);
   private ResourceBundle myResources;
   private GameEventHandler gameEventHandler;
   private List<Place> places;
   private List<Player> players;
   private Map<String, Function6<String, String, Integer, Integer, Constructor<?>[], GameEventHandler, Place>> switchMap;
-  private final GameConfig gameConfig;
 
-  public GameLoader(Map<String, Object> map, ResourceBundle resources, GameEventHandler gameEventHandler, GameConfig gameConfig) {
+  public GameLoader(Map<String, Object> map, ResourceBundle resources, GameEventHandler gameEventHandler) {
     this.gameData = map;
     this.myResources = resources;
     this.gameEventHandler = gameEventHandler;
     Map<String, Double> meta = (Map<String, Double>) gameData.get("meta");
-    metadata = new Metadata(meta.get("playerCount").intValue(), meta.get("currentPlayerId").intValue());
-    this.gameConfig = gameConfig;
+    this.metaData = new Metadata(meta.get("playerCount").intValue(), meta.get("currentPlayerId").intValue());
+    this.initialConfig = (Map<String, Object>) gameData.get("initConfig");
+    Map<String, Object> initialConfigMeta = (Map<String, Object>)initialConfig.get("meta");
+    this.gameConfig = new GameConfig((int)(double)initialConfigMeta.getOrDefault("jailIndex", -1.0), (int)(double)initialConfigMeta.get("money"), (boolean) initialConfigMeta.get("color"), (boolean)initialConfigMeta.get("jail"));
     setUpMap();
     loadPlaceData();
     loadPlayerData();
   }
 
   public Metadata getMetadata() {
-    return metadata;
+    return metaData;
   }
 
   public List<Player> getPlayers() {
@@ -107,9 +110,9 @@ public class GameLoader {
         properties.add(singlePropertyIndex.intValue());
       }
       Player newPlayer = new ConcretePlayer((int) (double) singlePlayersData.get("id"), gameEventHandler, (double) singlePlayersData.get("money"), (int) (double) singlePlayersData.get("currentPlaceIndex"), (boolean) singlePlayersData.get("hasNextDice"), (int) (double) singlePlayersData.get("jail"),
-          (int) (double) singlePlayersData.get("dicesTotal"), properties, createHouseBuildChecker(true), (boolean) singlePlayersData.get("isAlive"));
+          (int) (double) singlePlayersData.get("dicesTotal"), properties, createHouseBuildChecker(gameConfig.colorCheck()), (boolean) singlePlayersData.get("isAlive"));
       newPlayer.setColorSetCheckers(checkers);
-      newPlayer.setAddOneDiceRollJail(createAddOneDiceRollJail(true, newPlayer));
+      newPlayer.setAddOneDiceRollJail(createAddOneDiceRollJail(gameConfig.ifGoJail(), newPlayer));
       players.add(newPlayer);
     }
   }

@@ -106,13 +106,15 @@ public class InitialConfigLoader {
     int jailIndexMeta = (int) (double) initialConfig.get("meta").getOrDefault("jailIndex", -1.0);
     int jailIndex = -1;
     while (initialConfig.containsKey(String.valueOf(j))) {
-      if (initialConfig.get(String.valueOf(j)).get("type").equals("jail")) {
+      if (initialConfig.get(String.valueOf(j)).get("type").equals("Jail")) {
         jailIndex = j;
         break;
       }
       j++;
     }
     if (jailIndex != jailIndexMeta) {
+      System.out.println(jailIndex);
+      System.out.println(jailIndexMeta);
       throw new BadDataException("Bad data file");
     }
     return jailIndex;

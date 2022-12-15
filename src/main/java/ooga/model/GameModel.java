@@ -112,7 +112,7 @@ public class GameModel implements GameEventListener, ModelOutput {
    * @param map
    */
   protected void loadGame(Map<String, Object> map) {
-    GameLoader gameLoader = new GameLoader(map, modelResources, gameEventHandler, gameConfig);
+    GameLoader gameLoader = new GameLoader(map, modelResources, gameEventHandler);
     places = gameLoader.getPlaces();
     players = gameLoader.getPlayers();
     gameLoader.setUpPlayersPropertiesAndPropertyOwner(players, places);

@@ -37,7 +37,7 @@ class GameLoaderTest {
     System.out.println(map);
     modelResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + "Model");
     GameConfig gameConfig = new GameConfig(10, 1500, true, true);
-    loader = new GameLoader(map, modelResources, new GameEventHandler(), gameConfig);
+    loader = new GameLoader(map, modelResources, new GameEventHandler());
   }
 
   @Test
