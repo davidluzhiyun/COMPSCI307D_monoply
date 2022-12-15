@@ -11,7 +11,7 @@ Start Date: November 2nd
 
 Finish Date: December 15th
 
-Hours Spent: too many to count.
+Hours Spent: too many to count, possibly more than 150 hours.
 
 ### Primary Roles
 
@@ -107,3 +107,12 @@ Challenge Features: the board game editor + loading and saving a game!
 
 ### Impressions
 
+Monopoly is a complex game, so we need to put more effort into planning/implementing the project. We find that the OOGA
+team project is rewarding, and we are really into it. The scrum/agile framework helps us to manage the process of the project
+well, and these sprints enable us to better understand the main focus and priority for each sprint. Standing up meeting
+and retrospective in the scrum/agile framework also provide us with the opportunity to reflect on the work.
+
+However, since monopoly is a complex game, we might need to spend even more time on planning, since some of the design has changed
+in comparison to the plan. 
+
+In conclusion, we all learned a lot from this project, programming, OOP design, JavaFx, and most importantly teamwork!

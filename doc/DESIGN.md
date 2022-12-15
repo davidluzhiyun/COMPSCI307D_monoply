@@ -17,13 +17,16 @@ Elaine Guo, Hosung Kim, David Lu, Leila Nelson, Luyao Wang
    * David Lu: designed and implemented model; main focus on auxiliary model features
 
  * Team Member #5
-   * Luyao Wang: designed and implemented model; main focus on backend game engine
-
+   * Luyao Wang: designed and implemented model; main focus on backend game engine, data files, and how the model connects 
+     with view/controller
 
 ## Design goals
 * A design that supports:
   * Encapsulation
   * Abstraction
+  * Interface segregation
+  * Extension
+  * Model-View Separation
 
 #### What Features are Easy to Add
 * New and different properties
@@ -38,8 +41,9 @@ events.
 View: the UI of the game. This includes the board, game editor, game pieces (cards, player pieces, etc.), and popups. The
 view communicates most of its events to the model whenever a user wants to do something.
 
-Model: the backend game engine of the game. The model deals with any game logic and information storing necessary to run
-the game, such as the current board state and all player information.
+Model: the backend game engine of the game. The model deals with the game logic and storing game data to run
+the game, such as the current board state and all player information. The model also holds all the information for frontend initializing
+the game pieces (such as image paths, displayed text on frontend) for saving/loading the game.
 
 Controller: responsible to interpreting information from the model to pass to the view in a parsable manner. Also responsible
 for extraneous view events that does not update or need the model to function, like getting the place information of a 
@@ -70,18 +74,24 @@ How to add more features:
 * Implement the necessary controller logic to interpret and parse the necessary information from the model output to give back to the view.
 
 #### Easy to Add Features
-* New and different properties
+* New and different properties: just adding a .json file for that property and include that property in the game configuration file for starting a new game.
 * New UI features, such as popups and more information displayed
 * Finishing Jail implementation: need to add a new method within MonopolyBoardBuilder to place a 
-    user at the appropriate property index that represents Jail. This will be called when the model
-    sends an event indicating the user should be sent to jail, which will be easy to do by simply updating the GameViewReflection.properties file once the appropriate method has been made.
-* Adding in UI support for rolling doubles as another variation in game play, since the model already has support for this feature. The view can easily make a pop-up to announce that the user has rolled doubles, and present them with the RollDicePopUp again.
+  user at the appropriate property index that represents Jail. This will be called when the model
+  sends an event indicating the user should be sent to jail, which will be easy to do by simply updating the GameViewReflection.properties file once the appropriate method has been made.
+* Adding in UI support for rolling doubles as another variation in game play, since the model already has support for 
+  this feature. The view can easily make a pop-up to announce that the user has rolled doubles, and present them with the RollDicePopUp again.
 
 
 #### Other Features not yet Done
 * Chance/community cards.
   * Some aspects of this would be relatively easy to make, since we already have support for different cards via our .json files & CardBuilder classes in View.
-  * In a simple implementation, each card could fall into roughly two categories: moving a player OR changing a player's money (or changing the money of several players). Since we do have support for both of these types of changes, we would not necessarily need to make extensive changes to the view or the model, BUT the file parsing would be another thing to figure out, since we would need to somehow parse the action and all the important information out of the card file.
+  * In a simple implementation, each card could fall into roughly two categories: moving a player OR changing a player's 
+    money (or changing the money of several players). Since we do have support for both of these types of changes, we 
+    would not necessarily need to make extensive changes to the view or the model, BUT the file parsing would be another 
+    thing to figure out, since we would need to somehow parse the action and all the important information out of the card file.
 * Auctions/trading
-
+  * Auctions/trading are a little bit hard because all the actions we have made are related to one the current player only,
+    the mechanism to deal with actions which multiple players take is not implemented. The model needs to have another set
+    of rules for auctions/trading, and the view also needs to make new pop-ups for auctions/trading but is simpler than model.
 
