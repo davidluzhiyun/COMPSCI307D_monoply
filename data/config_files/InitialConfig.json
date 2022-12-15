@@ -2,7 +2,11 @@
   "meta": {
     "players": 4,
     "rows": 5,
-    "columns": 5
+    "columns": 5,
+    "money": 1500,
+    "jail": true,
+    "jailIndex": 4,
+    "color": true
   },
   "0": {
     "id": "Go",
@@ -27,8 +31,8 @@
     "corner": false
   },
   "4": {
-    "id": "FreeParking",
-    "type": "FreeParking",
+    "id": "Jail",
+    "type": "Jail",
     "image": "freeparking.png",
     "corner": true
   },
