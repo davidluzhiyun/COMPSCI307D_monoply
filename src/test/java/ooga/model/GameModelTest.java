@@ -36,7 +36,7 @@ class GameModelTest {
     Gson gson = new Gson();
     Reader reader = null;
     try {
-      File file = new File("src/main/resources/ooga/model/place/InitialConfig.json");
+      File file = new File("src/main/resources/ooga/model/place/InitialConfigJail.json");
       reader = new FileReader(file);
       TypeToken<Map<String, ?>> mapType = new TypeToken<>() {
       };

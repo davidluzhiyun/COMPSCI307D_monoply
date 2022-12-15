@@ -33,7 +33,7 @@
   "4": {
     "id": "Jail",
     "type": "Jail",
-    "image": "freeparking.png",
+    "image": "injail.jpg",
     "corner": true
   },
   "5": {
@@ -53,9 +53,9 @@
     "corner": false
   },
   "8": {
-    "id": "FreeParking",
-    "type": "FreeParking",
-    "image": "freeparking.png",
+    "id": "GoToJail",
+    "type": "GoToJail",
+    "image": "gotojail.jpg",
     "corner": true
   },
   "9": {
