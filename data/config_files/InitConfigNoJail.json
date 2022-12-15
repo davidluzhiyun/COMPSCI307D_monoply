@@ -5,7 +5,7 @@
     "columns": 5,
     "money": 1500,
     "jail": false,
-    "color": true
+    "color": false
   },
   "0": {
     "id": "Go",

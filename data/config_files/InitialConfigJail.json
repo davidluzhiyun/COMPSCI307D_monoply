@@ -6,7 +6,7 @@
     "money": 1500,
     "jail": true,
     "jailIndex": 4,
-    "color": true
+    "color": false
   },
   "0": {
     "id": "Go",
