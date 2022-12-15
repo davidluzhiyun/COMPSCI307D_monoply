@@ -1,5 +1,10 @@
 package ooga.model;
 
+/**
+ * The gamestates is included in the ModelOutput, which is sent from the model to controller for data update.
+ * The controller select the data needed based on different gamestates.
+ */
+
 public enum GameState {
   DICE_RESULT,
   //only getDiceNum() in ModelOutput is updated
@@ -22,9 +27,7 @@ public enum GameState {
   GET_PLACE_ACTIONS,
   LOAD_BOARD,
   BUILD_HOUSE,
-
   COMMUNITY_CARD,
-
   LOAD_GAME_STATE,
   BANKRUPT,
   GAME_END

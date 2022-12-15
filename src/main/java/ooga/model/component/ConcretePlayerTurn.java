@@ -8,6 +8,11 @@ import ooga.model.place.Place;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * ConcretePlayerTurn is the class for turns of different player.
+ * It handles the loop of players and publish events based on different gamestates.
+ */
+
 public class ConcretePlayerTurn implements PlayerTurn {
   private Player currentPlayer;
   private Place currentPlace;
@@ -127,10 +132,6 @@ public class ConcretePlayerTurn implements PlayerTurn {
 
   @Override
   public Point getDiceNum() {
-//    if (diceNum == null){
-//      diceNum = dice.roll();
-//    }
-//    return new Point(diceNum);
     return diceNum;
   }
   /**

@@ -34,6 +34,12 @@ import ooga.model.player.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Main class for the model. This class manages all the processes of the gameplay.
+ * This class implements ModelOutput, and overrides onGameEvent(GameEvent event) method to handle the interaction with other classes.
+ * This class implements ModelOutput, which is a limited access interface of the GameModel for the controller to select data from the model and update the view.
+ */
+
 public class GameModel implements GameEventListener, ModelOutput {
   private ConcretePlayerTurn turn;
   private List<Player> players;

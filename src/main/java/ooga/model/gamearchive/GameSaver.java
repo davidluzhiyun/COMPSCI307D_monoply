@@ -16,6 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class saves the current game data to data/paused_games/loaddata.json.
+ * The saved .json file includes current game data and all the data needed for the frontend to re-initialize game pieces.
+ */
+
 public class GameSaver {
     private ModelOutput data;
     private Map<String, Object> loadData = new HashMap<>();

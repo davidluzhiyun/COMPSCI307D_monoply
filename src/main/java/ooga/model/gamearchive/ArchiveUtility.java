@@ -14,6 +14,12 @@ import java.util.ResourceBundle;
 import static ooga.model.GameModel.DEFAULT_RESOURCE_PACKAGE;
 import static ooga.model.player.CanBuildOn.PLAYER_PACKAGE_NAME;
 
+/**
+ * Static utility class for the ease of factory pattern to create a player.
+ * AddOneDiceRoll is the interface which decides the behavior when a player gains a new dice roll chance (go to jail after 3 consequent doubles or not)
+ * CanBuildOn is the interface which decides whether a player can build house can that street (has to own all the streets of same color or not)
+ */
+
 public class ArchiveUtility {
   private static final String houseCheckerToken = "HouseBuildChecker";
   private static final String addOneDiceRollToken = "AddOneDiceRoll";
@@ -44,7 +50,7 @@ public class ArchiveUtility {
     try {
       checkerClass = Class.forName(PLAYER_PACKAGE_NAME + myResources.getString(houseCheckerToken + checkColorOrNot));
     } catch (ClassNotFoundException e) {
-//      LOG.warn(e);
+      LOG.warn(e);
       throw new IllegalStateException("classNotFound", e);
     }
     Constructor<?>[] makeNewPlace = checkerClass.getConstructors();

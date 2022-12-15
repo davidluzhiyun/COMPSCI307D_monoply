@@ -23,6 +23,11 @@ import static ooga.model.gamearchive.ArchiveUtility.createHouseBuildChecker;
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
 import static ooga.model.player.CanBuildOn.PLAYER_PACKAGE_NAME;
 
+/**
+ * The InitialConfigLoader is the class for loading a new game. The controller converts .json to a map, and this class initialize
+ * the game based on the map.
+ */
+
 public class InitialConfigLoader {
   private Map<String, LinkedTreeMap> initialConfig;
   private ResourceBundle myResources;

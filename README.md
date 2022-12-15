@@ -25,7 +25,8 @@ Hours Spent: too many to count.
 
 * David Lu: designed and implemented model; main focus on auxiliary model features
 
-* Luyao Wang: designed and implemented model; main focus on backend game engine
+* Luyao Wang: designed and implemented model; main focus on backend game engine, data files, and how the model connects 
+ with view/controller
 
 ### Resources Used
 
@@ -33,6 +34,7 @@ Hours Spent: too many to count.
 
 * https://edencoding.com/scene-background/#:~:text=The%20simplest%20way%20to%20set%20the%20JavaFX%20Scene,background%2C%20which%20can%20accept%20multiple%20images%20and%20fills
     * Used for reference with images in JavaFX
+* https://stackoverflow.com/questions/27872387/can-a-java-lambda-have-more-than-1-parameter
 
 ### Running the Program
 
@@ -41,6 +43,8 @@ Main class: Main.java -- just press run and it will start up our game!
 Data files needed: data/config_files folder -- appropriate configuration files (.json). Refer to our
 examples
 such as InitConfigNoJail.json, InitialConfigJail.json, test.json, etc.
+
+You can save the current game by clicking the "save" button, and data/paused_games/loaddata.json will be created or modified.
 
 OR if you want to resume a previously paused/saved game, you will go into data/paused_games and use
 loaddata.json
@@ -56,7 +60,10 @@ Features implemented:
 * the current player can see their information
 * railroads and different property types
 * gain money as you pass GO
+* save/load the game
 * board size is completely customizable & so are all the properties on it
+* variations of whether a player has to own all the streets of the same color to build house
+* variations of whether a player is sent to jail after 3 times of rolling doubles
 * etc.
 
 ### Notes/Assumptions
@@ -85,14 +92,16 @@ Interesting data files:
 Known Bugs:
 
 * if you play a one-player game and land on a property you have previously bought, it will
-  make you pay rent to yourself. This might be an error in indexing the player list starting at 0 vs
-  1
-  in some places.
+  make you pay rent to yourself. This might be an error in indexing the player list starting at 0 vs 1 in some places.
 * Jail is not fully functional yet, although we have most of the pieces in place.
-* When you resume/load a game instead of starting a new one, you will have to re-select the game
-  pieces
-  and it will place them at GO (instead of where they ended the game). However, it will move them
-  from the correct position that they ended in, it just displays them at GO initially.
+* When you resume/load a game instead of starting a new one, you will have to re-select the game pieces and it will 
+  place them at GO (instead of where they ended the game). However, it will move them  from the correct position that 
+  they ended in, it just displays them at GO initially.
+* You have to pick the order of players avatar in order.
+* The model does not fully implement the feature of checking the validness of input .json file.
+* You can only save a new game but not a game which is loaded/resumed.
+* Sometimes, the color checker in the colorset does not return the correct value so that a player is able to build house 
+  on a street when one does not really own all the streets of that color if we set `"color" = true` in json file.
 
 Challenge Features: the board game editor + loading and saving a game!
 

@@ -29,6 +29,11 @@ import static ooga.model.place.AbstractPlace.DEFAULT_RESOURCE_FOLDER;
 import static ooga.model.place.AbstractPlace.PLACE_PACKAGE_NAME;
 import static ooga.model.player.CanBuildOn.PLAYER_PACKAGE_NAME;
 
+/**
+ * The GameLoader is the class for loading previously saved game. The controller converts .json to a map, and this class initialize
+ * the game based on the map.
+ */
+
 public class GameLoader {
   private Map<String, Object> gameData;
   private Map<String, Object> initialConfig;
