@@ -192,7 +192,7 @@ public class GameView extends View implements GameEventListener {
   public void showPlaceActions(GameEvent event) {
     GetPlaceActionsRecord cmd = (GetPlaceActionsRecord) event.getGameEventCommand().getCommand()
         .getCommandArgs();
-    AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd, myStyle, gameEventHandler);
+    AvailablePlaceActionsPopUp pop = new AvailablePlaceActionsPopUp(cmd, myStyle, gameEventHandler, monopolyBoardBuilder);
     pop.showMessage(myLanguage);
   }
 

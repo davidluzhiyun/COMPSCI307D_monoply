@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ooga.controller.GetPlaceActionsRecord;
 import ooga.event.GameEvent;
@@ -14,6 +15,7 @@ import ooga.event.command.RequestPropertyInfoCommand;
 import ooga.model.PlaceAction;
 import ooga.view.View;
 import ooga.view.button.CustomizedButton;
+import ooga.view.components.MonopolyBoardBuilder;
 
 public class AvailablePlaceActionsPopUp extends ActionPopUp {
 
@@ -23,14 +25,17 @@ public class AvailablePlaceActionsPopUp extends ActionPopUp {
   private String myLanguage;
   private int propertyIndex;
   private GameEventHandler handler;
+  private MonopolyBoardBuilder build;
 
   public AvailablePlaceActionsPopUp(GetPlaceActionsRecord record, String style,
-      GameEventHandler handler) {
+      GameEventHandler handler, MonopolyBoardBuilder build) {
     this.myActions = record.actions();
+    System.out.println(myActions);
     this.myStage = new Stage();
     this.myStyle = style;
     this.propertyIndex = record.index();
     this.handler = handler;
+    this.build = build;
   }
 
   @Override
@@ -41,7 +46,7 @@ public class AvailablePlaceActionsPopUp extends ActionPopUp {
   @Override
   public void createScene() {
     ResourceBundle popUpResources = ResourceBundle.getBundle(View.POP_UP_PROPERTIES);
-    Group root = new Group();
+    VBox root = new VBox();
     for (PlaceAction act : myActions) {
       String className = popUpResources.getString(act.name());
       root.getChildren().add((CustomizedButton) makeInteractiveObject(className, myLanguage, this));
@@ -74,5 +79,6 @@ public class AvailablePlaceActionsPopUp extends ActionPopUp {
   }
 
   public void buyHouse() {
+    build.buildHouse(propertyIndex);
   }
 }
