@@ -64,6 +64,7 @@ the json files.
 ## New Features HowTo
 How to add more features:
 * Make a UI component to show the new feature/allow the user to interact with it
+  * Update properties files
 * Add functionality in the view to send an event to the model to do the new feature
 * Implement the necessary backend logic in order for the new feature to occur
 * Implement the necessary controller logic to interpret and parse the necessary information from the model output to give back to the view.
@@ -71,6 +72,16 @@ How to add more features:
 #### Easy to Add Features
 * New and different properties
 * New UI features, such as popups and more information displayed
+* Finishing Jail implementation: need to add a new method within MonopolyBoardBuilder to place a 
+    user at the appropriate property index that represents Jail. This will be called when the model
+    sends an event indicating the user should be sent to jail, which will be easy to do by simply updating the GameViewReflection.properties file once the appropriate method has been made.
+* Adding in UI support for rolling doubles as another variation in game play, since the model already has support for this feature. The view can easily make a pop-up to announce that the user has rolled doubles, and present them with the RollDicePopUp again.
+
 
 #### Other Features not yet Done
+* Chance/community cards.
+  * Some aspects of this would be relatively easy to make, since we already have support for different cards via our .json files & CardBuilder classes in View.
+  * In a simple implementation, each card could fall into roughly two categories: moving a player OR changing a player's money (or changing the money of several players). Since we do have support for both of these types of changes, we would not necessarily need to make extensive changes to the view or the model, BUT the file parsing would be another thing to figure out, since we would need to somehow parse the action and all the important information out of the card file.
+* Auctions/trading
+
 
